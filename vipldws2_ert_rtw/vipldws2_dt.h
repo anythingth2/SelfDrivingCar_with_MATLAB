@@ -5,7 +5,7 @@
  *
  * Model version              : 1.2212
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C source code generated on : Mon Jan 01 14:33:11 2018
+ * C source code generated on : Mon Jan 01 17:35:43 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -69,23 +69,25 @@ static const char_T * rtDataTypeNames[] = {
 
 /* data type transitions for block I/O structure */
 static DataTypeTransition rtBTransitions[] = {
-  { (char_T *)(&vipldws2_B.ColorSpaceConversion[0]), 1, 0, 1158900 },
+  { (char_T *)(&vipldws2_B.ColorSpaceConversion[0]), 1, 0, 1159740 },
 
-  { (char_T *)(&vipldws2_B.HoughTransform_o2[0]), 1, 0, 805 },
+  { (char_T *)(&vipldws2_B.HoughTransform_o2[0]), 1, 0, 863 },
 
   { (char_T *)(&vipldws2_B.Init[0]), 1, 0, 80 },
 
-  { (char_T *)(&vipldws2_B.HoughLines1[0]), 6, 0, 8 },
+  { (char_T *)(&vipldws2_B.KTrans[0]), 1, 0, 8 },
+
+  { (char_T *)(&vipldws2_B.HoughLines[0]), 6, 0, 16 },
 
   { (char_T *)(&vipldws2_B.Probe[0]), 0, 0, 3 },
 
-  { (char_T *)(&vipldws2_B.ImageDataTypeConversion[0]), 1, 0, 547604 },
+  { (char_T *)(&vipldws2_B.ImageDataTypeConversion[0]), 1, 0, 576404 },
 
-  { (char_T *)(&vipldws2_B.MatrixConcatenation2[0]), 1, 0, 869887 },
+  { (char_T *)(&vipldws2_B.MatrixConcatenation2[0]), 1, 0, 900367 },
 
-  { (char_T *)(&vipldws2_B.DataTypeConversion1), 1, 0, 76 },
+  { (char_T *)(&vipldws2_B.DataTypeConversion1), 1, 0, 68 },
 
-  { (char_T *)(&vipldws2_B.Init_p[0]), 6, 0, 210 },
+  { (char_T *)(&vipldws2_B.Init_p[0]), 6, 0, 202 },
 
   { (char_T *)(&vipldws2_B.rho_1), 6, 0, 2070 },
 
@@ -97,9 +99,9 @@ static DataTypeTransition rtBTransitions[] = {
 
   { (char_T *)(&vipldws2_B.RawMessage), 2, 0, 9 },
 
-  { (char_T *)(&vipldws2_B.MatrixConcatenate[0]), 3, 0, 921600 },
+  { (char_T *)(&vipldws2_B.MatrixConcatenate[0]), 3, 0, 1382400 },
 
-  { (char_T *)(&vipldws2_B.Compare), 8, 0, 48080 }
+  { (char_T *)(&vipldws2_B.Compare), 8, 0, 38480 }
   ,
 
   { (char_T *)(&vipldws2_DW.obj), 19, 0, 1 },
@@ -110,7 +112,7 @@ static DataTypeTransition rtBTransitions[] = {
 
   { (char_T *)(&vipldws2_DW.FixPtUnitDelay1_DSTATE_d[0]), 6, 0, 450 },
 
-  { (char_T *)(&vipldws2_DW.ColorSpaceConversion_DWORK1[0]), 1, 0, 430815 },
+  { (char_T *)(&vipldws2_DW.ColorSpaceConversion_DWORK1[0]), 1, 0, 470055 },
 
   { (char_T *)(&vipldws2_DW.uDFIRFilter_bSEnd[0]), 6, 0, 156 },
 
@@ -135,13 +137,13 @@ static DataTypeTransition rtBTransitions[] = {
 
 /* data type transition table for block I/O structure */
 static DataTypeTransitionTable rtBTransTable = {
-  31U,
+  32U,
   rtBTransitions
 };
 
 /* data type transitions for Parameters structure */
 static DataTypeTransition rtPTransitions[] = {
-  { (char_T *)(&vipldws2_P.uDFIRFilter_filterMtrx[0]), 1, 0, 46 },
+  { (char_T *)(&vipldws2_P.DrawShapes_color[0]), 1, 0, 50 },
 
   { (char_T *)(&vipldws2_P.CompareToConstant2_const), 6, 0, 12 },
 
@@ -151,11 +153,11 @@ static DataTypeTransition rtPTransitions[] = {
 
   { (char_T *)(&vipldws2_P.CompareToConstant_const_h), 2, 0, 8 },
 
-  { (char_T *)(&vipldws2_P.Rotate_fillVal), 3, 0, 1 },
+  { (char_T *)(&vipldws2_P.Rotate_fillVal), 3, 0, 2 },
 
   { (char_T *)(&vipldws2_P.Constant1_Value), 0, 0, 2 },
 
-  { (char_T *)(&vipldws2_P.Constant3_Value[0]), 1, 0, 527 },
+  { (char_T *)(&vipldws2_P.Constant3_Value[0]), 1, 0, 523 },
 
   { (char_T *)(&vipldws2_P.ForIterator_IterationLimit), 6, 0, 541 },
 

@@ -5,7 +5,7 @@
  *
  * Model version                  : 1.2212
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Mon Jan 01 14:33:11 2018
+ * C/C++ source code generated on : Mon Jan 01 17:35:43 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -442,34 +442,33 @@ static void vipldws2_Corr_M_IBRepl_uS_hS_yS(const real32_T h[], const int32_T
     /* Origin stores the origin of Y with respect to U */
     /*  where the origin of Y is at its top left corner */
     /* Compute offset between origin of Y and origin of U(0,0) */
-    vipldws2_B.offset_c[0U] = -yOrigin[0U];
-    vipldws2_B.offset_c[1U] = -yOrigin[1U];
+    vipldws2_B.offset_p[0U] = -yOrigin[0U];
+    vipldws2_B.offset_p[1U] = -yOrigin[1U];
 
     /* sector start and end were computed relative to U */
     /* make them relative to Y by adding offset */
-    vipldws2_B.sStart_c[0U] = vipldws2_B.mLoc[0] + vipldws2_B.offset_c[0U];
-    vipldws2_B.sEnd_k[0U] = ((vipldws2_B.mLoc[0] + vipldws2_B.mWidth[0]) +
-      vipldws2_B.offset_c[0U]) - 1;
-    vipldws2_B.sStart_c[1U] = vipldws2_B.mLoc[1] + vipldws2_B.offset_c[1U];
-    vipldws2_B.sEnd_k[1U] = ((vipldws2_B.mLoc[1] + vipldws2_B.mWidth[1]) +
-      vipldws2_B.offset_c[1U]) - 1;
+    vipldws2_B.sStart_c[0U] = vipldws2_B.mLoc[0] + vipldws2_B.offset_p[0U];
+    vipldws2_B.sEnd_b[0U] = ((vipldws2_B.mLoc[0] + vipldws2_B.mWidth[0]) +
+      vipldws2_B.offset_p[0U]) - 1;
+    vipldws2_B.sStart_c[1U] = vipldws2_B.mLoc[1] + vipldws2_B.offset_p[1U];
+    vipldws2_B.sEnd_b[1U] = ((vipldws2_B.mLoc[1] + vipldws2_B.mWidth[1]) +
+      vipldws2_B.offset_p[1U]) - 1;
 
     /* adjust offset for kernel center */
-    vipldws2_B.offset_c[0U] -= hLoc[0U];
-    vipldws2_B.offset_c[1U] -= hLoc[1U];
+    vipldws2_B.offset_p[0U] -= hLoc[0U];
+    vipldws2_B.offset_p[1U] -= hLoc[1U];
 
     /* loop kernel over data */
-    vipldws2_B.idxB_b[1U] = vipldws2_B.sStart_c[1U];
-    while (vipldws2_B.idxB_b[1U] <= vipldws2_B.sEnd_k[1U]) {
-      vipldws2_B.idxALin[1U] = (vipldws2_B.idxB_b[1U] - vipldws2_B.offset_c[1U])
+    vipldws2_B.idxB_c[1U] = vipldws2_B.sStart_c[1U];
+    while (vipldws2_B.idxB_c[1U] <= vipldws2_B.sEnd_b[1U]) {
+      vipldws2_B.idxALin[1U] = (vipldws2_B.idxB_c[1U] - vipldws2_B.offset_p[1U])
         * uDims[0U];
-      vipldws2_B.idxBLin_p[1U] = yDims[0U] * vipldws2_B.idxB_b[1U];
-      vipldws2_B.idxB_b[0U] = vipldws2_B.sStart_c[0U];
-      while (vipldws2_B.idxB_b[0U] <= vipldws2_B.sEnd_k[0U]) {
-        vipldws2_B.idxALin[0U] = (vipldws2_B.idxB_b[0U] - vipldws2_B.offset_c[0U])
+      vipldws2_B.idxBLin[1U] = yDims[0U] * vipldws2_B.idxB_c[1U];
+      vipldws2_B.idxB_c[0U] = vipldws2_B.sStart_c[0U];
+      while (vipldws2_B.idxB_c[0U] <= vipldws2_B.sEnd_b[0U]) {
+        vipldws2_B.idxALin[0U] = (vipldws2_B.idxB_c[0U] - vipldws2_B.offset_p[0U])
           + vipldws2_B.idxALin[1U];
-        vipldws2_B.idxBLin_p[0U] = vipldws2_B.idxBLin_p[1U] + vipldws2_B.idxB_b
-          [0U];
+        vipldws2_B.idxBLin[0U] = vipldws2_B.idxBLin[1U] + vipldws2_B.idxB_c[0U];
         uOrigin = vipldws2_B.idxALin[0U];
 
         /* loop over kernel and compute conv/corr */
@@ -477,28 +476,28 @@ static void vipldws2_Corr_M_IBRepl_uS_hS_yS(const real32_T h[], const int32_T
         acc = 0.0F;
 
         /* loop over kernel */
-        vipldws2_B.hIdxA_c[1U] = 0;
-        while (vipldws2_B.hIdxA_c[1U] <= vipldws2_B.hEnd[1U]) {
-          vipldws2_B.hIdxA_c[0U] = 0;
-          while (vipldws2_B.hIdxA_c[0U] <= vipldws2_B.hEnd[0U]) {
+        vipldws2_B.hIdxA[1U] = 0;
+        while (vipldws2_B.hIdxA[1U] <= vipldws2_B.hEnd[1U]) {
+          vipldws2_B.hIdxA[0U] = 0;
+          while (vipldws2_B.hIdxA[0U] <= vipldws2_B.hEnd[0U]) {
             acc += u[uOrigin] * h[hPost];
             uOrigin++;
             hPost++;
-            vipldws2_B.hIdxA_c[0U]++;
+            vipldws2_B.hIdxA[0U]++;
           }
 
           uOrigin = (uOrigin + uDims[0U]) - hDims[0U];
-          vipldws2_B.hIdxA_c[1U]++;
+          vipldws2_B.hIdxA[1U]++;
         }
 
-        if (vipldws2_B.idxBLin_p[0U] >= 0) {
-          y[vipldws2_B.idxBLin_p[0U]] = acc;
+        if (vipldws2_B.idxBLin[0U] >= 0) {
+          y[vipldws2_B.idxBLin[0U]] = acc;
         }
 
-        vipldws2_B.idxB_b[0U]++;
+        vipldws2_B.idxB_c[0U]++;
       }
 
-      vipldws2_B.idxB_b[1U]++;
+      vipldws2_B.idxB_c[1U]++;
     }
   }
 
@@ -611,23 +610,24 @@ static void vipldws2_Corr_M_IBRepl_uS_hS_yS(const real32_T h[], const int32_T
       vipldws2_B.idxB[1U] = vipldws2_B.sStart[1U];
       while (vipldws2_B.idxB[1U] <= vipldws2_B.sEnd[1U]) {
         vipldws2_B.idxA[1U] = vipldws2_B.idxB[1U] - vipldws2_B.offset[1U];
-        vipldws2_B.idxBLin[1U] = yDims[0U] * vipldws2_B.idxB[1U];
+        vipldws2_B.idxBLin_c[1U] = yDims[0U] * vipldws2_B.idxB[1U];
         vipldws2_B.idxB[0U] = vipldws2_B.sStart[0U];
         while (vipldws2_B.idxB[0U] <= vipldws2_B.sEnd[0U]) {
           vipldws2_B.idxA[0U] = vipldws2_B.idxB[0U] - vipldws2_B.offset[0U];
-          vipldws2_B.idxBLin[0U] = vipldws2_B.idxBLin[1U] + vipldws2_B.idxB[0U];
+          vipldws2_B.idxBLin_c[0U] = vipldws2_B.idxBLin_c[1U] + vipldws2_B.idxB
+            [0U];
 
           /* loop over kernel and compute conv/corr */
           hPost = 0;
           acc = 0.0F;
 
           /* loop over kernel */
-          vipldws2_B.hIdxA[1U] = 0;
-          while (vipldws2_B.hIdxA[1U] <= vipldws2_B.hEnd[1U]) {
-            vipldws2_B.hIdxB[1U] = vipldws2_B.idxA[1U] + vipldws2_B.hIdxA[1U];
-            vipldws2_B.hIdxA[0U] = 0;
-            while (vipldws2_B.hIdxA[0U] <= vipldws2_B.hEnd[0U]) {
-              vipldws2_B.hIdxB[0U] = vipldws2_B.idxA[0U] + vipldws2_B.hIdxA[0U];
+          vipldws2_B.hIdxA_k[1U] = 0;
+          while (vipldws2_B.hIdxA_k[1U] <= vipldws2_B.hEnd[1U]) {
+            vipldws2_B.hIdxB[1U] = vipldws2_B.idxA[1U] + vipldws2_B.hIdxA_k[1U];
+            vipldws2_B.hIdxA_k[0U] = 0;
+            while (vipldws2_B.hIdxA_k[0U] <= vipldws2_B.hEnd[0U]) {
+              vipldws2_B.hIdxB[0U] = vipldws2_B.idxA[0U] + vipldws2_B.hIdxA_k[0U];
               uI = PadBRepl_uS(&u[0U], &vipldws2_B.uStride[0U],
                                &vipldws2_B.hIdxB[0U], &vipldws2_B.uOrigin[0U],
                                &vipldws2_B.uEnd[0U], uOrigin,
@@ -635,14 +635,14 @@ static void vipldws2_Corr_M_IBRepl_uS_hS_yS(const real32_T h[], const int32_T
                                &vipldws2_B.sPostEdges[0U]);
               acc += uI * h[hPost];
               hPost++;
-              vipldws2_B.hIdxA[0U]++;
+              vipldws2_B.hIdxA_k[0U]++;
             }
 
-            vipldws2_B.hIdxA[1U]++;
+            vipldws2_B.hIdxA_k[1U]++;
           }
 
-          if (vipldws2_B.idxBLin[0U] >= 0) {
-            y[vipldws2_B.idxBLin[0U]] = acc;
+          if (vipldws2_B.idxBLin_c[0U] >= 0) {
+            y[vipldws2_B.idxBLin_c[0U]] = acc;
           }
 
           vipldws2_B.idxB[0U]++;
@@ -701,7 +701,7 @@ void LDLf_int32_Treal32_T(real32_T out[], real32_T vArray[], int32_T nRows,
   boolean_T done;
   int32_T k;
 
-  /* S-Function (sdspldl2): '<S47>/LDL Factorization' */
+  /* S-Function (sdspldl2): '<S48>/LDL Factorization' */
   done = false;
 
   /* use done to control the for loop return early  */
@@ -751,21 +751,22 @@ void LDLf_int32_Treal32_T(real32_T out[], real32_T vArray[], int32_T nRows,
     c++;
   }
 
-  /* End of S-Function (sdspldl2): '<S47>/LDL Factorization' */
+  /* End of S-Function (sdspldl2): '<S48>/LDL Factorization' */
 }
 
 /* Model step function */
 void vipldws2_step(void)
 {
+  uint8_T tmp;
   boolean_T c_gotAlLeastOneYellowPixelInThe;
   boolean_T prevEdgeIsVertical;
   int8_T idxTmpArray[2];
   boolean_T countTwice;
   int8_T idxTmpArray_0[2];
   boolean_T done;
-  static const int8_T tmp[4] = { 1, 0, 3, 2 };
+  static const int8_T tmp_0[4] = { 1, 0, 3, 2 };
 
-  static const int8_T tmp_0[12] = { 1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10 };
+  static const int8_T tmp_1[12] = { 1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10 };
 
   int8_T lineColorIdx_idx_0;
   int8_T solidBrokenIdx_idx_0;
@@ -806,42 +807,46 @@ void vipldws2_step(void)
 
   /* S-Function (sviprotate): '<S2>/Rotate' */
   vipldws2_B.indxI = 0;
-  vipldws2_B.R2 = 76800;
-  vipldws2_B.i = 0;
-  while (vipldws2_B.i < 76800) {
-    vipldws2_B.R2--;
-    vipldws2_B.Rotate[vipldws2_B.R2] =
-      vipldws2_B.MatrixConcatenate[vipldws2_B.indxI];
-    vipldws2_B.indxI++;
-    vipldws2_B.i++;
-  }
+  vipldws2_B.planeOffset = 239;
+  for (vipldws2_B.plane = 0; vipldws2_B.plane < 3; vipldws2_B.plane++) {
+    for (vipldws2_B.i = 0; vipldws2_B.i < 240; vipldws2_B.i++) {
+      vipldws2_B.C2 = vipldws2_B.planeOffset - vipldws2_B.i;
+      for (vipldws2_B.j = 0; vipldws2_B.j < 320; vipldws2_B.j++) {
+        vipldws2_B.Rotate[vipldws2_B.C2] =
+          vipldws2_B.MatrixConcatenate[vipldws2_B.indxI];
+        vipldws2_B.indxI++;
+        vipldws2_B.C2 += 240;
+      }
+    }
 
-  vipldws2_B.R2 = 153600;
-  vipldws2_B.i = 0;
-  while (vipldws2_B.i < 76800) {
-    vipldws2_B.R2--;
-    vipldws2_B.Rotate[vipldws2_B.R2] =
-      vipldws2_B.MatrixConcatenate[vipldws2_B.indxI];
-    vipldws2_B.indxI++;
-    vipldws2_B.i++;
-  }
-
-  vipldws2_B.R2 = 230400;
-  vipldws2_B.i = 0;
-  while (vipldws2_B.i < 76800) {
-    vipldws2_B.R2--;
-    vipldws2_B.Rotate[vipldws2_B.R2] =
-      vipldws2_B.MatrixConcatenate[vipldws2_B.indxI];
-    vipldws2_B.indxI++;
-    vipldws2_B.i++;
+    vipldws2_B.planeOffset += 76800;
   }
 
   /* End of S-Function (sviprotate): '<S2>/Rotate' */
 
+  /* MATLAB Function: '<S2>/MATLAB Function1' */
+  /* MATLAB Function 'Input/MATLAB Function1': '<S26>:1' */
+  /* '<S26>:1:3' y = flip(u,2); */
+  memcpy(&vipldws2_B.y_g[0], &vipldws2_B.Rotate[0], 230400U * sizeof(uint8_T));
+  for (vipldws2_B.j = 0; vipldws2_B.j < 3; vipldws2_B.j++) {
+    for (vipldws2_B.i = 0; vipldws2_B.i < 240; vipldws2_B.i++) {
+      vipldws2_B.planeWidth = vipldws2_B.j * 76800 + vipldws2_B.i;
+      for (vipldws2_B.indxI = 0; vipldws2_B.indxI < 160; vipldws2_B.indxI++) {
+        tmp = vipldws2_B.y_g[vipldws2_B.indxI * 240 + vipldws2_B.planeWidth];
+        vipldws2_B.y_g[vipldws2_B.planeWidth + vipldws2_B.indxI * 240] =
+          vipldws2_B.y_g[(319 - vipldws2_B.indxI) * 240 + vipldws2_B.planeWidth];
+        vipldws2_B.y_g[vipldws2_B.planeWidth + (319 - vipldws2_B.indxI) * 240] =
+          tmp;
+      }
+    }
+  }
+
+  /* End of MATLAB Function: '<S2>/MATLAB Function1' */
+
   /* S-Function (svipscalenconvert): '<S2>/Image Data Type Conversion' */
   for (vipldws2_B.i = 0; vipldws2_B.i < 230400; vipldws2_B.i++) {
     vipldws2_B.ImageDataTypeConversion[vipldws2_B.i] = (real32_T)
-      vipldws2_B.Rotate[vipldws2_B.i] / 255.0F;
+      vipldws2_B.y_g[vipldws2_B.i] / 255.0F;
   }
 
   /* End of S-Function (svipscalenconvert): '<S2>/Image Data Type Conversion' */
@@ -865,11 +870,11 @@ void vipldws2_step(void)
 
   /* S-Function (sdspsubmtrx): '<S2>/Clip image' */
   vipldws2_B.indxI = 0;
-  for (vipldws2_B.i = 0; vipldws2_B.i < 240; vipldws2_B.i++) {
+  for (vipldws2_B.i = 0; vipldws2_B.i < 320; vipldws2_B.i++) {
     memcpy(&vipldws2_B.Clipimage[vipldws2_B.indxI],
-           &vipldws2_B.ColorSpaceConversion[vipldws2_B.i * 320 + 120], 200U *
+           &vipldws2_B.ColorSpaceConversion[vipldws2_B.i * 240 + 120], 120U *
            sizeof(real32_T));
-    vipldws2_B.indxI += 200;
+    vipldws2_B.indxI += 120;
   }
 
   /* End of S-Function (sdspsubmtrx): '<S2>/Clip image' */
@@ -878,8 +883,8 @@ void vipldws2_step(void)
   /* Dimensions of the filter */
   vipldws2_B.h1Dims[0U] = 1;
   vipldws2_B.h1Dims[1U] = 3;
-  vipldws2_B.uDims[0U] = 200;
-  vipldws2_B.uDims[1U] = 240;
+  vipldws2_B.uDims[0U] = 120;
+  vipldws2_B.uDims[1U] = 320;
 
   /* set up kernel related coordinates */
   /* compute center */
@@ -917,11 +922,11 @@ void vipldws2_step(void)
   /* yOrigin definition: Location of center of reference (origin) of output (y) coordintate system with respect to input (u) coordinate system */
   /* y sizes are same as ros sizes because there is no ROI */
   vipldws2_B.yOrigin[0U] = 0;
-  vipldws2_B.yDims[0U] = 200;
+  vipldws2_B.yDims[0U] = 120;
 
   /* y sizes are same as ros sizes because there is no ROI */
   vipldws2_B.yOrigin[1U] = 0;
-  vipldws2_B.yDims[1U] = 240;
+  vipldws2_B.yDims[1U] = 320;
 
   /* make yOrigin same as roiLoc when y is empty */
   /* end y sizes computation */
@@ -934,7 +939,7 @@ void vipldws2_step(void)
   /* Saturate: '<S3>/Saturation' */
   /* check if any input is empty
    */
-  for (vipldws2_B.i = 0; vipldws2_B.i < 48000; vipldws2_B.i++) {
+  for (vipldws2_B.i = 0; vipldws2_B.i < 38400; vipldws2_B.i++) {
     if (vipldws2_B.uDFIRFilter[vipldws2_B.i] > vipldws2_P.Saturation_UpperSat) {
       vipldws2_B.Saturation[vipldws2_B.i] = vipldws2_P.Saturation_UpperSat;
     } else if (vipldws2_B.uDFIRFilter[vipldws2_B.i] <
@@ -954,7 +959,7 @@ void vipldws2_step(void)
   }
 
   vipldws2_B.scale = 255.0F;
-  for (vipldws2_B.i = 0; vipldws2_B.i < 48000; vipldws2_B.i++) {
+  for (vipldws2_B.i = 0; vipldws2_B.i < 38400; vipldws2_B.i++) {
     if (vipldws2_B.Saturation[vipldws2_B.i] < 0.0F) {
       vipldws2_DW.Imagethresholding_P_DW[0]++;
     } else if (vipldws2_B.Saturation[vipldws2_B.i] > 1.0F) {
@@ -966,7 +971,7 @@ void vipldws2_step(void)
   }
 
   for (vipldws2_B.i = 0; vipldws2_B.i < 256; vipldws2_B.i++) {
-    vipldws2_DW.Imagethresholding_P_DW[vipldws2_B.i] /= 48000.0F;
+    vipldws2_DW.Imagethresholding_P_DW[vipldws2_B.i] /= 38400.0F;
   }
 
   vipldws2_DW.Imagethresholding_MU_DW[0] = vipldws2_DW.Imagethresholding_P_DW[0];
@@ -1004,7 +1009,7 @@ void vipldws2_step(void)
   }
 
   vipldws2_B.scale = (real32_T)vipldws2_B.indxI / vipldws2_B.scale;
-  for (vipldws2_B.i = 0; vipldws2_B.i < 48000; vipldws2_B.i++) {
+  for (vipldws2_B.i = 0; vipldws2_B.i < 38400; vipldws2_B.i++) {
     vipldws2_B.Imagethresholding[vipldws2_B.i] =
       (vipldws2_B.Saturation[vipldws2_B.i] > vipldws2_B.scale);
   }
@@ -1014,21 +1019,20 @@ void vipldws2_step(void)
   /* S-Function (sviphough): '<S3>/Hough Transform' */
   MWVIP_Hough_R(&vipldws2_B.Imagethresholding[0], &vipldws2_B.HoughTransform_o1
                 [0], &vipldws2_ConstP.HoughTransform_SINE_TABLE_RTP[0],
-                &vipldws2_ConstP.HoughTransform_FIRSTRHO_RTP, 200, 240, 625, 91);
+                &vipldws2_ConstP.HoughTransform_FIRSTRHO_RTP, 120, 320, 683, 91);
 
-  /* Selector: '<S31>/select rho5' */
+  /* Selector: '<S32>/select rho5' */
   for (vipldws2_B.i = 0; vipldws2_B.i < 21; vipldws2_B.i++) {
-    for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < 11;
-         vipldws2_B.planeWidth++) {
-      vipldws2_B.selectrho5[vipldws2_B.planeWidth + 11 * vipldws2_B.i] =
-        vipldws2_B.HoughTransform_o1[(625 * vipldws2_B.i + vipldws2_B.planeWidth)
-        + 414];
+    for (vipldws2_B.plane = 0; vipldws2_B.plane < 11; vipldws2_B.plane++) {
+      vipldws2_B.selectrho5[vipldws2_B.plane + 11 * vipldws2_B.i] =
+        vipldws2_B.HoughTransform_o1[(683 * vipldws2_B.i + vipldws2_B.plane) +
+        414];
     }
   }
 
-  /* End of Selector: '<S31>/select rho5' */
+  /* End of Selector: '<S32>/select rho5' */
 
-  /* S-Function (svipfindlocalmax): '<S31>/Find Local Maxima1' */
+  /* S-Function (svipfindlocalmax): '<S32>/Find Local Maxima1' */
   vipldws2_B.planeWidth = 0;
   done = false;
   vipldws2_B.i = 0;
@@ -1041,13 +1045,13 @@ void vipldws2_step(void)
   vipldws2_B.FindLocalMaxima1_o1[0] = 0U;
   vipldws2_B.FindLocalMaxima1_o1[1] = 0U;
   while (!done) {
-    vipldws2_B.plane = 0;
+    vipldws2_B.planeOffset = 0;
     vipldws2_B.scale = vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWORKS[0];
     vipldws2_B.i = 0;
     while (vipldws2_B.i < 231) {
       if (vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWORKS[vipldws2_B.i] >
           vipldws2_B.scale) {
-        vipldws2_B.plane = vipldws2_B.i;
+        vipldws2_B.planeOffset = vipldws2_B.i;
         vipldws2_B.scale =
           vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWORKS[vipldws2_B.i];
       }
@@ -1055,27 +1059,27 @@ void vipldws2_step(void)
       vipldws2_B.i++;
     }
 
-    vipldws2_B.R2 = vipldws2_B.plane % 11;
-    vipldws2_B.i = vipldws2_B.plane / 11;
-    if (vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWORKS[vipldws2_B.plane] >=
+    vipldws2_B.plane = vipldws2_B.planeOffset % 11;
+    vipldws2_B.i = vipldws2_B.planeOffset / 11;
+    if (vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWORKS[vipldws2_B.planeOffset] >=
         vipldws2_P.FindLocalMaxima1_threshold) {
       vipldws2_B.FindLocalMaxima1_o1[vipldws2_B.planeWidth] = (uint16_T)(1 +
         vipldws2_B.i);
       vipldws2_B.FindLocalMaxima1_o1[1U + vipldws2_B.planeWidth] = (uint16_T)(1
-        + vipldws2_B.R2);
+        + vipldws2_B.plane);
       vipldws2_B.planeWidth++;
       if (vipldws2_B.planeWidth == 1) {
         done = true;
       }
 
-      vipldws2_B.plane = vipldws2_B.R2 - 3;
-      if (!(vipldws2_B.plane > 0)) {
-        vipldws2_B.plane = 0;
+      vipldws2_B.planeOffset = vipldws2_B.plane - 3;
+      if (!(vipldws2_B.planeOffset > 0)) {
+        vipldws2_B.planeOffset = 0;
       }
 
-      vipldws2_B.R2 += 3;
-      if (!(vipldws2_B.R2 < 10)) {
-        vipldws2_B.R2 = 10;
+      vipldws2_B.plane += 3;
+      if (!(vipldws2_B.plane < 10)) {
+        vipldws2_B.plane = 10;
       }
 
       vipldws2_B.C2 = vipldws2_B.i - 3;
@@ -1083,8 +1087,8 @@ void vipldws2_step(void)
       if (!((vipldws2_B.C2 < 0) || (vipldws2_B.c2 > 20))) {
         while (vipldws2_B.C2 <= vipldws2_B.c2) {
           vipldws2_B.c1 = vipldws2_B.C2 * 11;
-          vipldws2_B.i = vipldws2_B.plane;
-          while (vipldws2_B.i <= vipldws2_B.R2) {
+          vipldws2_B.i = vipldws2_B.planeOffset;
+          while (vipldws2_B.i <= vipldws2_B.plane) {
             vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWORKS[vipldws2_B.i +
               vipldws2_B.c1] = 0.0F;
             vipldws2_B.i++;
@@ -1094,52 +1098,52 @@ void vipldws2_step(void)
         }
       } else {
         if (vipldws2_B.C2 < 0) {
-          vipldws2_B.ii = vipldws2_B.C2;
-          while (vipldws2_B.ii <= vipldws2_B.c2) {
-            if (vipldws2_B.ii < 0) {
-              vipldws2_B.c1 = (vipldws2_B.ii + 21) * 11 + 10;
-              vipldws2_B.i = vipldws2_B.plane;
-              while (vipldws2_B.i <= vipldws2_B.R2) {
+          vipldws2_B.j = vipldws2_B.C2;
+          while (vipldws2_B.j <= vipldws2_B.c2) {
+            if (vipldws2_B.j < 0) {
+              vipldws2_B.c1 = (vipldws2_B.j + 21) * 11 + 10;
+              vipldws2_B.i = vipldws2_B.planeOffset;
+              while (vipldws2_B.i <= vipldws2_B.plane) {
                 vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWORKS[vipldws2_B.c1 -
                   vipldws2_B.i] = 0.0F;
                 vipldws2_B.i++;
               }
             } else {
-              vipldws2_B.c1 = vipldws2_B.ii * 11;
-              vipldws2_B.i = vipldws2_B.plane;
-              while (vipldws2_B.i <= vipldws2_B.R2) {
+              vipldws2_B.c1 = vipldws2_B.j * 11;
+              vipldws2_B.i = vipldws2_B.planeOffset;
+              while (vipldws2_B.i <= vipldws2_B.plane) {
                 vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWORKS[vipldws2_B.i +
                   vipldws2_B.c1] = 0.0F;
                 vipldws2_B.i++;
               }
             }
 
-            vipldws2_B.ii++;
+            vipldws2_B.j++;
           }
         }
 
         if (vipldws2_B.c2 > 20) {
-          vipldws2_B.ii = vipldws2_B.C2;
-          while (vipldws2_B.ii <= vipldws2_B.c2) {
-            if (vipldws2_B.ii > 20) {
-              vipldws2_B.c1 = (vipldws2_B.ii - 21) * 11 + 10;
-              vipldws2_B.i = vipldws2_B.plane;
-              while (vipldws2_B.i <= vipldws2_B.R2) {
+          vipldws2_B.j = vipldws2_B.C2;
+          while (vipldws2_B.j <= vipldws2_B.c2) {
+            if (vipldws2_B.j > 20) {
+              vipldws2_B.c1 = (vipldws2_B.j - 21) * 11 + 10;
+              vipldws2_B.i = vipldws2_B.planeOffset;
+              while (vipldws2_B.i <= vipldws2_B.plane) {
                 vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWORKS[vipldws2_B.c1 -
                   vipldws2_B.i] = 0.0F;
                 vipldws2_B.i++;
               }
             } else {
-              vipldws2_B.c1 = vipldws2_B.ii * 11;
-              vipldws2_B.i = vipldws2_B.plane;
-              while (vipldws2_B.i <= vipldws2_B.R2) {
+              vipldws2_B.c1 = vipldws2_B.j * 11;
+              vipldws2_B.i = vipldws2_B.planeOffset;
+              while (vipldws2_B.i <= vipldws2_B.plane) {
                 vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWORKS[vipldws2_B.i +
                   vipldws2_B.c1] = 0.0F;
                 vipldws2_B.i++;
               }
             }
 
-            vipldws2_B.ii++;
+            vipldws2_B.j++;
           }
         }
       }
@@ -1150,23 +1154,23 @@ void vipldws2_step(void)
 
   vipldws2_B.FindLocalMaxima1_o2 = (uint16_T)vipldws2_B.planeWidth;
 
-  /* End of S-Function (svipfindlocalmax): '<S31>/Find Local Maxima1' */
+  /* End of S-Function (svipfindlocalmax): '<S32>/Find Local Maxima1' */
 
-  /* UnitDelay: '<S37>/FixPt Unit Delay2' */
+  /* UnitDelay: '<S38>/FixPt Unit Delay2' */
   vipldws2_B.FixPtLogicalOperator = vipldws2_DW.FixPtUnitDelay2_DSTATE;
 
-  /* Logic: '<S37>/FixPt Logical Operator' incorporates:
+  /* Logic: '<S38>/FixPt Logical Operator' incorporates:
    *  Constant: '<S2>/Constant'
    */
   vipldws2_B.FixPtUnitDelay2 = (uint8_T)(vipldws2_P.Constant_Value_g ||
     (vipldws2_B.FixPtLogicalOperator != 0));
   for (vipldws2_B.i = 0; vipldws2_B.i < 40; vipldws2_B.i++) {
-    /* UnitDelay: '<S37>/FixPt Unit Delay1' */
+    /* UnitDelay: '<S38>/FixPt Unit Delay1' */
     vipldws2_B.Xold[vipldws2_B.i] =
       vipldws2_DW.FixPtUnitDelay1_DSTATE[vipldws2_B.i];
 
-    /* Switch: '<S37>/Init' incorporates:
-     *  Constant: '<S37>/Initial Condition'
+    /* Switch: '<S38>/Init' incorporates:
+     *  Constant: '<S38>/Initial Condition'
      */
     if (vipldws2_B.FixPtUnitDelay2 != 0) {
       vipldws2_B.Init[vipldws2_B.i] =
@@ -1175,24 +1179,24 @@ void vipldws2_step(void)
       vipldws2_B.Init[vipldws2_B.i] = vipldws2_B.Xold[vipldws2_B.i];
     }
 
-    /* End of Switch: '<S37>/Init' */
+    /* End of Switch: '<S38>/Init' */
   }
 
-  /* UnitDelay: '<S36>/FixPt Unit Delay2' */
+  /* UnitDelay: '<S37>/FixPt Unit Delay2' */
   vipldws2_B.FixPtUnitDelay2 = vipldws2_DW.FixPtUnitDelay2_DSTATE_b;
 
-  /* Logic: '<S36>/FixPt Logical Operator' incorporates:
+  /* Logic: '<S37>/FixPt Logical Operator' incorporates:
    *  Constant: '<S2>/Constant'
    */
   vipldws2_B.FixPtLogicalOperator = (uint8_T)(vipldws2_P.Constant_Value_g ||
     (vipldws2_B.FixPtUnitDelay2 != 0));
   for (vipldws2_B.i = 0; vipldws2_B.i < 20; vipldws2_B.i++) {
-    /* UnitDelay: '<S36>/FixPt Unit Delay1' */
+    /* UnitDelay: '<S37>/FixPt Unit Delay1' */
     vipldws2_B.Xold_g[vipldws2_B.i] =
       vipldws2_DW.FixPtUnitDelay1_DSTATE_d[vipldws2_B.i];
 
-    /* Switch: '<S36>/Init' incorporates:
-     *  Constant: '<S36>/Initial Condition'
+    /* Switch: '<S37>/Init' incorporates:
+     *  Constant: '<S37>/Initial Condition'
      */
     if (vipldws2_B.FixPtLogicalOperator != 0) {
       vipldws2_B.Init_p[vipldws2_B.i] = vipldws2_P.UnitDelayResettable_vinit;
@@ -1200,40 +1204,40 @@ void vipldws2_step(void)
       vipldws2_B.Init_p[vipldws2_B.i] = vipldws2_B.Xold_g[vipldws2_B.i];
     }
 
-    /* End of Switch: '<S36>/Init' */
+    /* End of Switch: '<S37>/Init' */
   }
 
-  /* S-Function (sdspoverwrite): '<S28>/Overwrite Values' */
+  /* S-Function (sdspoverwrite): '<S29>/Overwrite Values' */
   memcpy(&vipldws2_B.OverwriteValues[0], &vipldws2_B.HoughTransform_o1[0],
-         112500U * sizeof(real32_T));
+         122940U * sizeof(real32_T));
   for (vipldws2_B.i = 0; vipldws2_B.i < 12; vipldws2_B.i++) {
-    for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < 625;
+    for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < 683;
          vipldws2_B.planeWidth++) {
-      vipldws2_B.OverwriteValues[vipldws2_B.planeWidth + vipldws2_B.i * 625] =
+      vipldws2_B.OverwriteValues[vipldws2_B.planeWidth + vipldws2_B.i * 683] =
         0.0F;
     }
   }
 
-  /* End of S-Function (sdspoverwrite): '<S28>/Overwrite Values' */
+  /* End of S-Function (sdspoverwrite): '<S29>/Overwrite Values' */
 
-  /* S-Function (sdspoverwrite): '<S28>/Overwrite Values1' */
+  /* S-Function (sdspoverwrite): '<S29>/Overwrite Values1' */
   memcpy(&vipldws2_B.OverwriteValues1[0], &vipldws2_B.OverwriteValues[0],
-         112500U * sizeof(real32_T));
+         122940U * sizeof(real32_T));
   for (vipldws2_B.i = 0; vipldws2_B.i < 13; vipldws2_B.i++) {
-    for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < 625;
+    for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < 683;
          vipldws2_B.planeWidth++) {
       vipldws2_B.OverwriteValues1[vipldws2_B.planeWidth + (vipldws2_B.i + 167) *
-        625] = 0.0F;
+        683] = 0.0F;
     }
   }
 
-  /* End of S-Function (sdspoverwrite): '<S28>/Overwrite Values1' */
+  /* End of S-Function (sdspoverwrite): '<S29>/Overwrite Values1' */
 
-  /* S-Function (svipfindlocalmax): '<S29>/Find Local Maxima' */
+  /* S-Function (svipfindlocalmax): '<S30>/Find Local Maxima' */
   vipldws2_B.planeWidth = 0;
   done = false;
   vipldws2_B.i = 0;
-  while (vipldws2_B.i < 112500) {
+  while (vipldws2_B.i < 122940) {
     vipldws2_DW.FindLocalMaxima_TEMP_IN_DWORKS[vipldws2_B.i] =
       vipldws2_B.OverwriteValues1[vipldws2_B.i];
     vipldws2_B.i++;
@@ -1244,13 +1248,13 @@ void vipldws2_step(void)
   vipldws2_B.FindLocalMaxima[2] = 0U;
   vipldws2_B.FindLocalMaxima[3] = 0U;
   while (!done) {
-    vipldws2_B.plane = 0;
+    vipldws2_B.planeOffset = 0;
     vipldws2_B.scale = vipldws2_DW.FindLocalMaxima_TEMP_IN_DWORKS[0];
     vipldws2_B.i = 0;
-    while (vipldws2_B.i < 112500) {
+    while (vipldws2_B.i < 122940) {
       if (vipldws2_DW.FindLocalMaxima_TEMP_IN_DWORKS[vipldws2_B.i] >
           vipldws2_B.scale) {
-        vipldws2_B.plane = vipldws2_B.i;
+        vipldws2_B.planeOffset = vipldws2_B.i;
         vipldws2_B.scale =
           vipldws2_DW.FindLocalMaxima_TEMP_IN_DWORKS[vipldws2_B.i];
       }
@@ -1258,36 +1262,36 @@ void vipldws2_step(void)
       vipldws2_B.i++;
     }
 
-    vipldws2_B.R2 = vipldws2_B.plane % 625;
-    vipldws2_B.i = vipldws2_B.plane / 625;
-    if (vipldws2_DW.FindLocalMaxima_TEMP_IN_DWORKS[vipldws2_B.plane] >=
+    vipldws2_B.plane = vipldws2_B.planeOffset % 683;
+    vipldws2_B.i = vipldws2_B.planeOffset / 683;
+    if (vipldws2_DW.FindLocalMaxima_TEMP_IN_DWORKS[vipldws2_B.planeOffset] >=
         vipldws2_P.FindLocalMaxima_threshold) {
       vipldws2_B.FindLocalMaxima[vipldws2_B.planeWidth] = (uint16_T)(1 +
         vipldws2_B.i);
       vipldws2_B.FindLocalMaxima[2U + vipldws2_B.planeWidth] = (uint16_T)(1 +
-        vipldws2_B.R2);
+        vipldws2_B.plane);
       vipldws2_B.planeWidth++;
       if (vipldws2_B.planeWidth == 2) {
         done = true;
       }
 
-      vipldws2_B.plane = vipldws2_B.R2 - 150;
-      if (!(vipldws2_B.plane > 0)) {
-        vipldws2_B.plane = 0;
+      vipldws2_B.planeOffset = vipldws2_B.plane - 150;
+      if (!(vipldws2_B.planeOffset > 0)) {
+        vipldws2_B.planeOffset = 0;
       }
 
-      vipldws2_B.R2 += 150;
-      if (!(vipldws2_B.R2 < 624)) {
-        vipldws2_B.R2 = 624;
+      vipldws2_B.plane += 150;
+      if (!(vipldws2_B.plane < 682)) {
+        vipldws2_B.plane = 682;
       }
 
       vipldws2_B.C2 = vipldws2_B.i - 40;
       vipldws2_B.c2 = vipldws2_B.i + 40;
       if (!((vipldws2_B.C2 < 0) || (vipldws2_B.c2 > 179))) {
         while (vipldws2_B.C2 <= vipldws2_B.c2) {
-          vipldws2_B.c1 = vipldws2_B.C2 * 625;
-          vipldws2_B.i = vipldws2_B.plane;
-          while (vipldws2_B.i <= vipldws2_B.R2) {
+          vipldws2_B.c1 = vipldws2_B.C2 * 683;
+          vipldws2_B.i = vipldws2_B.planeOffset;
+          while (vipldws2_B.i <= vipldws2_B.plane) {
             vipldws2_DW.FindLocalMaxima_TEMP_IN_DWORKS[vipldws2_B.i +
               vipldws2_B.c1] = 0.0F;
             vipldws2_B.i++;
@@ -1297,52 +1301,52 @@ void vipldws2_step(void)
         }
       } else {
         if (vipldws2_B.C2 < 0) {
-          vipldws2_B.ii = vipldws2_B.C2;
-          while (vipldws2_B.ii <= vipldws2_B.c2) {
-            if (vipldws2_B.ii < 0) {
-              vipldws2_B.c1 = (vipldws2_B.ii + 180) * 625 + 624;
-              vipldws2_B.i = vipldws2_B.plane;
-              while (vipldws2_B.i <= vipldws2_B.R2) {
+          vipldws2_B.j = vipldws2_B.C2;
+          while (vipldws2_B.j <= vipldws2_B.c2) {
+            if (vipldws2_B.j < 0) {
+              vipldws2_B.c1 = (vipldws2_B.j + 180) * 683 + 682;
+              vipldws2_B.i = vipldws2_B.planeOffset;
+              while (vipldws2_B.i <= vipldws2_B.plane) {
                 vipldws2_DW.FindLocalMaxima_TEMP_IN_DWORKS[vipldws2_B.c1 -
                   vipldws2_B.i] = 0.0F;
                 vipldws2_B.i++;
               }
             } else {
-              vipldws2_B.c1 = vipldws2_B.ii * 625;
-              vipldws2_B.i = vipldws2_B.plane;
-              while (vipldws2_B.i <= vipldws2_B.R2) {
+              vipldws2_B.c1 = vipldws2_B.j * 683;
+              vipldws2_B.i = vipldws2_B.planeOffset;
+              while (vipldws2_B.i <= vipldws2_B.plane) {
                 vipldws2_DW.FindLocalMaxima_TEMP_IN_DWORKS[vipldws2_B.i +
                   vipldws2_B.c1] = 0.0F;
                 vipldws2_B.i++;
               }
             }
 
-            vipldws2_B.ii++;
+            vipldws2_B.j++;
           }
         }
 
         if (vipldws2_B.c2 > 179) {
-          vipldws2_B.ii = vipldws2_B.C2;
-          while (vipldws2_B.ii <= vipldws2_B.c2) {
-            if (vipldws2_B.ii > 179) {
-              vipldws2_B.c1 = (vipldws2_B.ii - 180) * 625 + 624;
-              vipldws2_B.i = vipldws2_B.plane;
-              while (vipldws2_B.i <= vipldws2_B.R2) {
+          vipldws2_B.j = vipldws2_B.C2;
+          while (vipldws2_B.j <= vipldws2_B.c2) {
+            if (vipldws2_B.j > 179) {
+              vipldws2_B.c1 = (vipldws2_B.j - 180) * 683 + 682;
+              vipldws2_B.i = vipldws2_B.planeOffset;
+              while (vipldws2_B.i <= vipldws2_B.plane) {
                 vipldws2_DW.FindLocalMaxima_TEMP_IN_DWORKS[vipldws2_B.c1 -
                   vipldws2_B.i] = 0.0F;
                 vipldws2_B.i++;
               }
             } else {
-              vipldws2_B.c1 = vipldws2_B.ii * 625;
-              vipldws2_B.i = vipldws2_B.plane;
-              while (vipldws2_B.i <= vipldws2_B.R2) {
+              vipldws2_B.c1 = vipldws2_B.j * 683;
+              vipldws2_B.i = vipldws2_B.planeOffset;
+              while (vipldws2_B.i <= vipldws2_B.plane) {
                 vipldws2_DW.FindLocalMaxima_TEMP_IN_DWORKS[vipldws2_B.i +
                   vipldws2_B.c1] = 0.0F;
                 vipldws2_B.i++;
               }
             }
 
-            vipldws2_B.ii++;
+            vipldws2_B.j++;
           }
         }
       }
@@ -1367,151 +1371,162 @@ void vipldws2_step(void)
     vipldws2_DW.FindLocalMaxima_NUMPEAKS_DWORK;
   vipldws2_DW.FindLocalMaxima_DIMS1[1] = 2;
 
-  /* End of S-Function (svipfindlocalmax): '<S29>/Find Local Maxima' */
+  /* End of S-Function (svipfindlocalmax): '<S30>/Find Local Maxima' */
 
-  /* Selector: '<S29>/Selector1' */
+  /* Selector: '<S30>/Selector1' */
   vipldws2_DW.Selector1_DIMS1[0] = vipldws2_DW.FindLocalMaxima_DIMS1[0];
   vipldws2_DW.Selector1_DIMS1[1] = 2;
-  vipldws2_B.R2 = vipldws2_DW.FindLocalMaxima_DIMS1[0];
-  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.R2; vipldws2_B.i++) {
+  vipldws2_B.planeOffset = vipldws2_DW.FindLocalMaxima_DIMS1[0];
+  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.planeOffset; vipldws2_B.i++)
+  {
     vipldws2_B.Selector1_m[vipldws2_B.i] =
       vipldws2_B.FindLocalMaxima[vipldws2_B.i +
       vipldws2_DW.FindLocalMaxima_DIMS1[0]];
   }
 
-  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.R2; vipldws2_B.i++) {
+  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.planeOffset; vipldws2_B.i++)
+  {
     vipldws2_B.Selector1_m[vipldws2_B.i + vipldws2_DW.Selector1_DIMS1[0]] =
       vipldws2_B.FindLocalMaxima[vipldws2_B.i];
   }
 
-  /* End of Selector: '<S29>/Selector1' */
+  /* End of Selector: '<S30>/Selector1' */
 
-  /* Math: '<S29>/Transpose' */
+  /* Math: '<S30>/Transpose' */
   vipldws2_DW.Transpose_DIMS1[0] = vipldws2_DW.Selector1_DIMS1[1];
   vipldws2_DW.Transpose_DIMS1[1] = vipldws2_DW.Selector1_DIMS1[0];
-  vipldws2_B.R2 = vipldws2_DW.Selector1_DIMS1[0];
-  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.R2; vipldws2_B.i++) {
-    vipldws2_B.c1 = vipldws2_DW.Selector1_DIMS1[1];
-    for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < vipldws2_B.c1;
-         vipldws2_B.planeWidth++) {
-      vipldws2_B.Transpose_m[vipldws2_B.planeWidth +
-        vipldws2_DW.Transpose_DIMS1[0] * vipldws2_B.i] =
-        vipldws2_B.Selector1_m[vipldws2_DW.Selector1_DIMS1[0] *
-        vipldws2_B.planeWidth + vipldws2_B.i];
+  vipldws2_B.planeOffset = vipldws2_DW.Selector1_DIMS1[0];
+  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.planeOffset; vipldws2_B.i++)
+  {
+    vipldws2_B.planeWidth = vipldws2_DW.Selector1_DIMS1[1];
+    for (vipldws2_B.plane = 0; vipldws2_B.plane < vipldws2_B.planeWidth;
+         vipldws2_B.plane++) {
+      vipldws2_B.Transpose_m[vipldws2_B.plane + vipldws2_DW.Transpose_DIMS1[0] *
+        vipldws2_B.i] = vipldws2_B.Selector1_m[vipldws2_DW.Selector1_DIMS1[0] *
+        vipldws2_B.plane + vipldws2_B.i];
     }
   }
 
-  /* End of Math: '<S29>/Transpose' */
+  /* End of Math: '<S30>/Transpose' */
 
-  /* Selector: '<S29>/select rho' */
+  /* Selector: '<S30>/select rho' */
   vipldws2_DW.selectrho_DIMS1[0] = 1;
   vipldws2_DW.selectrho_DIMS1[1] = vipldws2_DW.Transpose_DIMS1[1];
-  vipldws2_B.R2 = vipldws2_DW.Transpose_DIMS1[1];
-  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.R2; vipldws2_B.i++) {
+  vipldws2_B.planeOffset = vipldws2_DW.Transpose_DIMS1[1];
+  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.planeOffset; vipldws2_B.i++)
+  {
     vipldws2_B.selectrho3[vipldws2_DW.selectrho_DIMS1[0] * vipldws2_B.i] =
       vipldws2_B.Transpose_m[vipldws2_DW.Transpose_DIMS1[0] * vipldws2_B.i];
   }
 
-  /* End of Selector: '<S29>/select rho' */
+  /* End of Selector: '<S30>/select rho' */
 
-  /* Selector: '<S29>/Selector rho' */
+  /* Selector: '<S30>/Selector rho' */
   vipldws2_DW.Selectorrho_DIMS1[0] = 1;
   vipldws2_DW.Selectorrho_DIMS1[1] = vipldws2_DW.selectrho_DIMS1[0] *
     vipldws2_DW.selectrho_DIMS1[1];
-  vipldws2_B.R2 = vipldws2_DW.selectrho_DIMS1[1];
-  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.R2; vipldws2_B.i++) {
-    vipldws2_B.c1 = vipldws2_DW.selectrho_DIMS1[0];
-    for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < vipldws2_B.c1;
-         vipldws2_B.planeWidth++) {
-      vipldws2_B.h1Dims[vipldws2_B.planeWidth + vipldws2_DW.selectrho_DIMS1[0] *
+  vipldws2_B.planeOffset = vipldws2_DW.selectrho_DIMS1[1];
+  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.planeOffset; vipldws2_B.i++)
+  {
+    vipldws2_B.planeWidth = vipldws2_DW.selectrho_DIMS1[0];
+    for (vipldws2_B.plane = 0; vipldws2_B.plane < vipldws2_B.planeWidth;
+         vipldws2_B.plane++) {
+      vipldws2_B.h1Dims[vipldws2_B.plane + vipldws2_DW.selectrho_DIMS1[0] *
         vipldws2_B.i] = vipldws2_B.selectrho3[vipldws2_DW.selectrho_DIMS1[0] *
-        vipldws2_B.i + vipldws2_B.planeWidth] - 1;
+        vipldws2_B.i + vipldws2_B.plane] - 1;
     }
   }
 
-  vipldws2_B.R2 = vipldws2_DW.selectrho_DIMS1[0] * vipldws2_DW.selectrho_DIMS1[1];
-  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.R2; vipldws2_B.i++) {
+  vipldws2_B.planeOffset = vipldws2_DW.selectrho_DIMS1[0] *
+    vipldws2_DW.selectrho_DIMS1[1];
+  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.planeOffset; vipldws2_B.i++)
+  {
     vipldws2_B.Selectorrho[vipldws2_DW.Selectorrho_DIMS1[0] * vipldws2_B.i] =
       vipldws2_B.HoughTransform_o3[vipldws2_B.h1Dims[vipldws2_B.i]];
   }
 
-  /* End of Selector: '<S29>/Selector rho' */
+  /* End of Selector: '<S30>/Selector rho' */
 
-  /* Selector: '<S29>/select rho3' */
+  /* Selector: '<S30>/select rho3' */
   vipldws2_DW.selectrho3_DIMS1[0] = 1;
   vipldws2_DW.selectrho3_DIMS1[1] = vipldws2_DW.Transpose_DIMS1[1];
-  vipldws2_B.R2 = vipldws2_DW.Transpose_DIMS1[1];
-  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.R2; vipldws2_B.i++) {
+  vipldws2_B.planeOffset = vipldws2_DW.Transpose_DIMS1[1];
+  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.planeOffset; vipldws2_B.i++)
+  {
     vipldws2_B.selectrho3[vipldws2_DW.selectrho3_DIMS1[0] * vipldws2_B.i] =
       vipldws2_B.Transpose_m[vipldws2_DW.Transpose_DIMS1[0] * vipldws2_B.i + 1];
   }
 
-  /* End of Selector: '<S29>/select rho3' */
+  /* End of Selector: '<S30>/select rho3' */
 
-  /* Selector: '<S29>/Selector theta' */
+  /* Selector: '<S30>/Selector theta' */
   vipldws2_DW.Selectortheta_DIMS1[0] = 1;
   vipldws2_DW.Selectortheta_DIMS1[1] = vipldws2_DW.selectrho3_DIMS1[0] *
     vipldws2_DW.selectrho3_DIMS1[1];
-  vipldws2_B.R2 = vipldws2_DW.selectrho3_DIMS1[1];
-  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.R2; vipldws2_B.i++) {
-    vipldws2_B.c1 = vipldws2_DW.selectrho3_DIMS1[0];
-    for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < vipldws2_B.c1;
-         vipldws2_B.planeWidth++) {
-      vipldws2_B.h1Dims[vipldws2_B.planeWidth + vipldws2_DW.selectrho3_DIMS1[0] *
+  vipldws2_B.planeOffset = vipldws2_DW.selectrho3_DIMS1[1];
+  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.planeOffset; vipldws2_B.i++)
+  {
+    vipldws2_B.planeWidth = vipldws2_DW.selectrho3_DIMS1[0];
+    for (vipldws2_B.plane = 0; vipldws2_B.plane < vipldws2_B.planeWidth;
+         vipldws2_B.plane++) {
+      vipldws2_B.h1Dims[vipldws2_B.plane + vipldws2_DW.selectrho3_DIMS1[0] *
         vipldws2_B.i] = vipldws2_B.selectrho3[vipldws2_DW.selectrho3_DIMS1[0] *
-        vipldws2_B.i + vipldws2_B.planeWidth] - 1;
+        vipldws2_B.i + vipldws2_B.plane] - 1;
     }
   }
 
-  vipldws2_B.R2 = vipldws2_DW.selectrho3_DIMS1[0] *
+  vipldws2_B.planeOffset = vipldws2_DW.selectrho3_DIMS1[0] *
     vipldws2_DW.selectrho3_DIMS1[1];
-  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.R2; vipldws2_B.i++) {
+  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.planeOffset; vipldws2_B.i++)
+  {
     vipldws2_B.Selectortheta[vipldws2_DW.Selectortheta_DIMS1[0] * vipldws2_B.i] =
       vipldws2_B.HoughTransform_o2[vipldws2_B.h1Dims[vipldws2_B.i]];
   }
 
-  /* End of Selector: '<S29>/Selector theta' */
+  /* End of Selector: '<S30>/Selector theta' */
 
-  /* Concatenate: '<S29>/Matrix Concatenation3' */
+  /* Concatenate: '<S30>/Matrix Concatenation3' */
   vipldws2_DW.MatrixConcatenation3_DIMS1[0] = vipldws2_DW.Selectorrho_DIMS1[0] +
     vipldws2_DW.Selectortheta_DIMS1[0];
   vipldws2_DW.MatrixConcatenation3_DIMS1[1] = vipldws2_DW.Selectorrho_DIMS1[1];
-  vipldws2_B.R2 = vipldws2_DW.Selectorrho_DIMS1[1];
-  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.R2; vipldws2_B.i++) {
-    vipldws2_B.c1 = vipldws2_DW.Selectorrho_DIMS1[0];
-    for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < vipldws2_B.c1;
-         vipldws2_B.planeWidth++) {
-      vipldws2_B.MatrixConcatenation3[vipldws2_B.planeWidth +
+  vipldws2_B.planeOffset = vipldws2_DW.Selectorrho_DIMS1[1];
+  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.planeOffset; vipldws2_B.i++)
+  {
+    vipldws2_B.planeWidth = vipldws2_DW.Selectorrho_DIMS1[0];
+    for (vipldws2_B.plane = 0; vipldws2_B.plane < vipldws2_B.planeWidth;
+         vipldws2_B.plane++) {
+      vipldws2_B.MatrixConcatenation3[vipldws2_B.plane +
         vipldws2_DW.MatrixConcatenation3_DIMS1[0] * vipldws2_B.i] =
         vipldws2_B.Selectorrho[vipldws2_DW.Selectorrho_DIMS1[0] * vipldws2_B.i +
-        vipldws2_B.planeWidth];
+        vipldws2_B.plane];
     }
   }
 
-  vipldws2_B.R2 = vipldws2_DW.Selectortheta_DIMS1[1];
-  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.R2; vipldws2_B.i++) {
-    vipldws2_B.c1 = vipldws2_DW.Selectortheta_DIMS1[0];
-    for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < vipldws2_B.c1;
-         vipldws2_B.planeWidth++) {
-      vipldws2_B.MatrixConcatenation3[(vipldws2_B.planeWidth +
+  vipldws2_B.planeOffset = vipldws2_DW.Selectortheta_DIMS1[1];
+  for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.planeOffset; vipldws2_B.i++)
+  {
+    vipldws2_B.planeWidth = vipldws2_DW.Selectortheta_DIMS1[0];
+    for (vipldws2_B.plane = 0; vipldws2_B.plane < vipldws2_B.planeWidth;
+         vipldws2_B.plane++) {
+      vipldws2_B.MatrixConcatenation3[(vipldws2_B.plane +
         vipldws2_DW.Selectorrho_DIMS1[0]) +
         vipldws2_DW.MatrixConcatenation3_DIMS1[0] * vipldws2_B.i] =
         vipldws2_B.Selectortheta[vipldws2_DW.Selectortheta_DIMS1[0] *
-        vipldws2_B.i + vipldws2_B.planeWidth];
+        vipldws2_B.i + vipldws2_B.plane];
     }
   }
 
-  /* End of Concatenate: '<S29>/Matrix Concatenation3' */
+  /* End of Concatenate: '<S30>/Matrix Concatenation3' */
 
-  /* Probe: '<S29>/Probe' */
+  /* Probe: '<S30>/Probe' */
   vipldws2_B.Probe[0] = vipldws2_DW.Transpose_DIMS1[0];
   vipldws2_B.Probe[1] = vipldws2_DW.Transpose_DIMS1[1];
 
-  /* Selector: '<S29>/Selector' */
+  /* Selector: '<S30>/Selector' */
   vipldws2_B.Selector = vipldws2_B.Probe[1];
 
-  /* Outputs for Iterator SubSystem: '<S29>/Enable signal generator' incorporates:
-   *  ForIterator: '<S32>/For Iterator'
+  /* Outputs for Iterator SubSystem: '<S30>/Enable signal generator' incorporates:
+   *  ForIterator: '<S33>/For Iterator'
    */
   vipldws2_B.indxI = 1;
   do {
@@ -1545,34 +1560,34 @@ void vipldws2_step(void)
     }
   } while (exitg1 == 0);
 
-  /* End of Outputs for SubSystem: '<S29>/Enable signal generator' */
+  /* End of Outputs for SubSystem: '<S30>/Enable signal generator' */
 
-  /* Outputs for Iterator SubSystem: '<S34>/Calculate the distances between  the lines found in the current  frame and those in the repository' incorporates:
-   *  ForIterator: '<S51>/For Iterator'
+  /* Outputs for Iterator SubSystem: '<S35>/Calculate the distances between  the lines found in the current  frame and those in the repository' incorporates:
+   *  ForIterator: '<S52>/For Iterator'
    */
   vipldws2_DW.ForIterator_IterationMarker = 1U;
   vipldws2_B.indxI = 1;
   while (vipldws2_B.indxI <= vipldws2_P.ForIterator_IterationLimit_j) {
     vipldws2_B.ForIterator_j = vipldws2_B.indxI;
 
-    /* Selector: '<S51>/Selector1' */
+    /* Selector: '<S52>/Selector1' */
     vipldws2_B.Selector1_n = vipldws2_B.Init_p[vipldws2_B.ForIterator_j - 1];
 
-    /* Outputs for Enabled SubSystem: '<S51>/Select a line from the repository; if it is valid (Count > 0),  Calculate its distance to the input lines.' incorporates:
-     *  EnablePort: '<S54>/EnablePort'
+    /* Outputs for Enabled SubSystem: '<S52>/Select a line from the repository; if it is valid (Count > 0),  Calculate its distance to the input lines.' incorporates:
+     *  EnablePort: '<S55>/EnablePort'
      */
     if (vipldws2_B.Selector1_n > 0) {
-      /* Selector: '<S54>/Selector2' */
+      /* Selector: '<S55>/Selector2' */
       vipldws2_B.Selector2_f[0] = vipldws2_B.Init[(vipldws2_B.ForIterator_j - 1)
         << 1];
       vipldws2_B.Selector2_f[1] = vipldws2_B.Init[((vipldws2_B.ForIterator_j - 1)
         << 1) + 1];
 
-      /* Outputs for Iterator SubSystem: '<S54>/Calculate the distances between  the chosen line in the repository  and all input lines.' incorporates:
-       *  ForIterator: '<S55>/For Iterator'
+      /* Outputs for Iterator SubSystem: '<S55>/Calculate the distances between  the chosen line in the repository  and all input lines.' incorporates:
+       *  ForIterator: '<S56>/For Iterator'
        */
-      /* Selector: '<S54>/Selector1' incorporates:
-       *  Constant: '<S54>/Constant2'
+      /* Selector: '<S55>/Selector1' incorporates:
+       *  Constant: '<S55>/Constant2'
        */
       for (vipldws2_B.i = 0; vipldws2_B.i < 20; vipldws2_B.i++) {
         vipldws2_B.Selector1_i[vipldws2_B.i] = vipldws2_P.Constant2_Value_o[(20 *
@@ -1581,61 +1596,63 @@ void vipldws2_step(void)
           vipldws2_B.Selector1_i[vipldws2_B.i];
       }
 
-      /* End of Selector: '<S54>/Selector1' */
+      /* End of Selector: '<S55>/Selector1' */
       vipldws2_DW.ForIterator_IterationMarker_c = 1U;
       vipldws2_B.planeWidth = 1;
       while (vipldws2_B.planeWidth <= vipldws2_P.ForIterator_IterationLimit_g) {
         vipldws2_B.ForIterator_f = vipldws2_B.planeWidth;
 
-        /* Selector: '<S55>/Selector1' */
+        /* Selector: '<S56>/Selector1' */
         vipldws2_DW.Selector1_DIMS1_l[0] =
           vipldws2_DW.MatrixConcatenation3_DIMS1[0];
         vipldws2_DW.Selector1_DIMS1_l[1] = 1;
-        vipldws2_B.R2 = vipldws2_DW.MatrixConcatenation3_DIMS1[0];
-        for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.R2; vipldws2_B.i++) {
+        vipldws2_B.planeOffset = vipldws2_DW.MatrixConcatenation3_DIMS1[0];
+        for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.planeOffset;
+             vipldws2_B.i++) {
           vipldws2_B.tmp_data[vipldws2_B.i] = vipldws2_B.MatrixConcatenation3
             [(vipldws2_B.ForIterator_f - 1) *
             vipldws2_DW.MatrixConcatenation3_DIMS1[0] + vipldws2_B.i];
         }
 
-        vipldws2_B.R2 = vipldws2_DW.MatrixConcatenation3_DIMS1[0];
-        for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.R2; vipldws2_B.i++) {
+        vipldws2_B.planeOffset = vipldws2_DW.MatrixConcatenation3_DIMS1[0];
+        for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.planeOffset;
+             vipldws2_B.i++) {
           vipldws2_B.Selector1_k[vipldws2_B.i] =
             vipldws2_B.tmp_data[vipldws2_B.i];
         }
 
-        /* End of Selector: '<S55>/Selector1' */
+        /* End of Selector: '<S56>/Selector1' */
 
-        /* Selector: '<S55>/Selector2' */
+        /* Selector: '<S56>/Selector2' */
         vipldws2_B.Selector2_fh =
           vipldws2_B.Assignment_d[vipldws2_B.ForIterator_f - 1];
 
-        /* Outputs for Enabled SubSystem: '<S55>/Difference between  two lines' incorporates:
-         *  EnablePort: '<S56>/Enable'
+        /* Outputs for Enabled SubSystem: '<S56>/Difference between  two lines' incorporates:
+         *  EnablePort: '<S57>/Enable'
          */
-        /* Switch: '<S55>/Switch1' incorporates:
-         *  Constant: '<S55>/Constant'
+        /* Switch: '<S56>/Switch1' incorporates:
+         *  Constant: '<S56>/Constant'
          */
         if (vipldws2_B.Selector2_fh) {
-          /* Selector: '<S56>/Theta_2' incorporates:
-           *  Constant: '<S56>/Constant1'
+          /* Selector: '<S57>/Theta_2' incorporates:
+           *  Constant: '<S57>/Constant1'
            */
           vipldws2_B.Gain = vipldws2_B.Selector1_k[(int32_T)
             vipldws2_P.Constant1_Value - 1];
 
-          /* Sum: '<S56>/Add8' */
+          /* Sum: '<S57>/Add8' */
           vipldws2_B.Gain = vipldws2_B.Selector2_f[1] - vipldws2_B.Gain;
 
-          /* Abs: '<S56>/Abs' */
+          /* Abs: '<S57>/Abs' */
           vipldws2_B.Gain = (real32_T)fabs(vipldws2_B.Gain);
 
-          /* Selector: '<S56>/Rho_2' incorporates:
-           *  Constant: '<S56>/Constant'
+          /* Selector: '<S57>/Rho_2' incorporates:
+           *  Constant: '<S57>/Constant'
            */
           vipldws2_B.Rho_2 = vipldws2_B.Selector1_k[(int32_T)
             vipldws2_P.Constant_Value - 1];
 
-          /* Sum: '<S56>/Add1' */
+          /* Sum: '<S57>/Add1' */
           vipldws2_B.cnt = (real32_T)floor(vipldws2_B.Selector2_f[0] -
             vipldws2_B.Rho_2);
           if (rtIsNaNF(vipldws2_B.cnt) || rtIsInfF(vipldws2_B.cnt)) {
@@ -1647,19 +1664,19 @@ void vipldws2_step(void)
           vipldws2_B.Abs1 = vipldws2_B.cnt < 0.0F ? -(int32_T)(uint32_T)
             -vipldws2_B.cnt : (int32_T)(uint32_T)vipldws2_B.cnt;
 
-          /* End of Sum: '<S56>/Add1' */
+          /* End of Sum: '<S57>/Add1' */
 
-          /* Abs: '<S56>/Abs1' */
+          /* Abs: '<S57>/Abs1' */
           if (vipldws2_B.Abs1 < 0) {
             vipldws2_B.Abs1 = -vipldws2_B.Abs1;
           }
 
-          /* End of Abs: '<S56>/Abs1' */
+          /* End of Abs: '<S57>/Abs1' */
 
-          /* Gain: '<S56>/Gain' */
+          /* Gain: '<S57>/Gain' */
           vipldws2_B.Gain *= vipldws2_P.Gain_Gain;
 
-          /* Sum: '<S56>/Add7' */
+          /* Sum: '<S57>/Add7' */
           vipldws2_B.cnt = (real32_T)floor((real32_T)vipldws2_B.Abs1 +
             vipldws2_B.Gain);
           if (rtIsNaNF(vipldws2_B.cnt) || rtIsInfF(vipldws2_B.cnt)) {
@@ -1671,26 +1688,26 @@ void vipldws2_step(void)
           vipldws2_B.Add7 = vipldws2_B.cnt < 0.0F ? -(int32_T)(uint32_T)
             -vipldws2_B.cnt : (int32_T)(uint32_T)vipldws2_B.cnt;
 
-          /* End of Sum: '<S56>/Add7' */
+          /* End of Sum: '<S57>/Add7' */
           vipldws2_DW.Differencebetweentwolines_Subsy = 4;
           vipldws2_B.Switch1_l = vipldws2_B.Add7;
         } else {
           vipldws2_B.Switch1_l = vipldws2_P.Constant_Value_l;
         }
 
-        /* End of Switch: '<S55>/Switch1' */
-        /* End of Outputs for SubSystem: '<S55>/Difference between  two lines' */
+        /* End of Switch: '<S56>/Switch1' */
+        /* End of Outputs for SubSystem: '<S56>/Difference between  two lines' */
 
-        /* Assignment: '<S55>/Assignment' */
+        /* Assignment: '<S56>/Assignment' */
         vipldws2_B.Assignment_j[vipldws2_B.ForIterator_f - 1] =
           vipldws2_B.Switch1_l;
         vipldws2_B.planeWidth++;
       }
 
-      /* End of Outputs for SubSystem: '<S54>/Calculate the distances between  the chosen line in the repository  and all input lines.' */
+      /* End of Outputs for SubSystem: '<S55>/Calculate the distances between  the chosen line in the repository  and all input lines.' */
 
-      /* Assignment: '<S54>/Assignment' incorporates:
-       *  Constant: '<S54>/Constant2'
+      /* Assignment: '<S55>/Assignment' incorporates:
+       *  Constant: '<S55>/Constant2'
        */
       if (vipldws2_DW.ForIterator_IterationMarker < 2) {
         vipldws2_DW.ForIterator_IterationMarker = 2U;
@@ -1703,18 +1720,18 @@ void vipldws2_step(void)
           - 1] = vipldws2_B.Assignment_j[vipldws2_B.i];
       }
 
-      /* End of Assignment: '<S54>/Assignment' */
+      /* End of Assignment: '<S55>/Assignment' */
       vipldws2_DW.Selectalinefromtherepositoryifi = 4;
     }
 
-    /* End of Outputs for SubSystem: '<S51>/Select a line from the repository; if it is valid (Count > 0),  Calculate its distance to the input lines.' */
+    /* End of Outputs for SubSystem: '<S52>/Select a line from the repository; if it is valid (Count > 0),  Calculate its distance to the input lines.' */
     vipldws2_B.indxI++;
   }
 
-  /* End of Outputs for SubSystem: '<S34>/Calculate the distances between  the lines found in the current  frame and those in the repository' */
+  /* End of Outputs for SubSystem: '<S35>/Calculate the distances between  the lines found in the current  frame and those in the repository' */
 
-  /* Outputs for Iterator SubSystem: '<S34>/Find the best  matches between the current  lines and those in the repository' incorporates:
-   *  ForIterator: '<S52>/For Iterator'
+  /* Outputs for Iterator SubSystem: '<S35>/Find the best  matches between the current  lines and those in the repository' incorporates:
+   *  ForIterator: '<S53>/For Iterator'
    */
   memcpy(&vipldws2_B.Assignment1_m[0], &vipldws2_B.Assignment_p2[0], 400U *
          sizeof(int32_T));
@@ -1724,26 +1741,26 @@ void vipldws2_step(void)
   while (vipldws2_B.indxI <= vipldws2_P.ForIterator_IterationLimit_n) {
     vipldws2_B.ForIterator_l = vipldws2_B.indxI;
 
-    /* RelationalOperator: '<S57>/Compare' incorporates:
-     *  Constant: '<S57>/Constant'
+    /* RelationalOperator: '<S58>/Compare' incorporates:
+     *  Constant: '<S58>/Constant'
      */
     vipldws2_B.Compare_mb = (vipldws2_B.ForIterator_l <=
       vipldws2_P.CompareToConstant_const);
     for (vipldws2_B.i = 0; vipldws2_B.i < 400; vipldws2_B.i++) {
-      /* Delay: '<S52>/Delay1' */
+      /* Delay: '<S53>/Delay1' */
       vipldws2_B.Switch1_bi[vipldws2_B.i] =
         vipldws2_DW.Delay1_DSTATE[vipldws2_B.i];
 
-      /* Switch: '<S52>/Switch1' */
+      /* Switch: '<S53>/Switch1' */
       if (vipldws2_B.Compare_mb) {
         vipldws2_B.Switch1_bi[vipldws2_B.i] =
           vipldws2_B.Assignment_p2[vipldws2_B.i];
       }
 
-      /* End of Switch: '<S52>/Switch1' */
+      /* End of Switch: '<S53>/Switch1' */
     }
 
-    /* S-Function (sdspstatminmax): '<S52>/Minimum' */
+    /* S-Function (sdspstatminmax): '<S53>/Minimum' */
     vipldws2_B.Minimum_o1 = vipldws2_B.Switch1_bi[0];
     vipldws2_B.planeWidth = 0;
     for (vipldws2_B.i = 0; vipldws2_B.i < 399; vipldws2_B.i++) {
@@ -1759,36 +1776,36 @@ void vipldws2_step(void)
       [0] + 1;
     vipldws2_B.Minimum_o2[0U] = (uint32_T)vipldws2_B.planeWidth;
 
-    /* End of S-Function (sdspstatminmax): '<S52>/Minimum' */
+    /* End of S-Function (sdspstatminmax): '<S53>/Minimum' */
 
-    /* Assignment: '<S52>/Assignment1' */
+    /* Assignment: '<S53>/Assignment1' */
     vipldws2_B.i = (int32_T)vipldws2_B.Minimum_o2[0];
 
-    /* Assignment: '<S52>/Assignment2' */
-    vipldws2_B.planeWidth = (int32_T)vipldws2_B.Minimum_o2[1];
-    for (vipldws2_B.plane = 0; vipldws2_B.plane < 20; vipldws2_B.plane++) {
-      /* Assignment: '<S52>/Assignment1' incorporates:
-       *  Constant: '<S52>/Constant'
+    /* Assignment: '<S53>/Assignment2' */
+    vipldws2_B.plane = (int32_T)vipldws2_B.Minimum_o2[1];
+    for (vipldws2_B.c1 = 0; vipldws2_B.c1 < 20; vipldws2_B.c1++) {
+      /* Assignment: '<S53>/Assignment1' incorporates:
+       *  Constant: '<S53>/Constant'
        */
-      vipldws2_B.Assignment1_m[(vipldws2_B.i + 20 * vipldws2_B.plane) - 1] =
+      vipldws2_B.Assignment1_m[(vipldws2_B.i + 20 * vipldws2_B.c1) - 1] =
         vipldws2_P.Constant_Value_iw;
 
-      /* Assignment: '<S52>/Assignment2' incorporates:
-       *  Constant: '<S52>/Constant'
+      /* Assignment: '<S53>/Assignment2' incorporates:
+       *  Constant: '<S53>/Constant'
        */
-      vipldws2_B.Assignment2[vipldws2_B.plane + 20 * (vipldws2_B.planeWidth - 1)]
-        = vipldws2_P.Constant_Value_iw;
+      vipldws2_B.Assignment2[vipldws2_B.c1 + 20 * (vipldws2_B.plane - 1)] =
+        vipldws2_P.Constant_Value_iw;
     }
 
-    /* Sum: '<S52>/Add' */
+    /* Sum: '<S53>/Add' */
     for (vipldws2_B.i = 0; vipldws2_B.i < 400; vipldws2_B.i++) {
       vipldws2_B.Add_e[vipldws2_B.i] = vipldws2_B.Assignment1_m[vipldws2_B.i] +
         vipldws2_B.Assignment2[vipldws2_B.i];
     }
 
-    /* End of Sum: '<S52>/Add' */
+    /* End of Sum: '<S53>/Add' */
 
-    /* DataTypeConversion: '<S52>/Data Type  Conversion3' */
+    /* DataTypeConversion: '<S53>/Data Type  Conversion3' */
     vipldws2_B.fromIdx = vipldws2_B.Minimum_o2[0];
     if (vipldws2_B.Minimum_o2[0] > 2147483647U) {
       vipldws2_B.fromIdx = 2147483647U;
@@ -1802,12 +1819,12 @@ void vipldws2_step(void)
 
     vipldws2_B.DataTypeConversion3[1] = (int32_T)vipldws2_B.fromIdx;
 
-    /* End of DataTypeConversion: '<S52>/Data Type  Conversion3' */
+    /* End of DataTypeConversion: '<S53>/Data Type  Conversion3' */
 
-    /* Assignment: '<S52>/Assignment' incorporates:
-     *  Assignment: '<S52>/Assignment3'
-     *  Constant: '<S52>/Constant1'
-     *  Constant: '<S52>/Constant2'
+    /* Assignment: '<S53>/Assignment' incorporates:
+     *  Assignment: '<S53>/Assignment3'
+     *  Constant: '<S53>/Constant1'
+     *  Constant: '<S53>/Constant2'
      */
     if (vipldws2_B.indxI == 1) {
       memcpy(&vipldws2_B.Assignment_k[0], &vipldws2_P.Constant2_Value_d[0], 40U *
@@ -1821,99 +1838,99 @@ void vipldws2_step(void)
     vipldws2_B.Assignment_k[1 + ((vipldws2_B.ForIterator_l - 1) << 1)] =
       vipldws2_B.DataTypeConversion3[1];
 
-    /* End of Assignment: '<S52>/Assignment' */
+    /* End of Assignment: '<S53>/Assignment' */
 
-    /* Assignment: '<S52>/Assignment3' */
+    /* Assignment: '<S53>/Assignment3' */
     vipldws2_B.Assignment3[vipldws2_B.ForIterator_l - 1] = vipldws2_B.Minimum_o1;
 
-    /* Update for Delay: '<S52>/Delay1' */
+    /* Update for Delay: '<S53>/Delay1' */
     memcpy(&vipldws2_DW.Delay1_DSTATE[0], &vipldws2_B.Add_e[0], 400U * sizeof
            (int32_T));
     vipldws2_B.indxI++;
   }
 
-  /* End of Outputs for SubSystem: '<S34>/Find the best  matches between the current  lines and those in the repository' */
+  /* End of Outputs for SubSystem: '<S35>/Find the best  matches between the current  lines and those in the repository' */
 
-  /* Outputs for Iterator SubSystem: '<S34>/Update the repository' incorporates:
-   *  ForIterator: '<S53>/For Iterator'
+  /* Outputs for Iterator SubSystem: '<S35>/Update the repository' incorporates:
+   *  ForIterator: '<S54>/For Iterator'
    */
   memcpy(&vipldws2_B.Assignment_i[0], &vipldws2_B.Init[0], 40U * sizeof(real32_T));
 
-  /* InitializeConditions for Delay: '<S53>/Delay1' */
+  /* InitializeConditions for Delay: '<S54>/Delay1' */
   for (vipldws2_B.i = 0; vipldws2_B.i < 20; vipldws2_B.i++) {
     vipldws2_DW.Delay1_DSTATE_g[vipldws2_B.i] =
       vipldws2_P.Delay1_InitialCondition_n;
   }
 
-  /* End of InitializeConditions for Delay: '<S53>/Delay1' */
+  /* End of InitializeConditions for Delay: '<S54>/Delay1' */
   vipldws2_B.indxI = 1;
   while (vipldws2_B.indxI <= vipldws2_P.ForIterator_IterationLimit_a) {
     vipldws2_B.ForIterator_a = vipldws2_B.indxI;
 
-    /* RelationalOperator: '<S58>/Compare' incorporates:
-     *  Constant: '<S58>/Constant'
+    /* RelationalOperator: '<S59>/Compare' incorporates:
+     *  Constant: '<S59>/Constant'
      */
     vipldws2_B.Compare_n = (vipldws2_B.ForIterator_a <=
       vipldws2_P.CompareToConstant_const_m);
     for (vipldws2_B.i = 0; vipldws2_B.i < 20; vipldws2_B.i++) {
-      /* RelationalOperator: '<S60>/Compare' incorporates:
-       *  Constant: '<S60>/Constant'
+      /* RelationalOperator: '<S61>/Compare' incorporates:
+       *  Constant: '<S61>/Constant'
        */
       vipldws2_B.Compare_p[vipldws2_B.i] = (vipldws2_B.Init_p[vipldws2_B.i] >
         vipldws2_P.Constant_Value_m);
 
-      /* Delay: '<S53>/Delay1' */
+      /* Delay: '<S54>/Delay1' */
       vipldws2_B.Switch1_m[vipldws2_B.i] =
         vipldws2_DW.Delay1_DSTATE_g[vipldws2_B.i];
 
-      /* Switch: '<S53>/Switch1' */
+      /* Switch: '<S54>/Switch1' */
       if (vipldws2_B.Compare_n) {
         vipldws2_B.Switch1_m[vipldws2_B.i] = vipldws2_B.Compare_p[vipldws2_B.i];
       }
 
-      /* End of Switch: '<S53>/Switch1' */
+      /* End of Switch: '<S54>/Switch1' */
     }
 
-    /* S-Function (sdspstatminmax): '<S53>/Minimum' */
+    /* S-Function (sdspstatminmax): '<S54>/Minimum' */
     vipldws2_B.c1 = 1;
     vipldws2_DW.Minimum_Valdata = vipldws2_B.Switch1_m[0];
     vipldws2_B.Minimum = 1U;
-    for (vipldws2_B.ii = 0; vipldws2_B.ii < 19; vipldws2_B.ii++) {
+    for (vipldws2_B.j = 0; vipldws2_B.j < 19; vipldws2_B.j++) {
       if ((int32_T)vipldws2_B.Switch1_m[vipldws2_B.c1] < (int32_T)
           vipldws2_DW.Minimum_Valdata) {
         vipldws2_DW.Minimum_Valdata = vipldws2_B.Switch1_m[vipldws2_B.c1];
-        vipldws2_B.Minimum = (uint32_T)(vipldws2_B.ii + 2);
+        vipldws2_B.Minimum = (uint32_T)(vipldws2_B.j + 2);
       }
 
       vipldws2_B.c1++;
     }
 
-    /* End of S-Function (sdspstatminmax): '<S53>/Minimum' */
+    /* End of S-Function (sdspstatminmax): '<S54>/Minimum' */
 
-    /* Selector: '<S53>/Selector3' */
+    /* Selector: '<S54>/Selector3' */
     vipldws2_B.Selector_n = vipldws2_B.Assignment3[vipldws2_B.ForIterator_a - 1];
 
-    /* RelationalOperator: '<S59>/Compare' incorporates:
-     *  Constant: '<S59>/Constant'
+    /* RelationalOperator: '<S60>/Compare' incorporates:
+     *  Constant: '<S60>/Constant'
      */
     vipldws2_B.Compare_n = (vipldws2_B.Selector_n >
       vipldws2_P.CompareToConstant1_const);
 
-    /* Switch: '<S53>/Switch3' */
+    /* Switch: '<S54>/Switch3' */
     if (vipldws2_B.Compare_n) {
       vipldws2_B.Switch3 = vipldws2_B.Minimum;
     } else {
-      /* Selector: '<S53>/Selector1' */
+      /* Selector: '<S54>/Selector1' */
       vipldws2_B.Selector1_b = vipldws2_B.Assignment_k[(vipldws2_B.ForIterator_a
         - 1) << 1];
       vipldws2_B.Switch3 = (uint32_T)vipldws2_B.Selector1_b;
     }
 
-    /* End of Switch: '<S53>/Switch3' */
+    /* End of Switch: '<S54>/Switch3' */
 
-    /* Assignment: '<S53>/Assignment1' incorporates:
-     *  Constant: '<S53>/Constant'
-     *  Constant: '<S53>/Constant2'
+    /* Assignment: '<S54>/Assignment1' incorporates:
+     *  Constant: '<S54>/Constant'
+     *  Constant: '<S54>/Constant2'
      */
     if (vipldws2_B.indxI == 1) {
       memcpy(&vipldws2_B.Assignment1[0], &vipldws2_P.Constant2_Value_b[0], 20U *
@@ -1923,58 +1940,60 @@ void vipldws2_step(void)
     vipldws2_B.Assignment1[(int32_T)vipldws2_B.Switch3 - 1] =
       vipldws2_P.Constant_Value_i0;
 
-    /* End of Assignment: '<S53>/Assignment1' */
+    /* End of Assignment: '<S54>/Assignment1' */
     for (vipldws2_B.i = 0; vipldws2_B.i < 20; vipldws2_B.i++) {
-      /* Sum: '<S53>/Add1' */
+      /* Sum: '<S54>/Add1' */
       vipldws2_B.Add_j[vipldws2_B.i] = vipldws2_B.Assignment1[vipldws2_B.i] +
         vipldws2_B.Assignment1[vipldws2_B.i];
 
-      /* Bias: '<S53>/Bias' */
+      /* Bias: '<S54>/Bias' */
       vipldws2_B.Add_j[vipldws2_B.i] += vipldws2_P.Bias_Bias;
 
-      /* Sum: '<S53>/Add' */
+      /* Sum: '<S54>/Add' */
       vipldws2_B.Add_j[vipldws2_B.i] += vipldws2_B.Init_p[vipldws2_B.i];
     }
 
-    /* Selector: '<S53>/Selector' */
+    /* Selector: '<S54>/Selector' */
     vipldws2_B.Selector_n = vipldws2_B.Assignment_k[((vipldws2_B.ForIterator_a -
       1) << 1) + 1];
 
-    /* Selector: '<S53>/Selector2' */
+    /* Selector: '<S54>/Selector2' */
     vipldws2_DW.Selector2_DIMS1[0] = vipldws2_DW.MatrixConcatenation3_DIMS1[0];
     vipldws2_DW.Selector2_DIMS1[1] = 1;
-    vipldws2_B.R2 = vipldws2_DW.MatrixConcatenation3_DIMS1[0];
-    for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.R2; vipldws2_B.i++) {
+    vipldws2_B.planeOffset = vipldws2_DW.MatrixConcatenation3_DIMS1[0];
+    for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.planeOffset; vipldws2_B.i++)
+    {
       vipldws2_B.tmp_data[vipldws2_B.i] = vipldws2_B.MatrixConcatenation3
         [(vipldws2_B.Selector_n - 1) * vipldws2_DW.MatrixConcatenation3_DIMS1[0]
         + vipldws2_B.i];
     }
 
-    vipldws2_B.R2 = vipldws2_DW.MatrixConcatenation3_DIMS1[0];
-    for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.R2; vipldws2_B.i++) {
+    vipldws2_B.planeOffset = vipldws2_DW.MatrixConcatenation3_DIMS1[0];
+    for (vipldws2_B.i = 0; vipldws2_B.i < vipldws2_B.planeOffset; vipldws2_B.i++)
+    {
       vipldws2_B.Selector2_b[vipldws2_B.i] = vipldws2_B.tmp_data[vipldws2_B.i];
     }
 
-    /* End of Selector: '<S53>/Selector2' */
+    /* End of Selector: '<S54>/Selector2' */
 
-    /* Assignment: '<S53>/Assignment' */
+    /* Assignment: '<S54>/Assignment' */
     vipldws2_B.i = (int32_T)vipldws2_B.Switch3;
-    vipldws2_B.R2 = vipldws2_DW.Selector2_DIMS1[1];
-    for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < vipldws2_B.R2;
-         vipldws2_B.planeWidth++) {
-      vipldws2_B.c1 = vipldws2_DW.Selector2_DIMS1[0];
-      for (vipldws2_B.plane = 0; vipldws2_B.plane < vipldws2_B.c1;
-           vipldws2_B.plane++) {
-        vipldws2_B.Assignment_i[vipldws2_B.plane + (((vipldws2_B.planeWidth +
+    vipldws2_B.planeOffset = vipldws2_DW.Selector2_DIMS1[1];
+    for (vipldws2_B.plane = 0; vipldws2_B.plane < vipldws2_B.planeOffset;
+         vipldws2_B.plane++) {
+      vipldws2_B.planeWidth = vipldws2_DW.Selector2_DIMS1[0];
+      for (vipldws2_B.c1 = 0; vipldws2_B.c1 < vipldws2_B.planeWidth;
+           vipldws2_B.c1++) {
+        vipldws2_B.Assignment_i[vipldws2_B.c1 + (((vipldws2_B.plane +
           vipldws2_B.i) - 1) << 1)] =
           vipldws2_B.Selector2_b[vipldws2_DW.Selector2_DIMS1[0] *
-          vipldws2_B.planeWidth + vipldws2_B.plane];
+          vipldws2_B.plane + vipldws2_B.c1];
       }
     }
 
-    /* End of Assignment: '<S53>/Assignment' */
+    /* End of Assignment: '<S54>/Assignment' */
 
-    /* Assignment: '<S53>/Assignment2' */
+    /* Assignment: '<S54>/Assignment2' */
     if (vipldws2_B.indxI == 1) {
       for (vipldws2_B.i = 0; vipldws2_B.i < 20; vipldws2_B.i++) {
         vipldws2_B.Assignment2_m[vipldws2_B.i] =
@@ -1985,9 +2004,9 @@ void vipldws2_step(void)
     vipldws2_B.Assignment2_m[(int32_T)vipldws2_B.Minimum - 1] =
       vipldws2_B.Compare_n;
 
-    /* End of Assignment: '<S53>/Assignment2' */
+    /* End of Assignment: '<S54>/Assignment2' */
     for (vipldws2_B.i = 0; vipldws2_B.i < 20; vipldws2_B.i++) {
-      /* Saturate: '<S53>/Saturation' */
+      /* Saturate: '<S54>/Saturation' */
       if (vipldws2_B.Add_j[vipldws2_B.i] > vipldws2_P.Saturation_UpperSat_m) {
         vipldws2_B.Saturation_h[vipldws2_B.i] = vipldws2_P.Saturation_UpperSat_m;
       } else if (vipldws2_B.Add_j[vipldws2_B.i] <
@@ -1997,9 +2016,9 @@ void vipldws2_step(void)
         vipldws2_B.Saturation_h[vipldws2_B.i] = vipldws2_B.Add_j[vipldws2_B.i];
       }
 
-      /* End of Saturate: '<S53>/Saturation' */
+      /* End of Saturate: '<S54>/Saturation' */
 
-      /* Update for Delay: '<S53>/Delay1' */
+      /* Update for Delay: '<S54>/Delay1' */
       vipldws2_DW.Delay1_DSTATE_g[vipldws2_B.i] =
         vipldws2_B.Assignment2_m[vipldws2_B.i];
     }
@@ -2007,57 +2026,57 @@ void vipldws2_step(void)
     vipldws2_B.indxI++;
   }
 
-  /* End of Outputs for SubSystem: '<S34>/Update the repository' */
+  /* End of Outputs for SubSystem: '<S35>/Update the repository' */
 
-  /* UnitDelay: '<S33>/En_Delay' */
+  /* UnitDelay: '<S34>/En_Delay' */
   memcpy(&vipldws2_B.En_Delay[0], &vipldws2_DW.En_Delay_DSTATE[0], 20U * sizeof
          (int32_T));
 
-  /* UnitDelay: '<S33>/Unit Delay2' */
+  /* UnitDelay: '<S34>/Unit Delay2' */
   memcpy(&vipldws2_B.UnitDelay2[0], &vipldws2_DW.UnitDelay2_DSTATE[0], 80U *
          sizeof(real32_T));
 
-  /* UnitDelay: '<S33>/Unit Delay3' */
+  /* UnitDelay: '<S34>/Unit Delay3' */
   memcpy(&vipldws2_B.UnitDelay3[0], &vipldws2_DW.UnitDelay3_DSTATE[0], 320U *
          sizeof(real32_T));
 
-  /* Outputs for Iterator SubSystem: '<S33>/Control' incorporates:
-   *  ForIterator: '<S40>/Iterator'
+  /* Outputs for Iterator SubSystem: '<S34>/Control' incorporates:
+   *  ForIterator: '<S41>/Iterator'
    */
   vipldws2_DW.Iterator_IterationMarker[0] = 1U;
   vipldws2_DW.Iterator_IterationMarker[1] = 1U;
   vipldws2_DW.Iterator_IterationMarker[2] = 1U;
   vipldws2_DW.Iterator_IterationMarker[3] = 1U;
-  vipldws2_B.indxI = 1;
-  while (vipldws2_B.indxI <= vipldws2_P.Iterator_IterationLimit) {
-    vipldws2_B.Iterator = vipldws2_B.indxI;
+  vipldws2_B.planeWidth = 1;
+  while (vipldws2_B.planeWidth <= vipldws2_P.Iterator_IterationLimit) {
+    vipldws2_B.Iterator = vipldws2_B.planeWidth;
 
-    /* Selector: '<S40>/En_Selector' */
+    /* Selector: '<S41>/En_Selector' */
     vipldws2_B.En_Selector = vipldws2_B.Saturation_h[vipldws2_B.Iterator - 1];
 
-    /* Logic: '<S40>/En_Not' */
+    /* Logic: '<S41>/En_Not' */
     vipldws2_B.En_Not = !(vipldws2_B.En_Selector != 0);
 
-    /* Selector: '<S40>/Rst_Selector' */
+    /* Selector: '<S41>/Rst_Selector' */
     vipldws2_B.Rst_Selector = vipldws2_B.En_Delay[vipldws2_B.Iterator - 1];
 
-    /* Logic: '<S40>/Rst_And' */
+    /* Logic: '<S41>/Rst_And' */
     vipldws2_B.Rst_And = (vipldws2_B.En_Not && (vipldws2_B.Rst_Selector != 0));
 
-    /* Logic: '<S40>/En_Or' */
+    /* Logic: '<S41>/En_Or' */
     vipldws2_B.En_Or = ((vipldws2_B.En_Selector != 0) || vipldws2_B.Rst_And);
 
-    /* Outputs for Enabled SubSystem: '<S40>/Options' incorporates:
-     *  EnablePort: '<S41>/EnablePort'
+    /* Outputs for Enabled SubSystem: '<S41>/Options' incorporates:
+     *  EnablePort: '<S42>/EnablePort'
      */
     if (vipldws2_B.En_Or) {
-      /* Selector: '<S41>/Selector' */
+      /* Selector: '<S42>/Selector' */
       vipldws2_B.Selector_i[0] = vipldws2_B.Assignment_i[(vipldws2_B.Iterator -
         1) << 1];
       vipldws2_B.Selector_i[1] = vipldws2_B.Assignment_i[((vipldws2_B.Iterator -
         1) << 1) + 1];
 
-      /* Selector: '<S41>/Selector1' */
+      /* Selector: '<S42>/Selector1' */
       vipldws2_B.Selector1_c[0] = vipldws2_B.UnitDelay2[(vipldws2_B.Iterator - 1)
         << 2];
       vipldws2_B.Selector1_c[1] = vipldws2_B.UnitDelay2[((vipldws2_B.Iterator -
@@ -2067,19 +2086,19 @@ void vipldws2_step(void)
       vipldws2_B.Selector1_c[3] = vipldws2_B.UnitDelay2[((vipldws2_B.Iterator -
         1) << 2) + 3];
 
-      /* Selector: '<S41>/Selector2' */
+      /* Selector: '<S42>/Selector2' */
       for (vipldws2_B.i = 0; vipldws2_B.i < 16; vipldws2_B.i++) {
         vipldws2_B.Selector2_n[vipldws2_B.i] = vipldws2_B.UnitDelay3
           [((vipldws2_B.Iterator - 1) << 4) + vipldws2_B.i];
       }
 
-      /* End of Selector: '<S41>/Selector2' */
+      /* End of Selector: '<S42>/Selector2' */
 
-      /* Outputs for Enabled SubSystem: '<S41>/Core' incorporates:
-       *  EnablePort: '<S42>/EnablePort'
+      /* Outputs for Enabled SubSystem: '<S42>/Core' incorporates:
+       *  EnablePort: '<S43>/EnablePort'
        */
       if (vipldws2_B.En_Selector > 0) {
-        /* Math: '<S42>/P_prd Trans' */
+        /* Math: '<S43>/P_prd Trans' */
         for (vipldws2_B.i = 0; vipldws2_B.i < 4; vipldws2_B.i++) {
           vipldws2_B.P_prdKHP_prd[vipldws2_B.i << 2] =
             vipldws2_B.Selector2_n[vipldws2_B.i];
@@ -2091,332 +2110,324 @@ void vipldws2_step(void)
             vipldws2_B.Selector2_n[vipldws2_B.i + 12];
         }
 
-        /* End of Math: '<S42>/P_prd Trans' */
+        /* End of Math: '<S43>/P_prd Trans' */
         for (vipldws2_B.i = 0; vipldws2_B.i < 2; vipldws2_B.i++) {
-          /* Product: '<S42>/H*P_prdt' incorporates:
-           *  Constant: '<S42>/Hcst'
+          /* Product: '<S43>/H*P_prdt' incorporates:
+           *  Constant: '<S43>/Hcst'
            */
-          for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < 4;
-               vipldws2_B.planeWidth++) {
-            vipldws2_B.HP_prdt[vipldws2_B.i + (vipldws2_B.planeWidth << 1)] =
-              0.0F;
-            vipldws2_B.HP_prdt[vipldws2_B.i + (vipldws2_B.planeWidth << 1)] +=
-              vipldws2_B.P_prdKHP_prd[vipldws2_B.planeWidth << 2] *
+          for (vipldws2_B.plane = 0; vipldws2_B.plane < 4; vipldws2_B.plane++) {
+            vipldws2_B.HP_prdt[vipldws2_B.i + (vipldws2_B.plane << 1)] = 0.0F;
+            vipldws2_B.HP_prdt[vipldws2_B.i + (vipldws2_B.plane << 1)] +=
+              vipldws2_B.P_prdKHP_prd[vipldws2_B.plane << 2] *
               vipldws2_P.Hcst_Value[vipldws2_B.i];
-            vipldws2_B.HP_prdt[vipldws2_B.i + (vipldws2_B.planeWidth << 1)] +=
-              vipldws2_B.P_prdKHP_prd[(vipldws2_B.planeWidth << 2) + 1] *
+            vipldws2_B.HP_prdt[vipldws2_B.i + (vipldws2_B.plane << 1)] +=
+              vipldws2_B.P_prdKHP_prd[(vipldws2_B.plane << 2) + 1] *
               vipldws2_P.Hcst_Value[vipldws2_B.i + 2];
-            vipldws2_B.HP_prdt[vipldws2_B.i + (vipldws2_B.planeWidth << 1)] +=
-              vipldws2_B.P_prdKHP_prd[(vipldws2_B.planeWidth << 2) + 2] *
+            vipldws2_B.HP_prdt[vipldws2_B.i + (vipldws2_B.plane << 1)] +=
+              vipldws2_B.P_prdKHP_prd[(vipldws2_B.plane << 2) + 2] *
               vipldws2_P.Hcst_Value[vipldws2_B.i + 4];
-            vipldws2_B.HP_prdt[vipldws2_B.i + (vipldws2_B.planeWidth << 1)] +=
-              vipldws2_B.P_prdKHP_prd[(vipldws2_B.planeWidth << 2) + 3] *
+            vipldws2_B.HP_prdt[vipldws2_B.i + (vipldws2_B.plane << 1)] +=
+              vipldws2_B.P_prdKHP_prd[(vipldws2_B.plane << 2) + 3] *
               vipldws2_P.Hcst_Value[vipldws2_B.i + 6];
           }
 
-          /* End of Product: '<S42>/H*P_prdt' */
+          /* End of Product: '<S43>/H*P_prdt' */
 
-          /* Product: '<S42>/H*P_prdt*Ht' incorporates:
-           *  Constant: '<S42>/Hcst_t'
+          /* Product: '<S43>/H*P_prdt*Ht' incorporates:
+           *  Constant: '<S43>/Hcst_t'
            */
-          for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < 2;
-               vipldws2_B.planeWidth++) {
-            vipldws2_B.HP_prdtHtR[vipldws2_B.i + (vipldws2_B.planeWidth << 1)] =
-              0.0F;
-            vipldws2_B.HP_prdtHtR[vipldws2_B.i + (vipldws2_B.planeWidth << 1)] +=
-              vipldws2_P.Hcst_t_Value[vipldws2_B.planeWidth << 2] *
+          for (vipldws2_B.plane = 0; vipldws2_B.plane < 2; vipldws2_B.plane++) {
+            vipldws2_B.HP_prdtHtR[vipldws2_B.i + (vipldws2_B.plane << 1)] = 0.0F;
+            vipldws2_B.HP_prdtHtR[vipldws2_B.i + (vipldws2_B.plane << 1)] +=
+              vipldws2_P.Hcst_t_Value[vipldws2_B.plane << 2] *
               vipldws2_B.HP_prdt[vipldws2_B.i];
-            vipldws2_B.HP_prdtHtR[vipldws2_B.i + (vipldws2_B.planeWidth << 1)] +=
-              vipldws2_P.Hcst_t_Value[(vipldws2_B.planeWidth << 2) + 1] *
+            vipldws2_B.HP_prdtHtR[vipldws2_B.i + (vipldws2_B.plane << 1)] +=
+              vipldws2_P.Hcst_t_Value[(vipldws2_B.plane << 2) + 1] *
               vipldws2_B.HP_prdt[vipldws2_B.i + 2];
-            vipldws2_B.HP_prdtHtR[vipldws2_B.i + (vipldws2_B.planeWidth << 1)] +=
-              vipldws2_P.Hcst_t_Value[(vipldws2_B.planeWidth << 2) + 2] *
+            vipldws2_B.HP_prdtHtR[vipldws2_B.i + (vipldws2_B.plane << 1)] +=
+              vipldws2_P.Hcst_t_Value[(vipldws2_B.plane << 2) + 2] *
               vipldws2_B.HP_prdt[vipldws2_B.i + 4];
-            vipldws2_B.HP_prdtHtR[vipldws2_B.i + (vipldws2_B.planeWidth << 1)] +=
-              vipldws2_P.Hcst_t_Value[(vipldws2_B.planeWidth << 2) + 3] *
+            vipldws2_B.HP_prdtHtR[vipldws2_B.i + (vipldws2_B.plane << 1)] +=
+              vipldws2_P.Hcst_t_Value[(vipldws2_B.plane << 2) + 3] *
               vipldws2_B.HP_prdt[vipldws2_B.i + 6];
           }
 
-          /* End of Product: '<S42>/H*P_prdt*Ht' */
+          /* End of Product: '<S43>/H*P_prdt*Ht' */
         }
 
-        /* Sum: '<S42>/H*P_prdt*Ht+R' incorporates:
-         *  Constant: '<S42>/Constant2'
+        /* Sum: '<S43>/H*P_prdt*Ht+R' incorporates:
+         *  Constant: '<S43>/Constant2'
          */
         vipldws2_B.HP_prdtHtR[0] += vipldws2_P.Constant2_Value[0];
 
-        /* S-Function (sdspldl2): '<S47>/LDL Factorization' */
+        /* S-Function (sdspldl2): '<S48>/LDL Factorization' */
         vipldws2_B.LDLFactorization[0] = vipldws2_B.HP_prdtHtR[0];
 
-        /* Sum: '<S42>/H*P_prdt*Ht+R' incorporates:
-         *  Constant: '<S42>/Constant2'
+        /* Sum: '<S43>/H*P_prdt*Ht+R' incorporates:
+         *  Constant: '<S43>/Constant2'
          */
         vipldws2_B.HP_prdtHtR[1] += vipldws2_P.Constant2_Value[1];
 
-        /* S-Function (sdspldl2): '<S47>/LDL Factorization' */
+        /* S-Function (sdspldl2): '<S48>/LDL Factorization' */
         vipldws2_B.LDLFactorization[1] = vipldws2_B.HP_prdtHtR[1];
 
-        /* Sum: '<S42>/H*P_prdt*Ht+R' incorporates:
-         *  Constant: '<S42>/Constant2'
+        /* Sum: '<S43>/H*P_prdt*Ht+R' incorporates:
+         *  Constant: '<S43>/Constant2'
          */
         vipldws2_B.HP_prdtHtR[2] += vipldws2_P.Constant2_Value[2];
 
-        /* S-Function (sdspldl2): '<S47>/LDL Factorization' */
+        /* S-Function (sdspldl2): '<S48>/LDL Factorization' */
         vipldws2_B.LDLFactorization[2] = vipldws2_B.HP_prdtHtR[2];
 
-        /* Sum: '<S42>/H*P_prdt*Ht+R' incorporates:
-         *  Constant: '<S42>/Constant2'
+        /* Sum: '<S43>/H*P_prdt*Ht+R' incorporates:
+         *  Constant: '<S43>/Constant2'
          */
         vipldws2_B.HP_prdtHtR[3] += vipldws2_P.Constant2_Value[3];
 
-        /* S-Function (sdspldl2): '<S47>/LDL Factorization' */
+        /* S-Function (sdspldl2): '<S48>/LDL Factorization' */
         vipldws2_B.LDLFactorization[3] = vipldws2_B.HP_prdtHtR[3];
         LDLf_int32_Treal32_T(&vipldws2_B.LDLFactorization[0U],
                              &vipldws2_DW.LDLFactorization_VMX[0U], 2,
                              &vipldws2_B.HP_prdtHtR[0U]);
 
-        /* S-Function (sdspfbsub2): '<S47>/Forward Substitution' */
+        /* S-Function (sdspfbsub2): '<S48>/Forward Substitution' */
         vipldws2_B.y[0] = vipldws2_B.HP_prdt[0];
-        vipldws2_B.R2 = 1;
+        vipldws2_B.plane = 1;
         vipldws2_B.scale = vipldws2_B.HP_prdt[1];
-        vipldws2_B.planeWidth = 0;
-        while (vipldws2_B.planeWidth < 1) {
-          vipldws2_B.scale -= vipldws2_B.LDLFactorization[vipldws2_B.R2] *
+        vipldws2_B.indxI = 0;
+        while (vipldws2_B.indxI < 1) {
+          vipldws2_B.scale -= vipldws2_B.LDLFactorization[vipldws2_B.plane] *
             vipldws2_B.y[0];
-          vipldws2_B.R2 += 2;
-          vipldws2_B.planeWidth = 1;
+          vipldws2_B.plane += 2;
+          vipldws2_B.indxI = 1;
         }
 
         vipldws2_B.y[1] = vipldws2_B.scale;
         vipldws2_B.y[2] = vipldws2_B.HP_prdt[2];
-        vipldws2_B.R2 = 1;
+        vipldws2_B.plane = 1;
         vipldws2_B.scale = vipldws2_B.HP_prdt[3];
-        vipldws2_B.planeWidth = 0;
-        while (vipldws2_B.planeWidth < 1) {
-          vipldws2_B.scale -= vipldws2_B.LDLFactorization[vipldws2_B.R2] *
+        vipldws2_B.indxI = 0;
+        while (vipldws2_B.indxI < 1) {
+          vipldws2_B.scale -= vipldws2_B.LDLFactorization[vipldws2_B.plane] *
             vipldws2_B.y[2];
-          vipldws2_B.R2 += 2;
-          vipldws2_B.planeWidth = 1;
+          vipldws2_B.plane += 2;
+          vipldws2_B.indxI = 1;
         }
 
         vipldws2_B.y[3] = vipldws2_B.scale;
         vipldws2_B.y[4] = vipldws2_B.HP_prdt[4];
-        vipldws2_B.R2 = 1;
+        vipldws2_B.plane = 1;
         vipldws2_B.scale = vipldws2_B.HP_prdt[5];
-        vipldws2_B.planeWidth = 0;
-        while (vipldws2_B.planeWidth < 1) {
-          vipldws2_B.scale -= vipldws2_B.LDLFactorization[vipldws2_B.R2] *
+        vipldws2_B.indxI = 0;
+        while (vipldws2_B.indxI < 1) {
+          vipldws2_B.scale -= vipldws2_B.LDLFactorization[vipldws2_B.plane] *
             vipldws2_B.y[4];
-          vipldws2_B.R2 += 2;
-          vipldws2_B.planeWidth = 1;
+          vipldws2_B.plane += 2;
+          vipldws2_B.indxI = 1;
         }
 
         vipldws2_B.y[5] = vipldws2_B.scale;
         vipldws2_B.y[6] = vipldws2_B.HP_prdt[6];
-        vipldws2_B.R2 = 1;
+        vipldws2_B.plane = 1;
         vipldws2_B.scale = vipldws2_B.HP_prdt[7];
-        vipldws2_B.planeWidth = 0;
-        while (vipldws2_B.planeWidth < 1) {
-          vipldws2_B.scale -= vipldws2_B.LDLFactorization[vipldws2_B.R2] *
+        vipldws2_B.indxI = 0;
+        while (vipldws2_B.indxI < 1) {
+          vipldws2_B.scale -= vipldws2_B.LDLFactorization[vipldws2_B.plane] *
             vipldws2_B.y[6];
-          vipldws2_B.R2 += 2;
-          vipldws2_B.planeWidth = 1;
+          vipldws2_B.plane += 2;
+          vipldws2_B.indxI = 1;
         }
 
         vipldws2_B.y[7] = vipldws2_B.scale;
 
-        /* End of S-Function (sdspfbsub2): '<S47>/Forward Substitution' */
+        /* End of S-Function (sdspfbsub2): '<S48>/Forward Substitution' */
 
-        /* S-Function (sdspdiag2): '<S47>/Extract Diagonal' */
+        /* S-Function (sdspdiag2): '<S48>/Extract Diagonal' */
         vipldws2_B.d[0] = vipldws2_B.LDLFactorization[0];
 
-        /* Math: '<S47>/Math Function'
+        /* Math: '<S48>/Math Function'
          *
-         * About '<S47>/Math Function':
+         * About '<S48>/Math Function':
          *  Operator: reciprocal
          */
         vipldws2_B.ZHX_prd[0] = 1.0F / vipldws2_B.d[0];
 
-        /* S-Function (sdspdiag2): '<S47>/Extract Diagonal' */
+        /* S-Function (sdspdiag2): '<S48>/Extract Diagonal' */
         vipldws2_B.d[1] = vipldws2_B.LDLFactorization[3];
 
-        /* Math: '<S47>/Math Function'
+        /* Math: '<S48>/Math Function'
          *
-         * About '<S47>/Math Function':
+         * About '<S48>/Math Function':
          *  Operator: reciprocal
          */
         vipldws2_B.ZHX_prd[1] = 1.0F / vipldws2_B.d[1];
 
-        /* S-Function (sdspdmult2): '<S47>/Matrix Scaling' */
-        vipldws2_B.plane = 0;
+        /* S-Function (sdspdmult2): '<S48>/Matrix Scaling' */
+        vipldws2_B.planeOffset = 0;
         for (vipldws2_B.i = 0; vipldws2_B.i < 4; vipldws2_B.i++) {
-          vipldws2_B.MatrixScaling[vipldws2_B.plane] =
-            vipldws2_B.y[vipldws2_B.plane] * vipldws2_B.ZHX_prd[0];
-          vipldws2_B.plane++;
-          vipldws2_B.MatrixScaling[vipldws2_B.plane] =
-            vipldws2_B.y[vipldws2_B.plane] * vipldws2_B.ZHX_prd[1];
-          vipldws2_B.plane++;
+          vipldws2_B.MatrixScaling[vipldws2_B.planeOffset] =
+            vipldws2_B.y[vipldws2_B.planeOffset] * vipldws2_B.ZHX_prd[0];
+          vipldws2_B.planeOffset++;
+          vipldws2_B.MatrixScaling[vipldws2_B.planeOffset] =
+            vipldws2_B.y[vipldws2_B.planeOffset] * vipldws2_B.ZHX_prd[1];
+          vipldws2_B.planeOffset++;
         }
 
-        /* End of S-Function (sdspdmult2): '<S47>/Matrix Scaling' */
+        /* End of S-Function (sdspdmult2): '<S48>/Matrix Scaling' */
 
-        /* S-Function (sdspfbsub2): '<S47>/Backward Substitution' */
+        /* S-Function (sdspfbsub2): '<S48>/Backward Substitution' */
         vipldws2_B.BackwardSubstitution[1] = vipldws2_B.MatrixScaling[1];
-        vipldws2_B.R2 = 0;
+        vipldws2_B.plane = 0;
         vipldws2_B.scale = vipldws2_B.MatrixScaling[0];
-        while (vipldws2_B.planeWidth > 0) {
-          vipldws2_B.scale -= vipldws2_B.LDLFactorization[vipldws2_B.R2 + 2] *
+        while (vipldws2_B.indxI > 0) {
+          vipldws2_B.scale -= vipldws2_B.LDLFactorization[vipldws2_B.plane + 2] *
             vipldws2_B.BackwardSubstitution[1];
-          vipldws2_B.R2 -= 2;
-          vipldws2_B.planeWidth = 0;
+          vipldws2_B.plane -= 2;
+          vipldws2_B.indxI = 0;
         }
 
         vipldws2_B.BackwardSubstitution[0] = vipldws2_B.scale;
         vipldws2_B.BackwardSubstitution[3] = vipldws2_B.MatrixScaling[3];
-        vipldws2_B.R2 = 0;
+        vipldws2_B.plane = 0;
         vipldws2_B.scale = vipldws2_B.MatrixScaling[2];
-        vipldws2_B.planeWidth = 1;
-        while (vipldws2_B.planeWidth > 0) {
-          vipldws2_B.scale -= vipldws2_B.LDLFactorization[vipldws2_B.R2 + 2] *
+        vipldws2_B.indxI = 1;
+        while (vipldws2_B.indxI > 0) {
+          vipldws2_B.scale -= vipldws2_B.LDLFactorization[vipldws2_B.plane + 2] *
             vipldws2_B.BackwardSubstitution[3];
-          vipldws2_B.R2 -= 2;
-          vipldws2_B.planeWidth = 0;
+          vipldws2_B.plane -= 2;
+          vipldws2_B.indxI = 0;
         }
 
         vipldws2_B.BackwardSubstitution[2] = vipldws2_B.scale;
         vipldws2_B.BackwardSubstitution[5] = vipldws2_B.MatrixScaling[5];
-        vipldws2_B.R2 = 0;
+        vipldws2_B.plane = 0;
         vipldws2_B.scale = vipldws2_B.MatrixScaling[4];
-        vipldws2_B.planeWidth = 1;
-        while (vipldws2_B.planeWidth > 0) {
-          vipldws2_B.scale -= vipldws2_B.LDLFactorization[vipldws2_B.R2 + 2] *
+        vipldws2_B.indxI = 1;
+        while (vipldws2_B.indxI > 0) {
+          vipldws2_B.scale -= vipldws2_B.LDLFactorization[vipldws2_B.plane + 2] *
             vipldws2_B.BackwardSubstitution[5];
-          vipldws2_B.R2 -= 2;
-          vipldws2_B.planeWidth = 0;
+          vipldws2_B.plane -= 2;
+          vipldws2_B.indxI = 0;
         }
 
         vipldws2_B.BackwardSubstitution[4] = vipldws2_B.scale;
         vipldws2_B.BackwardSubstitution[7] = vipldws2_B.MatrixScaling[7];
-        vipldws2_B.R2 = 0;
+        vipldws2_B.plane = 0;
         vipldws2_B.scale = vipldws2_B.MatrixScaling[6];
-        vipldws2_B.planeWidth = 1;
-        while (vipldws2_B.planeWidth > 0) {
-          vipldws2_B.scale -= vipldws2_B.LDLFactorization[vipldws2_B.R2 + 2] *
+        vipldws2_B.indxI = 1;
+        while (vipldws2_B.indxI > 0) {
+          vipldws2_B.scale -= vipldws2_B.LDLFactorization[vipldws2_B.plane + 2] *
             vipldws2_B.BackwardSubstitution[7];
-          vipldws2_B.R2 -= 2;
-          vipldws2_B.planeWidth = 0;
+          vipldws2_B.plane -= 2;
+          vipldws2_B.indxI = 0;
         }
 
         vipldws2_B.BackwardSubstitution[6] = vipldws2_B.scale;
 
-        /* End of S-Function (sdspfbsub2): '<S47>/Backward Substitution' */
+        /* End of S-Function (sdspfbsub2): '<S48>/Backward Substitution' */
         for (vipldws2_B.i = 0; vipldws2_B.i < 2; vipldws2_B.i++) {
-          for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < 4;
-               vipldws2_B.planeWidth++) {
-            /* Math: '<S42>/K Trans' */
-            vipldws2_B.KTrans[vipldws2_B.planeWidth + (vipldws2_B.i << 2)] =
-              vipldws2_B.BackwardSubstitution[(vipldws2_B.planeWidth << 1) +
+          for (vipldws2_B.plane = 0; vipldws2_B.plane < 4; vipldws2_B.plane++) {
+            /* Math: '<S43>/K Trans' */
+            vipldws2_B.KTrans[vipldws2_B.plane + (vipldws2_B.i << 2)] =
+              vipldws2_B.BackwardSubstitution[(vipldws2_B.plane << 1) +
               vipldws2_B.i];
 
-            /* Product: '<S42>/K*H*P_prd' incorporates:
-             *  Constant: '<S42>/Hcst'
+            /* Product: '<S43>/K*H*P_prd' incorporates:
+             *  Constant: '<S43>/Hcst'
              */
-            vipldws2_B.fv1[vipldws2_B.i + (vipldws2_B.planeWidth << 1)] = 0.0F;
-            vipldws2_B.fv1[vipldws2_B.i + (vipldws2_B.planeWidth << 1)] +=
-              vipldws2_B.Selector2_n[vipldws2_B.planeWidth << 2] *
+            vipldws2_B.fv1[vipldws2_B.i + (vipldws2_B.plane << 1)] = 0.0F;
+            vipldws2_B.fv1[vipldws2_B.i + (vipldws2_B.plane << 1)] +=
+              vipldws2_B.Selector2_n[vipldws2_B.plane << 2] *
               vipldws2_P.Hcst_Value[vipldws2_B.i];
-            vipldws2_B.fv1[vipldws2_B.i + (vipldws2_B.planeWidth << 1)] +=
-              vipldws2_B.Selector2_n[(vipldws2_B.planeWidth << 2) + 1] *
+            vipldws2_B.fv1[vipldws2_B.i + (vipldws2_B.plane << 1)] +=
+              vipldws2_B.Selector2_n[(vipldws2_B.plane << 2) + 1] *
               vipldws2_P.Hcst_Value[vipldws2_B.i + 2];
-            vipldws2_B.fv1[vipldws2_B.i + (vipldws2_B.planeWidth << 1)] +=
-              vipldws2_B.Selector2_n[(vipldws2_B.planeWidth << 2) + 2] *
+            vipldws2_B.fv1[vipldws2_B.i + (vipldws2_B.plane << 1)] +=
+              vipldws2_B.Selector2_n[(vipldws2_B.plane << 2) + 2] *
               vipldws2_P.Hcst_Value[vipldws2_B.i + 4];
-            vipldws2_B.fv1[vipldws2_B.i + (vipldws2_B.planeWidth << 1)] +=
-              vipldws2_B.Selector2_n[(vipldws2_B.planeWidth << 2) + 3] *
+            vipldws2_B.fv1[vipldws2_B.i + (vipldws2_B.plane << 1)] +=
+              vipldws2_B.Selector2_n[(vipldws2_B.plane << 2) + 3] *
               vipldws2_P.Hcst_Value[vipldws2_B.i + 6];
           }
         }
 
-        /* Product: '<S42>/K*H*P_prd' */
+        /* Product: '<S43>/K*H*P_prd' */
         for (vipldws2_B.i = 0; vipldws2_B.i < 4; vipldws2_B.i++) {
-          for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < 4;
-               vipldws2_B.planeWidth++) {
-            vipldws2_B.P_prdKHP_prd[vipldws2_B.i + (vipldws2_B.planeWidth << 2)]
-              = 0.0F;
-            vipldws2_B.P_prdKHP_prd[vipldws2_B.i + (vipldws2_B.planeWidth << 2)]
-              += vipldws2_B.fv1[vipldws2_B.planeWidth << 1] *
+          for (vipldws2_B.plane = 0; vipldws2_B.plane < 4; vipldws2_B.plane++) {
+            vipldws2_B.P_prdKHP_prd[vipldws2_B.i + (vipldws2_B.plane << 2)] =
+              0.0F;
+            vipldws2_B.P_prdKHP_prd[vipldws2_B.i + (vipldws2_B.plane << 2)] +=
+              vipldws2_B.fv1[vipldws2_B.plane << 1] *
               vipldws2_B.KTrans[vipldws2_B.i];
-            vipldws2_B.P_prdKHP_prd[vipldws2_B.i + (vipldws2_B.planeWidth << 2)]
-              += vipldws2_B.fv1[(vipldws2_B.planeWidth << 1) + 1] *
+            vipldws2_B.P_prdKHP_prd[vipldws2_B.i + (vipldws2_B.plane << 2)] +=
+              vipldws2_B.fv1[(vipldws2_B.plane << 1) + 1] *
               vipldws2_B.KTrans[vipldws2_B.i + 4];
           }
         }
 
-        /* Sum: '<S42>/P_prd-K*H*P_prd' */
+        /* Sum: '<S43>/P_prd-K*H*P_prd' */
         for (vipldws2_B.i = 0; vipldws2_B.i < 16; vipldws2_B.i++) {
           vipldws2_B.P_prdKHP_prd[vipldws2_B.i] =
             vipldws2_B.Selector2_n[vipldws2_B.i] -
             vipldws2_B.P_prdKHP_prd[vipldws2_B.i];
         }
 
-        /* End of Sum: '<S42>/P_prd-K*H*P_prd' */
+        /* End of Sum: '<S43>/P_prd-K*H*P_prd' */
 
-        /* Product: '<S42>/A*P*At' incorporates:
-         *  Constant: '<S42>/Constant3'
-         *  Constant: '<S42>/Constant4'
+        /* Product: '<S43>/A*P*At' incorporates:
+         *  Constant: '<S43>/Constant3'
+         *  Constant: '<S43>/Constant4'
          */
         for (vipldws2_B.i = 0; vipldws2_B.i < 4; vipldws2_B.i++) {
-          for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < 4;
-               vipldws2_B.planeWidth++) {
-            vipldws2_B.fv0[vipldws2_B.i + (vipldws2_B.planeWidth << 2)] = 0.0F;
-            vipldws2_B.fv0[vipldws2_B.i + (vipldws2_B.planeWidth << 2)] +=
-              vipldws2_P.Constant4_Value[vipldws2_B.planeWidth << 2] *
+          for (vipldws2_B.plane = 0; vipldws2_B.plane < 4; vipldws2_B.plane++) {
+            vipldws2_B.fv0[vipldws2_B.i + (vipldws2_B.plane << 2)] = 0.0F;
+            vipldws2_B.fv0[vipldws2_B.i + (vipldws2_B.plane << 2)] +=
+              vipldws2_P.Constant4_Value[vipldws2_B.plane << 2] *
               vipldws2_B.P_prdKHP_prd[vipldws2_B.i];
-            vipldws2_B.fv0[vipldws2_B.i + (vipldws2_B.planeWidth << 2)] +=
-              vipldws2_P.Constant4_Value[(vipldws2_B.planeWidth << 2) + 1] *
+            vipldws2_B.fv0[vipldws2_B.i + (vipldws2_B.plane << 2)] +=
+              vipldws2_P.Constant4_Value[(vipldws2_B.plane << 2) + 1] *
               vipldws2_B.P_prdKHP_prd[vipldws2_B.i + 4];
-            vipldws2_B.fv0[vipldws2_B.i + (vipldws2_B.planeWidth << 2)] +=
-              vipldws2_P.Constant4_Value[(vipldws2_B.planeWidth << 2) + 2] *
+            vipldws2_B.fv0[vipldws2_B.i + (vipldws2_B.plane << 2)] +=
+              vipldws2_P.Constant4_Value[(vipldws2_B.plane << 2) + 2] *
               vipldws2_B.P_prdKHP_prd[vipldws2_B.i + 8];
-            vipldws2_B.fv0[vipldws2_B.i + (vipldws2_B.planeWidth << 2)] +=
-              vipldws2_P.Constant4_Value[(vipldws2_B.planeWidth << 2) + 3] *
+            vipldws2_B.fv0[vipldws2_B.i + (vipldws2_B.plane << 2)] +=
+              vipldws2_P.Constant4_Value[(vipldws2_B.plane << 2) + 3] *
               vipldws2_B.P_prdKHP_prd[vipldws2_B.i + 12];
           }
         }
 
         for (vipldws2_B.i = 0; vipldws2_B.i < 4; vipldws2_B.i++) {
-          for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < 4;
-               vipldws2_B.planeWidth++) {
-            vipldws2_B.APAtQ[vipldws2_B.i + (vipldws2_B.planeWidth << 2)] = 0.0F;
-            vipldws2_B.APAtQ[vipldws2_B.i + (vipldws2_B.planeWidth << 2)] +=
-              vipldws2_B.fv0[vipldws2_B.planeWidth << 2] *
+          for (vipldws2_B.plane = 0; vipldws2_B.plane < 4; vipldws2_B.plane++) {
+            vipldws2_B.APAtQ[vipldws2_B.i + (vipldws2_B.plane << 2)] = 0.0F;
+            vipldws2_B.APAtQ[vipldws2_B.i + (vipldws2_B.plane << 2)] +=
+              vipldws2_B.fv0[vipldws2_B.plane << 2] *
               vipldws2_P.Constant3_Value[vipldws2_B.i];
-            vipldws2_B.APAtQ[vipldws2_B.i + (vipldws2_B.planeWidth << 2)] +=
-              vipldws2_B.fv0[(vipldws2_B.planeWidth << 2) + 1] *
+            vipldws2_B.APAtQ[vipldws2_B.i + (vipldws2_B.plane << 2)] +=
+              vipldws2_B.fv0[(vipldws2_B.plane << 2) + 1] *
               vipldws2_P.Constant3_Value[vipldws2_B.i + 4];
-            vipldws2_B.APAtQ[vipldws2_B.i + (vipldws2_B.planeWidth << 2)] +=
-              vipldws2_B.fv0[(vipldws2_B.planeWidth << 2) + 2] *
+            vipldws2_B.APAtQ[vipldws2_B.i + (vipldws2_B.plane << 2)] +=
+              vipldws2_B.fv0[(vipldws2_B.plane << 2) + 2] *
               vipldws2_P.Constant3_Value[vipldws2_B.i + 8];
-            vipldws2_B.APAtQ[vipldws2_B.i + (vipldws2_B.planeWidth << 2)] +=
-              vipldws2_B.fv0[(vipldws2_B.planeWidth << 2) + 3] *
+            vipldws2_B.APAtQ[vipldws2_B.i + (vipldws2_B.plane << 2)] +=
+              vipldws2_B.fv0[(vipldws2_B.plane << 2) + 3] *
               vipldws2_P.Constant3_Value[vipldws2_B.i + 12];
           }
         }
 
-        /* End of Product: '<S42>/A*P*At' */
+        /* End of Product: '<S43>/A*P*At' */
 
-        /* Sum: '<S42>/A*P*At+Q' incorporates:
-         *  Constant: '<S42>/Constant5'
+        /* Sum: '<S43>/A*P*At+Q' incorporates:
+         *  Constant: '<S43>/Constant5'
          */
         for (vipldws2_B.i = 0; vipldws2_B.i < 16; vipldws2_B.i++) {
           vipldws2_B.APAtQ[vipldws2_B.i] +=
             vipldws2_P.Constant5_Value[vipldws2_B.i];
         }
 
-        /* End of Sum: '<S42>/A*P*At+Q' */
+        /* End of Sum: '<S43>/A*P*At+Q' */
         for (vipldws2_B.i = 0; vipldws2_B.i < 2; vipldws2_B.i++) {
-          /* Product: '<S42>/H*X_prd' incorporates:
-           *  Constant: '<S42>/Hcst'
+          /* Product: '<S43>/H*X_prd' incorporates:
+           *  Constant: '<S43>/Hcst'
            */
           vipldws2_B.ZHX_prd[vipldws2_B.i] = 0.0F;
           vipldws2_B.ZHX_prd[vipldws2_B.i] += vipldws2_P.Hcst_Value[vipldws2_B.i]
@@ -2428,26 +2439,26 @@ void vipldws2_step(void)
           vipldws2_B.ZHX_prd[vipldws2_B.i] += vipldws2_P.Hcst_Value[vipldws2_B.i
             + 6] * vipldws2_B.Selector1_c[3];
 
-          /* Sum: '<S42>/Z-H*X_prd' */
+          /* Sum: '<S43>/Z-H*X_prd' */
           vipldws2_B.ZHX_prd[vipldws2_B.i] = vipldws2_B.Selector_i[vipldws2_B.i]
             - vipldws2_B.ZHX_prd[vipldws2_B.i];
         }
 
         for (vipldws2_B.i = 0; vipldws2_B.i < 4; vipldws2_B.i++) {
-          /* Product: '<S42>/K*(Z-H*X_prd)' */
+          /* Product: '<S43>/K*(Z-H*X_prd)' */
           vipldws2_B.X_prdKZHX_prd[vipldws2_B.i] = 0.0F;
           vipldws2_B.X_prdKZHX_prd[vipldws2_B.i] +=
             vipldws2_B.KTrans[vipldws2_B.i] * vipldws2_B.ZHX_prd[0];
           vipldws2_B.X_prdKZHX_prd[vipldws2_B.i] +=
             vipldws2_B.KTrans[vipldws2_B.i + 4] * vipldws2_B.ZHX_prd[1];
 
-          /* Sum: '<S42>/X_prd+K*(Z-H*X_prd)' */
+          /* Sum: '<S43>/X_prd+K*(Z-H*X_prd)' */
           vipldws2_B.X_prdKZHX_prd[vipldws2_B.i] +=
             vipldws2_B.Selector1_c[vipldws2_B.i];
         }
 
-        /* Product: '<S42>/A*X' incorporates:
-         *  Constant: '<S42>/Constant3'
+        /* Product: '<S43>/A*X' incorporates:
+         *  Constant: '<S43>/Constant3'
          */
         for (vipldws2_B.i = 0; vipldws2_B.i < 4; vipldws2_B.i++) {
           vipldws2_B.AX[vipldws2_B.i] = 0.0F;
@@ -2461,66 +2472,66 @@ void vipldws2_step(void)
             + 12] * vipldws2_B.X_prdKZHX_prd[3];
         }
 
-        /* End of Product: '<S42>/A*X' */
+        /* End of Product: '<S43>/A*X' */
 
-        /* Reshape: '<S42>/P_prd_Reshape' */
+        /* Reshape: '<S43>/P_prd_Reshape' */
         memcpy(&vipldws2_B.P_prd_Reshape[0], &vipldws2_B.APAtQ[0], sizeof
                (real32_T) << 4U);
         for (vipldws2_B.i = 0; vipldws2_B.i < 2; vipldws2_B.i++) {
-          /* Product: '<S42>/Z_est_Multiply' incorporates:
-           *  Constant: '<S42>/Hcst'
+          /* Product: '<S43>/Z_est_Multiply' incorporates:
+           *  Constant: '<S43>/Hcst'
            */
           vipldws2_B.Z_est_Multiply[vipldws2_B.i] = 0.0F;
 
-          /* Product: '<S42>/Z_prd_Multiply' incorporates:
-           *  Constant: '<S42>/Hcst'
+          /* Product: '<S43>/Z_prd_Multiply' incorporates:
+           *  Constant: '<S43>/Hcst'
            */
           vipldws2_B.Z_prd_Multiply[vipldws2_B.i] = 0.0F;
 
-          /* Product: '<S42>/Z_est_Multiply' incorporates:
-           *  Constant: '<S42>/Hcst'
+          /* Product: '<S43>/Z_est_Multiply' incorporates:
+           *  Constant: '<S43>/Hcst'
            */
           vipldws2_B.Z_est_Multiply[vipldws2_B.i] +=
             vipldws2_P.Hcst_Value[vipldws2_B.i] * vipldws2_B.X_prdKZHX_prd[0];
 
-          /* Product: '<S42>/Z_prd_Multiply' incorporates:
-           *  Constant: '<S42>/Hcst'
+          /* Product: '<S43>/Z_prd_Multiply' incorporates:
+           *  Constant: '<S43>/Hcst'
            */
           vipldws2_B.Z_prd_Multiply[vipldws2_B.i] +=
             vipldws2_P.Hcst_Value[vipldws2_B.i] * vipldws2_B.AX[0];
 
-          /* Product: '<S42>/Z_est_Multiply' incorporates:
-           *  Constant: '<S42>/Hcst'
+          /* Product: '<S43>/Z_est_Multiply' incorporates:
+           *  Constant: '<S43>/Hcst'
            */
           vipldws2_B.Z_est_Multiply[vipldws2_B.i] +=
             vipldws2_P.Hcst_Value[vipldws2_B.i + 2] * vipldws2_B.X_prdKZHX_prd[1];
 
-          /* Product: '<S42>/Z_prd_Multiply' incorporates:
-           *  Constant: '<S42>/Hcst'
+          /* Product: '<S43>/Z_prd_Multiply' incorporates:
+           *  Constant: '<S43>/Hcst'
            */
           vipldws2_B.Z_prd_Multiply[vipldws2_B.i] +=
             vipldws2_P.Hcst_Value[vipldws2_B.i + 2] * vipldws2_B.AX[1];
 
-          /* Product: '<S42>/Z_est_Multiply' incorporates:
-           *  Constant: '<S42>/Hcst'
+          /* Product: '<S43>/Z_est_Multiply' incorporates:
+           *  Constant: '<S43>/Hcst'
            */
           vipldws2_B.Z_est_Multiply[vipldws2_B.i] +=
             vipldws2_P.Hcst_Value[vipldws2_B.i + 4] * vipldws2_B.X_prdKZHX_prd[2];
 
-          /* Product: '<S42>/Z_prd_Multiply' incorporates:
-           *  Constant: '<S42>/Hcst'
+          /* Product: '<S43>/Z_prd_Multiply' incorporates:
+           *  Constant: '<S43>/Hcst'
            */
           vipldws2_B.Z_prd_Multiply[vipldws2_B.i] +=
             vipldws2_P.Hcst_Value[vipldws2_B.i + 4] * vipldws2_B.AX[2];
 
-          /* Product: '<S42>/Z_est_Multiply' incorporates:
-           *  Constant: '<S42>/Hcst'
+          /* Product: '<S43>/Z_est_Multiply' incorporates:
+           *  Constant: '<S43>/Hcst'
            */
           vipldws2_B.Z_est_Multiply[vipldws2_B.i] +=
             vipldws2_P.Hcst_Value[vipldws2_B.i + 6] * vipldws2_B.X_prdKZHX_prd[3];
 
-          /* Product: '<S42>/Z_prd_Multiply' incorporates:
-           *  Constant: '<S42>/Hcst'
+          /* Product: '<S43>/Z_prd_Multiply' incorporates:
+           *  Constant: '<S43>/Hcst'
            */
           vipldws2_B.Z_prd_Multiply[vipldws2_B.i] +=
             vipldws2_P.Hcst_Value[vipldws2_B.i + 6] * vipldws2_B.AX[3];
@@ -2529,10 +2540,10 @@ void vipldws2_step(void)
         vipldws2_DW.Core_SubsysRanBC = 4;
       }
 
-      /* End of Outputs for SubSystem: '<S41>/Core' */
+      /* End of Outputs for SubSystem: '<S42>/Core' */
 
-      /* Switch: '<S43>/Switch' incorporates:
-       *  Constant: '<S43>/Reset_Value'
+      /* Switch: '<S44>/Switch' incorporates:
+       *  Constant: '<S44>/Reset_Value'
        */
       if (vipldws2_B.Rst_And) {
         memcpy(&vipldws2_B.Switch_m[0], &vipldws2_P.Reset_Value_Value[0], sizeof
@@ -2542,9 +2553,9 @@ void vipldws2_step(void)
                (real32_T) << 4U);
       }
 
-      /* End of Switch: '<S43>/Switch' */
+      /* End of Switch: '<S44>/Switch' */
 
-      /* Assignment: '<S43>/Assignment' */
+      /* Assignment: '<S44>/Assignment' */
       if (vipldws2_DW.Iterator_IterationMarker[0] < 2) {
         vipldws2_DW.Iterator_IterationMarker[0] = 2U;
         memcpy(&vipldws2_B.Assignment_io[0], &vipldws2_B.UnitDelay3[0], 320U *
@@ -2556,10 +2567,10 @@ void vipldws2_step(void)
           = vipldws2_B.Switch_m[vipldws2_B.i];
       }
 
-      /* End of Assignment: '<S43>/Assignment' */
+      /* End of Assignment: '<S44>/Assignment' */
 
-      /* Switch: '<S44>/Switch' incorporates:
-       *  Constant: '<S44>/Reset_Value'
+      /* Switch: '<S45>/Switch' incorporates:
+       *  Constant: '<S45>/Reset_Value'
        */
       if (vipldws2_B.Rst_And) {
         vipldws2_B.Switch_l[0] = vipldws2_P.Reset_Value_Value_j[0];
@@ -2573,9 +2584,9 @@ void vipldws2_step(void)
         vipldws2_B.Switch_l[3] = vipldws2_B.AX[3];
       }
 
-      /* End of Switch: '<S44>/Switch' */
+      /* End of Switch: '<S45>/Switch' */
 
-      /* Assignment: '<S44>/Assignment' */
+      /* Assignment: '<S45>/Assignment' */
       if (vipldws2_DW.Iterator_IterationMarker[1] < 2) {
         vipldws2_DW.Iterator_IterationMarker[1] = 2U;
         memcpy(&vipldws2_B.Assignment_o[0], &vipldws2_B.UnitDelay2[0], 80U *
@@ -2591,10 +2602,10 @@ void vipldws2_step(void)
       vipldws2_B.Assignment_o[3 + ((vipldws2_B.Iterator - 1) << 2)] =
         vipldws2_B.Switch_l[3];
 
-      /* End of Assignment: '<S44>/Assignment' */
+      /* End of Assignment: '<S45>/Assignment' */
 
-      /* Switch: '<S45>/Switch' incorporates:
-       *  Constant: '<S45>/Reset_Value'
+      /* Switch: '<S46>/Switch' incorporates:
+       *  Constant: '<S46>/Reset_Value'
        */
       if (vipldws2_B.Rst_And) {
         vipldws2_B.Switch_j[0] = vipldws2_P.Reset_Value_Value_b[0];
@@ -2602,12 +2613,12 @@ void vipldws2_step(void)
         vipldws2_B.Switch_j[0] = vipldws2_B.Z_est_Multiply[0];
       }
 
-      /* Assignment: '<S45>/Assignment' */
+      /* Assignment: '<S46>/Assignment' */
       vipldws2_B.Assignment_p[(vipldws2_B.Iterator - 1) << 1] =
         vipldws2_B.Switch_j[0];
 
-      /* Switch: '<S46>/Switch' incorporates:
-       *  Constant: '<S46>/Reset_Value'
+      /* Switch: '<S47>/Switch' incorporates:
+       *  Constant: '<S47>/Reset_Value'
        */
       if (vipldws2_B.Rst_And) {
         vipldws2_B.Switch_j[0] = vipldws2_P.Reset_Value_Value_p[0];
@@ -2615,12 +2626,12 @@ void vipldws2_step(void)
         vipldws2_B.Switch_j[0] = vipldws2_B.Z_prd_Multiply[0];
       }
 
-      /* Assignment: '<S46>/Assignment' */
+      /* Assignment: '<S47>/Assignment' */
       vipldws2_B.Assignment_a[(vipldws2_B.Iterator - 1) << 1] =
         vipldws2_B.Switch_j[0];
 
-      /* Switch: '<S45>/Switch' incorporates:
-       *  Constant: '<S45>/Reset_Value'
+      /* Switch: '<S46>/Switch' incorporates:
+       *  Constant: '<S46>/Reset_Value'
        */
       if (vipldws2_B.Rst_And) {
         vipldws2_B.Switch_j[1] = vipldws2_P.Reset_Value_Value_b[1];
@@ -2628,12 +2639,12 @@ void vipldws2_step(void)
         vipldws2_B.Switch_j[1] = vipldws2_B.Z_est_Multiply[1];
       }
 
-      /* Assignment: '<S45>/Assignment' */
+      /* Assignment: '<S46>/Assignment' */
       vipldws2_B.Assignment_p[1 + ((vipldws2_B.Iterator - 1) << 1)] =
         vipldws2_B.Switch_j[1];
 
-      /* Switch: '<S46>/Switch' incorporates:
-       *  Constant: '<S46>/Reset_Value'
+      /* Switch: '<S47>/Switch' incorporates:
+       *  Constant: '<S47>/Reset_Value'
        */
       if (vipldws2_B.Rst_And) {
         vipldws2_B.Switch_j[1] = vipldws2_P.Reset_Value_Value_p[1];
@@ -2641,17 +2652,17 @@ void vipldws2_step(void)
         vipldws2_B.Switch_j[1] = vipldws2_B.Z_prd_Multiply[1];
       }
 
-      /* Assignment: '<S46>/Assignment' */
+      /* Assignment: '<S47>/Assignment' */
       vipldws2_B.Assignment_a[1 + ((vipldws2_B.Iterator - 1) << 1)] =
         vipldws2_B.Switch_j[1];
       vipldws2_DW.Options_SubsysRanBC = 4;
     }
 
-    /* End of Outputs for SubSystem: '<S40>/Options' */
-    vipldws2_B.indxI++;
+    /* End of Outputs for SubSystem: '<S41>/Options' */
+    vipldws2_B.planeWidth++;
   }
 
-  /* End of Outputs for SubSystem: '<S33>/Control' */
+  /* End of Outputs for SubSystem: '<S34>/Control' */
   for (vipldws2_B.i = 0; vipldws2_B.i < 20; vipldws2_B.i++) {
     /* Selector: '<S1>/select rho5' */
     vipldws2_B.selectrho5_f[vipldws2_B.i] = vipldws2_B.Assignment_p
@@ -2670,7 +2681,7 @@ void vipldws2_step(void)
 
     /* part-1: top horizontal axis */
     vipldws2_B.cnt = (real32_T)floor(vipldws2_B.scale + 0.5F);
-    if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 239.0F)) {
+    if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 319.0F)) {
       vipldws2_B.tmpOutRC[0U] = 0;
       if (vipldws2_B.cnt >= 0.5F) {
         vipldws2_B.tmpOutRC[1U] = (int32_T)(real32_T)floor(vipldws2_B.cnt + 0.5F);
@@ -2686,7 +2697,7 @@ void vipldws2_step(void)
 
     /* part-2: left vertical axis */
     vipldws2_B.cnt = (real32_T)floor(vipldws2_B.y2 + 0.5F);
-    if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 199.0F)) {
+    if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 119.0F)) {
       if (vipldws2_B.cnt >= 0.5F) {
         vipldws2_B.tmpOutRC[vipldws2_B.indxI << 1] = (int32_T)(real32_T)floor
           (vipldws2_B.cnt + 0.5F);
@@ -2700,9 +2711,9 @@ void vipldws2_step(void)
 
     /* part-3: Right vertical axis */
     if (vipldws2_B.indxI < 2) {
-      vipldws2_B.cnt = (real32_T)floor((vipldws2_B.scale - 239.0F) *
+      vipldws2_B.cnt = (real32_T)floor((vipldws2_B.scale - 319.0F) *
         (vipldws2_B.y2 / vipldws2_B.scale) + 0.5F);
-      if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 199.0F)) {
+      if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 119.0F)) {
         if (vipldws2_B.cnt >= 0.5F) {
           vipldws2_B.tmpOutRC[vipldws2_B.indxI << 1] = (int32_T)(real32_T)floor
             (vipldws2_B.cnt + 0.5F);
@@ -2710,7 +2721,7 @@ void vipldws2_step(void)
           vipldws2_B.tmpOutRC[vipldws2_B.indxI << 1] = 0;
         }
 
-        vipldws2_B.tmpOutRC[1 + (vipldws2_B.indxI << 1)] = 239;
+        vipldws2_B.tmpOutRC[1 + (vipldws2_B.indxI << 1)] = 319;
         vipldws2_B.indxI++;
       }
     }
@@ -2718,9 +2729,9 @@ void vipldws2_step(void)
     /* part-4: bottom horizontal axis */
     if (vipldws2_B.indxI < 2) {
       vipldws2_B.cnt = (real32_T)floor((vipldws2_B.scale - vipldws2_B.scale /
-        vipldws2_B.y2 * 199.0F) + 0.5F);
-      if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 239.0F)) {
-        vipldws2_B.tmpOutRC[vipldws2_B.indxI << 1] = 199;
+        vipldws2_B.y2 * 119.0F) + 0.5F);
+      if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 319.0F)) {
+        vipldws2_B.tmpOutRC[vipldws2_B.indxI << 1] = 119;
         if (vipldws2_B.cnt >= 0.5F) {
           vipldws2_B.tmpOutRC[1 + (vipldws2_B.indxI << 1)] = (int32_T)(real32_T)
             floor(vipldws2_B.cnt + 0.5F);
@@ -2773,10 +2784,9 @@ void vipldws2_step(void)
 
   /* Selector: '<S1>/Selector1' */
   for (vipldws2_B.i = 0; vipldws2_B.i < 4; vipldws2_B.i++) {
-    for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < 20;
-         vipldws2_B.planeWidth++) {
-      vipldws2_B.Selector1_il[vipldws2_B.planeWidth + 20 * vipldws2_B.i] =
-        vipldws2_B.Bias1[20 * tmp[vipldws2_B.i] + vipldws2_B.planeWidth];
+    for (vipldws2_B.plane = 0; vipldws2_B.plane < 20; vipldws2_B.plane++) {
+      vipldws2_B.Selector1_il[vipldws2_B.plane + 20 * vipldws2_B.i] =
+        vipldws2_B.Bias1[20 * tmp_0[vipldws2_B.i] + vipldws2_B.plane];
     }
   }
 
@@ -3194,22 +3204,22 @@ void vipldws2_step(void)
 
   /* End of MATLAB Function: '<S17>/Combine Left Right Departure' */
 
-  /* RelationalOperator: '<S62>/Compare' incorporates:
-   *  Constant: '<S62>/Constant'
+  /* RelationalOperator: '<S63>/Compare' incorporates:
+   *  Constant: '<S63>/Constant'
    */
   vipldws2_B.Compare_ni = (vipldws2_B.outMsg ==
     vipldws2_P.CompareToConstant2_const_i);
 
-  /* Selector: '<S30>/select rho5' */
+  /* Selector: '<S31>/select rho5' */
   for (vipldws2_B.i = 0; vipldws2_B.i < 21; vipldws2_B.i++) {
     memcpy(&vipldws2_B.selectrho5_m[vipldws2_B.i * 36],
-           &vipldws2_B.HoughTransform_o1[vipldws2_B.i * 625 + 91004], 36U *
+           &vipldws2_B.HoughTransform_o1[vipldws2_B.i * 683 + 99414], 36U *
            sizeof(real32_T));
   }
 
-  /* End of Selector: '<S30>/select rho5' */
+  /* End of Selector: '<S31>/select rho5' */
 
-  /* S-Function (svipfindlocalmax): '<S30>/Find Local Maxima1' */
+  /* S-Function (svipfindlocalmax): '<S31>/Find Local Maxima1' */
   vipldws2_B.planeWidth = 0;
   done = false;
   vipldws2_B.i = 0;
@@ -3222,13 +3232,13 @@ void vipldws2_step(void)
   vipldws2_B.FindLocalMaxima1_o1_f[0] = 0U;
   vipldws2_B.FindLocalMaxima1_o1_f[1] = 0U;
   while (!done) {
-    vipldws2_B.plane = 0;
+    vipldws2_B.planeOffset = 0;
     vipldws2_B.scale = vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWOR_e[0];
     vipldws2_B.i = 0;
     while (vipldws2_B.i < 756) {
       if (vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWOR_e[vipldws2_B.i] >
           vipldws2_B.scale) {
-        vipldws2_B.plane = vipldws2_B.i;
+        vipldws2_B.planeOffset = vipldws2_B.i;
         vipldws2_B.scale =
           vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWOR_e[vipldws2_B.i];
       }
@@ -3236,27 +3246,27 @@ void vipldws2_step(void)
       vipldws2_B.i++;
     }
 
-    vipldws2_B.R2 = vipldws2_B.plane % 36;
-    vipldws2_B.i = vipldws2_B.plane / 36;
-    if (vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWOR_e[vipldws2_B.plane] >=
+    vipldws2_B.plane = vipldws2_B.planeOffset % 36;
+    vipldws2_B.i = vipldws2_B.planeOffset / 36;
+    if (vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWOR_e[vipldws2_B.planeOffset] >=
         vipldws2_P.FindLocalMaxima1_threshold_b) {
       vipldws2_B.FindLocalMaxima1_o1_f[vipldws2_B.planeWidth] = (uint16_T)(1 +
         vipldws2_B.i);
       vipldws2_B.FindLocalMaxima1_o1_f[1U + vipldws2_B.planeWidth] = (uint16_T)
-        (1 + vipldws2_B.R2);
+        (1 + vipldws2_B.plane);
       vipldws2_B.planeWidth++;
       if (vipldws2_B.planeWidth == 1) {
         done = true;
       }
 
-      vipldws2_B.plane = vipldws2_B.R2 - 3;
-      if (!(vipldws2_B.plane > 0)) {
-        vipldws2_B.plane = 0;
+      vipldws2_B.planeOffset = vipldws2_B.plane - 3;
+      if (!(vipldws2_B.planeOffset > 0)) {
+        vipldws2_B.planeOffset = 0;
       }
 
-      vipldws2_B.R2 += 3;
-      if (!(vipldws2_B.R2 < 35)) {
-        vipldws2_B.R2 = 35;
+      vipldws2_B.plane += 3;
+      if (!(vipldws2_B.plane < 35)) {
+        vipldws2_B.plane = 35;
       }
 
       vipldws2_B.C2 = vipldws2_B.i - 3;
@@ -3264,8 +3274,8 @@ void vipldws2_step(void)
       if (!((vipldws2_B.C2 < 0) || (vipldws2_B.c2 > 20))) {
         while (vipldws2_B.C2 <= vipldws2_B.c2) {
           vipldws2_B.c1 = vipldws2_B.C2 * 36;
-          vipldws2_B.i = vipldws2_B.plane;
-          while (vipldws2_B.i <= vipldws2_B.R2) {
+          vipldws2_B.i = vipldws2_B.planeOffset;
+          while (vipldws2_B.i <= vipldws2_B.plane) {
             vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWOR_e[vipldws2_B.i +
               vipldws2_B.c1] = 0.0F;
             vipldws2_B.i++;
@@ -3275,52 +3285,52 @@ void vipldws2_step(void)
         }
       } else {
         if (vipldws2_B.C2 < 0) {
-          vipldws2_B.ii = vipldws2_B.C2;
-          while (vipldws2_B.ii <= vipldws2_B.c2) {
-            if (vipldws2_B.ii < 0) {
-              vipldws2_B.c1 = (vipldws2_B.ii + 21) * 36 + 35;
-              vipldws2_B.i = vipldws2_B.plane;
-              while (vipldws2_B.i <= vipldws2_B.R2) {
+          vipldws2_B.j = vipldws2_B.C2;
+          while (vipldws2_B.j <= vipldws2_B.c2) {
+            if (vipldws2_B.j < 0) {
+              vipldws2_B.c1 = (vipldws2_B.j + 21) * 36 + 35;
+              vipldws2_B.i = vipldws2_B.planeOffset;
+              while (vipldws2_B.i <= vipldws2_B.plane) {
                 vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWOR_e[vipldws2_B.c1 -
                   vipldws2_B.i] = 0.0F;
                 vipldws2_B.i++;
               }
             } else {
-              vipldws2_B.c1 = vipldws2_B.ii * 36;
-              vipldws2_B.i = vipldws2_B.plane;
-              while (vipldws2_B.i <= vipldws2_B.R2) {
+              vipldws2_B.c1 = vipldws2_B.j * 36;
+              vipldws2_B.i = vipldws2_B.planeOffset;
+              while (vipldws2_B.i <= vipldws2_B.plane) {
                 vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWOR_e[vipldws2_B.i +
                   vipldws2_B.c1] = 0.0F;
                 vipldws2_B.i++;
               }
             }
 
-            vipldws2_B.ii++;
+            vipldws2_B.j++;
           }
         }
 
         if (vipldws2_B.c2 > 20) {
-          vipldws2_B.ii = vipldws2_B.C2;
-          while (vipldws2_B.ii <= vipldws2_B.c2) {
-            if (vipldws2_B.ii > 20) {
-              vipldws2_B.c1 = (vipldws2_B.ii - 21) * 36 + 35;
-              vipldws2_B.i = vipldws2_B.plane;
-              while (vipldws2_B.i <= vipldws2_B.R2) {
+          vipldws2_B.j = vipldws2_B.C2;
+          while (vipldws2_B.j <= vipldws2_B.c2) {
+            if (vipldws2_B.j > 20) {
+              vipldws2_B.c1 = (vipldws2_B.j - 21) * 36 + 35;
+              vipldws2_B.i = vipldws2_B.planeOffset;
+              while (vipldws2_B.i <= vipldws2_B.plane) {
                 vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWOR_e[vipldws2_B.c1 -
                   vipldws2_B.i] = 0.0F;
                 vipldws2_B.i++;
               }
             } else {
-              vipldws2_B.c1 = vipldws2_B.ii * 36;
-              vipldws2_B.i = vipldws2_B.plane;
-              while (vipldws2_B.i <= vipldws2_B.R2) {
+              vipldws2_B.c1 = vipldws2_B.j * 36;
+              vipldws2_B.i = vipldws2_B.planeOffset;
+              while (vipldws2_B.i <= vipldws2_B.plane) {
                 vipldws2_DW.FindLocalMaxima1_TEMP_IN_DWOR_e[vipldws2_B.i +
                   vipldws2_B.c1] = 0.0F;
                 vipldws2_B.i++;
               }
             }
 
-            vipldws2_B.ii++;
+            vipldws2_B.j++;
           }
         }
       }
@@ -3331,52 +3341,52 @@ void vipldws2_step(void)
 
   vipldws2_B.FindLocalMaxima1_o2_c = (uint16_T)vipldws2_B.planeWidth;
 
-  /* End of S-Function (svipfindlocalmax): '<S30>/Find Local Maxima1' */
+  /* End of S-Function (svipfindlocalmax): '<S31>/Find Local Maxima1' */
 
   /* Switch: '<S5>/Switch1' */
   if (vipldws2_B.Compare_ni) {
-    /* Selector: '<S31>/Selector2' */
+    /* Selector: '<S32>/Selector2' */
     vipldws2_B.Selector2_mw[0] = vipldws2_B.FindLocalMaxima1_o1[1];
 
-    /* Math: '<S31>/Transpose' */
+    /* Math: '<S32>/Transpose' */
     vipldws2_B.Transpose_b[0] = vipldws2_B.Selector2_mw[0];
 
-    /* Selector: '<S31>/Selector2' */
+    /* Selector: '<S32>/Selector2' */
     vipldws2_B.Selector2_mw[1] = vipldws2_B.FindLocalMaxima1_o1[0];
 
-    /* Math: '<S31>/Transpose' */
+    /* Math: '<S32>/Transpose' */
     vipldws2_B.Transpose_b[1] = vipldws2_B.Selector2_mw[1];
 
-    /* Selector: '<S31>/select rho4' */
+    /* Selector: '<S32>/select rho4' */
     vipldws2_B.Bias3_f = vipldws2_B.Transpose_b[0];
 
-    /* Bias: '<S31>/Bias2' */
+    /* Bias: '<S32>/Bias2' */
     vipldws2_B.Bias3_f = (uint16_T)((uint32_T)vipldws2_B.Bias3_f +
       vipldws2_P.Bias2_Bias_h);
 
-    /* Selector: '<S31>/Selector rho' */
+    /* Selector: '<S32>/Selector rho' */
     vipldws2_B.Selectorrho_c = vipldws2_B.HoughTransform_o3[vipldws2_B.Bias3_f -
       1];
 
-    /* Selector: '<S31>/select rho7' */
+    /* Selector: '<S32>/select rho7' */
     vipldws2_B.Bias3_f = vipldws2_B.Transpose_b[1];
 
-    /* Bias: '<S31>/Bias3' */
+    /* Bias: '<S32>/Bias3' */
     vipldws2_B.Bias3_f = (uint16_T)((uint32_T)vipldws2_B.Bias3_f +
       vipldws2_P.Bias3_Bias_d);
 
-    /* Selector: '<S31>/Selector theta' */
+    /* Selector: '<S32>/Selector theta' */
     vipldws2_B.Selectortheta_i = vipldws2_B.HoughTransform_o2[vipldws2_B.Bias3_f
       - 1];
 
-    /* S-Function (sviphoughlines): '<S27>/Hough Lines' */
+    /* S-Function (sviphoughlines): '<S28>/Hough Lines' */
     vipldws2_B.indxI = 0;
     vipldws2_B.scale = (vipldws2_B.Selectorrho_c + 1.1920929E-7F) / ((real32_T)
       cos(vipldws2_B.Selectortheta_i) + 1.1920929E-7F);
 
     /* part-1: top horizontal axis */
     vipldws2_B.cnt = (real32_T)floor(vipldws2_B.scale + 0.5F);
-    if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 239.0F)) {
+    if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 319.0F)) {
       vipldws2_B.tmpOutRC_m[0U] = 0;
       if (vipldws2_B.cnt >= 0.5F) {
         vipldws2_B.tmpOutRC_m[1U] = (int32_T)(real32_T)floor(vipldws2_B.cnt +
@@ -3393,7 +3403,7 @@ void vipldws2_step(void)
 
     /* part-2: left vertical axis */
     vipldws2_B.cnt = (real32_T)floor(vipldws2_B.y2 + 0.5F);
-    if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 199.0F)) {
+    if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 119.0F)) {
       if (vipldws2_B.cnt >= 0.5F) {
         vipldws2_B.tmpOutRC_m[vipldws2_B.indxI << 1] = (int32_T)(real32_T)floor
           (vipldws2_B.cnt + 0.5F);
@@ -3407,9 +3417,9 @@ void vipldws2_step(void)
 
     /* part-3: Right vertical axis */
     if (vipldws2_B.indxI < 2) {
-      vipldws2_B.cnt = (real32_T)floor((vipldws2_B.scale - 239.0F) *
+      vipldws2_B.cnt = (real32_T)floor((vipldws2_B.scale - 319.0F) *
         (vipldws2_B.y2 / vipldws2_B.scale) + 0.5F);
-      if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 199.0F)) {
+      if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 119.0F)) {
         if (vipldws2_B.cnt >= 0.5F) {
           vipldws2_B.tmpOutRC_m[vipldws2_B.indxI << 1] = (int32_T)(real32_T)
             floor(vipldws2_B.cnt + 0.5F);
@@ -3417,7 +3427,7 @@ void vipldws2_step(void)
           vipldws2_B.tmpOutRC_m[vipldws2_B.indxI << 1] = 0;
         }
 
-        vipldws2_B.tmpOutRC_m[1 + (vipldws2_B.indxI << 1)] = 239;
+        vipldws2_B.tmpOutRC_m[1 + (vipldws2_B.indxI << 1)] = 319;
         vipldws2_B.indxI++;
       }
     }
@@ -3425,9 +3435,9 @@ void vipldws2_step(void)
     /* part-4: bottom horizontal axis */
     if (vipldws2_B.indxI < 2) {
       vipldws2_B.cnt = (real32_T)floor((vipldws2_B.scale - vipldws2_B.scale /
-        vipldws2_B.y2 * 199.0F) + 0.5F);
-      if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 239.0F)) {
-        vipldws2_B.tmpOutRC_m[vipldws2_B.indxI << 1] = 199;
+        vipldws2_B.y2 * 119.0F) + 0.5F);
+      if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 319.0F)) {
+        vipldws2_B.tmpOutRC_m[vipldws2_B.indxI << 1] = 119;
         if (vipldws2_B.cnt >= 0.5F) {
           vipldws2_B.tmpOutRC_m[1 + (vipldws2_B.indxI << 1)] = (int32_T)
             (real32_T)floor(vipldws2_B.cnt + 0.5F);
@@ -3451,78 +3461,78 @@ void vipldws2_step(void)
     vipldws2_B.HoughLines[2] = vipldws2_B.tmpOutRC_m[3] + 1;
     vipldws2_B.HoughLines[3] = vipldws2_B.tmpOutRC_m[2] + 1;
 
-    /* End of S-Function (sviphoughlines): '<S27>/Hough Lines' */
+    /* End of S-Function (sviphoughlines): '<S28>/Hough Lines' */
 
-    /* Selector: '<S27>/Selector1' */
+    /* Selector: '<S28>/Selector1' */
     vipldws2_B.Selector1_ce[0] = vipldws2_B.HoughLines[1];
 
-    /* Math: '<S27>/Transpose' */
+    /* Math: '<S28>/Transpose' */
     vipldws2_B.Transpose_g[0] = vipldws2_B.Selector1_ce[0];
     vipldws2_B.Switch1_b[0] = vipldws2_B.Transpose_g[0];
 
-    /* Selector: '<S27>/Selector1' */
+    /* Selector: '<S28>/Selector1' */
     vipldws2_B.Selector1_ce[1] = vipldws2_B.HoughLines[0];
 
-    /* Math: '<S27>/Transpose' */
+    /* Math: '<S28>/Transpose' */
     vipldws2_B.Transpose_g[1] = vipldws2_B.Selector1_ce[1];
     vipldws2_B.Switch1_b[1] = vipldws2_B.Transpose_g[1];
 
-    /* Selector: '<S27>/Selector1' */
+    /* Selector: '<S28>/Selector1' */
     vipldws2_B.Selector1_ce[2] = vipldws2_B.HoughLines[3];
 
-    /* Math: '<S27>/Transpose' */
+    /* Math: '<S28>/Transpose' */
     vipldws2_B.Transpose_g[2] = vipldws2_B.Selector1_ce[2];
     vipldws2_B.Switch1_b[2] = vipldws2_B.Transpose_g[2];
 
-    /* Selector: '<S27>/Selector1' */
+    /* Selector: '<S28>/Selector1' */
     vipldws2_B.Selector1_ce[3] = vipldws2_B.HoughLines[2];
 
-    /* Math: '<S27>/Transpose' */
+    /* Math: '<S28>/Transpose' */
     vipldws2_B.Transpose_g[3] = vipldws2_B.Selector1_ce[3];
     vipldws2_B.Switch1_b[3] = vipldws2_B.Transpose_g[3];
   } else {
-    /* Selector: '<S30>/Selector1' */
+    /* Selector: '<S31>/Selector1' */
     vipldws2_B.Selector1_e[0] = vipldws2_B.FindLocalMaxima1_o1_f[1];
 
-    /* Math: '<S30>/Transpose' */
+    /* Math: '<S31>/Transpose' */
     vipldws2_B.Transpose_gb[0] = vipldws2_B.Selector1_e[0];
 
-    /* Selector: '<S30>/Selector1' */
+    /* Selector: '<S31>/Selector1' */
     vipldws2_B.Selector1_e[1] = vipldws2_B.FindLocalMaxima1_o1_f[0];
 
-    /* Math: '<S30>/Transpose' */
+    /* Math: '<S31>/Transpose' */
     vipldws2_B.Transpose_gb[1] = vipldws2_B.Selector1_e[1];
 
-    /* Selector: '<S30>/select rho4' */
+    /* Selector: '<S31>/select rho4' */
     vipldws2_B.Bias3_d = vipldws2_B.Transpose_gb[0];
 
-    /* Bias: '<S30>/Bias2' */
+    /* Bias: '<S31>/Bias2' */
     vipldws2_B.Bias3_d = (uint16_T)((uint32_T)vipldws2_B.Bias3_d +
       vipldws2_P.Bias2_Bias_k);
 
-    /* Selector: '<S30>/Selector rho' */
+    /* Selector: '<S31>/Selector rho' */
     vipldws2_B.Selectorrho_o = vipldws2_B.HoughTransform_o3[vipldws2_B.Bias3_d -
       1];
 
-    /* Selector: '<S30>/select rho7' */
+    /* Selector: '<S31>/select rho7' */
     vipldws2_B.Bias3_d = vipldws2_B.Transpose_gb[1];
 
-    /* Bias: '<S30>/Bias3' */
+    /* Bias: '<S31>/Bias3' */
     vipldws2_B.Bias3_d = (uint16_T)((uint32_T)vipldws2_B.Bias3_d +
       vipldws2_P.Bias3_Bias_c);
 
-    /* Selector: '<S30>/Selector theta' */
+    /* Selector: '<S31>/Selector theta' */
     vipldws2_B.Selectortheta_g = vipldws2_B.HoughTransform_o2[vipldws2_B.Bias3_d
       - 1];
 
-    /* S-Function (sviphoughlines): '<S27>/Hough Lines1' */
+    /* S-Function (sviphoughlines): '<S28>/Hough Lines1' */
     vipldws2_B.indxI = 0;
     vipldws2_B.scale = (vipldws2_B.Selectorrho_o + 1.1920929E-7F) / ((real32_T)
       cos(vipldws2_B.Selectortheta_g) + 1.1920929E-7F);
 
     /* part-1: top horizontal axis */
     vipldws2_B.cnt = (real32_T)floor(vipldws2_B.scale + 0.5F);
-    if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 239.0F)) {
+    if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 319.0F)) {
       vipldws2_B.tmpOutRC_m[0U] = 0;
       if (vipldws2_B.cnt >= 0.5F) {
         vipldws2_B.tmpOutRC_m[1U] = (int32_T)(real32_T)floor(vipldws2_B.cnt +
@@ -3539,7 +3549,7 @@ void vipldws2_step(void)
 
     /* part-2: left vertical axis */
     vipldws2_B.cnt = (real32_T)floor(vipldws2_B.y2 + 0.5F);
-    if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 199.0F)) {
+    if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 119.0F)) {
       if (vipldws2_B.cnt >= 0.5F) {
         vipldws2_B.tmpOutRC_m[vipldws2_B.indxI << 1] = (int32_T)(real32_T)floor
           (vipldws2_B.cnt + 0.5F);
@@ -3553,9 +3563,9 @@ void vipldws2_step(void)
 
     /* part-3: Right vertical axis */
     if (vipldws2_B.indxI < 2) {
-      vipldws2_B.cnt = (real32_T)floor((vipldws2_B.scale - 239.0F) *
+      vipldws2_B.cnt = (real32_T)floor((vipldws2_B.scale - 319.0F) *
         (vipldws2_B.y2 / vipldws2_B.scale) + 0.5F);
-      if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 199.0F)) {
+      if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 119.0F)) {
         if (vipldws2_B.cnt >= 0.5F) {
           vipldws2_B.tmpOutRC_m[vipldws2_B.indxI << 1] = (int32_T)(real32_T)
             floor(vipldws2_B.cnt + 0.5F);
@@ -3563,7 +3573,7 @@ void vipldws2_step(void)
           vipldws2_B.tmpOutRC_m[vipldws2_B.indxI << 1] = 0;
         }
 
-        vipldws2_B.tmpOutRC_m[1 + (vipldws2_B.indxI << 1)] = 239;
+        vipldws2_B.tmpOutRC_m[1 + (vipldws2_B.indxI << 1)] = 319;
         vipldws2_B.indxI++;
       }
     }
@@ -3571,9 +3581,9 @@ void vipldws2_step(void)
     /* part-4: bottom horizontal axis */
     if (vipldws2_B.indxI < 2) {
       vipldws2_B.cnt = (real32_T)floor((vipldws2_B.scale - vipldws2_B.scale /
-        vipldws2_B.y2 * 199.0F) + 0.5F);
-      if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 239.0F)) {
-        vipldws2_B.tmpOutRC_m[vipldws2_B.indxI << 1] = 199;
+        vipldws2_B.y2 * 119.0F) + 0.5F);
+      if ((vipldws2_B.cnt >= 0.0F) && (vipldws2_B.cnt <= 319.0F)) {
+        vipldws2_B.tmpOutRC_m[vipldws2_B.indxI << 1] = 119;
         if (vipldws2_B.cnt >= 0.5F) {
           vipldws2_B.tmpOutRC_m[1 + (vipldws2_B.indxI << 1)] = (int32_T)
             (real32_T)floor(vipldws2_B.cnt + 0.5F);
@@ -3597,41 +3607,41 @@ void vipldws2_step(void)
     vipldws2_B.HoughLines1[2] = vipldws2_B.tmpOutRC_m[3] + 1;
     vipldws2_B.HoughLines1[3] = vipldws2_B.tmpOutRC_m[2] + 1;
 
-    /* End of S-Function (sviphoughlines): '<S27>/Hough Lines1' */
+    /* End of S-Function (sviphoughlines): '<S28>/Hough Lines1' */
 
-    /* Selector: '<S27>/Selector2' */
+    /* Selector: '<S28>/Selector2' */
     vipldws2_B.Selector2_l[0] = vipldws2_B.HoughLines1[1];
 
-    /* Math: '<S27>/Transpose1' */
+    /* Math: '<S28>/Transpose1' */
     vipldws2_B.Transpose1[0] = vipldws2_B.Selector2_l[0];
     vipldws2_B.Switch1_b[0] = vipldws2_B.Transpose1[0];
 
-    /* Selector: '<S27>/Selector2' */
+    /* Selector: '<S28>/Selector2' */
     vipldws2_B.Selector2_l[1] = vipldws2_B.HoughLines1[0];
 
-    /* Math: '<S27>/Transpose1' */
+    /* Math: '<S28>/Transpose1' */
     vipldws2_B.Transpose1[1] = vipldws2_B.Selector2_l[1];
     vipldws2_B.Switch1_b[1] = vipldws2_B.Transpose1[1];
 
-    /* Selector: '<S27>/Selector2' */
+    /* Selector: '<S28>/Selector2' */
     vipldws2_B.Selector2_l[2] = vipldws2_B.HoughLines1[3];
 
-    /* Math: '<S27>/Transpose1' */
+    /* Math: '<S28>/Transpose1' */
     vipldws2_B.Transpose1[2] = vipldws2_B.Selector2_l[2];
     vipldws2_B.Switch1_b[2] = vipldws2_B.Transpose1[2];
 
-    /* Selector: '<S27>/Selector2' */
+    /* Selector: '<S28>/Selector2' */
     vipldws2_B.Selector2_l[3] = vipldws2_B.HoughLines1[2];
 
-    /* Math: '<S27>/Transpose1' */
+    /* Math: '<S28>/Transpose1' */
     vipldws2_B.Transpose1[3] = vipldws2_B.Selector2_l[3];
     vipldws2_B.Switch1_b[3] = vipldws2_B.Transpose1[3];
   }
 
   /* End of Switch: '<S5>/Switch1' */
 
-  /* RelationalOperator: '<S61>/Compare' incorporates:
-   *  Constant: '<S61>/Constant'
+  /* RelationalOperator: '<S62>/Compare' incorporates:
+   *  Constant: '<S62>/Constant'
    */
   vipldws2_B.Compare_ni = (vipldws2_B.outMsg !=
     vipldws2_P.CompareToConstant1_const_j);
@@ -3732,30 +3742,29 @@ void vipldws2_step(void)
 
   /* Selector: '<S2>/Selector' */
   for (vipldws2_B.i = 0; vipldws2_B.i < 3; vipldws2_B.i++) {
-    for (vipldws2_B.planeWidth = 0; vipldws2_B.planeWidth < 240;
-         vipldws2_B.planeWidth++) {
-      memcpy(&vipldws2_B.Selector_a[vipldws2_B.i * 28800 + vipldws2_B.planeWidth
-             * 120], &vipldws2_B.ImageDataTypeConversion[(vipldws2_B.i * 76800 +
-              vipldws2_B.planeWidth * 320) + 120], 120U * sizeof(real32_T));
+    for (vipldws2_B.plane = 0; vipldws2_B.plane < 320; vipldws2_B.plane++) {
+      memcpy(&vipldws2_B.Selector_a[vipldws2_B.i * 38400 + vipldws2_B.plane *
+             120], &vipldws2_B.ImageDataTypeConversion[(vipldws2_B.i * 76800 +
+              vipldws2_B.plane * 240) + 120], 120U * sizeof(real32_T));
     }
   }
 
   /* End of Selector: '<S2>/Selector' */
 
   /* S-Function (svipcolorconv): '<S2>/Color Space  Conversion1' */
-  for (vipldws2_B.i = 0; vipldws2_B.i < 28800; vipldws2_B.i++) {
+  for (vipldws2_B.i = 0; vipldws2_B.i < 38400; vipldws2_B.i++) {
     vipldws2_B.ColorSpaceConversion1[vipldws2_B.i] =
       ((vipldws2_B.Selector_a[vipldws2_B.i] * 0.256788224F + 0.0627451F) +
-       vipldws2_B.Selector_a[28800 + vipldws2_B.i] * 0.50412941F) +
-      vipldws2_B.Selector_a[57600 + vipldws2_B.i] * 0.0979058817F;
-    vipldws2_B.ColorSpaceConversion1[28800 + vipldws2_B.i] =
+       vipldws2_B.Selector_a[38400 + vipldws2_B.i] * 0.50412941F) +
+      vipldws2_B.Selector_a[76800 + vipldws2_B.i] * 0.0979058817F;
+    vipldws2_B.ColorSpaceConversion1[38400 + vipldws2_B.i] =
       ((vipldws2_B.Selector_a[vipldws2_B.i] * -0.148222893F + 0.501960814F) +
-       vipldws2_B.Selector_a[28800 + vipldws2_B.i] * -0.290992796F) +
-      vipldws2_B.Selector_a[57600 + vipldws2_B.i] * 0.43921569F;
-    vipldws2_B.ColorSpaceConversion1[57600 + vipldws2_B.i] =
+       vipldws2_B.Selector_a[38400 + vipldws2_B.i] * -0.290992796F) +
+      vipldws2_B.Selector_a[76800 + vipldws2_B.i] * 0.43921569F;
+    vipldws2_B.ColorSpaceConversion1[76800 + vipldws2_B.i] =
       ((vipldws2_B.Selector_a[vipldws2_B.i] * 0.43921569F + 0.501960814F) +
-       vipldws2_B.Selector_a[28800 + vipldws2_B.i] * -0.367788315F) +
-      vipldws2_B.Selector_a[57600 + vipldws2_B.i] * -0.0714273751F;
+       vipldws2_B.Selector_a[38400 + vipldws2_B.i] * -0.367788315F) +
+      vipldws2_B.Selector_a[76800 + vipldws2_B.i] * -0.0714273751F;
   }
 
   /* End of S-Function (svipcolorconv): '<S2>/Color Space  Conversion1' */
@@ -3854,8 +3863,8 @@ void vipldws2_step(void)
   /* '<S13>:1:73' if ((r1>zeroI32 && r1 <= rH) && (c1>zeroI32 && c1 <= cW) && ... */
   /* '<S13>:1:74'         (r2>zeroI32 && r2 <= rH) && (c2>zeroI32 && c2 <= cW)) && ~pointNotLine */
   if (!((vipldws2_B.r1 > 0) && (vipldws2_B.r1 <= 120) && (vipldws2_B.c1 > 0) &&
-        (vipldws2_B.c1 <= 240) && (vipldws2_B.r2 > 0) && (vipldws2_B.r2 <= 120) &&
-        (vipldws2_B.c2 > 0) && (vipldws2_B.c2 <= 240) && (!((vipldws2_B.r1 ==
+        (vipldws2_B.c1 <= 320) && (vipldws2_B.r2 > 0) && (vipldws2_B.r2 <= 120) &&
+        (vipldws2_B.c2 > 0) && (vipldws2_B.c2 <= 320) && (!((vipldws2_B.r1 ==
           vipldws2_B.r2) && (vipldws2_B.c1 == vipldws2_B.c2))))) {
     /* '<S13>:1:76' else */
     /* '<S13>:1:77' line_within_image = logical(false); */
@@ -3972,9 +3981,9 @@ void vipldws2_step(void)
       }
 
       /* '<S13>:1:102' if rightC(i) > cW */
-      if (vipldws2_B.rightC[vipldws2_B.i] > 240) {
+      if (vipldws2_B.rightC[vipldws2_B.i] > 320) {
         /* '<S13>:1:103' rightC(i) = cW; */
-        vipldws2_B.rightC[vipldws2_B.i] = 240;
+        vipldws2_B.rightC[vipldws2_B.i] = 320;
       }
 
       vipldws2_B.i++;
@@ -3984,10 +3993,10 @@ void vipldws2_step(void)
     vipldws2_B.i = 0;
 
     /* '<S13>:1:108' yellowCount = zeroI32; */
-    vipldws2_B.plane = 0;
+    vipldws2_B.planeOffset = 0;
 
     /* '<S13>:1:109' grayCount   = zeroI32; */
-    vipldws2_B.R2 = 0;
+    vipldws2_B.plane = 0;
 
     /* '<S13>:1:111' SumOfGotAlLeastOneWhitePixelInTheRow  = zeroI32; */
     vipldws2_B.C2 = 0;
@@ -4020,15 +4029,15 @@ void vipldws2_step(void)
           /* '<S13>:1:121' gotAlLeastOneWhitePixelInTheRow = logical(true); */
           done = true;
         } else if (vipldws2_B.ColorSpaceConversion1[(120 * vipldws2_B.r2 +
-                    vipldws2_B.Rs[vipldws2_B.c1]) + 28799] >= 0.352941185F) {
+                    vipldws2_B.Rs[vipldws2_B.c1]) + 38399] >= 0.352941185F) {
           if (vipldws2_B.ColorSpaceConversion1[(120 * vipldws2_B.r2 +
-               vipldws2_B.Rs[vipldws2_B.c1]) + 28799] <= 0.498039216F) {
+               vipldws2_B.Rs[vipldws2_B.c1]) + 38399] <= 0.498039216F) {
             /* '<S13>:1:122' elseif tmpInImage_Cb(Rs(i), cv) >= single(90/255) && tmpInImage_Cb(Rs(i), cv) <= single(127/255) */
             /* '<S13>:1:123' yellowCount = yellowCount+oneI32; */
-            if (vipldws2_B.plane > 2147483646) {
-              vipldws2_B.plane = MAX_int32_T;
+            if (vipldws2_B.planeOffset > 2147483646) {
+              vipldws2_B.planeOffset = MAX_int32_T;
             } else {
-              vipldws2_B.plane++;
+              vipldws2_B.planeOffset++;
             }
 
             /* '<S13>:1:124' gotAlLeastOneYellowPixelInTheRow = logical(true); */
@@ -4036,19 +4045,19 @@ void vipldws2_step(void)
           } else {
             /* '<S13>:1:125' else */
             /* '<S13>:1:126' grayCount = grayCount+oneI32; */
-            if (vipldws2_B.R2 > 2147483646) {
-              vipldws2_B.R2 = MAX_int32_T;
+            if (vipldws2_B.plane > 2147483646) {
+              vipldws2_B.plane = MAX_int32_T;
             } else {
-              vipldws2_B.R2++;
+              vipldws2_B.plane++;
             }
           }
         } else {
           /* '<S13>:1:125' else */
           /* '<S13>:1:126' grayCount = grayCount+oneI32; */
-          if (vipldws2_B.R2 > 2147483646) {
-            vipldws2_B.R2 = MAX_int32_T;
+          if (vipldws2_B.plane > 2147483646) {
+            vipldws2_B.plane = MAX_int32_T;
           } else {
-            vipldws2_B.R2++;
+            vipldws2_B.plane++;
           }
         }
 
@@ -4081,17 +4090,17 @@ void vipldws2_step(void)
     /* '<S13>:1:137' yellowVsTotal = single(yellowCount)/single(grayCount+yellowCount+whiteCount); */
     /* '<S13>:1:138' whiteVsTotal  = single(whiteCount)/single(grayCount+yellowCount+whiteCount); */
     /* '<S13>:1:140' if yellowVsTotal > whiteVsTotal */
-    if ((vipldws2_B.R2 < 0) && (vipldws2_B.plane < MIN_int32_T - vipldws2_B.R2))
-    {
+    if ((vipldws2_B.plane < 0) && (vipldws2_B.planeOffset < MIN_int32_T
+         - vipldws2_B.plane)) {
       vipldws2_B.qY = MIN_int32_T;
       vipldws2_B.c1 = MIN_int32_T;
-    } else if ((vipldws2_B.R2 > 0) && (vipldws2_B.plane > MAX_int32_T
-                - vipldws2_B.R2)) {
+    } else if ((vipldws2_B.plane > 0) && (vipldws2_B.planeOffset > MAX_int32_T -
+                vipldws2_B.plane)) {
       vipldws2_B.qY = MAX_int32_T;
       vipldws2_B.c1 = MAX_int32_T;
     } else {
-      vipldws2_B.qY = vipldws2_B.R2 + vipldws2_B.plane;
-      vipldws2_B.c1 = vipldws2_B.R2 + vipldws2_B.plane;
+      vipldws2_B.qY = vipldws2_B.plane + vipldws2_B.planeOffset;
+      vipldws2_B.c1 = vipldws2_B.plane + vipldws2_B.planeOffset;
     }
 
     if ((vipldws2_B.qY < 0) && (vipldws2_B.i < MIN_int32_T - vipldws2_B.qY)) {
@@ -4112,7 +4121,7 @@ void vipldws2_step(void)
       vipldws2_B.c1 += vipldws2_B.i;
     }
 
-    if ((real32_T)vipldws2_B.plane / (real32_T)vipldws2_B.qY > (real32_T)
+    if ((real32_T)vipldws2_B.planeOffset / (real32_T)vipldws2_B.qY > (real32_T)
         vipldws2_B.i / (real32_T)vipldws2_B.c1) {
       /* '<S13>:1:141' lineColorIdx(lineIdx) = YELLOW_COLOR; */
       lineColorIdx_idx_0 = 2;
@@ -4211,8 +4220,8 @@ void vipldws2_step(void)
   /* '<S13>:1:73' if ((r1>zeroI32 && r1 <= rH) && (c1>zeroI32 && c1 <= cW) && ... */
   /* '<S13>:1:74'         (r2>zeroI32 && r2 <= rH) && (c2>zeroI32 && c2 <= cW)) && ~pointNotLine */
   if ((vipldws2_B.r1 > 0) && (vipldws2_B.r1 <= 120) && (vipldws2_B.c1 > 0) &&
-      (vipldws2_B.c1 <= 240) && (vipldws2_B.r2 > 0) && (vipldws2_B.r2 <= 120) &&
-      (vipldws2_B.c2 > 0) && (vipldws2_B.c2 <= 240) && (!((vipldws2_B.r1 ==
+      (vipldws2_B.c1 <= 320) && (vipldws2_B.r2 > 0) && (vipldws2_B.r2 <= 120) &&
+      (vipldws2_B.c2 > 0) && (vipldws2_B.c2 <= 320) && (!((vipldws2_B.r1 ==
          vipldws2_B.r2) && (vipldws2_B.c1 == vipldws2_B.c2)))) {
     /* '<S13>:1:75' line_within_image = logical(true); */
     done = true;
@@ -4330,9 +4339,9 @@ void vipldws2_step(void)
       }
 
       /* '<S13>:1:102' if rightC(i) > cW */
-      if (vipldws2_B.rightC[vipldws2_B.i] > 240) {
+      if (vipldws2_B.rightC[vipldws2_B.i] > 320) {
         /* '<S13>:1:103' rightC(i) = cW; */
-        vipldws2_B.rightC[vipldws2_B.i] = 240;
+        vipldws2_B.rightC[vipldws2_B.i] = 320;
       }
 
       vipldws2_B.i++;
@@ -4342,10 +4351,10 @@ void vipldws2_step(void)
     vipldws2_B.i = 0;
 
     /* '<S13>:1:108' yellowCount = zeroI32; */
-    vipldws2_B.plane = 0;
+    vipldws2_B.planeOffset = 0;
 
     /* '<S13>:1:109' grayCount   = zeroI32; */
-    vipldws2_B.R2 = 0;
+    vipldws2_B.plane = 0;
 
     /* '<S13>:1:111' SumOfGotAlLeastOneWhitePixelInTheRow  = zeroI32; */
     vipldws2_B.C2 = 0;
@@ -4378,15 +4387,15 @@ void vipldws2_step(void)
           /* '<S13>:1:121' gotAlLeastOneWhitePixelInTheRow = logical(true); */
           done = true;
         } else if (vipldws2_B.ColorSpaceConversion1[(120 * vipldws2_B.r2 +
-                    vipldws2_B.Rs[vipldws2_B.c1]) + 28799] >= 0.352941185F) {
+                    vipldws2_B.Rs[vipldws2_B.c1]) + 38399] >= 0.352941185F) {
           if (vipldws2_B.ColorSpaceConversion1[(120 * vipldws2_B.r2 +
-               vipldws2_B.Rs[vipldws2_B.c1]) + 28799] <= 0.498039216F) {
+               vipldws2_B.Rs[vipldws2_B.c1]) + 38399] <= 0.498039216F) {
             /* '<S13>:1:122' elseif tmpInImage_Cb(Rs(i), cv) >= single(90/255) && tmpInImage_Cb(Rs(i), cv) <= single(127/255) */
             /* '<S13>:1:123' yellowCount = yellowCount+oneI32; */
-            if (vipldws2_B.plane > 2147483646) {
-              vipldws2_B.plane = MAX_int32_T;
+            if (vipldws2_B.planeOffset > 2147483646) {
+              vipldws2_B.planeOffset = MAX_int32_T;
             } else {
-              vipldws2_B.plane++;
+              vipldws2_B.planeOffset++;
             }
 
             /* '<S13>:1:124' gotAlLeastOneYellowPixelInTheRow = logical(true); */
@@ -4394,19 +4403,19 @@ void vipldws2_step(void)
           } else {
             /* '<S13>:1:125' else */
             /* '<S13>:1:126' grayCount = grayCount+oneI32; */
-            if (vipldws2_B.R2 > 2147483646) {
-              vipldws2_B.R2 = MAX_int32_T;
+            if (vipldws2_B.plane > 2147483646) {
+              vipldws2_B.plane = MAX_int32_T;
             } else {
-              vipldws2_B.R2++;
+              vipldws2_B.plane++;
             }
           }
         } else {
           /* '<S13>:1:125' else */
           /* '<S13>:1:126' grayCount = grayCount+oneI32; */
-          if (vipldws2_B.R2 > 2147483646) {
-            vipldws2_B.R2 = MAX_int32_T;
+          if (vipldws2_B.plane > 2147483646) {
+            vipldws2_B.plane = MAX_int32_T;
           } else {
-            vipldws2_B.R2++;
+            vipldws2_B.plane++;
           }
         }
 
@@ -4439,17 +4448,17 @@ void vipldws2_step(void)
     /* '<S13>:1:137' yellowVsTotal = single(yellowCount)/single(grayCount+yellowCount+whiteCount); */
     /* '<S13>:1:138' whiteVsTotal  = single(whiteCount)/single(grayCount+yellowCount+whiteCount); */
     /* '<S13>:1:140' if yellowVsTotal > whiteVsTotal */
-    if ((vipldws2_B.R2 < 0) && (vipldws2_B.plane < MIN_int32_T - vipldws2_B.R2))
-    {
+    if ((vipldws2_B.plane < 0) && (vipldws2_B.planeOffset < MIN_int32_T
+         - vipldws2_B.plane)) {
       vipldws2_B.qY = MIN_int32_T;
       vipldws2_B.c1 = MIN_int32_T;
-    } else if ((vipldws2_B.R2 > 0) && (vipldws2_B.plane > MAX_int32_T
-                - vipldws2_B.R2)) {
+    } else if ((vipldws2_B.plane > 0) && (vipldws2_B.planeOffset > MAX_int32_T -
+                vipldws2_B.plane)) {
       vipldws2_B.qY = MAX_int32_T;
       vipldws2_B.c1 = MAX_int32_T;
     } else {
-      vipldws2_B.qY = vipldws2_B.R2 + vipldws2_B.plane;
-      vipldws2_B.c1 = vipldws2_B.R2 + vipldws2_B.plane;
+      vipldws2_B.qY = vipldws2_B.plane + vipldws2_B.planeOffset;
+      vipldws2_B.c1 = vipldws2_B.plane + vipldws2_B.planeOffset;
     }
 
     if ((vipldws2_B.qY < 0) && (vipldws2_B.i < MIN_int32_T - vipldws2_B.qY)) {
@@ -4470,7 +4479,7 @@ void vipldws2_step(void)
       vipldws2_B.c1 += vipldws2_B.i;
     }
 
-    if ((real32_T)vipldws2_B.plane / (real32_T)vipldws2_B.qY > (real32_T)
+    if ((real32_T)vipldws2_B.planeOffset / (real32_T)vipldws2_B.qY > (real32_T)
         vipldws2_B.i / (real32_T)vipldws2_B.c1) {
       /* '<S13>:1:141' lineColorIdx(lineIdx) = YELLOW_COLOR; */
       lineColorIdx_idx_0 = 2;
@@ -4728,41 +4737,41 @@ void vipldws2_step(void)
   /* MATLAB Function: '<S5>/Exclude 3rd Lane' */
   /*  Exclude third (left or right lane) if it is very close to the other lane  */
   /*  already detected and tracked by Kalman filter. */
-  /* MATLAB Function 'Output/Exclude 3rd Lane': '<S64>:1' */
-  /* '<S64>:1:6' [rH cW] = size(RefImg(:,:,1)); */
-  /* '<S64>:1:7' out3rdLane = in3rdLane; */
+  /* MATLAB Function 'Output/Exclude 3rd Lane': '<S65>:1' */
+  /* '<S65>:1:6' [rH cW] = size(RefImg(:,:,1)); */
+  /* '<S65>:1:7' out3rdLane = in3rdLane; */
   vipldws2_B.out3rdLane[0] = vipldws2_B.Switch1_b[0];
   vipldws2_B.out3rdLane[1] = vipldws2_B.Switch1_b[1];
   vipldws2_B.out3rdLane[2] = vipldws2_B.Switch1_b[2];
   vipldws2_B.out3rdLane[3] = vipldws2_B.Switch1_b[3];
 
-  /* '<S64>:1:9' if (Show3rdLane && twoLanesFlag) */
+  /* '<S65>:1:9' if (Show3rdLane && twoLanesFlag) */
   if (vipldws2_B.LogicalOperator2 && vipldws2_B.LogicalOperator1) {
-    /* '<S64>:1:10' R1C1R2C2 = in3rdLane; */
-    /* '<S64>:1:11' R1 = R1C1R2C2(1)+int32(1); */
+    /* '<S65>:1:10' R1C1R2C2 = in3rdLane; */
+    /* '<S65>:1:11' R1 = R1C1R2C2(1)+int32(1); */
     if (vipldws2_B.Switch1_b[0] > 2147483646) {
       vipldws2_B.planeWidth = MAX_int32_T;
     } else {
       vipldws2_B.planeWidth = vipldws2_B.Switch1_b[0] + 1;
     }
 
-    /* '<S64>:1:12' C1 = R1C1R2C2(2)+int32(1); */
+    /* '<S65>:1:12' C1 = R1C1R2C2(2)+int32(1); */
     if (vipldws2_B.Switch1_b[1] > 2147483646) {
-      vipldws2_B.plane = MAX_int32_T;
+      vipldws2_B.planeOffset = MAX_int32_T;
     } else {
-      vipldws2_B.plane = vipldws2_B.Switch1_b[1] + 1;
+      vipldws2_B.planeOffset = vipldws2_B.Switch1_b[1] + 1;
     }
 
-    /* '<S64>:1:13' R2 = R1C1R2C2(3)+int32(1); */
+    /* '<S65>:1:13' R2 = R1C1R2C2(3)+int32(1); */
     if (vipldws2_B.Switch1_b[2] > 2147483646) {
       vipldws2_B.qY_g = MAX_int32_T;
     } else {
       vipldws2_B.qY_g = vipldws2_B.Switch1_b[2] + 1;
     }
 
-    vipldws2_B.R2 = vipldws2_B.qY_g;
+    vipldws2_B.plane = vipldws2_B.qY_g;
 
-    /* '<S64>:1:14' C2 = R1C1R2C2(4)+int32(1); */
+    /* '<S65>:1:14' C2 = R1C1R2C2(4)+int32(1); */
     if (vipldws2_B.Switch1_b[3] > 2147483646) {
       vipldws2_B.qY = MAX_int32_T;
     } else {
@@ -4772,27 +4781,27 @@ void vipldws2_step(void)
     vipldws2_B.C2 = vipldws2_B.qY;
 
     /*  make sure R1 is the min(R1,R2) */
-    /* '<S64>:1:16' if R1>R2 */
+    /* '<S65>:1:16' if R1>R2 */
     if (vipldws2_B.planeWidth > vipldws2_B.qY_g) {
-      /* '<S64>:1:17' TMP=R2; */
-      /* '<S64>:1:18' R2=R1; */
-      vipldws2_B.R2 = vipldws2_B.planeWidth;
+      /* '<S65>:1:17' TMP=R2; */
+      /* '<S65>:1:18' R2=R1; */
+      vipldws2_B.plane = vipldws2_B.planeWidth;
 
-      /* '<S64>:1:19' R1=TMP; */
+      /* '<S65>:1:19' R1=TMP; */
       vipldws2_B.planeWidth = vipldws2_B.qY_g;
 
-      /* '<S64>:1:21' TMP=C2; */
-      /* '<S64>:1:22' C2=C1; */
-      vipldws2_B.C2 = vipldws2_B.plane;
+      /* '<S65>:1:21' TMP=C2; */
+      /* '<S65>:1:22' C2=C1; */
+      vipldws2_B.C2 = vipldws2_B.planeOffset;
 
-      /* '<S64>:1:23' C1=TMP; */
-      vipldws2_B.plane = vipldws2_B.qY;
+      /* '<S65>:1:23' C1=TMP; */
+      vipldws2_B.planeOffset = vipldws2_B.qY;
     }
 
-    /* '<S64>:1:26' for lineIdx =1:2 */
+    /* '<S65>:1:26' for lineIdx =1:2 */
     for (vipldws2_B.indxI = 0; vipldws2_B.indxI < 2; vipldws2_B.indxI++) {
-      /* '<S64>:1:28' r1c1r2c2 = mainTwoLanes(:,lineIdx); */
-      /* '<S64>:1:29' r1 = r1c1r2c2(1)+int32(1); */
+      /* '<S65>:1:28' r1c1r2c2 = mainTwoLanes(:,lineIdx); */
+      /* '<S65>:1:29' r1 = r1c1r2c2(1)+int32(1); */
       if (vipldws2_B.MatrixConcatenation5[vipldws2_B.indxI << 2] > 2147483646) {
         vipldws2_B.r1 = MAX_int32_T;
       } else {
@@ -4800,7 +4809,7 @@ void vipldws2_step(void)
           1;
       }
 
-      /* '<S64>:1:30' c1 = r1c1r2c2(2)+int32(1); */
+      /* '<S65>:1:30' c1 = r1c1r2c2(2)+int32(1); */
       if (vipldws2_B.MatrixConcatenation5[(vipldws2_B.indxI << 2) + 1] >
           2147483646) {
         vipldws2_B.c1 = MAX_int32_T;
@@ -4809,7 +4818,7 @@ void vipldws2_step(void)
           + 1] + 1;
       }
 
-      /* '<S64>:1:31' r2 = r1c1r2c2(3)+int32(1); */
+      /* '<S65>:1:31' r2 = r1c1r2c2(3)+int32(1); */
       if (vipldws2_B.MatrixConcatenation5[(vipldws2_B.indxI << 2) + 2] >
           2147483646) {
         vipldws2_B.qY_g = MAX_int32_T;
@@ -4820,7 +4829,7 @@ void vipldws2_step(void)
 
       vipldws2_B.r2 = vipldws2_B.qY_g;
 
-      /* '<S64>:1:32' c2 = r1c1r2c2(4)+int32(1); */
+      /* '<S65>:1:32' c2 = r1c1r2c2(4)+int32(1); */
       if (vipldws2_B.MatrixConcatenation5[(vipldws2_B.indxI << 2) + 3] >
           2147483646) {
         vipldws2_B.qY = MAX_int32_T;
@@ -4832,49 +4841,49 @@ void vipldws2_step(void)
       vipldws2_B.c2 = vipldws2_B.qY;
 
       /*  make sure r1 is the min(r1,r2) */
-      /* '<S64>:1:35' if r1>r2 */
+      /* '<S65>:1:35' if r1>r2 */
       if (vipldws2_B.r1 > vipldws2_B.qY_g) {
-        /* '<S64>:1:36' tmp=r2; */
-        /* '<S64>:1:37' r2=r1; */
+        /* '<S65>:1:36' tmp=r2; */
+        /* '<S65>:1:37' r2=r1; */
         vipldws2_B.r2 = vipldws2_B.r1;
 
-        /* '<S64>:1:38' r1=tmp; */
+        /* '<S65>:1:38' r1=tmp; */
         vipldws2_B.r1 = vipldws2_B.qY_g;
 
-        /* '<S64>:1:40' tmp=c2; */
-        /* '<S64>:1:41' c2=c1; */
+        /* '<S65>:1:40' tmp=c2; */
+        /* '<S65>:1:41' c2=c1; */
         vipldws2_B.c2 = vipldws2_B.c1;
 
-        /* '<S64>:1:42' c1=tmp; */
+        /* '<S65>:1:42' c1=tmp; */
         vipldws2_B.c1 = vipldws2_B.qY;
       }
 
-      /* '<S64>:1:45' pointNotLine = (r1==r2) && (c1==c2); */
+      /* '<S65>:1:45' pointNotLine = (r1==r2) && (c1==c2); */
       /*  find if line is within image: (r1,c1)  and (r2,c2) must be within image */
-      /* '<S64>:1:48' if ((r1>0 && r1 <= rH) && (c1>0 && c1 <= cW) && ... */
-      /* '<S64>:1:49'         (r2>0 && r2 <= rH) && (c2>0 && c2 <= cW)) && ~pointNotLine */
+      /* '<S65>:1:48' if ((r1>0 && r1 <= rH) && (c1>0 && c1 <= cW) && ... */
+      /* '<S65>:1:49'         (r2>0 && r2 <= rH) && (c2>0 && c2 <= cW)) && ~pointNotLine */
       if ((vipldws2_B.r1 > 0) && (vipldws2_B.r1 <= 120) && (vipldws2_B.c1 > 0) &&
-          (vipldws2_B.c1 <= 240) && (vipldws2_B.r2 > 0) && (vipldws2_B.r2 <= 120)
-          && (vipldws2_B.c2 > 0) && (vipldws2_B.c2 <= 240) && (!((vipldws2_B.r1 ==
+          (vipldws2_B.c1 <= 320) && (vipldws2_B.r2 > 0) && (vipldws2_B.r2 <= 120)
+          && (vipldws2_B.c2 > 0) && (vipldws2_B.c2 <= 320) && (!((vipldws2_B.r1 ==
              vipldws2_B.r2) && (vipldws2_B.c1 == vipldws2_B.c2)))) {
         /* line_within_image = true; */
-        /* '<S64>:1:51' if (abs(r1-R1)+ abs(c1-C1) + abs(r2-R2) +abs(c2-C2))< int32(20) */
+        /* '<S65>:1:51' if (abs(r1-R1)+ abs(c1-C1) + abs(r2-R2) +abs(c2-C2))< int32(20) */
         if (vipldws2_B.planeWidth < vipldws2_B.r1 - MAX_int32_T) {
           vipldws2_B.qY_g = MAX_int32_T;
         } else {
           vipldws2_B.qY_g = vipldws2_B.r1 - vipldws2_B.planeWidth;
         }
 
-        if (vipldws2_B.plane < vipldws2_B.c1 - MAX_int32_T) {
+        if (vipldws2_B.planeOffset < vipldws2_B.c1 - MAX_int32_T) {
           vipldws2_B.qY = MAX_int32_T;
         } else {
-          vipldws2_B.qY = vipldws2_B.c1 - vipldws2_B.plane;
+          vipldws2_B.qY = vipldws2_B.c1 - vipldws2_B.planeOffset;
         }
 
-        if (vipldws2_B.R2 < vipldws2_B.r2 - MAX_int32_T) {
+        if (vipldws2_B.plane < vipldws2_B.r2 - MAX_int32_T) {
           vipldws2_B.c1 = MAX_int32_T;
         } else {
-          vipldws2_B.c1 = vipldws2_B.r2 - vipldws2_B.R2;
+          vipldws2_B.c1 = vipldws2_B.r2 - vipldws2_B.plane;
         }
 
         if (vipldws2_B.C2 < vipldws2_B.c2 - MAX_int32_T) {
@@ -4930,21 +4939,21 @@ void vipldws2_step(void)
         }
 
         if (vipldws2_B.qY_g < 20) {
-          /* '<S64>:1:52' out3rdLane = int32([-1000 -1000 -1000 -1000]'); */
+          /* '<S65>:1:52' out3rdLane = int32([-1000 -1000 -1000 -1000]'); */
           vipldws2_B.out3rdLane[0] = -1000;
           vipldws2_B.out3rdLane[1] = -1000;
           vipldws2_B.out3rdLane[2] = -1000;
           vipldws2_B.out3rdLane[3] = -1000;
         }
       } else {
-        /* '<S64>:1:54' else */
+        /* '<S65>:1:54' else */
         /*  line outside image */
         /*  go to nextLine */
       }
     }
   } else {
-    /* '<S64>:1:59' else */
-    /* '<S64>:1:60' out3rdLane = in3rdLane; */
+    /* '<S65>:1:59' else */
+    /* '<S65>:1:60' out3rdLane = in3rdLane; */
   }
 
   /* End of MATLAB Function: '<S5>/Exclude 3rd Lane' */
@@ -5002,33 +5011,33 @@ void vipldws2_step(void)
   }
 
   /* Outputs for Enabled SubSystem: '<S5>/Subsystem' incorporates:
-   *  EnablePort: '<S66>/Enable'
+   *  EnablePort: '<S67>/Enable'
    */
   if (vipldws2_B.NSampleEnable) {
-    /* Bias: '<S66>/Bias' */
+    /* Bias: '<S67>/Bias' */
     vipldws2_B.Bias_h = (int8_T)(vipldws2_B.outMsg + vipldws2_P.Bias_Bias_d);
 
-    /* Bias: '<S66>/Bias1' */
+    /* Bias: '<S67>/Bias1' */
     vipldws2_B.Bias1_j[0] = (int8_T)(vipldws2_B.colorAndTypeIdx[0] +
       vipldws2_P.Bias1_Bias_e);
     vipldws2_B.Bias1_j[1] = (int8_T)(vipldws2_B.colorAndTypeIdx[1] +
       vipldws2_P.Bias1_Bias_e);
 
-    /* Outputs for Enabled SubSystem: '<S66>/Draw  Polygon' incorporates:
-     *  EnablePort: '<S68>/Enable'
+    /* Outputs for Enabled SubSystem: '<S67>/Draw  Polygon' incorporates:
+     *  EnablePort: '<S69>/Enable'
      */
     if (vipldws2_B.LogicalOperator) {
-      /* Selector: '<S71>/Selector1' */
+      /* Selector: '<S72>/Selector1' */
       vipldws2_B.MatrixConcatenation6[0] = vipldws2_B.Bias[0];
 
-      /* Selector: '<S71>/Selector4' */
+      /* Selector: '<S72>/Selector4' */
       vipldws2_B.Selector7[0] = vipldws2_B.Bias[2];
 
-      /* SignalConversion: '<S71>/ConcatBufferAtMatrix Concatenation6In2' */
+      /* SignalConversion: '<S72>/ConcatBufferAtMatrix Concatenation6In2' */
       vipldws2_B.MatrixConcatenation6[2] = vipldws2_B.Selector7[0];
 
-      /* Switch: '<S71>/Switch' incorporates:
-       *  Constant: '<S71>/DSP Constant'
+      /* Switch: '<S72>/Switch' incorporates:
+       *  Constant: '<S72>/DSP Constant'
        */
       if (vipldws2_B.Selector7[0] >= vipldws2_P.Switch_Threshold) {
         vipldws2_B.MatrixConcatenation6[4] = vipldws2_B.Selector7[0];
@@ -5036,17 +5045,17 @@ void vipldws2_step(void)
         vipldws2_B.MatrixConcatenation6[4] = vipldws2_P.DSPConstant_Value[0];
       }
 
-      /* Selector: '<S71>/Selector1' */
+      /* Selector: '<S72>/Selector1' */
       vipldws2_B.MatrixConcatenation6[1] = vipldws2_B.Bias[1];
 
-      /* Selector: '<S71>/Selector4' */
+      /* Selector: '<S72>/Selector4' */
       vipldws2_B.Selector7[1] = vipldws2_B.Bias[3];
 
-      /* SignalConversion: '<S71>/ConcatBufferAtMatrix Concatenation6In2' */
+      /* SignalConversion: '<S72>/ConcatBufferAtMatrix Concatenation6In2' */
       vipldws2_B.MatrixConcatenation6[3] = vipldws2_B.Selector7[1];
 
-      /* Switch: '<S71>/Switch' incorporates:
-       *  Constant: '<S71>/DSP Constant'
+      /* Switch: '<S72>/Switch' incorporates:
+       *  Constant: '<S72>/DSP Constant'
        */
       if (vipldws2_B.Selector7[0] >= vipldws2_P.Switch_Threshold) {
         vipldws2_B.MatrixConcatenation6[5] = vipldws2_B.Selector7[1];
@@ -5054,11 +5063,11 @@ void vipldws2_step(void)
         vipldws2_B.MatrixConcatenation6[5] = vipldws2_P.DSPConstant_Value[1];
       }
 
-      /* Selector: '<S71>/Selector' */
+      /* Selector: '<S72>/Selector' */
       vipldws2_B.Selector7[0] = vipldws2_B.Bias[6];
 
-      /* Switch: '<S71>/Switch1' incorporates:
-       *  Constant: '<S71>/DSP Constant2'
+      /* Switch: '<S72>/Switch1' incorporates:
+       *  Constant: '<S72>/DSP Constant2'
        */
       if (vipldws2_B.Selector7[0] >= vipldws2_P.Switch1_Threshold) {
         vipldws2_B.MatrixConcatenation6[6] = vipldws2_B.Selector7[0];
@@ -5066,17 +5075,17 @@ void vipldws2_step(void)
         vipldws2_B.MatrixConcatenation6[6] = vipldws2_P.DSPConstant2_Value[0];
       }
 
-      /* SignalConversion: '<S71>/ConcatBufferAtMatrix Concatenation6In5' */
+      /* SignalConversion: '<S72>/ConcatBufferAtMatrix Concatenation6In5' */
       vipldws2_B.MatrixConcatenation6[8] = vipldws2_B.Selector7[0];
 
-      /* Selector: '<S71>/Selector2' */
+      /* Selector: '<S72>/Selector2' */
       vipldws2_B.MatrixConcatenation6[10] = vipldws2_B.Bias[4];
 
-      /* Selector: '<S71>/Selector' */
+      /* Selector: '<S72>/Selector' */
       vipldws2_B.Selector7[1] = vipldws2_B.Bias[7];
 
-      /* Switch: '<S71>/Switch1' incorporates:
-       *  Constant: '<S71>/DSP Constant2'
+      /* Switch: '<S72>/Switch1' incorporates:
+       *  Constant: '<S72>/DSP Constant2'
        */
       if (vipldws2_B.Selector7[0] >= vipldws2_P.Switch1_Threshold) {
         vipldws2_B.MatrixConcatenation6[7] = vipldws2_B.Selector7[1];
@@ -5084,40 +5093,37 @@ void vipldws2_step(void)
         vipldws2_B.MatrixConcatenation6[7] = vipldws2_P.DSPConstant2_Value[1];
       }
 
-      /* SignalConversion: '<S71>/ConcatBufferAtMatrix Concatenation6In5' */
+      /* SignalConversion: '<S72>/ConcatBufferAtMatrix Concatenation6In5' */
       vipldws2_B.MatrixConcatenation6[9] = vipldws2_B.Selector7[1];
 
-      /* Selector: '<S71>/Selector2' */
+      /* Selector: '<S72>/Selector2' */
       vipldws2_B.MatrixConcatenation6[11] = vipldws2_B.Bias[5];
       for (vipldws2_B.i = 0; vipldws2_B.i < 12; vipldws2_B.i++) {
-        /* Selector: '<S68>/Selector2' */
+        /* Selector: '<S69>/Selector2' */
         vipldws2_B.Selector2_h[vipldws2_B.i] =
-          vipldws2_B.MatrixConcatenation6[tmp_0[vipldws2_B.i]];
+          vipldws2_B.MatrixConcatenation6[tmp_1[vipldws2_B.i]];
 
-        /* Math: '<S68>/Transpose1' */
+        /* Math: '<S69>/Transpose1' */
         vipldws2_B.Transpose1_b[vipldws2_B.i] =
           vipldws2_B.Selector2_h[vipldws2_B.i];
       }
 
-      /* S-Function (svipdrawshapes): '<S68>/DrawShapes' */
+      /* S-Function (svipdrawshapes): '<S69>/DrawShapes' */
       /* Copy the image from input to output. */
       memcpy(&vipldws2_B.DrawShapes[0], &vipldws2_B.ImageDataTypeConversion[0],
              230400U * sizeof(real32_T));
 
       /* Calculate FillColor times Opacity. */
-      vipldws2_DW.DrawShapes_DW_FillColorAdd[0] =
-        vipldws2_P.DrawShapes_RTP_FILLCOLOR_o[0] *
-        vipldws2_P.DrawShapes_RTP_OPACITY;
-      vipldws2_DW.DrawShapes_DW_FillColorAdd[1] =
-        vipldws2_P.DrawShapes_RTP_FILLCOLOR_o[1] *
-        vipldws2_P.DrawShapes_RTP_OPACITY;
-      vipldws2_DW.DrawShapes_DW_FillColorAdd[2] =
-        vipldws2_P.DrawShapes_RTP_FILLCOLOR_o[2] *
-        vipldws2_P.DrawShapes_RTP_OPACITY;
+      vipldws2_DW.DrawShapes_DW_FillColorAdd[0] = vipldws2_P.DrawShapes_color[0]
+        * vipldws2_P.DrawShapes_opacity;
+      vipldws2_DW.DrawShapes_DW_FillColorAdd[1] = vipldws2_P.DrawShapes_color[1]
+        * vipldws2_P.DrawShapes_opacity;
+      vipldws2_DW.DrawShapes_DW_FillColorAdd[2] = vipldws2_P.DrawShapes_color[2]
+        * vipldws2_P.DrawShapes_opacity;
 
       /* Calculate One minus Opacity. */
       vipldws2_DW.DrawShapes_DW_OneMOpacity = 1.0F -
-        vipldws2_P.DrawShapes_RTP_OPACITY;
+        vipldws2_P.DrawShapes_opacity;
 
       /* Update view port. */
       /* ProcessStep-start-1
@@ -5125,17 +5131,17 @@ void vipldws2_step(void)
       /* ProcessStep-after poly points-1
        */
       /* Reset scanline states. */
-      vipldws2_B.R2 = 0;
+      vipldws2_B.plane = 0;
       c_gotAlLeastOneYellowPixelInThe = true;
       while (c_gotAlLeastOneYellowPixelInThe) {
         /* Initialize the scanline. */
         /* Convert polygon vertices to boundaries. */
         done = false;
         vipldws2_B.numEdge = 0;
-        vipldws2_B.qY_g = vipldws2_B.R2;
-        vipldws2_B.qY = vipldws2_B.R2;
-        vipldws2_B.ii = 0;
-        while (vipldws2_B.ii < 1) {
+        vipldws2_B.qY_g = vipldws2_B.plane;
+        vipldws2_B.qY = vipldws2_B.plane;
+        vipldws2_B.j = 0;
+        while (vipldws2_B.j < 1) {
           /* start for loop
            */
           vipldws2_B.lastActiveEdgeIdxBdy = 11;
@@ -5325,31 +5331,31 @@ void vipldws2_step(void)
             vipldws2_B.i++;
           }
 
-          vipldws2_B.ii = 1;
+          vipldws2_B.j = 1;
         }
 
         if (!done) {
           /* Merge two Bresenham lines. */
-          if ((vipldws2_B.R2 != vipldws2_B.qY_g) &&
-              ((vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 5] ==
+          if ((vipldws2_B.plane != vipldws2_B.qY_g) &&
+              ((vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 5] ==
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 5]) &&
-               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 6] ==
+               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 6] ==
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 6]) &&
-               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 7] ==
+               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 7] ==
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 7]) &&
-               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 8] ==
+               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 8] ==
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 8]))) {
-            if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 3] + 1 ==
+            if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 3] + 1 ==
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 2]) {
-              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 3] =
+              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 3] =
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 3];
               done = true;
             } else {
               if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 3] + 1 ==
-                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 2]) {
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 1] =
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 2]) {
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 1] =
                   vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 1];
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 2] =
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 2] =
                   vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 2];
                 done = true;
               }
@@ -5374,23 +5380,21 @@ void vipldws2_step(void)
         /* Sort the boundaries of the polygon. */
         c_gotAlLeastOneYellowPixelInThe = true;
         while (c_gotAlLeastOneYellowPixelInThe) {
-          vipldws2_B.r1 = vipldws2_B.R2;
-          vipldws2_B.r2 = vipldws2_B.R2 + 9;
+          vipldws2_B.r1 = vipldws2_B.plane;
+          vipldws2_B.r2 = vipldws2_B.plane + 9;
           c_gotAlLeastOneYellowPixelInThe = false;
           vipldws2_B.i = 1;
           while (vipldws2_B.i < vipldws2_B.numEdge) {
             if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + 2] >
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + 2]) {
               c_gotAlLeastOneYellowPixelInThe = true;
-              for (vipldws2_B.ii = 0; vipldws2_B.ii < 9; vipldws2_B.ii++) {
+              for (vipldws2_B.j = 0; vipldws2_B.j < 9; vipldws2_B.j++) {
                 vipldws2_B.lastSeparator =
-                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 +
-                  vipldws2_B.ii];
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.ii]
-                  = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                  vipldws2_B.ii];
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.ii]
-                  = vipldws2_B.lastSeparator;
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.j];
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.j] =
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.j];
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.j] =
+                  vipldws2_B.lastSeparator;
               }
             }
 
@@ -5401,33 +5405,35 @@ void vipldws2_step(void)
         }
 
         /* Find out the last column of the polygon. */
-        vipldws2_B.plane = vipldws2_B.R2 + 3;
-        vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 3];
+        vipldws2_B.planeOffset = vipldws2_B.plane + 3;
+        vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 3];
         vipldws2_B.i = 1;
         while (vipldws2_B.i < vipldws2_B.numEdge) {
-          vipldws2_B.plane += 9;
+          vipldws2_B.planeOffset += 9;
           if (vipldws2_B.qY_g <
-              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane]) {
-            vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane];
+              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.planeOffset]) {
+            vipldws2_B.qY_g =
+              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.planeOffset];
           }
 
           vipldws2_B.i++;
         }
 
         vipldws2_B.qY = vipldws2_B.qY_g;
-        if (vipldws2_B.qY_g > 239) {
-          vipldws2_B.qY = 239;
+        if (vipldws2_B.qY_g > 319) {
+          vipldws2_B.qY = 319;
         }
 
         /* Find out the first column of the polygon. */
-        vipldws2_B.plane = vipldws2_B.R2 + 2;
-        vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 2];
+        vipldws2_B.planeOffset = vipldws2_B.plane + 2;
+        vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 2];
         vipldws2_B.i = 1;
         while (vipldws2_B.i < vipldws2_B.numEdge) {
-          vipldws2_B.plane += 9;
+          vipldws2_B.planeOffset += 9;
           if (vipldws2_B.qY_g >
-              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane]) {
-            vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane];
+              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.planeOffset]) {
+            vipldws2_B.qY_g =
+              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.planeOffset];
           }
 
           vipldws2_B.i++;
@@ -5438,11 +5444,11 @@ void vipldws2_step(void)
         }
 
         /* Move to the next column and find out boundaries of the polygon at this column. */
-        vipldws2_B.r1 = vipldws2_B.R2;
-        vipldws2_B.r2 = vipldws2_B.R2;
-        vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.R2;
+        vipldws2_B.r1 = vipldws2_B.plane;
+        vipldws2_B.r2 = vipldws2_B.plane;
+        vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.plane;
         vipldws2_B.indxI = 0;
-        vipldws2_B.plane = 0;
+        vipldws2_B.planeOffset = 0;
         vipldws2_B.i = 0;
         while (vipldws2_B.i < vipldws2_B.numEdge) {
           /* Find out the valid boundaries and bring them to the latest column. */
@@ -5469,14 +5475,13 @@ void vipldws2_step(void)
               }
 
               vipldws2_B.lastActiveEdgeIdxBdy += 9;
-              vipldws2_B.plane++;
+              vipldws2_B.planeOffset++;
             }
 
             if (vipldws2_B.r2 != vipldws2_B.r1) {
-              for (vipldws2_B.ii = 0; vipldws2_B.ii < 9; vipldws2_B.ii++) {
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.ii]
-                  = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                  vipldws2_B.ii];
+              for (vipldws2_B.j = 0; vipldws2_B.j < 9; vipldws2_B.j++) {
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.j] =
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.j];
               }
             }
 
@@ -5492,23 +5497,21 @@ void vipldws2_step(void)
         /* Sort the boundaries of the polygon. */
         c_gotAlLeastOneYellowPixelInThe = true;
         while (c_gotAlLeastOneYellowPixelInThe) {
-          vipldws2_B.r1 = vipldws2_B.R2;
-          vipldws2_B.r2 = vipldws2_B.R2 + 9;
+          vipldws2_B.r1 = vipldws2_B.plane;
+          vipldws2_B.r2 = vipldws2_B.plane + 9;
           c_gotAlLeastOneYellowPixelInThe = false;
           vipldws2_B.i = 1;
-          while (vipldws2_B.i < vipldws2_B.plane) {
+          while (vipldws2_B.i < vipldws2_B.planeOffset) {
             if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + 1] >
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + 1]) {
               c_gotAlLeastOneYellowPixelInThe = true;
-              for (vipldws2_B.ii = 0; vipldws2_B.ii < 9; vipldws2_B.ii++) {
+              for (vipldws2_B.j = 0; vipldws2_B.j < 9; vipldws2_B.j++) {
                 vipldws2_B.lastSeparator =
-                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 +
-                  vipldws2_B.ii];
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.ii]
-                  = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                  vipldws2_B.ii];
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.ii]
-                  = vipldws2_B.lastSeparator;
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.j];
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.j] =
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.j];
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.j] =
+                  vipldws2_B.lastSeparator;
               }
             }
 
@@ -5518,7 +5521,7 @@ void vipldws2_step(void)
           }
         }
 
-        vipldws2_B.r1 = vipldws2_B.R2;
+        vipldws2_B.r1 = vipldws2_B.plane;
         vipldws2_B.activeColBdy = vipldws2_B.qY_g + 1;
         vipldws2_B.activeCol = 0;
         vipldws2_B.r2 = 0;
@@ -5536,12 +5539,12 @@ void vipldws2_step(void)
               vipldws2_B.r1 += 9;
               if ((vipldws2_B.i == vipldws2_B.lastSeparator) && (vipldws2_B.r1 <
                    vipldws2_B.lastActiveEdgeIdxBdy)) {
-                vipldws2_B.plane =
+                vipldws2_B.planeOffset =
                   vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + 1];
                 c_gotAlLeastOneYellowPixelInThe = (vipldws2_B.r1 <
                   vipldws2_B.lastActiveEdgeIdxBdy);
                 while (c_gotAlLeastOneYellowPixelInThe && (vipldws2_B.i ==
-                        vipldws2_B.plane)) {
+                        vipldws2_B.planeOffset)) {
                   countTwice = true;
                   vipldws2_B.i = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1
                     + 1];
@@ -5549,7 +5552,7 @@ void vipldws2_step(void)
                   c_gotAlLeastOneYellowPixelInThe = (vipldws2_B.r1 <
                     vipldws2_B.lastActiveEdgeIdxBdy);
                   if (c_gotAlLeastOneYellowPixelInThe) {
-                    vipldws2_B.plane =
+                    vipldws2_B.planeOffset =
                       vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + 1];
                   }
                 }
@@ -5561,24 +5564,24 @@ void vipldws2_step(void)
 
               if (vipldws2_B.r2 != 0) {
                 vipldws2_B.firstRow = vipldws2_B.lastSeparator;
-                if (vipldws2_B.i <= 319) {
+                if (vipldws2_B.i <= 239) {
                   vipldws2_B.lastRow = vipldws2_B.i;
                   vipldws2_B.lastSeparator = vipldws2_B.i;
                 } else {
-                  vipldws2_B.lastRow = 319;
-                  vipldws2_B.lastSeparator = 319;
+                  vipldws2_B.lastRow = 239;
+                  vipldws2_B.lastSeparator = 239;
                 }
               } else {
                 vipldws2_B.firstRow = vipldws2_B.lastSeparator + 1;
-                if ((vipldws2_B.i > 0) && (vipldws2_B.i <= 319)) {
+                if ((vipldws2_B.i > 0) && (vipldws2_B.i <= 239)) {
                   vipldws2_B.lastRow = vipldws2_B.i - 1;
                   vipldws2_B.lastSeparator = vipldws2_B.i;
                 } else if (vipldws2_B.i <= 0) {
                   vipldws2_B.lastRow = -1;
                   vipldws2_B.lastSeparator = 0;
                 } else {
-                  vipldws2_B.lastRow = 319;
-                  vipldws2_B.lastSeparator = 320;
+                  vipldws2_B.lastRow = 239;
+                  vipldws2_B.lastSeparator = 240;
                 }
               }
 
@@ -5589,14 +5592,14 @@ void vipldws2_step(void)
               /* Reset states and move to the next column. */
               done = false;
               vipldws2_B.firstRow = vipldws2_B.lastSeparator + 1;
-              vipldws2_B.lastRow = 319;
+              vipldws2_B.lastRow = 239;
 
               /* Move to the next column and find out boundaries of the polygon at this column. */
-              vipldws2_B.r1 = vipldws2_B.R2;
-              vipldws2_B.r2 = vipldws2_B.R2;
-              vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.R2;
+              vipldws2_B.r1 = vipldws2_B.plane;
+              vipldws2_B.r2 = vipldws2_B.plane;
+              vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.plane;
               vipldws2_B.numEdge = 0;
-              vipldws2_B.plane = 0;
+              vipldws2_B.planeOffset = 0;
               vipldws2_B.i = 0;
               while (vipldws2_B.i < vipldws2_B.indxI) {
                 /* Find out the valid boundaries and bring them to the latest column. */
@@ -5624,16 +5627,15 @@ void vipldws2_step(void)
                     }
 
                     vipldws2_B.lastActiveEdgeIdxBdy += 9;
-                    vipldws2_B.plane++;
+                    vipldws2_B.planeOffset++;
                   }
 
                   if (vipldws2_B.r2 != vipldws2_B.r1) {
-                    for (vipldws2_B.ii = 0; vipldws2_B.ii < 9; vipldws2_B.ii++)
-                    {
+                    for (vipldws2_B.j = 0; vipldws2_B.j < 9; vipldws2_B.j++) {
                       vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 +
-                        vipldws2_B.ii] =
+                        vipldws2_B.j] =
                         vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                        vipldws2_B.ii];
+                        vipldws2_B.j];
                     }
                   }
 
@@ -5650,25 +5652,24 @@ void vipldws2_step(void)
               /* Sort the boundaries of the polygon according to row values. */
               /* Sort the boundaries of the polygon. */
               while (c_gotAlLeastOneYellowPixelInThe) {
-                vipldws2_B.r1 = vipldws2_B.R2;
-                vipldws2_B.r2 = vipldws2_B.R2 + 9;
+                vipldws2_B.r1 = vipldws2_B.plane;
+                vipldws2_B.r2 = vipldws2_B.plane + 9;
                 c_gotAlLeastOneYellowPixelInThe = false;
                 vipldws2_B.i = 1;
-                while (vipldws2_B.i < vipldws2_B.plane) {
+                while (vipldws2_B.i < vipldws2_B.planeOffset) {
                   if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + 1] >
                       vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + 1]) {
                     c_gotAlLeastOneYellowPixelInThe = true;
-                    for (vipldws2_B.ii = 0; vipldws2_B.ii < 9; vipldws2_B.ii++)
-                    {
+                    for (vipldws2_B.j = 0; vipldws2_B.j < 9; vipldws2_B.j++) {
                       vipldws2_B.lastSeparator =
                         vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 +
-                        vipldws2_B.ii];
+                        vipldws2_B.j];
                       vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 +
-                        vipldws2_B.ii] =
+                        vipldws2_B.j] =
                         vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                        vipldws2_B.ii];
+                        vipldws2_B.j];
                       vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                        vipldws2_B.ii] = vipldws2_B.lastSeparator;
+                        vipldws2_B.j] = vipldws2_B.lastSeparator;
                     }
                   }
 
@@ -5678,7 +5679,7 @@ void vipldws2_step(void)
                 }
               }
 
-              vipldws2_B.r1 = vipldws2_B.R2;
+              vipldws2_B.r1 = vipldws2_B.plane;
               vipldws2_B.activeColBdy++;
               vipldws2_B.r2 = 0;
               vipldws2_B.lastSeparator = -1;
@@ -5686,7 +5687,7 @@ void vipldws2_step(void)
             }
           } else {
             vipldws2_B.firstRow = 0;
-            vipldws2_B.lastRow = 319;
+            vipldws2_B.lastRow = 239;
             vipldws2_B.activeCol++;
           }
 
@@ -5699,8 +5700,8 @@ void vipldws2_step(void)
           }
 
           if (done) {
-            vipldws2_B.ii = vipldws2_B.col * 320 + vipldws2_B.firstRow;
-            vipldws2_B.col = vipldws2_B.ii;
+            vipldws2_B.j = vipldws2_B.col * 240 + vipldws2_B.firstRow;
+            vipldws2_B.col = vipldws2_B.j;
             vipldws2_B.i = vipldws2_B.firstRow;
             while (vipldws2_B.i <= vipldws2_B.lastRow) {
               vipldws2_B.DrawShapes[vipldws2_B.col] *=
@@ -5711,8 +5712,8 @@ void vipldws2_step(void)
               vipldws2_B.i++;
             }
 
-            vipldws2_B.ii += 76800;
-            vipldws2_B.col = vipldws2_B.ii;
+            vipldws2_B.j += 76800;
+            vipldws2_B.col = vipldws2_B.j;
             vipldws2_B.i = vipldws2_B.firstRow;
             while (vipldws2_B.i <= vipldws2_B.lastRow) {
               vipldws2_B.DrawShapes[vipldws2_B.col] *=
@@ -5723,8 +5724,8 @@ void vipldws2_step(void)
               vipldws2_B.i++;
             }
 
-            vipldws2_B.ii += 76800;
-            vipldws2_B.col = vipldws2_B.ii;
+            vipldws2_B.j += 76800;
+            vipldws2_B.col = vipldws2_B.j;
             vipldws2_B.i = vipldws2_B.firstRow;
             while (vipldws2_B.i <= vipldws2_B.lastRow) {
               vipldws2_B.DrawShapes[vipldws2_B.col] *=
@@ -5741,41 +5742,41 @@ void vipldws2_step(void)
         }
 
         /* Move to the next polygon. */
-        vipldws2_B.R2 += 54;
-        c_gotAlLeastOneYellowPixelInThe = (vipldws2_B.R2 < 54);
+        vipldws2_B.plane += 54;
+        c_gotAlLeastOneYellowPixelInThe = (vipldws2_B.plane < 54);
       }
 
-      /* End of S-Function (svipdrawshapes): '<S68>/DrawShapes' */
+      /* End of S-Function (svipdrawshapes): '<S69>/DrawShapes' */
       srUpdateBC(vipldws2_DW.DrawPolygon_SubsysRanBC);
     }
 
-    /* End of Outputs for SubSystem: '<S66>/Draw  Polygon' */
+    /* End of Outputs for SubSystem: '<S67>/Draw  Polygon' */
 
-    /* Selector: '<S69>/Selector1' */
+    /* Selector: '<S70>/Selector1' */
     vipldws2_B.Transpose2[0] = vipldws2_B.Bias[0];
 
-    /* Bias: '<S69>/Bias1' */
+    /* Bias: '<S70>/Bias1' */
     vipldws2_B.Transpose2[0] += vipldws2_P.Bias1_Bias[0];
 
-    /* Selector: '<S69>/Selector3' */
+    /* Selector: '<S70>/Selector3' */
     vipldws2_B.Bias2[0] = vipldws2_B.Bias[4];
 
-    /* Bias: '<S69>/Bias2' */
+    /* Bias: '<S70>/Bias2' */
     vipldws2_B.Bias2[0] += vipldws2_P.Bias2_Bias[0];
 
-    /* Selector: '<S69>/Selector1' */
+    /* Selector: '<S70>/Selector1' */
     vipldws2_B.Transpose2[1] = vipldws2_B.Bias[1];
 
-    /* Bias: '<S69>/Bias1' */
+    /* Bias: '<S70>/Bias1' */
     vipldws2_B.Transpose2[1] += vipldws2_P.Bias1_Bias[1];
 
-    /* Selector: '<S69>/Selector3' */
+    /* Selector: '<S70>/Selector3' */
     vipldws2_B.Bias2[1] = vipldws2_B.Bias[5];
 
-    /* Bias: '<S69>/Bias2' */
+    /* Bias: '<S70>/Bias2' */
     vipldws2_B.Bias2[1] += vipldws2_P.Bias2_Bias[1];
 
-    /* Switch: '<S66>/Switch' */
+    /* Switch: '<S67>/Switch' */
     if (vipldws2_B.LogicalOperator) {
       memcpy(&vipldws2_B.Switch2[0], &vipldws2_B.DrawShapes[0], 230400U * sizeof
              (real32_T));
@@ -5784,9 +5785,9 @@ void vipldws2_step(void)
              230400U * sizeof(real32_T));
     }
 
-    /* End of Switch: '<S66>/Switch' */
+    /* End of Switch: '<S67>/Switch' */
 
-    /* Selector: '<S66>/Selector2' */
+    /* Selector: '<S67>/Selector2' */
     for (vipldws2_B.i = 0; vipldws2_B.i < 2; vipldws2_B.i++) {
       vipldws2_B.Selector2_m[vipldws2_B.i << 2] = vipldws2_B.Bias[(vipldws2_B.i <<
         2) + 1];
@@ -5798,9 +5799,9 @@ void vipldws2_step(void)
         [(vipldws2_B.i << 2) + 2];
     }
 
-    /* End of Selector: '<S66>/Selector2' */
+    /* End of Selector: '<S67>/Selector2' */
 
-    /* Math: '<S66>/Transpose1' */
+    /* Math: '<S67>/Transpose1' */
     for (vipldws2_B.i = 0; vipldws2_B.i < 4; vipldws2_B.i++) {
       vipldws2_B.Transpose1_p[vipldws2_B.i << 1] =
         vipldws2_B.Selector2_m[vipldws2_B.i];
@@ -5808,9 +5809,9 @@ void vipldws2_step(void)
         vipldws2_B.Selector2_m[vipldws2_B.i + 4];
     }
 
-    /* End of Math: '<S66>/Transpose1' */
+    /* End of Math: '<S67>/Transpose1' */
 
-    /* S-Function (svipdrawshapes): '<S66>/DrawShapes' */
+    /* S-Function (svipdrawshapes): '<S67>/DrawShapes' */
     if (vipldws2_P.DrawShapes_lineWidth_i == 1) {
       /* Compute output for unity line width
        */
@@ -5820,18 +5821,19 @@ void vipldws2_step(void)
 
       /* Update view port. */
       vipldws2_B.planeWidth = 0;
-      for (vipldws2_B.R2 = 0; vipldws2_B.R2 < 2; vipldws2_B.R2++) {
-        vipldws2_B.qY_g = vipldws2_B.Transpose1_p[vipldws2_B.R2 + 2] - 1;
-        vipldws2_B.qY = vipldws2_B.Transpose1_p[vipldws2_B.R2] - 1;
-        if ((vipldws2_B.Transpose1_p[vipldws2_B.R2 + 6] - 1 != vipldws2_B.qY_g) ||
-            (vipldws2_B.Transpose1_p[4 + vipldws2_B.R2] - 1 != vipldws2_B.qY)) {
+      for (vipldws2_B.plane = 0; vipldws2_B.plane < 2; vipldws2_B.plane++) {
+        vipldws2_B.qY_g = vipldws2_B.Transpose1_p[vipldws2_B.plane + 2] - 1;
+        vipldws2_B.qY = vipldws2_B.Transpose1_p[vipldws2_B.plane] - 1;
+        if ((vipldws2_B.Transpose1_p[vipldws2_B.plane + 6] - 1 !=
+             vipldws2_B.qY_g) || (vipldws2_B.Transpose1_p[4 + vipldws2_B.plane]
+             - 1 != vipldws2_B.qY)) {
           c_gotAlLeastOneYellowPixelInThe = false;
           vipldws2_B.qY_g = (vipldws2_B.qY_g << 3) + 4;
-          vipldws2_B.numEdge = ((vipldws2_B.Transpose1_p[vipldws2_B.R2 + 6] - 1)
-                                << 3) + 4;
+          vipldws2_B.j = ((vipldws2_B.Transpose1_p[vipldws2_B.plane + 6] - 1) <<
+                          3) + 4;
           vipldws2_B.qY = (vipldws2_B.qY << 3) + 4;
-          vipldws2_B.col = ((vipldws2_B.Transpose1_p[4 + vipldws2_B.R2] - 1) <<
-                            3) + 4;
+          vipldws2_B.numEdge = ((vipldws2_B.Transpose1_p[4 + vipldws2_B.plane] -
+            1) << 3) + 4;
 
           /* Find the visible portion of a line. */
           countTwice = false;
@@ -5839,8 +5841,8 @@ void vipldws2_step(void)
           done = false;
           vipldws2_B.indxI = vipldws2_B.qY_g;
           vipldws2_B.c2 = vipldws2_B.qY;
-          vipldws2_B.C2 = vipldws2_B.numEdge;
-          vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.col;
+          vipldws2_B.C2 = vipldws2_B.j;
+          vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.numEdge;
           while (!done) {
             vipldws2_B.fromIdx = 0U;
             vipldws2_B.toIdx = 0U;
@@ -5849,7 +5851,7 @@ void vipldws2_step(void)
             if (vipldws2_B.indxI < 0) {
               vipldws2_B.fromIdx = 4U;
             } else {
-              if (vipldws2_B.indxI > 2559) {
+              if (vipldws2_B.indxI > 1919) {
                 vipldws2_B.fromIdx = 8U;
               }
             }
@@ -5857,7 +5859,7 @@ void vipldws2_step(void)
             if (vipldws2_B.C2 < 0) {
               vipldws2_B.toIdx = 4U;
             } else {
-              if (vipldws2_B.C2 > 2559) {
+              if (vipldws2_B.C2 > 1919) {
                 vipldws2_B.toIdx = 8U;
               }
             }
@@ -5865,7 +5867,7 @@ void vipldws2_step(void)
             if (vipldws2_B.c2 < 0) {
               vipldws2_B.fromIdx |= 1U;
             } else {
-              if (vipldws2_B.c2 > 1919) {
+              if (vipldws2_B.c2 > 2559) {
                 vipldws2_B.fromIdx |= 2U;
               }
             }
@@ -5873,7 +5875,7 @@ void vipldws2_step(void)
             if (vipldws2_B.lastActiveEdgeIdxBdy < 0) {
               vipldws2_B.toIdx |= 1U;
             } else {
-              if (vipldws2_B.lastActiveEdgeIdxBdy > 1919) {
+              if (vipldws2_B.lastActiveEdgeIdxBdy > 2559) {
                 vipldws2_B.toIdx |= 2U;
               }
             }
@@ -5894,17 +5896,18 @@ void vipldws2_step(void)
               }
 
               vipldws2_B.i = vipldws2_B.C2 - vipldws2_B.indxI;
-              vipldws2_B.plane = vipldws2_B.lastActiveEdgeIdxBdy - vipldws2_B.c2;
+              vipldws2_B.planeOffset = vipldws2_B.lastActiveEdgeIdxBdy -
+                vipldws2_B.c2;
               if ((vipldws2_B.i > 1073741824) || (vipldws2_B.i < -1073741824) ||
-                  ((vipldws2_B.plane > 1073741824) || (vipldws2_B.plane <
-                    -1073741824))) {
+                  ((vipldws2_B.planeOffset > 1073741824) ||
+                   (vipldws2_B.planeOffset < -1073741824))) {
                 /* Possible Inf or Nan. */
                 done = true;
                 c_gotAlLeastOneYellowPixelInThe = false;
                 countTwice = true;
               } else if ((vipldws2_B.fromIdx & 4U) != 0U) {
                 /* Violated RMin. */
-                vipldws2_B.c1 = -vipldws2_B.indxI * vipldws2_B.plane;
+                vipldws2_B.c1 = -vipldws2_B.indxI * vipldws2_B.planeOffset;
                 if ((vipldws2_B.c1 > 1073741824) || (vipldws2_B.c1 < -1073741824))
                 {
                   /* Check for Inf or Nan. */
@@ -5923,7 +5926,8 @@ void vipldws2_step(void)
                 countTwice = true;
               } else if ((vipldws2_B.fromIdx & 8U) != 0U) {
                 /* Violated RMax. */
-                vipldws2_B.c1 = (2559 - vipldws2_B.indxI) * vipldws2_B.plane;
+                vipldws2_B.c1 = (1919 - vipldws2_B.indxI) *
+                  vipldws2_B.planeOffset;
                 if ((vipldws2_B.c1 > 1073741824) || (vipldws2_B.c1 < -1073741824))
                 {
                   /* Check for Inf or Nan. */
@@ -5938,7 +5942,7 @@ void vipldws2_step(void)
                     vipldws2_B.i) + 1) >> 1;
                 }
 
-                vipldws2_B.indxI = 2559;
+                vipldws2_B.indxI = 1919;
                 countTwice = true;
               } else if ((vipldws2_B.fromIdx & 1U) != 0U) {
                 /* Violated CMin. */
@@ -5948,56 +5952,59 @@ void vipldws2_step(void)
                   /* Check for Inf or Nan. */
                   done = true;
                   c_gotAlLeastOneYellowPixelInThe = false;
-                } else if (((vipldws2_B.c1 >= 0) && (vipldws2_B.plane >= 0)) ||
-                           ((vipldws2_B.c1 < 0) && (vipldws2_B.plane < 0))) {
+                } else if (((vipldws2_B.c1 >= 0) && (vipldws2_B.planeOffset >= 0))
+                           || ((vipldws2_B.c1 < 0) && (vipldws2_B.planeOffset <
+                             0))) {
                   vipldws2_B.indxI += (div_s32_floor(vipldws2_B.c1 << 1,
-                    vipldws2_B.plane) + 1) >> 1;
+                    vipldws2_B.planeOffset) + 1) >> 1;
                 } else {
                   vipldws2_B.indxI -= (div_s32_floor(-vipldws2_B.c1 << 1,
-                    vipldws2_B.plane) + 1) >> 1;
+                    vipldws2_B.planeOffset) + 1) >> 1;
                 }
 
                 vipldws2_B.c2 = 0;
                 countTwice = true;
               } else {
                 /* Violated CMax. */
-                vipldws2_B.c1 = (1919 - vipldws2_B.c2) * vipldws2_B.i;
+                vipldws2_B.c1 = (2559 - vipldws2_B.c2) * vipldws2_B.i;
                 if ((vipldws2_B.c1 > 1073741824) || (vipldws2_B.c1 < -1073741824))
                 {
                   /* Check for Inf or Nan. */
                   done = true;
                   c_gotAlLeastOneYellowPixelInThe = false;
-                } else if (((vipldws2_B.c1 >= 0) && (vipldws2_B.plane >= 0)) ||
-                           ((vipldws2_B.c1 < 0) && (vipldws2_B.plane < 0))) {
+                } else if (((vipldws2_B.c1 >= 0) && (vipldws2_B.planeOffset >= 0))
+                           || ((vipldws2_B.c1 < 0) && (vipldws2_B.planeOffset <
+                             0))) {
                   vipldws2_B.indxI += (div_s32_floor(vipldws2_B.c1 << 1,
-                    vipldws2_B.plane) + 1) >> 1;
+                    vipldws2_B.planeOffset) + 1) >> 1;
                 } else {
                   vipldws2_B.indxI -= (div_s32_floor(-vipldws2_B.c1 << 1,
-                    vipldws2_B.plane) + 1) >> 1;
+                    vipldws2_B.planeOffset) + 1) >> 1;
                 }
 
-                vipldws2_B.c2 = 1919;
+                vipldws2_B.c2 = 2559;
                 countTwice = true;
               }
             } else {
               /* Clip the 2nd point. */
               if (prevEdgeIsVertical) {
-                vipldws2_B.C2 = vipldws2_B.numEdge;
-                vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.col;
+                vipldws2_B.C2 = vipldws2_B.j;
+                vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.numEdge;
               }
 
               vipldws2_B.i = vipldws2_B.C2 - vipldws2_B.indxI;
-              vipldws2_B.plane = vipldws2_B.lastActiveEdgeIdxBdy - vipldws2_B.c2;
+              vipldws2_B.planeOffset = vipldws2_B.lastActiveEdgeIdxBdy -
+                vipldws2_B.c2;
               if ((vipldws2_B.i > 1073741824) || (vipldws2_B.i < -1073741824) ||
-                  ((vipldws2_B.plane > 1073741824) || (vipldws2_B.plane <
-                    -1073741824))) {
+                  ((vipldws2_B.planeOffset > 1073741824) ||
+                   (vipldws2_B.planeOffset < -1073741824))) {
                 /* Possible Inf or Nan. */
                 done = true;
                 c_gotAlLeastOneYellowPixelInThe = false;
                 prevEdgeIsVertical = true;
               } else if ((vipldws2_B.toIdx & 4U) != 0U) {
                 /* Violated RMin. */
-                vipldws2_B.c1 = -vipldws2_B.C2 * vipldws2_B.plane;
+                vipldws2_B.c1 = -vipldws2_B.C2 * vipldws2_B.planeOffset;
                 if ((vipldws2_B.c1 > 1073741824) || (vipldws2_B.c1 < -1073741824))
                 {
                   /* Check for Inf or Nan. */
@@ -6016,7 +6023,7 @@ void vipldws2_step(void)
                 prevEdgeIsVertical = true;
               } else if ((vipldws2_B.toIdx & 8U) != 0U) {
                 /* Violated RMax. */
-                vipldws2_B.c1 = (2559 - vipldws2_B.C2) * vipldws2_B.plane;
+                vipldws2_B.c1 = (1919 - vipldws2_B.C2) * vipldws2_B.planeOffset;
                 if ((vipldws2_B.c1 > 1073741824) || (vipldws2_B.c1 < -1073741824))
                 {
                   /* Check for Inf or Nan. */
@@ -6031,7 +6038,7 @@ void vipldws2_step(void)
                     (-vipldws2_B.c1 << 1, vipldws2_B.i) + 1) >> 1;
                 }
 
-                vipldws2_B.C2 = 2559;
+                vipldws2_B.C2 = 1919;
                 prevEdgeIsVertical = true;
               } else if ((vipldws2_B.toIdx & 1U) != 0U) {
                 /* Violated CMin. */
@@ -6041,36 +6048,38 @@ void vipldws2_step(void)
                   /* Check for Inf or Nan. */
                   done = true;
                   c_gotAlLeastOneYellowPixelInThe = false;
-                } else if (((vipldws2_B.c1 >= 0) && (vipldws2_B.plane >= 0)) ||
-                           ((vipldws2_B.c1 < 0) && (vipldws2_B.plane < 0))) {
+                } else if (((vipldws2_B.c1 >= 0) && (vipldws2_B.planeOffset >= 0))
+                           || ((vipldws2_B.c1 < 0) && (vipldws2_B.planeOffset <
+                             0))) {
                   vipldws2_B.C2 += (div_s32_floor(vipldws2_B.c1 << 1,
-                    vipldws2_B.plane) + 1) >> 1;
+                    vipldws2_B.planeOffset) + 1) >> 1;
                 } else {
                   vipldws2_B.C2 -= (div_s32_floor(-vipldws2_B.c1 << 1,
-                    vipldws2_B.plane) + 1) >> 1;
+                    vipldws2_B.planeOffset) + 1) >> 1;
                 }
 
                 vipldws2_B.lastActiveEdgeIdxBdy = 0;
                 prevEdgeIsVertical = true;
               } else {
                 /* Violated CMax. */
-                vipldws2_B.c1 = (1919 - vipldws2_B.lastActiveEdgeIdxBdy) *
+                vipldws2_B.c1 = (2559 - vipldws2_B.lastActiveEdgeIdxBdy) *
                   vipldws2_B.i;
                 if ((vipldws2_B.c1 > 1073741824) || (vipldws2_B.c1 < -1073741824))
                 {
                   /* Check for Inf or Nan. */
                   done = true;
                   c_gotAlLeastOneYellowPixelInThe = false;
-                } else if (((vipldws2_B.c1 >= 0) && (vipldws2_B.plane >= 0)) ||
-                           ((vipldws2_B.c1 < 0) && (vipldws2_B.plane < 0))) {
+                } else if (((vipldws2_B.c1 >= 0) && (vipldws2_B.planeOffset >= 0))
+                           || ((vipldws2_B.c1 < 0) && (vipldws2_B.planeOffset <
+                             0))) {
                   vipldws2_B.C2 += (div_s32_floor(vipldws2_B.c1 << 1,
-                    vipldws2_B.plane) + 1) >> 1;
+                    vipldws2_B.planeOffset) + 1) >> 1;
                 } else {
                   vipldws2_B.C2 -= (div_s32_floor(-vipldws2_B.c1 << 1,
-                    vipldws2_B.plane) + 1) >> 1;
+                    vipldws2_B.planeOffset) + 1) >> 1;
                 }
 
-                vipldws2_B.lastActiveEdgeIdxBdy = 1919;
+                vipldws2_B.lastActiveEdgeIdxBdy = 2559;
                 prevEdgeIsVertical = true;
               }
             }
@@ -6079,22 +6088,24 @@ void vipldws2_step(void)
           if (c_gotAlLeastOneYellowPixelInThe) {
             /* Initialize the Bresenham algorithm. */
             if (vipldws2_B.C2 >= vipldws2_B.indxI) {
-              vipldws2_B.numEdge = vipldws2_B.C2 - vipldws2_B.indxI;
+              vipldws2_B.j = vipldws2_B.C2 - vipldws2_B.indxI;
             } else {
-              vipldws2_B.numEdge = vipldws2_B.indxI - vipldws2_B.C2;
+              vipldws2_B.j = vipldws2_B.indxI - vipldws2_B.C2;
             }
 
             if (vipldws2_B.lastActiveEdgeIdxBdy >= vipldws2_B.c2) {
-              vipldws2_B.col = vipldws2_B.lastActiveEdgeIdxBdy - vipldws2_B.c2;
+              vipldws2_B.numEdge = vipldws2_B.lastActiveEdgeIdxBdy -
+                vipldws2_B.c2;
             } else {
-              vipldws2_B.col = vipldws2_B.c2 - vipldws2_B.lastActiveEdgeIdxBdy;
+              vipldws2_B.numEdge = vipldws2_B.c2 -
+                vipldws2_B.lastActiveEdgeIdxBdy;
             }
 
-            if (vipldws2_B.numEdge > vipldws2_B.col) {
+            if (vipldws2_B.j > vipldws2_B.numEdge) {
               vipldws2_B.r2 = 1;
-              vipldws2_B.r1 = 320;
+              vipldws2_B.r1 = 240;
             } else {
-              vipldws2_B.r2 = 320;
+              vipldws2_B.r2 = 240;
               vipldws2_B.r1 = 1;
               vipldws2_B.i = vipldws2_B.indxI;
               vipldws2_B.indxI = vipldws2_B.c2;
@@ -6126,20 +6137,20 @@ void vipldws2_step(void)
             vipldws2_B.activeColBdy = vipldws2_B.c2 - 4;
             vipldws2_B.activeCol = -((vipldws2_B.qY_g + 1) >> 1);
             if (vipldws2_B.r2 != 1) {
-              vipldws2_B.colBoundary = 2559;
-            } else {
               vipldws2_B.colBoundary = 1919;
+            } else {
+              vipldws2_B.colBoundary = 2559;
             }
 
             vipldws2_B.c1 = vipldws2_B.indxI >> 3;
-            vipldws2_B.ii = ((vipldws2_B.c1 + 1) << 3) - vipldws2_B.indxI;
+            vipldws2_B.j = ((vipldws2_B.c1 + 1) << 3) - vipldws2_B.indxI;
             vipldws2_B.firstRowOut = 320;
             vipldws2_B.lastRowOut = 0;
             memset(&vipldws2_DW.DrawShapes_DW_PixCount[0], 0, 320U * sizeof
                    (uint8_T));
             done = (vipldws2_B.indxI <= vipldws2_B.C2);
             while (done) {
-              vipldws2_B.ii--;
+              vipldws2_B.j--;
               vipldws2_B.numEdge = vipldws2_B.activeColBdy;
 
               /* Compute the next location using Bresenham algorithm. */
@@ -6164,26 +6175,26 @@ void vipldws2_step(void)
                     vipldws2_B.col = vipldws2_B.colBoundary;
                   }
 
-                  vipldws2_B.plane = vipldws2_B.numEdge >> 3;
+                  vipldws2_B.planeOffset = vipldws2_B.numEdge >> 3;
                   vipldws2_B.i = vipldws2_B.col >> 3;
-                  if (vipldws2_B.firstRowOut > vipldws2_B.plane) {
-                    vipldws2_B.firstRowOut = vipldws2_B.plane;
+                  if (vipldws2_B.firstRowOut > vipldws2_B.planeOffset) {
+                    vipldws2_B.firstRowOut = vipldws2_B.planeOffset;
                   }
 
                   if (vipldws2_B.lastRowOut < vipldws2_B.i) {
                     vipldws2_B.lastRowOut = vipldws2_B.i;
                   }
 
-                  if (vipldws2_B.i > vipldws2_B.plane) {
-                    vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.plane] =
-                      (uint8_T)(((uint32_T)((vipldws2_B.plane + 1) << 3) +
-                                 vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.plane])
+                  if (vipldws2_B.i > vipldws2_B.planeOffset) {
+                    vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.planeOffset] =
+                      (uint8_T)(((uint32_T)((vipldws2_B.planeOffset + 1) << 3) +
+                                 vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.planeOffset])
                                 - vipldws2_B.numEdge);
                     vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.i] = (uint8_T)
                       ((((uint32_T)
                          vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.i] +
                          vipldws2_B.col) - (vipldws2_B.i << 3)) + 1U);
-                    vipldws2_B.numEdge = vipldws2_B.plane + 1;
+                    vipldws2_B.numEdge = vipldws2_B.planeOffset + 1;
                     while (vipldws2_B.numEdge < vipldws2_B.i) {
                       vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.numEdge] =
                         (uint8_T)
@@ -6192,17 +6203,18 @@ void vipldws2_step(void)
                       vipldws2_B.numEdge++;
                     }
                   } else {
-                    if (vipldws2_B.i == vipldws2_B.plane) {
-                      vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.plane] =
-                        (uint8_T)((((uint32_T)
-                                    vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.plane]
-                                    + vipldws2_B.col) - vipldws2_B.numEdge) + 1U);
+                    if (vipldws2_B.i == vipldws2_B.planeOffset) {
+                      vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.planeOffset]
+                        = (uint8_T)((((uint32_T)
+                                      vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.planeOffset]
+                                      + vipldws2_B.col) - vipldws2_B.numEdge) +
+                                    1U);
                     }
                   }
                 }
               }
 
-              if ((vipldws2_B.ii == 0) || (!done)) {
+              if ((vipldws2_B.j == 0) || (!done)) {
                 while (vipldws2_B.firstRowOut <= vipldws2_B.lastRowOut) {
                   vipldws2_B.col = vipldws2_B.c1 * vipldws2_B.r2 +
                     vipldws2_B.firstRowOut * vipldws2_B.r1;
@@ -6220,31 +6232,31 @@ void vipldws2_step(void)
                   }
 
                   vipldws2_B.col += 76800;
-                  vipldws2_B.plane = vipldws2_B.planeWidth + 2;
+                  vipldws2_B.planeOffset = vipldws2_B.planeWidth + 2;
                   if (vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.firstRowOut]
                       == 64) {
                     vipldws2_B.DrawShapes_m[vipldws2_B.col] +=
-                      vipldws2_P.DrawShapes_RTP_FILLCOLOR_f[vipldws2_B.plane] -
-                      vipldws2_B.DrawShapes_m[vipldws2_B.col];
+                      vipldws2_P.DrawShapes_RTP_FILLCOLOR_f[vipldws2_B.planeOffset]
+                      - vipldws2_B.DrawShapes_m[vipldws2_B.col];
                   } else {
                     vipldws2_B.DrawShapes_m[vipldws2_B.col] +=
-                      (vipldws2_P.DrawShapes_RTP_FILLCOLOR_f[vipldws2_B.plane] -
-                       vipldws2_B.DrawShapes_m[vipldws2_B.col]) * (real32_T)
+                      (vipldws2_P.DrawShapes_RTP_FILLCOLOR_f[vipldws2_B.planeOffset]
+                       - vipldws2_B.DrawShapes_m[vipldws2_B.col]) * (real32_T)
                       vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.firstRowOut]
                       / 64.0F;
                   }
 
                   vipldws2_B.col += 76800;
-                  vipldws2_B.plane += 2;
+                  vipldws2_B.planeOffset += 2;
                   if (vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.firstRowOut]
                       == 64) {
                     vipldws2_B.DrawShapes_m[vipldws2_B.col] +=
-                      vipldws2_P.DrawShapes_RTP_FILLCOLOR_f[vipldws2_B.plane] -
-                      vipldws2_B.DrawShapes_m[vipldws2_B.col];
+                      vipldws2_P.DrawShapes_RTP_FILLCOLOR_f[vipldws2_B.planeOffset]
+                      - vipldws2_B.DrawShapes_m[vipldws2_B.col];
                   } else {
                     vipldws2_B.DrawShapes_m[vipldws2_B.col] +=
-                      (vipldws2_P.DrawShapes_RTP_FILLCOLOR_f[vipldws2_B.plane] -
-                       vipldws2_B.DrawShapes_m[vipldws2_B.col]) * (real32_T)
+                      (vipldws2_P.DrawShapes_RTP_FILLCOLOR_f[vipldws2_B.planeOffset]
+                       - vipldws2_B.DrawShapes_m[vipldws2_B.col]) * (real32_T)
                       vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.firstRowOut]
                       / 64.0F;
                   }
@@ -6254,7 +6266,7 @@ void vipldws2_step(void)
                   vipldws2_B.firstRowOut++;
                 }
 
-                vipldws2_B.ii = 8;
+                vipldws2_B.j = 8;
                 vipldws2_B.firstRowOut = 320;
                 vipldws2_B.lastRowOut = 0;
                 vipldws2_B.c1++;
@@ -7135,10 +7147,10 @@ void vipldws2_step(void)
       }
 
       vipldws2_B.c1 = vipldws2_B.c2 << 1;
-      memset(&vipldws2_DW.DrawShapes_DW_PixCount[0], 0, 320U * sizeof(uint8_T));
+      memset(&vipldws2_DW.DrawShapes_DW_PixCount[0], 0, 240U * sizeof(uint8_T));
 
       /* Reset scanline states. */
-      vipldws2_B.R2 = 0;
+      vipldws2_B.plane = 0;
       vipldws2_B.C2 = 0;
       vipldws2_B.planeWidth = 0;
       c_gotAlLeastOneYellowPixelInThe = true;
@@ -7147,11 +7159,11 @@ void vipldws2_step(void)
         /* Convert polygon vertices to boundaries. */
         done = false;
         vipldws2_B.numEdge = 0;
-        vipldws2_B.qY_g = vipldws2_B.R2;
-        vipldws2_B.qY = vipldws2_B.R2;
+        vipldws2_B.qY_g = vipldws2_B.plane;
+        vipldws2_B.qY = vipldws2_B.plane;
         idxTmpArray[0U] = (int8_T)(vipldws2_B.c2 - 1);
-        vipldws2_B.ii = 0;
-        while (vipldws2_B.ii < 1) {
+        vipldws2_B.j = 0;
+        while (vipldws2_B.j < 1) {
           /* start for loop
            */
           vipldws2_B.lastActiveEdgeIdxBdy = (((idxTmpArray[0] << 1) + 1) << 1) +
@@ -7476,31 +7488,31 @@ void vipldws2_step(void)
             vipldws2_B.i++;
           }
 
-          vipldws2_B.ii = 1;
+          vipldws2_B.j = 1;
         }
 
         if (!done) {
           /* Merge two Bresenham lines. */
-          if ((vipldws2_B.R2 != vipldws2_B.qY_g) &&
-              ((vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 5] ==
+          if ((vipldws2_B.plane != vipldws2_B.qY_g) &&
+              ((vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 5] ==
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 5]) &&
-               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 6] ==
+               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 6] ==
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 6]) &&
-               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 7] ==
+               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 7] ==
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 7]) &&
-               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 8] ==
+               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 8] ==
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 8]))) {
-            if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 3] + 1 ==
+            if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 3] + 1 ==
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 2]) {
-              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 3] =
+              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 3] =
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 3];
               done = true;
             } else {
               if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 3] + 1 ==
-                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 2]) {
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 1] =
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 2]) {
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 1] =
                   vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 1];
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 2] =
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 2] =
                   vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 2];
                 done = true;
               }
@@ -7525,23 +7537,21 @@ void vipldws2_step(void)
         /* Sort the boundaries of the polygon. */
         c_gotAlLeastOneYellowPixelInThe = true;
         while (c_gotAlLeastOneYellowPixelInThe) {
-          vipldws2_B.r1 = vipldws2_B.R2;
-          vipldws2_B.r2 = vipldws2_B.R2 + 9;
+          vipldws2_B.r1 = vipldws2_B.plane;
+          vipldws2_B.r2 = vipldws2_B.plane + 9;
           c_gotAlLeastOneYellowPixelInThe = false;
           vipldws2_B.i = 1;
           while (vipldws2_B.i < vipldws2_B.numEdge) {
             if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + 2] >
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + 2]) {
               c_gotAlLeastOneYellowPixelInThe = true;
-              for (vipldws2_B.ii = 0; vipldws2_B.ii < 9; vipldws2_B.ii++) {
+              for (vipldws2_B.j = 0; vipldws2_B.j < 9; vipldws2_B.j++) {
                 vipldws2_B.lastSeparator =
-                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 +
-                  vipldws2_B.ii];
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.ii]
-                  = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                  vipldws2_B.ii];
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.ii]
-                  = vipldws2_B.lastSeparator;
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.j];
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.j] =
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.j];
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.j] =
+                  vipldws2_B.lastSeparator;
               }
             }
 
@@ -7552,33 +7562,35 @@ void vipldws2_step(void)
         }
 
         /* Find out the last column of the polygon. */
-        vipldws2_B.plane = vipldws2_B.R2 + 3;
-        vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 3];
+        vipldws2_B.planeOffset = vipldws2_B.plane + 3;
+        vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 3];
         vipldws2_B.i = 1;
         while (vipldws2_B.i < vipldws2_B.numEdge) {
-          vipldws2_B.plane += 9;
+          vipldws2_B.planeOffset += 9;
           if (vipldws2_B.qY_g <
-              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane]) {
-            vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane];
+              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.planeOffset]) {
+            vipldws2_B.qY_g =
+              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.planeOffset];
           }
 
           vipldws2_B.i++;
         }
 
         vipldws2_B.qY = vipldws2_B.qY_g;
-        if (vipldws2_B.qY_g > 1919) {
-          vipldws2_B.qY = 1919;
+        if (vipldws2_B.qY_g > 2559) {
+          vipldws2_B.qY = 2559;
         }
 
         /* Find out the first column of the polygon. */
-        vipldws2_B.plane = vipldws2_B.R2 + 2;
-        vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 2];
+        vipldws2_B.planeOffset = vipldws2_B.plane + 2;
+        vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 2];
         vipldws2_B.i = 1;
         while (vipldws2_B.i < vipldws2_B.numEdge) {
-          vipldws2_B.plane += 9;
+          vipldws2_B.planeOffset += 9;
           if (vipldws2_B.qY_g >
-              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane]) {
-            vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane];
+              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.planeOffset]) {
+            vipldws2_B.qY_g =
+              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.planeOffset];
           }
 
           vipldws2_B.i++;
@@ -7589,11 +7601,11 @@ void vipldws2_step(void)
         }
 
         /* Move to the next column and find out boundaries of the polygon at this column. */
-        vipldws2_B.r1 = vipldws2_B.R2;
-        vipldws2_B.r2 = vipldws2_B.R2;
-        vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.R2;
+        vipldws2_B.r1 = vipldws2_B.plane;
+        vipldws2_B.r2 = vipldws2_B.plane;
+        vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.plane;
         vipldws2_B.indxI = 0;
-        vipldws2_B.plane = 0;
+        vipldws2_B.planeOffset = 0;
         vipldws2_B.i = 0;
         while (vipldws2_B.i < vipldws2_B.numEdge) {
           /* Find out the valid boundaries and bring them to the latest column. */
@@ -7620,14 +7632,13 @@ void vipldws2_step(void)
               }
 
               vipldws2_B.lastActiveEdgeIdxBdy += 9;
-              vipldws2_B.plane++;
+              vipldws2_B.planeOffset++;
             }
 
             if (vipldws2_B.r2 != vipldws2_B.r1) {
-              for (vipldws2_B.ii = 0; vipldws2_B.ii < 9; vipldws2_B.ii++) {
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.ii]
-                  = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                  vipldws2_B.ii];
+              for (vipldws2_B.j = 0; vipldws2_B.j < 9; vipldws2_B.j++) {
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.j] =
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.j];
               }
             }
 
@@ -7643,23 +7654,21 @@ void vipldws2_step(void)
         /* Sort the boundaries of the polygon. */
         c_gotAlLeastOneYellowPixelInThe = true;
         while (c_gotAlLeastOneYellowPixelInThe) {
-          vipldws2_B.r1 = vipldws2_B.R2;
-          vipldws2_B.r2 = vipldws2_B.R2 + 9;
+          vipldws2_B.r1 = vipldws2_B.plane;
+          vipldws2_B.r2 = vipldws2_B.plane + 9;
           c_gotAlLeastOneYellowPixelInThe = false;
           vipldws2_B.i = 1;
-          while (vipldws2_B.i < vipldws2_B.plane) {
+          while (vipldws2_B.i < vipldws2_B.planeOffset) {
             if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + 1] >
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + 1]) {
               c_gotAlLeastOneYellowPixelInThe = true;
-              for (vipldws2_B.ii = 0; vipldws2_B.ii < 9; vipldws2_B.ii++) {
+              for (vipldws2_B.j = 0; vipldws2_B.j < 9; vipldws2_B.j++) {
                 vipldws2_B.lastSeparator =
-                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 +
-                  vipldws2_B.ii];
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.ii]
-                  = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                  vipldws2_B.ii];
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.ii]
-                  = vipldws2_B.lastSeparator;
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.j];
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.j] =
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.j];
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.j] =
+                  vipldws2_B.lastSeparator;
               }
             }
 
@@ -7669,14 +7678,14 @@ void vipldws2_step(void)
           }
         }
 
-        vipldws2_B.r1 = vipldws2_B.R2;
+        vipldws2_B.r1 = vipldws2_B.plane;
         vipldws2_B.activeColBdy = vipldws2_B.qY_g + 1;
         vipldws2_B.activeCol = 0;
         vipldws2_B.r2 = 0;
         vipldws2_B.lastSeparator = -1;
         vipldws2_B.colOut = vipldws2_B.qY_g >> 3;
         vipldws2_B.colBoundary = (vipldws2_B.colOut + 1) << 3;
-        vipldws2_B.firstRowOut = 320;
+        vipldws2_B.firstRowOut = 240;
         vipldws2_B.lastRowOut = 0;
         c_gotAlLeastOneYellowPixelInThe = (0 <= vipldws2_B.qY);
         while (c_gotAlLeastOneYellowPixelInThe) {
@@ -7691,12 +7700,12 @@ void vipldws2_step(void)
               vipldws2_B.r1 += 9;
               if ((vipldws2_B.i == vipldws2_B.lastSeparator) && (vipldws2_B.r1 <
                    vipldws2_B.lastActiveEdgeIdxBdy)) {
-                vipldws2_B.plane =
+                vipldws2_B.planeOffset =
                   vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + 1];
                 c_gotAlLeastOneYellowPixelInThe = (vipldws2_B.r1 <
                   vipldws2_B.lastActiveEdgeIdxBdy);
                 while (c_gotAlLeastOneYellowPixelInThe && (vipldws2_B.i ==
-                        vipldws2_B.plane)) {
+                        vipldws2_B.planeOffset)) {
                   countTwice = true;
                   vipldws2_B.i = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1
                     + 1];
@@ -7704,7 +7713,7 @@ void vipldws2_step(void)
                   c_gotAlLeastOneYellowPixelInThe = (vipldws2_B.r1 <
                     vipldws2_B.lastActiveEdgeIdxBdy);
                   if (c_gotAlLeastOneYellowPixelInThe) {
-                    vipldws2_B.plane =
+                    vipldws2_B.planeOffset =
                       vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + 1];
                   }
                 }
@@ -7716,24 +7725,24 @@ void vipldws2_step(void)
 
               if (vipldws2_B.r2 != 0) {
                 vipldws2_B.firstRow = vipldws2_B.lastSeparator;
-                if (vipldws2_B.i <= 2559) {
+                if (vipldws2_B.i <= 1919) {
                   vipldws2_B.lastRow = vipldws2_B.i;
                   vipldws2_B.lastSeparator = vipldws2_B.i;
                 } else {
-                  vipldws2_B.lastRow = 2559;
-                  vipldws2_B.lastSeparator = 2559;
+                  vipldws2_B.lastRow = 1919;
+                  vipldws2_B.lastSeparator = 1919;
                 }
               } else {
                 vipldws2_B.firstRow = vipldws2_B.lastSeparator + 1;
-                if ((vipldws2_B.i > 0) && (vipldws2_B.i <= 2559)) {
+                if ((vipldws2_B.i > 0) && (vipldws2_B.i <= 1919)) {
                   vipldws2_B.lastRow = vipldws2_B.i - 1;
                   vipldws2_B.lastSeparator = vipldws2_B.i;
                 } else if (vipldws2_B.i <= 0) {
                   vipldws2_B.lastRow = -1;
                   vipldws2_B.lastSeparator = 0;
                 } else {
-                  vipldws2_B.lastRow = 2559;
-                  vipldws2_B.lastSeparator = 2560;
+                  vipldws2_B.lastRow = 1919;
+                  vipldws2_B.lastSeparator = 1920;
                 }
               }
 
@@ -7744,14 +7753,14 @@ void vipldws2_step(void)
               /* Reset states and move to the next column. */
               done = false;
               vipldws2_B.firstRow = vipldws2_B.lastSeparator + 1;
-              vipldws2_B.lastRow = 2559;
+              vipldws2_B.lastRow = 1919;
 
               /* Move to the next column and find out boundaries of the polygon at this column. */
-              vipldws2_B.r1 = vipldws2_B.R2;
-              vipldws2_B.r2 = vipldws2_B.R2;
-              vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.R2;
+              vipldws2_B.r1 = vipldws2_B.plane;
+              vipldws2_B.r2 = vipldws2_B.plane;
+              vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.plane;
               vipldws2_B.numEdge = 0;
-              vipldws2_B.plane = 0;
+              vipldws2_B.planeOffset = 0;
               vipldws2_B.i = 0;
               while (vipldws2_B.i < vipldws2_B.indxI) {
                 /* Find out the valid boundaries and bring them to the latest column. */
@@ -7779,16 +7788,15 @@ void vipldws2_step(void)
                     }
 
                     vipldws2_B.lastActiveEdgeIdxBdy += 9;
-                    vipldws2_B.plane++;
+                    vipldws2_B.planeOffset++;
                   }
 
                   if (vipldws2_B.r2 != vipldws2_B.r1) {
-                    for (vipldws2_B.ii = 0; vipldws2_B.ii < 9; vipldws2_B.ii++)
-                    {
+                    for (vipldws2_B.j = 0; vipldws2_B.j < 9; vipldws2_B.j++) {
                       vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 +
-                        vipldws2_B.ii] =
+                        vipldws2_B.j] =
                         vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                        vipldws2_B.ii];
+                        vipldws2_B.j];
                     }
                   }
 
@@ -7805,25 +7813,24 @@ void vipldws2_step(void)
               /* Sort the boundaries of the polygon according to row values. */
               /* Sort the boundaries of the polygon. */
               while (c_gotAlLeastOneYellowPixelInThe) {
-                vipldws2_B.r1 = vipldws2_B.R2;
-                vipldws2_B.r2 = vipldws2_B.R2 + 9;
+                vipldws2_B.r1 = vipldws2_B.plane;
+                vipldws2_B.r2 = vipldws2_B.plane + 9;
                 c_gotAlLeastOneYellowPixelInThe = false;
                 vipldws2_B.i = 1;
-                while (vipldws2_B.i < vipldws2_B.plane) {
+                while (vipldws2_B.i < vipldws2_B.planeOffset) {
                   if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + 1] >
                       vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + 1]) {
                     c_gotAlLeastOneYellowPixelInThe = true;
-                    for (vipldws2_B.ii = 0; vipldws2_B.ii < 9; vipldws2_B.ii++)
-                    {
+                    for (vipldws2_B.j = 0; vipldws2_B.j < 9; vipldws2_B.j++) {
                       vipldws2_B.lastSeparator =
                         vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 +
-                        vipldws2_B.ii];
+                        vipldws2_B.j];
                       vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 +
-                        vipldws2_B.ii] =
+                        vipldws2_B.j] =
                         vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                        vipldws2_B.ii];
+                        vipldws2_B.j];
                       vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                        vipldws2_B.ii] = vipldws2_B.lastSeparator;
+                        vipldws2_B.j] = vipldws2_B.lastSeparator;
                     }
                   }
 
@@ -7833,7 +7840,7 @@ void vipldws2_step(void)
                 }
               }
 
-              vipldws2_B.r1 = vipldws2_B.R2;
+              vipldws2_B.r1 = vipldws2_B.plane;
               vipldws2_B.activeColBdy++;
               vipldws2_B.r2 = 0;
               vipldws2_B.lastSeparator = -1;
@@ -7841,7 +7848,7 @@ void vipldws2_step(void)
             }
           } else {
             vipldws2_B.firstRow = 0;
-            vipldws2_B.lastRow = 2559;
+            vipldws2_B.lastRow = 1919;
             vipldws2_B.activeCol++;
           }
 
@@ -7853,31 +7860,31 @@ void vipldws2_step(void)
             vipldws2_B.lastRow = vipldws2_B.firstRow - 1;
           }
 
-          if (done && ((vipldws2_B.lastRow > 0) && (vipldws2_B.firstRow < 2559)))
+          if (done && ((vipldws2_B.lastRow > 0) && (vipldws2_B.firstRow < 1919)))
           {
-            if (vipldws2_B.lastRow > 2559) {
-              vipldws2_B.lastRow = 2559;
+            if (vipldws2_B.lastRow > 1919) {
+              vipldws2_B.lastRow = 1919;
             }
 
-            vipldws2_B.plane = vipldws2_B.firstRow >> 3;
+            vipldws2_B.planeOffset = vipldws2_B.firstRow >> 3;
             vipldws2_B.i = vipldws2_B.lastRow >> 3;
-            if (vipldws2_B.firstRowOut > vipldws2_B.plane) {
-              vipldws2_B.firstRowOut = vipldws2_B.plane;
+            if (vipldws2_B.firstRowOut > vipldws2_B.planeOffset) {
+              vipldws2_B.firstRowOut = vipldws2_B.planeOffset;
             }
 
             if (vipldws2_B.lastRowOut < vipldws2_B.i) {
               vipldws2_B.lastRowOut = vipldws2_B.i;
             }
 
-            if (vipldws2_B.i > vipldws2_B.plane) {
-              vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.plane] = (uint8_T)
-                (((uint32_T)((vipldws2_B.plane + 1) << 3) +
-                  vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.plane]) -
-                 vipldws2_B.firstRow);
+            if (vipldws2_B.i > vipldws2_B.planeOffset) {
+              vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.planeOffset] =
+                (uint8_T)(((uint32_T)((vipldws2_B.planeOffset + 1) << 3) +
+                           vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.planeOffset])
+                          - vipldws2_B.firstRow);
               vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.i] = (uint8_T)
                 ((((uint32_T)vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.i] +
                    vipldws2_B.lastRow) - (vipldws2_B.i << 3)) + 1U);
-              vipldws2_B.numEdge = vipldws2_B.plane + 1;
+              vipldws2_B.numEdge = vipldws2_B.planeOffset + 1;
               while (vipldws2_B.numEdge < vipldws2_B.i) {
                 vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.numEdge] =
                   (uint8_T)
@@ -7885,11 +7892,11 @@ void vipldws2_step(void)
                 vipldws2_B.numEdge++;
               }
             } else {
-              if (vipldws2_B.i == vipldws2_B.plane) {
-                vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.plane] = (uint8_T)
-                  ((((uint32_T)
-                     vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.plane] +
-                     vipldws2_B.lastRow) - vipldws2_B.firstRow) + 1U);
+              if (vipldws2_B.i == vipldws2_B.planeOffset) {
+                vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.planeOffset] =
+                  (uint8_T)((((uint32_T)
+                              vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.planeOffset]
+                              + vipldws2_B.lastRow) - vipldws2_B.firstRow) + 1U);
               }
             }
           }
@@ -7898,9 +7905,9 @@ void vipldws2_step(void)
             vipldws2_B.qY);
           if (((vipldws2_B.colBoundary - 1 == vipldws2_B.col) ||
                (!c_gotAlLeastOneYellowPixelInThe)) && (vipldws2_B.lastRow >=
-               2559)) {
-            vipldws2_B.ii = vipldws2_B.colOut * 320 + vipldws2_B.firstRowOut;
-            vipldws2_B.col = vipldws2_B.ii;
+               1919)) {
+            vipldws2_B.j = vipldws2_B.colOut * 240 + vipldws2_B.firstRowOut;
+            vipldws2_B.col = vipldws2_B.j;
             vipldws2_B.numEdge = vipldws2_B.firstRowOut;
             while (vipldws2_B.numEdge <= vipldws2_B.lastRowOut) {
               if (vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.numEdge] == 64)
@@ -7919,20 +7926,20 @@ void vipldws2_step(void)
               vipldws2_B.numEdge++;
             }
 
-            vipldws2_B.ii += 76800;
-            vipldws2_B.plane = vipldws2_B.planeWidth + 2;
-            vipldws2_B.col = vipldws2_B.ii;
+            vipldws2_B.j += 76800;
+            vipldws2_B.planeOffset = vipldws2_B.planeWidth + 2;
+            vipldws2_B.col = vipldws2_B.j;
             vipldws2_B.numEdge = vipldws2_B.firstRowOut;
             while (vipldws2_B.numEdge <= vipldws2_B.lastRowOut) {
               if (vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.numEdge] == 64)
               {
                 vipldws2_B.DrawShapes_m[vipldws2_B.col] +=
-                  vipldws2_P.DrawShapes_RTP_FILLCOLOR_f[vipldws2_B.plane] -
-                  vipldws2_B.DrawShapes_m[vipldws2_B.col];
+                  vipldws2_P.DrawShapes_RTP_FILLCOLOR_f[vipldws2_B.planeOffset]
+                  - vipldws2_B.DrawShapes_m[vipldws2_B.col];
               } else {
                 vipldws2_B.DrawShapes_m[vipldws2_B.col] +=
-                  (vipldws2_P.DrawShapes_RTP_FILLCOLOR_f[vipldws2_B.plane] -
-                   vipldws2_B.DrawShapes_m[vipldws2_B.col]) * (real32_T)
+                  (vipldws2_P.DrawShapes_RTP_FILLCOLOR_f[vipldws2_B.planeOffset]
+                   - vipldws2_B.DrawShapes_m[vipldws2_B.col]) * (real32_T)
                   vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.numEdge] / 64.0F;
               }
 
@@ -7940,20 +7947,20 @@ void vipldws2_step(void)
               vipldws2_B.numEdge++;
             }
 
-            vipldws2_B.ii += 76800;
-            vipldws2_B.plane += 2;
-            vipldws2_B.col = vipldws2_B.ii;
+            vipldws2_B.j += 76800;
+            vipldws2_B.planeOffset += 2;
+            vipldws2_B.col = vipldws2_B.j;
             vipldws2_B.numEdge = vipldws2_B.firstRowOut;
             while (vipldws2_B.numEdge <= vipldws2_B.lastRowOut) {
               if (vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.numEdge] == 64)
               {
                 vipldws2_B.DrawShapes_m[vipldws2_B.col] +=
-                  vipldws2_P.DrawShapes_RTP_FILLCOLOR_f[vipldws2_B.plane] -
-                  vipldws2_B.DrawShapes_m[vipldws2_B.col];
+                  vipldws2_P.DrawShapes_RTP_FILLCOLOR_f[vipldws2_B.planeOffset]
+                  - vipldws2_B.DrawShapes_m[vipldws2_B.col];
               } else {
                 vipldws2_B.DrawShapes_m[vipldws2_B.col] +=
-                  (vipldws2_P.DrawShapes_RTP_FILLCOLOR_f[vipldws2_B.plane] -
-                   vipldws2_B.DrawShapes_m[vipldws2_B.col]) * (real32_T)
+                  (vipldws2_P.DrawShapes_RTP_FILLCOLOR_f[vipldws2_B.planeOffset]
+                   - vipldws2_B.DrawShapes_m[vipldws2_B.col]) * (real32_T)
                   vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.numEdge] / 64.0F;
               }
 
@@ -7968,7 +7975,7 @@ void vipldws2_step(void)
 
             vipldws2_B.colOut++;
             vipldws2_B.colBoundary += 8;
-            vipldws2_B.firstRowOut = 320;
+            vipldws2_B.firstRowOut = 240;
             vipldws2_B.lastRowOut = 0;
           }
         }
@@ -7980,21 +7987,21 @@ void vipldws2_step(void)
         }
 
         /* Move to the next polygon. */
-        vipldws2_B.R2 += vipldws2_B.c2 * 9;
+        vipldws2_B.plane += vipldws2_B.c2 * 9;
         if (vipldws2_B.C2 >= div_s32_floor(vipldws2_B.c1, vipldws2_B.c2) - 1) {
           vipldws2_B.C2 = 0;
         } else {
           vipldws2_B.C2++;
         }
 
-        c_gotAlLeastOneYellowPixelInThe = (vipldws2_B.R2 < (vipldws2_B.c2 << 1) *
-          9);
+        c_gotAlLeastOneYellowPixelInThe = (vipldws2_B.plane < (vipldws2_B.c2 <<
+          1) * 9);
       }
     }
 
-    /* End of S-Function (svipdrawshapes): '<S66>/DrawShapes' */
+    /* End of S-Function (svipdrawshapes): '<S67>/DrawShapes' */
 
-    /* FromWorkspace: '<S70>/From Workspace' */
+    /* FromWorkspace: '<S71>/From Workspace' */
     {
       int_T currIndex = vipldws2_DW.FromWorkspace_IWORK.PrevIndex+1;
       real32_T *pDataValues = (real32_T *)
@@ -8028,7 +8035,7 @@ void vipldws2_step(void)
       vipldws2_DW.FromWorkspace_IWORK.PrevIndex = currIndex;
     }
 
-    /* S-Function (sviptextrender): '<S66>/Insert Text' */
+    /* S-Function (sviptextrender): '<S67>/Insert Text' */
     /* put the pen at the beginning of the string */
     vipldws2_B.planeWidth = 1;
 
@@ -8043,7 +8050,7 @@ void vipldws2_step(void)
       }
 
       /* copy location to int32 container */
-      vipldws2_B.R2 = vipldws2_P.InsertText_textLoc[0] - 1;
+      vipldws2_B.planeOffset = vipldws2_P.InsertText_textLoc[0] - 1;
 
       /* update the color/intensity */
       vipldws2_DW.InsertText_colorVectorDW[0] = vipldws2_B.Selector5[0];
@@ -8102,7 +8109,7 @@ void vipldws2_step(void)
             if (vipldws2_DW.InsertText_StringDataDW[vipldws2_B.textIdx +
                 vipldws2_B.c1] == 10) {
               vipldws2_B.c2 += 23;
-              vipldws2_B.C2 = vipldws2_B.R2;
+              vipldws2_B.C2 = vipldws2_B.planeOffset;
             } else {
               vipldws2_B.r2 =
                 vipldws2_DW.InsertText_StringDataDW[vipldws2_B.textIdx +
@@ -8124,8 +8131,8 @@ void vipldws2_step(void)
                  vipldws2_ConstP.InsertText_GlyLBearings[vipldws2_B.r2],
                  vipldws2_ConstP.InsertText_GlyTBearings[vipldws2_B.r2],
                  vipldws2_ConstP.InsertText_GlyWidths[vipldws2_B.r2],
-                 vipldws2_ConstP.InsertText_GlyHeights[vipldws2_B.r2], 240U,
-                 320U, &vipldws2_B.InsertText[0],
+                 vipldws2_ConstP.InsertText_GlyHeights[vipldws2_B.r2], 320U,
+                 240U, &vipldws2_B.InsertText[0],
                  &vipldws2_DW.InsertText_colorVectorDW[0], &vipldws2_B.scale,
                  false);
               MWVIP_DrawText_I_single_AA
@@ -8134,8 +8141,8 @@ void vipldws2_step(void)
                  vipldws2_ConstP.InsertText_GlyLBearings[vipldws2_B.r2],
                  vipldws2_ConstP.InsertText_GlyTBearings[vipldws2_B.r2],
                  vipldws2_ConstP.InsertText_GlyWidths[vipldws2_B.r2],
-                 vipldws2_ConstP.InsertText_GlyHeights[vipldws2_B.r2], 240U,
-                 320U, &vipldws2_B.InsertText[76800],
+                 vipldws2_ConstP.InsertText_GlyHeights[vipldws2_B.r2], 320U,
+                 240U, &vipldws2_B.InsertText[76800],
                  &vipldws2_DW.InsertText_colorVectorDW[1], &vipldws2_B.scale,
                  false);
               MWVIP_DrawText_I_single_AA
@@ -8144,8 +8151,8 @@ void vipldws2_step(void)
                  vipldws2_ConstP.InsertText_GlyLBearings[vipldws2_B.r2],
                  vipldws2_ConstP.InsertText_GlyTBearings[vipldws2_B.r2],
                  vipldws2_ConstP.InsertText_GlyWidths[vipldws2_B.r2],
-                 vipldws2_ConstP.InsertText_GlyHeights[vipldws2_B.r2], 240U,
-                 320U, &vipldws2_B.InsertText[153600],
+                 vipldws2_ConstP.InsertText_GlyHeights[vipldws2_B.r2], 320U,
+                 240U, &vipldws2_B.InsertText[153600],
                  &vipldws2_DW.InsertText_colorVectorDW[2], &vipldws2_B.scale,
                  false);
               vipldws2_B.C2 +=
@@ -8158,10 +8165,10 @@ void vipldws2_step(void)
       }
     }
 
-    /* End of S-Function (sviptextrender): '<S66>/Insert Text' */
+    /* End of S-Function (sviptextrender): '<S67>/Insert Text' */
 
-    /* Selector: '<S69>/Selector4' incorporates:
-     *  Constant: '<S69>/Yellow1'
+    /* Selector: '<S70>/Selector4' incorporates:
+     *  Constant: '<S70>/Yellow1'
      */
     vipldws2_B.Selector5[0] = vipldws2_P.Yellow1_Value[(vipldws2_B.Bias1_j[0] -
       1) * 3];
@@ -8170,15 +8177,15 @@ void vipldws2_step(void)
     vipldws2_B.Selector5[2] = vipldws2_P.Yellow1_Value[(vipldws2_B.Bias1_j[0] -
       1) * 3 + 2];
 
-    /* Selector: '<S69>/Selector6' */
+    /* Selector: '<S70>/Selector6' */
     vipldws2_B.Selector7[0] = vipldws2_B.Transpose2[1];
     vipldws2_B.Selector7[1] = vipldws2_B.Transpose2[0];
 
-    /* Math: '<S69>/Transpose1' */
+    /* Math: '<S70>/Transpose1' */
     vipldws2_B.Transpose2[0] = vipldws2_B.Selector7[0];
     vipldws2_B.Transpose2[1] = vipldws2_B.Selector7[1];
 
-    /* S-Function (sviptextrender): '<S69>/Insert Text: Left Lane' */
+    /* S-Function (sviptextrender): '<S70>/Insert Text: Left Lane' */
     /* put the pen at the beginning of the string */
     vipldws2_B.planeWidth = 1;
 
@@ -8193,7 +8200,7 @@ void vipldws2_step(void)
       }
 
       /* copy location to int32 container */
-      vipldws2_B.R2 = vipldws2_B.Transpose2[0] - 1;
+      vipldws2_B.planeOffset = vipldws2_B.Transpose2[0] - 1;
 
       /* update the color/intensity */
       vipldws2_DW.InsertTextLeftLane_colorVectorD[0] = vipldws2_B.Selector5[0];
@@ -8252,7 +8259,7 @@ void vipldws2_step(void)
             if (vipldws2_DW.InsertTextLeftLane_StringDataDW[vipldws2_B.textIdx_f
                 + vipldws2_B.c1] == 10) {
               vipldws2_B.c2 += 16;
-              vipldws2_B.C2 = vipldws2_B.R2;
+              vipldws2_B.C2 = vipldws2_B.planeOffset;
             } else {
               vipldws2_B.r2 =
                 vipldws2_DW.InsertTextLeftLane_StringDataDW[vipldws2_B.textIdx_f
@@ -8266,30 +8273,30 @@ void vipldws2_step(void)
               }
 
               vipldws2_B.scale = vipldws2_P.InsertTextLeftLane_TxtOpacity;
-              MWVIP_DrawText_I_single_AA(&vipldws2_ConstP.pooled16[vipldws2_B.r1],
+              MWVIP_DrawText_I_single_AA(&vipldws2_ConstP.pooled17[vipldws2_B.r1],
                 vipldws2_B.C2, vipldws2_B.c2 + 12,
                 vipldws2_ConstP.pooled2[vipldws2_B.r2],
                 vipldws2_ConstP.pooled3[vipldws2_B.r2],
                 vipldws2_ConstP.pooled11[vipldws2_B.r2],
-                vipldws2_ConstP.pooled12[vipldws2_B.r2], 240U, 320U,
+                vipldws2_ConstP.pooled12[vipldws2_B.r2], 320U, 240U,
                 &vipldws2_B.InsertTextLeftLane[0],
                 &vipldws2_DW.InsertTextLeftLane_colorVectorD[0],
                 &vipldws2_B.scale, false);
-              MWVIP_DrawText_I_single_AA(&vipldws2_ConstP.pooled16[vipldws2_B.r1],
+              MWVIP_DrawText_I_single_AA(&vipldws2_ConstP.pooled17[vipldws2_B.r1],
                 vipldws2_B.C2, vipldws2_B.c2 + 12,
                 vipldws2_ConstP.pooled2[vipldws2_B.r2],
                 vipldws2_ConstP.pooled3[vipldws2_B.r2],
                 vipldws2_ConstP.pooled11[vipldws2_B.r2],
-                vipldws2_ConstP.pooled12[vipldws2_B.r2], 240U, 320U,
+                vipldws2_ConstP.pooled12[vipldws2_B.r2], 320U, 240U,
                 &vipldws2_B.InsertTextLeftLane[76800],
                 &vipldws2_DW.InsertTextLeftLane_colorVectorD[1],
                 &vipldws2_B.scale, false);
-              MWVIP_DrawText_I_single_AA(&vipldws2_ConstP.pooled16[vipldws2_B.r1],
+              MWVIP_DrawText_I_single_AA(&vipldws2_ConstP.pooled17[vipldws2_B.r1],
                 vipldws2_B.C2, vipldws2_B.c2 + 12,
                 vipldws2_ConstP.pooled2[vipldws2_B.r2],
                 vipldws2_ConstP.pooled3[vipldws2_B.r2],
                 vipldws2_ConstP.pooled11[vipldws2_B.r2],
-                vipldws2_ConstP.pooled12[vipldws2_B.r2], 240U, 320U,
+                vipldws2_ConstP.pooled12[vipldws2_B.r2], 320U, 240U,
                 &vipldws2_B.InsertTextLeftLane[153600],
                 &vipldws2_DW.InsertTextLeftLane_colorVectorD[2],
                 &vipldws2_B.scale, false);
@@ -8302,10 +8309,10 @@ void vipldws2_step(void)
       }
     }
 
-    /* End of S-Function (sviptextrender): '<S69>/Insert Text: Left Lane' */
+    /* End of S-Function (sviptextrender): '<S70>/Insert Text: Left Lane' */
 
-    /* Selector: '<S69>/Selector5' incorporates:
-     *  Constant: '<S69>/Yellow1'
+    /* Selector: '<S70>/Selector5' incorporates:
+     *  Constant: '<S70>/Yellow1'
      */
     vipldws2_B.Selector5[0] = vipldws2_P.Yellow1_Value[(vipldws2_B.Bias1_j[1] -
       1) * 3];
@@ -8314,19 +8321,19 @@ void vipldws2_step(void)
     vipldws2_B.Selector5[2] = vipldws2_P.Yellow1_Value[(vipldws2_B.Bias1_j[1] -
       1) * 3 + 2];
 
-    /* Selector: '<S69>/Selector7' */
+    /* Selector: '<S70>/Selector7' */
     vipldws2_B.Selector7[0] = vipldws2_B.Bias2[1];
 
-    /* Math: '<S69>/Transpose2' */
+    /* Math: '<S70>/Transpose2' */
     vipldws2_B.Transpose2[0] = vipldws2_B.Selector7[0];
 
-    /* Selector: '<S69>/Selector7' */
+    /* Selector: '<S70>/Selector7' */
     vipldws2_B.Selector7[1] = vipldws2_B.Bias2[0];
 
-    /* Math: '<S69>/Transpose2' */
+    /* Math: '<S70>/Transpose2' */
     vipldws2_B.Transpose2[1] = vipldws2_B.Selector7[1];
 
-    /* S-Function (sviptextrender): '<S69>/Insert Text: Right Lane' */
+    /* S-Function (sviptextrender): '<S70>/Insert Text: Right Lane' */
     /* put the pen at the beginning of the string */
     vipldws2_B.planeWidth = 1;
 
@@ -8341,7 +8348,7 @@ void vipldws2_step(void)
       }
 
       /* copy location to int32 container */
-      vipldws2_B.R2 = vipldws2_B.Transpose2[0] - 1;
+      vipldws2_B.planeOffset = vipldws2_B.Transpose2[0] - 1;
 
       /* update the color/intensity */
       vipldws2_DW.InsertTextRightLane_colorVector[0] = vipldws2_B.Selector5[0];
@@ -8383,13 +8390,13 @@ void vipldws2_step(void)
         done = true;
         vipldws2_B.planeWidth = -1;
       } else {
-        vipldws2_B.s38_iter = (int32_T)
+        vipldws2_B.s39_iter = (int32_T)
           vipldws2_ConstP.pooled9[vipldws2_B.fromIdx];
       }
 
       if (!done) {
         vipldws2_B.i = MWVIP_strlen
-          (&vipldws2_DW.InsertTextRightLane_StringDataD[vipldws2_B.s38_iter]);
+          (&vipldws2_DW.InsertTextRightLane_StringDataD[vipldws2_B.s39_iter]);
         vipldws2_B.planeWidth = 0;
         if (c_gotAlLeastOneYellowPixelInThe) {
           /* put the pen at the beginning of the string */
@@ -8397,13 +8404,13 @@ void vipldws2_step(void)
           vipldws2_B.c2 = vipldws2_B.Transpose2[1];
           vipldws2_B.c1 = 0;
           while (vipldws2_B.c1 < vipldws2_B.i) {
-            if (vipldws2_DW.InsertTextRightLane_StringDataD[vipldws2_B.s38_iter
+            if (vipldws2_DW.InsertTextRightLane_StringDataD[vipldws2_B.s39_iter
                 + vipldws2_B.c1] == 10) {
               vipldws2_B.c2 += 16;
-              vipldws2_B.C2 = vipldws2_B.R2;
+              vipldws2_B.C2 = vipldws2_B.planeOffset;
             } else {
               vipldws2_B.r2 =
-                vipldws2_DW.InsertTextRightLane_StringDataD[vipldws2_B.s38_iter
+                vipldws2_DW.InsertTextRightLane_StringDataD[vipldws2_B.s39_iter
                 + vipldws2_B.c1];
               vipldws2_B.r1 = (int32_T)vipldws2_ConstP.pooled8[vipldws2_B.r2];
               if (!((vipldws2_ConstP.pooled11[vipldws2_B.r2] != 0) &&
@@ -8414,30 +8421,30 @@ void vipldws2_step(void)
               }
 
               vipldws2_B.scale = vipldws2_P.InsertTextRightLane_TxtOpacity;
-              MWVIP_DrawText_I_single_AA(&vipldws2_ConstP.pooled16[vipldws2_B.r1],
+              MWVIP_DrawText_I_single_AA(&vipldws2_ConstP.pooled17[vipldws2_B.r1],
                 vipldws2_B.C2, vipldws2_B.c2 + 12,
                 vipldws2_ConstP.pooled2[vipldws2_B.r2],
                 vipldws2_ConstP.pooled3[vipldws2_B.r2],
                 vipldws2_ConstP.pooled11[vipldws2_B.r2],
-                vipldws2_ConstP.pooled12[vipldws2_B.r2], 240U, 320U,
+                vipldws2_ConstP.pooled12[vipldws2_B.r2], 320U, 240U,
                 &vipldws2_B.InsertTextRightLane[0],
                 &vipldws2_DW.InsertTextRightLane_colorVector[0],
                 &vipldws2_B.scale, false);
-              MWVIP_DrawText_I_single_AA(&vipldws2_ConstP.pooled16[vipldws2_B.r1],
+              MWVIP_DrawText_I_single_AA(&vipldws2_ConstP.pooled17[vipldws2_B.r1],
                 vipldws2_B.C2, vipldws2_B.c2 + 12,
                 vipldws2_ConstP.pooled2[vipldws2_B.r2],
                 vipldws2_ConstP.pooled3[vipldws2_B.r2],
                 vipldws2_ConstP.pooled11[vipldws2_B.r2],
-                vipldws2_ConstP.pooled12[vipldws2_B.r2], 240U, 320U,
+                vipldws2_ConstP.pooled12[vipldws2_B.r2], 320U, 240U,
                 &vipldws2_B.InsertTextRightLane[76800],
                 &vipldws2_DW.InsertTextRightLane_colorVector[1],
                 &vipldws2_B.scale, false);
-              MWVIP_DrawText_I_single_AA(&vipldws2_ConstP.pooled16[vipldws2_B.r1],
+              MWVIP_DrawText_I_single_AA(&vipldws2_ConstP.pooled17[vipldws2_B.r1],
                 vipldws2_B.C2, vipldws2_B.c2 + 12,
                 vipldws2_ConstP.pooled2[vipldws2_B.r2],
                 vipldws2_ConstP.pooled3[vipldws2_B.r2],
                 vipldws2_ConstP.pooled11[vipldws2_B.r2],
-                vipldws2_ConstP.pooled12[vipldws2_B.r2], 240U, 320U,
+                vipldws2_ConstP.pooled12[vipldws2_B.r2], 320U, 240U,
                 &vipldws2_B.InsertTextRightLane[153600],
                 &vipldws2_DW.InsertTextRightLane_colorVector[2],
                 &vipldws2_B.scale, false);
@@ -8450,7 +8457,7 @@ void vipldws2_step(void)
       }
     }
 
-    /* End of S-Function (sviptextrender): '<S69>/Insert Text: Right Lane' */
+    /* End of S-Function (sviptextrender): '<S70>/Insert Text: Right Lane' */
     srUpdateBC(vipldws2_DW.Subsystem_SubsysRanBC);
   }
 
@@ -8468,16 +8475,16 @@ void vipldws2_step(void)
   /* End of Switch: '<S5>/Switch' */
 
   /* Outputs for Enabled SubSystem: '<S5>/Draw  3rd Line' incorporates:
-   *  EnablePort: '<S63>/Enable'
+   *  EnablePort: '<S64>/Enable'
    */
   if (vipldws2_B.LogicalOperator2) {
-    /* SignalConversion: '<S63>/TmpSignal ConversionAtDrawShapesInport2' */
+    /* SignalConversion: '<S64>/TmpSignal ConversionAtDrawShapesInport2' */
     vipldws2_B.TmpSignalConversionAtDrawShapes[0] = vipldws2_B.Bias3[1];
     vipldws2_B.TmpSignalConversionAtDrawShapes[1] = vipldws2_B.Bias3[0];
     vipldws2_B.TmpSignalConversionAtDrawShapes[2] = vipldws2_B.Bias3[3];
     vipldws2_B.TmpSignalConversionAtDrawShapes[3] = vipldws2_B.Bias3[2];
 
-    /* S-Function (svipdrawshapes): '<S63>/DrawShapes' */
+    /* S-Function (svipdrawshapes): '<S64>/DrawShapes' */
     if (vipldws2_P.DrawShapes_lineWidth == 1) {
       /* Compute output for unity line width
        */
@@ -8493,11 +8500,11 @@ void vipldws2_step(void)
       {
         c_gotAlLeastOneYellowPixelInThe = false;
         vipldws2_B.qY_g = (vipldws2_B.qY_g << 3) + 4;
-        vipldws2_B.numEdge = ((vipldws2_B.TmpSignalConversionAtDrawShapes[3] - 1)
-                              << 3) + 4;
+        vipldws2_B.j = ((vipldws2_B.TmpSignalConversionAtDrawShapes[3] - 1) << 3)
+          + 4;
         vipldws2_B.qY = (vipldws2_B.qY << 3) + 4;
-        vipldws2_B.col = ((vipldws2_B.TmpSignalConversionAtDrawShapes[2] - 1) <<
-                          3) + 4;
+        vipldws2_B.numEdge = ((vipldws2_B.TmpSignalConversionAtDrawShapes[2] - 1)
+                              << 3) + 4;
 
         /* Find the visible portion of a line. */
         countTwice = false;
@@ -8505,8 +8512,8 @@ void vipldws2_step(void)
         done = false;
         vipldws2_B.indxI = vipldws2_B.qY_g;
         vipldws2_B.c2 = vipldws2_B.qY;
-        vipldws2_B.C2 = vipldws2_B.numEdge;
-        vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.col;
+        vipldws2_B.C2 = vipldws2_B.j;
+        vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.numEdge;
         while (!done) {
           vipldws2_B.fromIdx = 0U;
           vipldws2_B.toIdx = 0U;
@@ -8515,7 +8522,7 @@ void vipldws2_step(void)
           if (vipldws2_B.indxI < 0) {
             vipldws2_B.fromIdx = 4U;
           } else {
-            if (vipldws2_B.indxI > 2559) {
+            if (vipldws2_B.indxI > 1919) {
               vipldws2_B.fromIdx = 8U;
             }
           }
@@ -8523,7 +8530,7 @@ void vipldws2_step(void)
           if (vipldws2_B.C2 < 0) {
             vipldws2_B.toIdx = 4U;
           } else {
-            if (vipldws2_B.C2 > 2559) {
+            if (vipldws2_B.C2 > 1919) {
               vipldws2_B.toIdx = 8U;
             }
           }
@@ -8531,7 +8538,7 @@ void vipldws2_step(void)
           if (vipldws2_B.c2 < 0) {
             vipldws2_B.fromIdx |= 1U;
           } else {
-            if (vipldws2_B.c2 > 1919) {
+            if (vipldws2_B.c2 > 2559) {
               vipldws2_B.fromIdx |= 2U;
             }
           }
@@ -8539,7 +8546,7 @@ void vipldws2_step(void)
           if (vipldws2_B.lastActiveEdgeIdxBdy < 0) {
             vipldws2_B.toIdx |= 1U;
           } else {
-            if (vipldws2_B.lastActiveEdgeIdxBdy > 1919) {
+            if (vipldws2_B.lastActiveEdgeIdxBdy > 2559) {
               vipldws2_B.toIdx |= 2U;
             }
           }
@@ -8560,17 +8567,18 @@ void vipldws2_step(void)
             }
 
             vipldws2_B.i = vipldws2_B.C2 - vipldws2_B.indxI;
-            vipldws2_B.plane = vipldws2_B.lastActiveEdgeIdxBdy - vipldws2_B.c2;
+            vipldws2_B.planeOffset = vipldws2_B.lastActiveEdgeIdxBdy -
+              vipldws2_B.c2;
             if ((vipldws2_B.i > 1073741824) || (vipldws2_B.i < -1073741824) ||
-                ((vipldws2_B.plane > 1073741824) || (vipldws2_B.plane <
-                  -1073741824))) {
+                ((vipldws2_B.planeOffset > 1073741824) ||
+                 (vipldws2_B.planeOffset < -1073741824))) {
               /* Possible Inf or Nan. */
               done = true;
               c_gotAlLeastOneYellowPixelInThe = false;
               countTwice = true;
             } else if ((vipldws2_B.fromIdx & 4U) != 0U) {
               /* Violated RMin. */
-              vipldws2_B.c1 = -vipldws2_B.indxI * vipldws2_B.plane;
+              vipldws2_B.c1 = -vipldws2_B.indxI * vipldws2_B.planeOffset;
               if ((vipldws2_B.c1 > 1073741824) || (vipldws2_B.c1 < -1073741824))
               {
                 /* Check for Inf or Nan. */
@@ -8589,7 +8597,7 @@ void vipldws2_step(void)
               countTwice = true;
             } else if ((vipldws2_B.fromIdx & 8U) != 0U) {
               /* Violated RMax. */
-              vipldws2_B.c1 = (2559 - vipldws2_B.indxI) * vipldws2_B.plane;
+              vipldws2_B.c1 = (1919 - vipldws2_B.indxI) * vipldws2_B.planeOffset;
               if ((vipldws2_B.c1 > 1073741824) || (vipldws2_B.c1 < -1073741824))
               {
                 /* Check for Inf or Nan. */
@@ -8604,7 +8612,7 @@ void vipldws2_step(void)
                   vipldws2_B.i) + 1) >> 1;
               }
 
-              vipldws2_B.indxI = 2559;
+              vipldws2_B.indxI = 1919;
               countTwice = true;
             } else if ((vipldws2_B.fromIdx & 1U) != 0U) {
               /* Violated CMin. */
@@ -8614,56 +8622,59 @@ void vipldws2_step(void)
                 /* Check for Inf or Nan. */
                 done = true;
                 c_gotAlLeastOneYellowPixelInThe = false;
-              } else if (((vipldws2_B.c1 >= 0) && (vipldws2_B.plane >= 0)) ||
-                         ((vipldws2_B.c1 < 0) && (vipldws2_B.plane < 0))) {
+              } else if (((vipldws2_B.c1 >= 0) && (vipldws2_B.planeOffset >= 0))
+                         || ((vipldws2_B.c1 < 0) && (vipldws2_B.planeOffset < 0)))
+              {
                 vipldws2_B.indxI += (div_s32_floor(vipldws2_B.c1 << 1,
-                  vipldws2_B.plane) + 1) >> 1;
+                  vipldws2_B.planeOffset) + 1) >> 1;
               } else {
                 vipldws2_B.indxI -= (div_s32_floor(-vipldws2_B.c1 << 1,
-                  vipldws2_B.plane) + 1) >> 1;
+                  vipldws2_B.planeOffset) + 1) >> 1;
               }
 
               vipldws2_B.c2 = 0;
               countTwice = true;
             } else {
               /* Violated CMax. */
-              vipldws2_B.c1 = (1919 - vipldws2_B.c2) * vipldws2_B.i;
+              vipldws2_B.c1 = (2559 - vipldws2_B.c2) * vipldws2_B.i;
               if ((vipldws2_B.c1 > 1073741824) || (vipldws2_B.c1 < -1073741824))
               {
                 /* Check for Inf or Nan. */
                 done = true;
                 c_gotAlLeastOneYellowPixelInThe = false;
-              } else if (((vipldws2_B.c1 >= 0) && (vipldws2_B.plane >= 0)) ||
-                         ((vipldws2_B.c1 < 0) && (vipldws2_B.plane < 0))) {
+              } else if (((vipldws2_B.c1 >= 0) && (vipldws2_B.planeOffset >= 0))
+                         || ((vipldws2_B.c1 < 0) && (vipldws2_B.planeOffset < 0)))
+              {
                 vipldws2_B.indxI += (div_s32_floor(vipldws2_B.c1 << 1,
-                  vipldws2_B.plane) + 1) >> 1;
+                  vipldws2_B.planeOffset) + 1) >> 1;
               } else {
                 vipldws2_B.indxI -= (div_s32_floor(-vipldws2_B.c1 << 1,
-                  vipldws2_B.plane) + 1) >> 1;
+                  vipldws2_B.planeOffset) + 1) >> 1;
               }
 
-              vipldws2_B.c2 = 1919;
+              vipldws2_B.c2 = 2559;
               countTwice = true;
             }
           } else {
             /* Clip the 2nd point. */
             if (prevEdgeIsVertical) {
-              vipldws2_B.C2 = vipldws2_B.numEdge;
-              vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.col;
+              vipldws2_B.C2 = vipldws2_B.j;
+              vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.numEdge;
             }
 
             vipldws2_B.i = vipldws2_B.C2 - vipldws2_B.indxI;
-            vipldws2_B.plane = vipldws2_B.lastActiveEdgeIdxBdy - vipldws2_B.c2;
+            vipldws2_B.planeOffset = vipldws2_B.lastActiveEdgeIdxBdy -
+              vipldws2_B.c2;
             if ((vipldws2_B.i > 1073741824) || (vipldws2_B.i < -1073741824) ||
-                ((vipldws2_B.plane > 1073741824) || (vipldws2_B.plane <
-                  -1073741824))) {
+                ((vipldws2_B.planeOffset > 1073741824) ||
+                 (vipldws2_B.planeOffset < -1073741824))) {
               /* Possible Inf or Nan. */
               done = true;
               c_gotAlLeastOneYellowPixelInThe = false;
               prevEdgeIsVertical = true;
             } else if ((vipldws2_B.toIdx & 4U) != 0U) {
               /* Violated RMin. */
-              vipldws2_B.c1 = -vipldws2_B.C2 * vipldws2_B.plane;
+              vipldws2_B.c1 = -vipldws2_B.C2 * vipldws2_B.planeOffset;
               if ((vipldws2_B.c1 > 1073741824) || (vipldws2_B.c1 < -1073741824))
               {
                 /* Check for Inf or Nan. */
@@ -8682,7 +8693,7 @@ void vipldws2_step(void)
               prevEdgeIsVertical = true;
             } else if ((vipldws2_B.toIdx & 8U) != 0U) {
               /* Violated RMax. */
-              vipldws2_B.c1 = (2559 - vipldws2_B.C2) * vipldws2_B.plane;
+              vipldws2_B.c1 = (1919 - vipldws2_B.C2) * vipldws2_B.planeOffset;
               if ((vipldws2_B.c1 > 1073741824) || (vipldws2_B.c1 < -1073741824))
               {
                 /* Check for Inf or Nan. */
@@ -8697,7 +8708,7 @@ void vipldws2_step(void)
                   << 1, vipldws2_B.i) + 1) >> 1;
               }
 
-              vipldws2_B.C2 = 2559;
+              vipldws2_B.C2 = 1919;
               prevEdgeIsVertical = true;
             } else if ((vipldws2_B.toIdx & 1U) != 0U) {
               /* Violated CMin. */
@@ -8707,36 +8718,38 @@ void vipldws2_step(void)
                 /* Check for Inf or Nan. */
                 done = true;
                 c_gotAlLeastOneYellowPixelInThe = false;
-              } else if (((vipldws2_B.c1 >= 0) && (vipldws2_B.plane >= 0)) ||
-                         ((vipldws2_B.c1 < 0) && (vipldws2_B.plane < 0))) {
+              } else if (((vipldws2_B.c1 >= 0) && (vipldws2_B.planeOffset >= 0))
+                         || ((vipldws2_B.c1 < 0) && (vipldws2_B.planeOffset < 0)))
+              {
                 vipldws2_B.C2 += (div_s32_floor(vipldws2_B.c1 << 1,
-                  vipldws2_B.plane) + 1) >> 1;
+                  vipldws2_B.planeOffset) + 1) >> 1;
               } else {
                 vipldws2_B.C2 -= (div_s32_floor(-vipldws2_B.c1 << 1,
-                  vipldws2_B.plane) + 1) >> 1;
+                  vipldws2_B.planeOffset) + 1) >> 1;
               }
 
               vipldws2_B.lastActiveEdgeIdxBdy = 0;
               prevEdgeIsVertical = true;
             } else {
               /* Violated CMax. */
-              vipldws2_B.c1 = (1919 - vipldws2_B.lastActiveEdgeIdxBdy) *
+              vipldws2_B.c1 = (2559 - vipldws2_B.lastActiveEdgeIdxBdy) *
                 vipldws2_B.i;
               if ((vipldws2_B.c1 > 1073741824) || (vipldws2_B.c1 < -1073741824))
               {
                 /* Check for Inf or Nan. */
                 done = true;
                 c_gotAlLeastOneYellowPixelInThe = false;
-              } else if (((vipldws2_B.c1 >= 0) && (vipldws2_B.plane >= 0)) ||
-                         ((vipldws2_B.c1 < 0) && (vipldws2_B.plane < 0))) {
+              } else if (((vipldws2_B.c1 >= 0) && (vipldws2_B.planeOffset >= 0))
+                         || ((vipldws2_B.c1 < 0) && (vipldws2_B.planeOffset < 0)))
+              {
                 vipldws2_B.C2 += (div_s32_floor(vipldws2_B.c1 << 1,
-                  vipldws2_B.plane) + 1) >> 1;
+                  vipldws2_B.planeOffset) + 1) >> 1;
               } else {
                 vipldws2_B.C2 -= (div_s32_floor(-vipldws2_B.c1 << 1,
-                  vipldws2_B.plane) + 1) >> 1;
+                  vipldws2_B.planeOffset) + 1) >> 1;
               }
 
-              vipldws2_B.lastActiveEdgeIdxBdy = 1919;
+              vipldws2_B.lastActiveEdgeIdxBdy = 2559;
               prevEdgeIsVertical = true;
             }
           }
@@ -8745,22 +8758,22 @@ void vipldws2_step(void)
         if (c_gotAlLeastOneYellowPixelInThe) {
           /* Initialize the Bresenham algorithm. */
           if (vipldws2_B.C2 >= vipldws2_B.indxI) {
-            vipldws2_B.numEdge = vipldws2_B.C2 - vipldws2_B.indxI;
+            vipldws2_B.j = vipldws2_B.C2 - vipldws2_B.indxI;
           } else {
-            vipldws2_B.numEdge = vipldws2_B.indxI - vipldws2_B.C2;
+            vipldws2_B.j = vipldws2_B.indxI - vipldws2_B.C2;
           }
 
           if (vipldws2_B.lastActiveEdgeIdxBdy >= vipldws2_B.c2) {
-            vipldws2_B.col = vipldws2_B.lastActiveEdgeIdxBdy - vipldws2_B.c2;
+            vipldws2_B.numEdge = vipldws2_B.lastActiveEdgeIdxBdy - vipldws2_B.c2;
           } else {
-            vipldws2_B.col = vipldws2_B.c2 - vipldws2_B.lastActiveEdgeIdxBdy;
+            vipldws2_B.numEdge = vipldws2_B.c2 - vipldws2_B.lastActiveEdgeIdxBdy;
           }
 
-          if (vipldws2_B.numEdge > vipldws2_B.col) {
+          if (vipldws2_B.j > vipldws2_B.numEdge) {
             vipldws2_B.r2 = 1;
-            vipldws2_B.r1 = 320;
+            vipldws2_B.r1 = 240;
           } else {
-            vipldws2_B.r2 = 320;
+            vipldws2_B.r2 = 240;
             vipldws2_B.r1 = 1;
             vipldws2_B.i = vipldws2_B.indxI;
             vipldws2_B.indxI = vipldws2_B.c2;
@@ -8792,20 +8805,20 @@ void vipldws2_step(void)
           vipldws2_B.activeColBdy = vipldws2_B.c2 - 4;
           vipldws2_B.activeCol = -((vipldws2_B.qY_g + 1) >> 1);
           if (vipldws2_B.r2 != 1) {
-            vipldws2_B.colBoundary = 2559;
-          } else {
             vipldws2_B.colBoundary = 1919;
+          } else {
+            vipldws2_B.colBoundary = 2559;
           }
 
           vipldws2_B.c1 = vipldws2_B.indxI >> 3;
-          vipldws2_B.ii = ((vipldws2_B.c1 + 1) << 3) - vipldws2_B.indxI;
+          vipldws2_B.j = ((vipldws2_B.c1 + 1) << 3) - vipldws2_B.indxI;
           vipldws2_B.firstRowOut = 320;
           vipldws2_B.lastRowOut = 0;
           memset(&vipldws2_DW.DrawShapes_DW_PixCount[0], 0, 320U * sizeof
                  (uint8_T));
           done = (vipldws2_B.indxI <= vipldws2_B.C2);
           while (done) {
-            vipldws2_B.ii--;
+            vipldws2_B.j--;
             vipldws2_B.numEdge = vipldws2_B.activeColBdy;
 
             /* Compute the next location using Bresenham algorithm. */
@@ -8830,25 +8843,25 @@ void vipldws2_step(void)
                   vipldws2_B.col = vipldws2_B.colBoundary;
                 }
 
-                vipldws2_B.plane = vipldws2_B.numEdge >> 3;
+                vipldws2_B.planeOffset = vipldws2_B.numEdge >> 3;
                 vipldws2_B.i = vipldws2_B.col >> 3;
-                if (vipldws2_B.firstRowOut > vipldws2_B.plane) {
-                  vipldws2_B.firstRowOut = vipldws2_B.plane;
+                if (vipldws2_B.firstRowOut > vipldws2_B.planeOffset) {
+                  vipldws2_B.firstRowOut = vipldws2_B.planeOffset;
                 }
 
                 if (vipldws2_B.lastRowOut < vipldws2_B.i) {
                   vipldws2_B.lastRowOut = vipldws2_B.i;
                 }
 
-                if (vipldws2_B.i > vipldws2_B.plane) {
-                  vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.plane] =
-                    (uint8_T)(((uint32_T)((vipldws2_B.plane + 1) << 3) +
-                               vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.plane])
+                if (vipldws2_B.i > vipldws2_B.planeOffset) {
+                  vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.planeOffset] =
+                    (uint8_T)(((uint32_T)((vipldws2_B.planeOffset + 1) << 3) +
+                               vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.planeOffset])
                               - vipldws2_B.numEdge);
                   vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.i] = (uint8_T)
                     ((((uint32_T)vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.i]
                        + vipldws2_B.col) - (vipldws2_B.i << 3)) + 1U);
-                  vipldws2_B.numEdge = vipldws2_B.plane + 1;
+                  vipldws2_B.numEdge = vipldws2_B.planeOffset + 1;
                   while (vipldws2_B.numEdge < vipldws2_B.i) {
                     vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.numEdge] =
                       (uint8_T)
@@ -8857,17 +8870,17 @@ void vipldws2_step(void)
                     vipldws2_B.numEdge++;
                   }
                 } else {
-                  if (vipldws2_B.i == vipldws2_B.plane) {
-                    vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.plane] =
+                  if (vipldws2_B.i == vipldws2_B.planeOffset) {
+                    vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.planeOffset] =
                       (uint8_T)((((uint32_T)
-                                  vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.plane]
+                                  vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.planeOffset]
                                   + vipldws2_B.col) - vipldws2_B.numEdge) + 1U);
                   }
                 }
               }
             }
 
-            if ((vipldws2_B.ii == 0) || (!done)) {
+            if ((vipldws2_B.j == 0) || (!done)) {
               while (vipldws2_B.firstRowOut <= vipldws2_B.lastRowOut) {
                 vipldws2_B.col = vipldws2_B.c1 * vipldws2_B.r2 +
                   vipldws2_B.firstRowOut * vipldws2_B.r1;
@@ -8916,7 +8929,7 @@ void vipldws2_step(void)
                 vipldws2_B.firstRowOut++;
               }
 
-              vipldws2_B.ii = 8;
+              vipldws2_B.j = 8;
               vipldws2_B.firstRowOut = 320;
               vipldws2_B.lastRowOut = 0;
               vipldws2_B.c1++;
@@ -9390,10 +9403,10 @@ void vipldws2_step(void)
         vipldws2_B.c2 = 4;
       }
 
-      memset(&vipldws2_DW.DrawShapes_DW_PixCount[0], 0, 320U * sizeof(uint8_T));
+      memset(&vipldws2_DW.DrawShapes_DW_PixCount[0], 0, 240U * sizeof(uint8_T));
 
       /* Reset scanline states. */
-      vipldws2_B.R2 = 0;
+      vipldws2_B.plane = 0;
       vipldws2_B.C2 = 0;
       c_gotAlLeastOneYellowPixelInThe = true;
       while (c_gotAlLeastOneYellowPixelInThe) {
@@ -9401,11 +9414,11 @@ void vipldws2_step(void)
         /* Convert polygon vertices to boundaries. */
         done = false;
         vipldws2_B.numEdge = 0;
-        vipldws2_B.qY_g = vipldws2_B.R2;
-        vipldws2_B.qY = vipldws2_B.R2;
+        vipldws2_B.qY_g = vipldws2_B.plane;
+        vipldws2_B.qY = vipldws2_B.plane;
         idxTmpArray_0[0U] = (int8_T)(vipldws2_B.c2 - 1);
-        vipldws2_B.ii = 0;
-        while (vipldws2_B.ii < 1) {
+        vipldws2_B.j = 0;
+        while (vipldws2_B.j < 1) {
           /* start for loop
            */
           vipldws2_B.lastActiveEdgeIdxBdy = ((idxTmpArray_0[0] << 1) +
@@ -9738,31 +9751,31 @@ void vipldws2_step(void)
             vipldws2_B.i++;
           }
 
-          vipldws2_B.ii = 1;
+          vipldws2_B.j = 1;
         }
 
         if (!done) {
           /* Merge two Bresenham lines. */
-          if ((vipldws2_B.R2 != vipldws2_B.qY_g) &&
-              ((vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 5] ==
+          if ((vipldws2_B.plane != vipldws2_B.qY_g) &&
+              ((vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 5] ==
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 5]) &&
-               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 6] ==
+               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 6] ==
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 6]) &&
-               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 7] ==
+               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 7] ==
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 7]) &&
-               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 8] ==
+               (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 8] ==
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 8]))) {
-            if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 3] + 1 ==
+            if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 3] + 1 ==
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 2]) {
-              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 3] =
+              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 3] =
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 3];
               done = true;
             } else {
               if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 3] + 1 ==
-                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 2]) {
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 1] =
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 2]) {
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 1] =
                   vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 1];
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 2] =
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 2] =
                   vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.qY_g + 2];
                 done = true;
               }
@@ -9787,23 +9800,21 @@ void vipldws2_step(void)
         /* Sort the boundaries of the polygon. */
         c_gotAlLeastOneYellowPixelInThe = true;
         while (c_gotAlLeastOneYellowPixelInThe) {
-          vipldws2_B.r1 = vipldws2_B.R2;
-          vipldws2_B.r2 = vipldws2_B.R2 + 9;
+          vipldws2_B.r1 = vipldws2_B.plane;
+          vipldws2_B.r2 = vipldws2_B.plane + 9;
           c_gotAlLeastOneYellowPixelInThe = false;
           vipldws2_B.i = 1;
           while (vipldws2_B.i < vipldws2_B.numEdge) {
             if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + 2] >
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + 2]) {
               c_gotAlLeastOneYellowPixelInThe = true;
-              for (vipldws2_B.ii = 0; vipldws2_B.ii < 9; vipldws2_B.ii++) {
+              for (vipldws2_B.j = 0; vipldws2_B.j < 9; vipldws2_B.j++) {
                 vipldws2_B.lastSeparator =
-                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 +
-                  vipldws2_B.ii];
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.ii]
-                  = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                  vipldws2_B.ii];
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.ii]
-                  = vipldws2_B.lastSeparator;
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.j];
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.j] =
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.j];
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.j] =
+                  vipldws2_B.lastSeparator;
               }
             }
 
@@ -9814,33 +9825,35 @@ void vipldws2_step(void)
         }
 
         /* Find out the last column of the polygon. */
-        vipldws2_B.plane = vipldws2_B.R2 + 3;
-        vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 3];
+        vipldws2_B.planeOffset = vipldws2_B.plane + 3;
+        vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 3];
         vipldws2_B.i = 1;
         while (vipldws2_B.i < vipldws2_B.numEdge) {
-          vipldws2_B.plane += 9;
+          vipldws2_B.planeOffset += 9;
           if (vipldws2_B.qY_g <
-              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane]) {
-            vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane];
+              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.planeOffset]) {
+            vipldws2_B.qY_g =
+              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.planeOffset];
           }
 
           vipldws2_B.i++;
         }
 
         vipldws2_B.qY = vipldws2_B.qY_g;
-        if (vipldws2_B.qY_g > 1919) {
-          vipldws2_B.qY = 1919;
+        if (vipldws2_B.qY_g > 2559) {
+          vipldws2_B.qY = 2559;
         }
 
         /* Find out the first column of the polygon. */
-        vipldws2_B.plane = vipldws2_B.R2 + 2;
-        vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.R2 + 2];
+        vipldws2_B.planeOffset = vipldws2_B.plane + 2;
+        vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane + 2];
         vipldws2_B.i = 1;
         while (vipldws2_B.i < vipldws2_B.numEdge) {
-          vipldws2_B.plane += 9;
+          vipldws2_B.planeOffset += 9;
           if (vipldws2_B.qY_g >
-              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane]) {
-            vipldws2_B.qY_g = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.plane];
+              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.planeOffset]) {
+            vipldws2_B.qY_g =
+              vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.planeOffset];
           }
 
           vipldws2_B.i++;
@@ -9851,11 +9864,11 @@ void vipldws2_step(void)
         }
 
         /* Move to the next column and find out boundaries of the polygon at this column. */
-        vipldws2_B.r1 = vipldws2_B.R2;
-        vipldws2_B.r2 = vipldws2_B.R2;
-        vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.R2;
+        vipldws2_B.r1 = vipldws2_B.plane;
+        vipldws2_B.r2 = vipldws2_B.plane;
+        vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.plane;
         vipldws2_B.indxI = 0;
-        vipldws2_B.plane = 0;
+        vipldws2_B.planeOffset = 0;
         vipldws2_B.i = 0;
         while (vipldws2_B.i < vipldws2_B.numEdge) {
           /* Find out the valid boundaries and bring them to the latest column. */
@@ -9882,14 +9895,13 @@ void vipldws2_step(void)
               }
 
               vipldws2_B.lastActiveEdgeIdxBdy += 9;
-              vipldws2_B.plane++;
+              vipldws2_B.planeOffset++;
             }
 
             if (vipldws2_B.r2 != vipldws2_B.r1) {
-              for (vipldws2_B.ii = 0; vipldws2_B.ii < 9; vipldws2_B.ii++) {
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.ii]
-                  = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                  vipldws2_B.ii];
+              for (vipldws2_B.j = 0; vipldws2_B.j < 9; vipldws2_B.j++) {
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.j] =
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.j];
               }
             }
 
@@ -9905,23 +9917,21 @@ void vipldws2_step(void)
         /* Sort the boundaries of the polygon. */
         c_gotAlLeastOneYellowPixelInThe = true;
         while (c_gotAlLeastOneYellowPixelInThe) {
-          vipldws2_B.r1 = vipldws2_B.R2;
-          vipldws2_B.r2 = vipldws2_B.R2 + 9;
+          vipldws2_B.r1 = vipldws2_B.plane;
+          vipldws2_B.r2 = vipldws2_B.plane + 9;
           c_gotAlLeastOneYellowPixelInThe = false;
           vipldws2_B.i = 1;
-          while (vipldws2_B.i < vipldws2_B.plane) {
+          while (vipldws2_B.i < vipldws2_B.planeOffset) {
             if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + 1] >
                 vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + 1]) {
               c_gotAlLeastOneYellowPixelInThe = true;
-              for (vipldws2_B.ii = 0; vipldws2_B.ii < 9; vipldws2_B.ii++) {
+              for (vipldws2_B.j = 0; vipldws2_B.j < 9; vipldws2_B.j++) {
                 vipldws2_B.lastSeparator =
-                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 +
-                  vipldws2_B.ii];
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.ii]
-                  = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                  vipldws2_B.ii];
-                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.ii]
-                  = vipldws2_B.lastSeparator;
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.j];
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + vipldws2_B.j] =
+                  vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.j];
+                vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + vipldws2_B.j] =
+                  vipldws2_B.lastSeparator;
               }
             }
 
@@ -9931,14 +9941,14 @@ void vipldws2_step(void)
           }
         }
 
-        vipldws2_B.r1 = vipldws2_B.R2;
+        vipldws2_B.r1 = vipldws2_B.plane;
         vipldws2_B.activeColBdy = vipldws2_B.qY_g + 1;
         vipldws2_B.activeCol = 0;
         vipldws2_B.r2 = 0;
         vipldws2_B.lastSeparator = -1;
         vipldws2_B.colOut = vipldws2_B.qY_g >> 3;
         vipldws2_B.colBoundary = (vipldws2_B.colOut + 1) << 3;
-        vipldws2_B.firstRowOut = 320;
+        vipldws2_B.firstRowOut = 240;
         vipldws2_B.lastRowOut = 0;
         c_gotAlLeastOneYellowPixelInThe = (0 <= vipldws2_B.qY);
         while (c_gotAlLeastOneYellowPixelInThe) {
@@ -9953,12 +9963,12 @@ void vipldws2_step(void)
               vipldws2_B.r1 += 9;
               if ((vipldws2_B.i == vipldws2_B.lastSeparator) && (vipldws2_B.r1 <
                    vipldws2_B.lastActiveEdgeIdxBdy)) {
-                vipldws2_B.plane =
+                vipldws2_B.planeOffset =
                   vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + 1];
                 c_gotAlLeastOneYellowPixelInThe = (vipldws2_B.r1 <
                   vipldws2_B.lastActiveEdgeIdxBdy);
                 while (c_gotAlLeastOneYellowPixelInThe && (vipldws2_B.i ==
-                        vipldws2_B.plane)) {
+                        vipldws2_B.planeOffset)) {
                   countTwice = true;
                   vipldws2_B.i = vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1
                     + 1];
@@ -9966,7 +9976,7 @@ void vipldws2_step(void)
                   c_gotAlLeastOneYellowPixelInThe = (vipldws2_B.r1 <
                     vipldws2_B.lastActiveEdgeIdxBdy);
                   if (c_gotAlLeastOneYellowPixelInThe) {
-                    vipldws2_B.plane =
+                    vipldws2_B.planeOffset =
                       vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + 1];
                   }
                 }
@@ -9978,24 +9988,24 @@ void vipldws2_step(void)
 
               if (vipldws2_B.r2 != 0) {
                 vipldws2_B.firstRow = vipldws2_B.lastSeparator;
-                if (vipldws2_B.i <= 2559) {
+                if (vipldws2_B.i <= 1919) {
                   vipldws2_B.lastRow = vipldws2_B.i;
                   vipldws2_B.lastSeparator = vipldws2_B.i;
                 } else {
-                  vipldws2_B.lastRow = 2559;
-                  vipldws2_B.lastSeparator = 2559;
+                  vipldws2_B.lastRow = 1919;
+                  vipldws2_B.lastSeparator = 1919;
                 }
               } else {
                 vipldws2_B.firstRow = vipldws2_B.lastSeparator + 1;
-                if ((vipldws2_B.i > 0) && (vipldws2_B.i <= 2559)) {
+                if ((vipldws2_B.i > 0) && (vipldws2_B.i <= 1919)) {
                   vipldws2_B.lastRow = vipldws2_B.i - 1;
                   vipldws2_B.lastSeparator = vipldws2_B.i;
                 } else if (vipldws2_B.i <= 0) {
                   vipldws2_B.lastRow = -1;
                   vipldws2_B.lastSeparator = 0;
                 } else {
-                  vipldws2_B.lastRow = 2559;
-                  vipldws2_B.lastSeparator = 2560;
+                  vipldws2_B.lastRow = 1919;
+                  vipldws2_B.lastSeparator = 1920;
                 }
               }
 
@@ -10006,14 +10016,14 @@ void vipldws2_step(void)
               /* Reset states and move to the next column. */
               done = false;
               vipldws2_B.firstRow = vipldws2_B.lastSeparator + 1;
-              vipldws2_B.lastRow = 2559;
+              vipldws2_B.lastRow = 1919;
 
               /* Move to the next column and find out boundaries of the polygon at this column. */
-              vipldws2_B.r1 = vipldws2_B.R2;
-              vipldws2_B.r2 = vipldws2_B.R2;
-              vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.R2;
+              vipldws2_B.r1 = vipldws2_B.plane;
+              vipldws2_B.r2 = vipldws2_B.plane;
+              vipldws2_B.lastActiveEdgeIdxBdy = vipldws2_B.plane;
               vipldws2_B.numEdge = 0;
-              vipldws2_B.plane = 0;
+              vipldws2_B.planeOffset = 0;
               vipldws2_B.i = 0;
               while (vipldws2_B.i < vipldws2_B.indxI) {
                 /* Find out the valid boundaries and bring them to the latest column. */
@@ -10041,16 +10051,15 @@ void vipldws2_step(void)
                     }
 
                     vipldws2_B.lastActiveEdgeIdxBdy += 9;
-                    vipldws2_B.plane++;
+                    vipldws2_B.planeOffset++;
                   }
 
                   if (vipldws2_B.r2 != vipldws2_B.r1) {
-                    for (vipldws2_B.ii = 0; vipldws2_B.ii < 9; vipldws2_B.ii++)
-                    {
+                    for (vipldws2_B.j = 0; vipldws2_B.j < 9; vipldws2_B.j++) {
                       vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 +
-                        vipldws2_B.ii] =
+                        vipldws2_B.j] =
                         vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                        vipldws2_B.ii];
+                        vipldws2_B.j];
                     }
                   }
 
@@ -10067,25 +10076,24 @@ void vipldws2_step(void)
               /* Sort the boundaries of the polygon according to row values. */
               /* Sort the boundaries of the polygon. */
               while (c_gotAlLeastOneYellowPixelInThe) {
-                vipldws2_B.r1 = vipldws2_B.R2;
-                vipldws2_B.r2 = vipldws2_B.R2 + 9;
+                vipldws2_B.r1 = vipldws2_B.plane;
+                vipldws2_B.r2 = vipldws2_B.plane + 9;
                 c_gotAlLeastOneYellowPixelInThe = false;
                 vipldws2_B.i = 1;
-                while (vipldws2_B.i < vipldws2_B.plane) {
+                while (vipldws2_B.i < vipldws2_B.planeOffset) {
                   if (vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 + 1] >
                       vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 + 1]) {
                     c_gotAlLeastOneYellowPixelInThe = true;
-                    for (vipldws2_B.ii = 0; vipldws2_B.ii < 9; vipldws2_B.ii++)
-                    {
+                    for (vipldws2_B.j = 0; vipldws2_B.j < 9; vipldws2_B.j++) {
                       vipldws2_B.lastSeparator =
                         vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 +
-                        vipldws2_B.ii];
+                        vipldws2_B.j];
                       vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r1 +
-                        vipldws2_B.ii] =
+                        vipldws2_B.j] =
                         vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                        vipldws2_B.ii];
+                        vipldws2_B.j];
                       vipldws2_DW.DrawShapes_DW_Polygon[vipldws2_B.r2 +
-                        vipldws2_B.ii] = vipldws2_B.lastSeparator;
+                        vipldws2_B.j] = vipldws2_B.lastSeparator;
                     }
                   }
 
@@ -10095,7 +10103,7 @@ void vipldws2_step(void)
                 }
               }
 
-              vipldws2_B.r1 = vipldws2_B.R2;
+              vipldws2_B.r1 = vipldws2_B.plane;
               vipldws2_B.activeColBdy++;
               vipldws2_B.r2 = 0;
               vipldws2_B.lastSeparator = -1;
@@ -10103,7 +10111,7 @@ void vipldws2_step(void)
             }
           } else {
             vipldws2_B.firstRow = 0;
-            vipldws2_B.lastRow = 2559;
+            vipldws2_B.lastRow = 1919;
             vipldws2_B.activeCol++;
           }
 
@@ -10115,31 +10123,31 @@ void vipldws2_step(void)
             vipldws2_B.lastRow = vipldws2_B.firstRow - 1;
           }
 
-          if (done && ((vipldws2_B.lastRow > 0) && (vipldws2_B.firstRow < 2559)))
+          if (done && ((vipldws2_B.lastRow > 0) && (vipldws2_B.firstRow < 1919)))
           {
-            if (vipldws2_B.lastRow > 2559) {
-              vipldws2_B.lastRow = 2559;
+            if (vipldws2_B.lastRow > 1919) {
+              vipldws2_B.lastRow = 1919;
             }
 
-            vipldws2_B.plane = vipldws2_B.firstRow >> 3;
+            vipldws2_B.planeOffset = vipldws2_B.firstRow >> 3;
             vipldws2_B.i = vipldws2_B.lastRow >> 3;
-            if (vipldws2_B.firstRowOut > vipldws2_B.plane) {
-              vipldws2_B.firstRowOut = vipldws2_B.plane;
+            if (vipldws2_B.firstRowOut > vipldws2_B.planeOffset) {
+              vipldws2_B.firstRowOut = vipldws2_B.planeOffset;
             }
 
             if (vipldws2_B.lastRowOut < vipldws2_B.i) {
               vipldws2_B.lastRowOut = vipldws2_B.i;
             }
 
-            if (vipldws2_B.i > vipldws2_B.plane) {
-              vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.plane] = (uint8_T)
-                (((uint32_T)((vipldws2_B.plane + 1) << 3) +
-                  vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.plane]) -
-                 vipldws2_B.firstRow);
+            if (vipldws2_B.i > vipldws2_B.planeOffset) {
+              vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.planeOffset] =
+                (uint8_T)(((uint32_T)((vipldws2_B.planeOffset + 1) << 3) +
+                           vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.planeOffset])
+                          - vipldws2_B.firstRow);
               vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.i] = (uint8_T)
                 ((((uint32_T)vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.i] +
                    vipldws2_B.lastRow) - (vipldws2_B.i << 3)) + 1U);
-              vipldws2_B.numEdge = vipldws2_B.plane + 1;
+              vipldws2_B.numEdge = vipldws2_B.planeOffset + 1;
               while (vipldws2_B.numEdge < vipldws2_B.i) {
                 vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.numEdge] =
                   (uint8_T)
@@ -10147,11 +10155,11 @@ void vipldws2_step(void)
                 vipldws2_B.numEdge++;
               }
             } else {
-              if (vipldws2_B.i == vipldws2_B.plane) {
-                vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.plane] = (uint8_T)
-                  ((((uint32_T)
-                     vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.plane] +
-                     vipldws2_B.lastRow) - vipldws2_B.firstRow) + 1U);
+              if (vipldws2_B.i == vipldws2_B.planeOffset) {
+                vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.planeOffset] =
+                  (uint8_T)((((uint32_T)
+                              vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.planeOffset]
+                              + vipldws2_B.lastRow) - vipldws2_B.firstRow) + 1U);
               }
             }
           }
@@ -10160,9 +10168,9 @@ void vipldws2_step(void)
             vipldws2_B.qY);
           if (((vipldws2_B.colBoundary - 1 == vipldws2_B.col) ||
                (!c_gotAlLeastOneYellowPixelInThe)) && (vipldws2_B.lastRow >=
-               2559)) {
-            vipldws2_B.ii = vipldws2_B.colOut * 320 + vipldws2_B.firstRowOut;
-            vipldws2_B.col = vipldws2_B.ii;
+               1919)) {
+            vipldws2_B.j = vipldws2_B.colOut * 240 + vipldws2_B.firstRowOut;
+            vipldws2_B.col = vipldws2_B.j;
             vipldws2_B.numEdge = vipldws2_B.firstRowOut;
             while (vipldws2_B.numEdge <= vipldws2_B.lastRowOut) {
               if (vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.numEdge] == 64)
@@ -10181,8 +10189,8 @@ void vipldws2_step(void)
               vipldws2_B.numEdge++;
             }
 
-            vipldws2_B.ii += 76800;
-            vipldws2_B.col = vipldws2_B.ii;
+            vipldws2_B.j += 76800;
+            vipldws2_B.col = vipldws2_B.j;
             vipldws2_B.numEdge = vipldws2_B.firstRowOut;
             while (vipldws2_B.numEdge <= vipldws2_B.lastRowOut) {
               if (vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.numEdge] == 64)
@@ -10201,8 +10209,8 @@ void vipldws2_step(void)
               vipldws2_B.numEdge++;
             }
 
-            vipldws2_B.ii += 76800;
-            vipldws2_B.col = vipldws2_B.ii;
+            vipldws2_B.j += 76800;
+            vipldws2_B.col = vipldws2_B.j;
             vipldws2_B.numEdge = vipldws2_B.firstRowOut;
             while (vipldws2_B.numEdge <= vipldws2_B.lastRowOut) {
               if (vipldws2_DW.DrawShapes_DW_PixCount[vipldws2_B.numEdge] == 64)
@@ -10228,24 +10236,24 @@ void vipldws2_step(void)
 
             vipldws2_B.colOut++;
             vipldws2_B.colBoundary += 8;
-            vipldws2_B.firstRowOut = 320;
+            vipldws2_B.firstRowOut = 240;
             vipldws2_B.lastRowOut = 0;
           }
         }
 
         /* Move to the next polygon. */
-        vipldws2_B.R2 += vipldws2_B.c2 * 9;
+        vipldws2_B.plane += vipldws2_B.c2 * 9;
         if (vipldws2_B.C2 >= div_s32_floor(vipldws2_B.c2, vipldws2_B.c2) - 1) {
           vipldws2_B.C2 = 0;
         } else {
           vipldws2_B.C2++;
         }
 
-        c_gotAlLeastOneYellowPixelInThe = (vipldws2_B.R2 < vipldws2_B.c2 * 9);
+        c_gotAlLeastOneYellowPixelInThe = (vipldws2_B.plane < vipldws2_B.c2 * 9);
       }
     }
 
-    /* End of S-Function (svipdrawshapes): '<S63>/DrawShapes' */
+    /* End of S-Function (svipdrawshapes): '<S64>/DrawShapes' */
     srUpdateBC(vipldws2_DW.Draw3rdLine_SubsysRanBC);
   }
 
@@ -10278,25 +10286,28 @@ void vipldws2_step(void)
   }
 
   /* End of S-Function (svipscalenconvert): '<S5>/Image Data Type Conversion' */
-  for (vipldws2_B.i = 0; vipldws2_B.i < 240; vipldws2_B.i++) {
-    /* Selector: '<S67>/Selector' */
-    memcpy(&vipldws2_B.Selector_g[vipldws2_B.i * 320],
-           &vipldws2_B.ImageDataTypeConversion_p[vipldws2_B.i * 320], 320U *
-           sizeof(uint8_T));
 
-    /* Selector: '<S67>/Selector1' */
-    memcpy(&vipldws2_B.Selector1_l[vipldws2_B.i * 320],
-           &vipldws2_B.ImageDataTypeConversion_p[vipldws2_B.i * 320 + 76800],
-           320U * sizeof(uint8_T));
+  /* S-Function (sviprotate): '<S5>/Rotate' */
+  memcpy(&vipldws2_B.Rotate_g[0], &vipldws2_B.ImageDataTypeConversion_p[0],
+         230400U * sizeof(uint8_T));
+  for (vipldws2_B.i = 0; vipldws2_B.i < 320; vipldws2_B.i++) {
+    /* Selector: '<S68>/Selector' */
+    memcpy(&vipldws2_B.Selector_g[vipldws2_B.i * 240],
+           &vipldws2_B.Rotate_g[vipldws2_B.i * 240], 240U * sizeof(uint8_T));
 
-    /* Selector: '<S67>/Selector2' */
-    memcpy(&vipldws2_B.Selector2_g[vipldws2_B.i * 320],
-           &vipldws2_B.ImageDataTypeConversion_p[vipldws2_B.i * 320 + 153600],
-           320U * sizeof(uint8_T));
+    /* Selector: '<S68>/Selector1' */
+    memcpy(&vipldws2_B.Selector1_l[vipldws2_B.i * 240],
+           &vipldws2_B.Rotate_g[vipldws2_B.i * 240 + 76800], 240U * sizeof
+           (uint8_T));
+
+    /* Selector: '<S68>/Selector2' */
+    memcpy(&vipldws2_B.Selector2_g[vipldws2_B.i * 240],
+           &vipldws2_B.Rotate_g[vipldws2_B.i * 240 + 153600], 240U * sizeof
+           (uint8_T));
   }
 
-  /* Start for MATLABSystem: '<S65>/MATLAB System' incorporates:
-   *  MATLABSystem: '<S65>/MATLAB System'
+  /* Start for MATLABSystem: '<S66>/MATLAB System' incorporates:
+   *  MATLABSystem: '<S66>/MATLAB System'
    */
   memcpy(&vipldws2_B.pln1[0], &vipldws2_B.Selector_g[0], 76800U * sizeof(uint8_T));
   memcpy(&vipldws2_B.pln2[0], &vipldws2_B.Selector1_l[0], 76800U * sizeof
@@ -10343,15 +10354,15 @@ void vipldws2_step(void)
   /* Constant: '<S14>/min_safety' */
   vipldws2_B.MatrixConcatenation2[1] = vipldws2_P.min_safety_Value;
   for (vipldws2_B.i = 0; vipldws2_B.i < 20; vipldws2_B.i++) {
-    /* RelationalOperator: '<S35>/Compare' incorporates:
-     *  Constant: '<S35>/Constant'
+    /* RelationalOperator: '<S36>/Compare' incorporates:
+     *  Constant: '<S36>/Constant'
      */
     vipldws2_B.Compare_m[vipldws2_B.i] = (vipldws2_B.Saturation_h[vipldws2_B.i] >=
       vipldws2_P.OnlyupdatethelineswhichKalmanfi);
 
-    /* Switch: '<S36>/Reset' incorporates:
+    /* Switch: '<S37>/Reset' incorporates:
      *  Constant: '<S2>/Constant'
-     *  Constant: '<S36>/Initial Condition'
+     *  Constant: '<S37>/Initial Condition'
      */
     if (vipldws2_P.Constant_Value_g) {
       vipldws2_B.Xnew_m[vipldws2_B.i] = vipldws2_P.UnitDelayResettable_vinit;
@@ -10359,64 +10370,64 @@ void vipldws2_step(void)
       vipldws2_B.Xnew_m[vipldws2_B.i] = vipldws2_B.Saturation_h[vipldws2_B.i];
     }
 
-    /* End of Switch: '<S36>/Reset' */
+    /* End of Switch: '<S37>/Reset' */
   }
 
   /* Outputs for Iterator SubSystem: '<S4>/Update' incorporates:
-   *  ForIterator: '<S38>/For Iterator'
+   *  ForIterator: '<S39>/For Iterator'
    */
   memcpy(&vipldws2_B.Assignment[0], &vipldws2_B.Assignment_a[0], 40U * sizeof
          (real32_T));
-  vipldws2_B.s38_iter = 1;
-  while (vipldws2_B.s38_iter <= vipldws2_P.ForIterator_IterationLimit_gd) {
-    vipldws2_B.ForIterator = vipldws2_B.s38_iter;
+  vipldws2_B.s39_iter = 1;
+  while (vipldws2_B.s39_iter <= vipldws2_P.ForIterator_IterationLimit_gd) {
+    vipldws2_B.ForIterator = vipldws2_B.s39_iter;
 
-    /* Selector: '<S38>/Selector' */
+    /* Selector: '<S39>/Selector' */
     vipldws2_B.Selector_b = vipldws2_B.Compare_m[vipldws2_B.ForIterator - 1];
 
-    /* Switch: '<S38>/Switch1' */
+    /* Switch: '<S39>/Switch1' */
     if (vipldws2_B.Selector_b) {
-      /* Selector: '<S38>/Selector1' */
+      /* Selector: '<S39>/Selector1' */
       vipldws2_B.Selector1[0] = vipldws2_B.Assignment_a[(vipldws2_B.ForIterator
         - 1) << 1];
       vipldws2_B.Switch1[0] = vipldws2_B.Selector1[0];
 
-      /* Selector: '<S38>/Selector1' */
+      /* Selector: '<S39>/Selector1' */
       vipldws2_B.Selector1[1] = vipldws2_B.Assignment_a[((vipldws2_B.ForIterator
         - 1) << 1) + 1];
       vipldws2_B.Switch1[1] = vipldws2_B.Selector1[1];
     } else {
-      /* Selector: '<S38>/Selector2' */
+      /* Selector: '<S39>/Selector2' */
       vipldws2_B.Selector2[0] = vipldws2_B.Assignment_i[(vipldws2_B.ForIterator
         - 1) << 1];
       vipldws2_B.Switch1[0] = vipldws2_B.Selector2[0];
 
-      /* Selector: '<S38>/Selector2' */
+      /* Selector: '<S39>/Selector2' */
       vipldws2_B.Selector2[1] = vipldws2_B.Assignment_i[((vipldws2_B.ForIterator
         - 1) << 1) + 1];
       vipldws2_B.Switch1[1] = vipldws2_B.Selector2[1];
     }
 
-    /* End of Switch: '<S38>/Switch1' */
+    /* End of Switch: '<S39>/Switch1' */
 
-    /* Assignment: '<S38>/Assignment' */
+    /* Assignment: '<S39>/Assignment' */
     vipldws2_B.Assignment[(vipldws2_B.ForIterator - 1) << 1] =
       vipldws2_B.Switch1[0];
     vipldws2_B.Assignment[1 + ((vipldws2_B.ForIterator - 1) << 1)] =
       vipldws2_B.Switch1[1];
-    vipldws2_B.s38_iter++;
+    vipldws2_B.s39_iter++;
   }
 
   /* End of Outputs for SubSystem: '<S4>/Update' */
 
-  /* Update for UnitDelay: '<S37>/FixPt Unit Delay2' incorporates:
-   *  Constant: '<S37>/FixPt Constant'
+  /* Update for UnitDelay: '<S38>/FixPt Unit Delay2' incorporates:
+   *  Constant: '<S38>/FixPt Constant'
    */
   vipldws2_DW.FixPtUnitDelay2_DSTATE = vipldws2_P.FixPtConstant_Value_e;
   for (vipldws2_B.i = 0; vipldws2_B.i < 40; vipldws2_B.i++) {
-    /* Switch: '<S37>/Reset' incorporates:
+    /* Switch: '<S38>/Reset' incorporates:
      *  Constant: '<S2>/Constant'
-     *  Constant: '<S37>/Initial Condition'
+     *  Constant: '<S38>/Initial Condition'
      */
     if (vipldws2_P.Constant_Value_g) {
       vipldws2_B.Xnew[vipldws2_B.i] =
@@ -10425,31 +10436,31 @@ void vipldws2_step(void)
       vipldws2_B.Xnew[vipldws2_B.i] = vipldws2_B.Assignment[vipldws2_B.i];
     }
 
-    /* End of Switch: '<S37>/Reset' */
+    /* End of Switch: '<S38>/Reset' */
 
-    /* Update for UnitDelay: '<S37>/FixPt Unit Delay1' */
+    /* Update for UnitDelay: '<S38>/FixPt Unit Delay1' */
     vipldws2_DW.FixPtUnitDelay1_DSTATE[vipldws2_B.i] =
       vipldws2_B.Xnew[vipldws2_B.i];
   }
 
-  /* Update for UnitDelay: '<S36>/FixPt Unit Delay2' incorporates:
-   *  Constant: '<S36>/FixPt Constant'
+  /* Update for UnitDelay: '<S37>/FixPt Unit Delay2' incorporates:
+   *  Constant: '<S37>/FixPt Constant'
    */
   vipldws2_DW.FixPtUnitDelay2_DSTATE_b = vipldws2_P.FixPtConstant_Value;
 
-  /* Update for UnitDelay: '<S36>/FixPt Unit Delay1' */
+  /* Update for UnitDelay: '<S37>/FixPt Unit Delay1' */
   memcpy(&vipldws2_DW.FixPtUnitDelay1_DSTATE_d[0], &vipldws2_B.Xnew_m[0], 20U *
          sizeof(int32_T));
 
-  /* Update for UnitDelay: '<S33>/En_Delay' */
+  /* Update for UnitDelay: '<S34>/En_Delay' */
   memcpy(&vipldws2_DW.En_Delay_DSTATE[0], &vipldws2_B.Saturation_h[0], 20U *
          sizeof(int32_T));
 
-  /* Update for UnitDelay: '<S33>/Unit Delay2' */
+  /* Update for UnitDelay: '<S34>/Unit Delay2' */
   memcpy(&vipldws2_DW.UnitDelay2_DSTATE[0], &vipldws2_B.Assignment_o[0], 80U *
          sizeof(real32_T));
 
-  /* Update for UnitDelay: '<S33>/Unit Delay3' */
+  /* Update for UnitDelay: '<S34>/Unit Delay3' */
   memcpy(&vipldws2_DW.UnitDelay3_DSTATE[0], &vipldws2_B.Assignment_io[0], 320U *
          sizeof(real32_T));
 
@@ -10504,15 +10515,15 @@ void vipldws2_initialize(void)
   vipldws2_M->Timing.stepSize0 = 0.033333333333333333;
 
   /* External mode info */
-  vipldws2_M->Sizes.checksums[0] = (2332386845U);
-  vipldws2_M->Sizes.checksums[1] = (4201909759U);
-  vipldws2_M->Sizes.checksums[2] = (3967350927U);
-  vipldws2_M->Sizes.checksums[3] = (1289915825U);
+  vipldws2_M->Sizes.checksums[0] = (1068353196U);
+  vipldws2_M->Sizes.checksums[1] = (439451649U);
+  vipldws2_M->Sizes.checksums[2] = (2387670265U);
+  vipldws2_M->Sizes.checksums[3] = (765830097U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
     static RTWExtModeInfo rt_ExtModeInfo;
-    static const sysRanDType *systemRan[42];
+    static const sysRanDType *systemRan[43];
     vipldws2_M->extModeInfo = (&rt_ExtModeInfo);
     rteiSetSubSystemActiveVectorAddresses(&rt_ExtModeInfo, systemRan);
     systemRan[0] = &rtAlwaysEnabled;
@@ -10530,19 +10541,19 @@ void vipldws2_initialize(void)
     systemRan[12] = (sysRanDType *)&vipldws2_DW.SampleandHold_SubsysRanBC;
     systemRan[13] = &rtAlwaysEnabled;
     systemRan[14] = &rtAlwaysEnabled;
-    systemRan[15] = (sysRanDType *)&vipldws2_DW.Enablesignalgenerator_SubsysRan;
-    systemRan[16] = (sysRanDType *)&vipldws2_DW.Core_SubsysRanBC;
-    systemRan[17] = (sysRanDType *)&vipldws2_DW.Options_SubsysRanBC;
+    systemRan[15] = &rtAlwaysEnabled;
+    systemRan[16] = (sysRanDType *)&vipldws2_DW.Enablesignalgenerator_SubsysRan;
+    systemRan[17] = (sysRanDType *)&vipldws2_DW.Core_SubsysRanBC;
     systemRan[18] = (sysRanDType *)&vipldws2_DW.Options_SubsysRanBC;
     systemRan[19] = (sysRanDType *)&vipldws2_DW.Options_SubsysRanBC;
     systemRan[20] = (sysRanDType *)&vipldws2_DW.Options_SubsysRanBC;
     systemRan[21] = (sysRanDType *)&vipldws2_DW.Options_SubsysRanBC;
-    systemRan[22] = &rtAlwaysEnabled;
-    systemRan[23] = (sysRanDType *)&vipldws2_DW.Selectalinefromtherepositoryifi;
-    systemRan[24] = (sysRanDType *)&vipldws2_DW.Differencebetweentwolines_Subsy;
-    systemRan[25] = (sysRanDType *)&vipldws2_DW.Selectalinefromtherepositoryifi;
+    systemRan[22] = (sysRanDType *)&vipldws2_DW.Options_SubsysRanBC;
+    systemRan[23] = &rtAlwaysEnabled;
+    systemRan[24] = (sysRanDType *)&vipldws2_DW.Selectalinefromtherepositoryifi;
+    systemRan[25] = (sysRanDType *)&vipldws2_DW.Differencebetweentwolines_Subsy;
     systemRan[26] = (sysRanDType *)&vipldws2_DW.Selectalinefromtherepositoryifi;
-    systemRan[27] = &rtAlwaysEnabled;
+    systemRan[27] = (sysRanDType *)&vipldws2_DW.Selectalinefromtherepositoryifi;
     systemRan[28] = &rtAlwaysEnabled;
     systemRan[29] = &rtAlwaysEnabled;
     systemRan[30] = &rtAlwaysEnabled;
@@ -10551,12 +10562,13 @@ void vipldws2_initialize(void)
     systemRan[33] = &rtAlwaysEnabled;
     systemRan[34] = &rtAlwaysEnabled;
     systemRan[35] = &rtAlwaysEnabled;
-    systemRan[36] = (sysRanDType *)&vipldws2_DW.Draw3rdLine_SubsysRanBC;
-    systemRan[37] = &rtAlwaysEnabled;
+    systemRan[36] = &rtAlwaysEnabled;
+    systemRan[37] = (sysRanDType *)&vipldws2_DW.Draw3rdLine_SubsysRanBC;
     systemRan[38] = &rtAlwaysEnabled;
     systemRan[39] = &rtAlwaysEnabled;
-    systemRan[40] = (sysRanDType *)&vipldws2_DW.DrawPolygon_SubsysRanBC;
-    systemRan[41] = (sysRanDType *)&vipldws2_DW.Subsystem_SubsysRanBC;
+    systemRan[40] = &rtAlwaysEnabled;
+    systemRan[41] = (sysRanDType *)&vipldws2_DW.DrawPolygon_SubsysRanBC;
+    systemRan[42] = (sysRanDType *)&vipldws2_DW.Subsystem_SubsysRanBC;
     rteiSetModelMappingInfoPtr(vipldws2_M->extModeInfo,
       &vipldws2_M->SpecialInfo.mappingInfo);
     rteiSetChecksumsPtr(vipldws2_M->extModeInfo, vipldws2_M->Sizes.checksums);
@@ -10577,11 +10589,11 @@ void vipldws2_initialize(void)
       vipldws2_B.ColorSpaceConversion[i] = 0.0F;
     }
 
-    for (i = 0; i < 48000; i++) {
+    for (i = 0; i < 38400; i++) {
       vipldws2_B.Clipimage[i] = 0.0F;
     }
 
-    for (i = 0; i < 112500; i++) {
+    for (i = 0; i < 122940; i++) {
       vipldws2_B.HoughTransform_o1[i] = 0.0F;
     }
 
@@ -10597,7 +10609,7 @@ void vipldws2_initialize(void)
       vipldws2_B.UnitDelay3[i] = 0.0F;
     }
 
-    for (i = 0; i < 86400; i++) {
+    for (i = 0; i < 115200; i++) {
       vipldws2_B.ColorSpaceConversion1[i] = 0.0F;
     }
 
@@ -10653,11 +10665,11 @@ void vipldws2_initialize(void)
       vipldws2_B.P_prd_Reshape[i] = 0.0F;
     }
 
-    for (i = 0; i < 48000; i++) {
+    for (i = 0; i < 38400; i++) {
       vipldws2_B.uDFIRFilter[i] = 0.0F;
     }
 
-    for (i = 0; i < 48000; i++) {
+    for (i = 0; i < 38400; i++) {
       vipldws2_B.Saturation[i] = 0.0F;
     }
 
@@ -10669,11 +10681,11 @@ void vipldws2_initialize(void)
       vipldws2_B.Xold[i] = 0.0F;
     }
 
-    for (i = 0; i < 112500; i++) {
+    for (i = 0; i < 122940; i++) {
       vipldws2_B.OverwriteValues[i] = 0.0F;
     }
 
-    for (i = 0; i < 112500; i++) {
+    for (i = 0; i < 122940; i++) {
       vipldws2_B.OverwriteValues1[i] = 0.0F;
     }
 
@@ -10689,7 +10701,7 @@ void vipldws2_initialize(void)
       vipldws2_B.selectrho5_m[i] = 0.0F;
     }
 
-    for (i = 0; i < 86400; i++) {
+    for (i = 0; i < 115200; i++) {
       vipldws2_B.Selector_a[i] = 0.0F;
     }
 
@@ -10993,631 +11005,689 @@ void vipldws2_initialize(void)
     vipldws2_B.HoughTransform_o2[177] = 1.51843643F;
     vipldws2_B.HoughTransform_o2[178] = 1.53588974F;
     vipldws2_B.HoughTransform_o2[179] = 1.55334306F;
-    vipldws2_B.HoughTransform_o3[0] = -312.0F;
-    vipldws2_B.HoughTransform_o3[1] = -311.0F;
-    vipldws2_B.HoughTransform_o3[2] = -310.0F;
-    vipldws2_B.HoughTransform_o3[3] = -309.0F;
-    vipldws2_B.HoughTransform_o3[4] = -308.0F;
-    vipldws2_B.HoughTransform_o3[5] = -307.0F;
-    vipldws2_B.HoughTransform_o3[6] = -306.0F;
-    vipldws2_B.HoughTransform_o3[7] = -305.0F;
-    vipldws2_B.HoughTransform_o3[8] = -304.0F;
-    vipldws2_B.HoughTransform_o3[9] = -303.0F;
-    vipldws2_B.HoughTransform_o3[10] = -302.0F;
-    vipldws2_B.HoughTransform_o3[11] = -301.0F;
-    vipldws2_B.HoughTransform_o3[12] = -300.0F;
-    vipldws2_B.HoughTransform_o3[13] = -299.0F;
-    vipldws2_B.HoughTransform_o3[14] = -298.0F;
-    vipldws2_B.HoughTransform_o3[15] = -297.0F;
-    vipldws2_B.HoughTransform_o3[16] = -296.0F;
-    vipldws2_B.HoughTransform_o3[17] = -295.0F;
-    vipldws2_B.HoughTransform_o3[18] = -294.0F;
-    vipldws2_B.HoughTransform_o3[19] = -293.0F;
-    vipldws2_B.HoughTransform_o3[20] = -292.0F;
-    vipldws2_B.HoughTransform_o3[21] = -291.0F;
-    vipldws2_B.HoughTransform_o3[22] = -290.0F;
-    vipldws2_B.HoughTransform_o3[23] = -289.0F;
-    vipldws2_B.HoughTransform_o3[24] = -288.0F;
-    vipldws2_B.HoughTransform_o3[25] = -287.0F;
-    vipldws2_B.HoughTransform_o3[26] = -286.0F;
-    vipldws2_B.HoughTransform_o3[27] = -285.0F;
-    vipldws2_B.HoughTransform_o3[28] = -284.0F;
-    vipldws2_B.HoughTransform_o3[29] = -283.0F;
-    vipldws2_B.HoughTransform_o3[30] = -282.0F;
-    vipldws2_B.HoughTransform_o3[31] = -281.0F;
-    vipldws2_B.HoughTransform_o3[32] = -280.0F;
-    vipldws2_B.HoughTransform_o3[33] = -279.0F;
-    vipldws2_B.HoughTransform_o3[34] = -278.0F;
-    vipldws2_B.HoughTransform_o3[35] = -277.0F;
-    vipldws2_B.HoughTransform_o3[36] = -276.0F;
-    vipldws2_B.HoughTransform_o3[37] = -275.0F;
-    vipldws2_B.HoughTransform_o3[38] = -274.0F;
-    vipldws2_B.HoughTransform_o3[39] = -273.0F;
-    vipldws2_B.HoughTransform_o3[40] = -272.0F;
-    vipldws2_B.HoughTransform_o3[41] = -271.0F;
-    vipldws2_B.HoughTransform_o3[42] = -270.0F;
-    vipldws2_B.HoughTransform_o3[43] = -269.0F;
-    vipldws2_B.HoughTransform_o3[44] = -268.0F;
-    vipldws2_B.HoughTransform_o3[45] = -267.0F;
-    vipldws2_B.HoughTransform_o3[46] = -266.0F;
-    vipldws2_B.HoughTransform_o3[47] = -265.0F;
-    vipldws2_B.HoughTransform_o3[48] = -264.0F;
-    vipldws2_B.HoughTransform_o3[49] = -263.0F;
-    vipldws2_B.HoughTransform_o3[50] = -262.0F;
-    vipldws2_B.HoughTransform_o3[51] = -261.0F;
-    vipldws2_B.HoughTransform_o3[52] = -260.0F;
-    vipldws2_B.HoughTransform_o3[53] = -259.0F;
-    vipldws2_B.HoughTransform_o3[54] = -258.0F;
-    vipldws2_B.HoughTransform_o3[55] = -257.0F;
-    vipldws2_B.HoughTransform_o3[56] = -256.0F;
-    vipldws2_B.HoughTransform_o3[57] = -255.0F;
-    vipldws2_B.HoughTransform_o3[58] = -254.0F;
-    vipldws2_B.HoughTransform_o3[59] = -253.0F;
-    vipldws2_B.HoughTransform_o3[60] = -252.0F;
-    vipldws2_B.HoughTransform_o3[61] = -251.0F;
-    vipldws2_B.HoughTransform_o3[62] = -250.0F;
-    vipldws2_B.HoughTransform_o3[63] = -249.0F;
-    vipldws2_B.HoughTransform_o3[64] = -248.0F;
-    vipldws2_B.HoughTransform_o3[65] = -247.0F;
-    vipldws2_B.HoughTransform_o3[66] = -246.0F;
-    vipldws2_B.HoughTransform_o3[67] = -245.0F;
-    vipldws2_B.HoughTransform_o3[68] = -244.0F;
-    vipldws2_B.HoughTransform_o3[69] = -243.0F;
-    vipldws2_B.HoughTransform_o3[70] = -242.0F;
-    vipldws2_B.HoughTransform_o3[71] = -241.0F;
-    vipldws2_B.HoughTransform_o3[72] = -240.0F;
-    vipldws2_B.HoughTransform_o3[73] = -239.0F;
-    vipldws2_B.HoughTransform_o3[74] = -238.0F;
-    vipldws2_B.HoughTransform_o3[75] = -237.0F;
-    vipldws2_B.HoughTransform_o3[76] = -236.0F;
-    vipldws2_B.HoughTransform_o3[77] = -235.0F;
-    vipldws2_B.HoughTransform_o3[78] = -234.0F;
-    vipldws2_B.HoughTransform_o3[79] = -233.0F;
-    vipldws2_B.HoughTransform_o3[80] = -232.0F;
-    vipldws2_B.HoughTransform_o3[81] = -231.0F;
-    vipldws2_B.HoughTransform_o3[82] = -230.0F;
-    vipldws2_B.HoughTransform_o3[83] = -229.0F;
-    vipldws2_B.HoughTransform_o3[84] = -228.0F;
-    vipldws2_B.HoughTransform_o3[85] = -227.0F;
-    vipldws2_B.HoughTransform_o3[86] = -226.0F;
-    vipldws2_B.HoughTransform_o3[87] = -225.0F;
-    vipldws2_B.HoughTransform_o3[88] = -224.0F;
-    vipldws2_B.HoughTransform_o3[89] = -223.0F;
-    vipldws2_B.HoughTransform_o3[90] = -222.0F;
-    vipldws2_B.HoughTransform_o3[91] = -221.0F;
-    vipldws2_B.HoughTransform_o3[92] = -220.0F;
-    vipldws2_B.HoughTransform_o3[93] = -219.0F;
-    vipldws2_B.HoughTransform_o3[94] = -218.0F;
-    vipldws2_B.HoughTransform_o3[95] = -217.0F;
-    vipldws2_B.HoughTransform_o3[96] = -216.0F;
-    vipldws2_B.HoughTransform_o3[97] = -215.0F;
-    vipldws2_B.HoughTransform_o3[98] = -214.0F;
-    vipldws2_B.HoughTransform_o3[99] = -213.0F;
-    vipldws2_B.HoughTransform_o3[100] = -212.0F;
-    vipldws2_B.HoughTransform_o3[101] = -211.0F;
-    vipldws2_B.HoughTransform_o3[102] = -210.0F;
-    vipldws2_B.HoughTransform_o3[103] = -209.0F;
-    vipldws2_B.HoughTransform_o3[104] = -208.0F;
-    vipldws2_B.HoughTransform_o3[105] = -207.0F;
-    vipldws2_B.HoughTransform_o3[106] = -206.0F;
-    vipldws2_B.HoughTransform_o3[107] = -205.0F;
-    vipldws2_B.HoughTransform_o3[108] = -204.0F;
-    vipldws2_B.HoughTransform_o3[109] = -203.0F;
-    vipldws2_B.HoughTransform_o3[110] = -202.0F;
-    vipldws2_B.HoughTransform_o3[111] = -201.0F;
-    vipldws2_B.HoughTransform_o3[112] = -200.0F;
-    vipldws2_B.HoughTransform_o3[113] = -199.0F;
-    vipldws2_B.HoughTransform_o3[114] = -198.0F;
-    vipldws2_B.HoughTransform_o3[115] = -197.0F;
-    vipldws2_B.HoughTransform_o3[116] = -196.0F;
-    vipldws2_B.HoughTransform_o3[117] = -195.0F;
-    vipldws2_B.HoughTransform_o3[118] = -194.0F;
-    vipldws2_B.HoughTransform_o3[119] = -193.0F;
-    vipldws2_B.HoughTransform_o3[120] = -192.0F;
-    vipldws2_B.HoughTransform_o3[121] = -191.0F;
-    vipldws2_B.HoughTransform_o3[122] = -190.0F;
-    vipldws2_B.HoughTransform_o3[123] = -189.0F;
-    vipldws2_B.HoughTransform_o3[124] = -188.0F;
-    vipldws2_B.HoughTransform_o3[125] = -187.0F;
-    vipldws2_B.HoughTransform_o3[126] = -186.0F;
-    vipldws2_B.HoughTransform_o3[127] = -185.0F;
-    vipldws2_B.HoughTransform_o3[128] = -184.0F;
-    vipldws2_B.HoughTransform_o3[129] = -183.0F;
-    vipldws2_B.HoughTransform_o3[130] = -182.0F;
-    vipldws2_B.HoughTransform_o3[131] = -181.0F;
-    vipldws2_B.HoughTransform_o3[132] = -180.0F;
-    vipldws2_B.HoughTransform_o3[133] = -179.0F;
-    vipldws2_B.HoughTransform_o3[134] = -178.0F;
-    vipldws2_B.HoughTransform_o3[135] = -177.0F;
-    vipldws2_B.HoughTransform_o3[136] = -176.0F;
-    vipldws2_B.HoughTransform_o3[137] = -175.0F;
-    vipldws2_B.HoughTransform_o3[138] = -174.0F;
-    vipldws2_B.HoughTransform_o3[139] = -173.0F;
-    vipldws2_B.HoughTransform_o3[140] = -172.0F;
-    vipldws2_B.HoughTransform_o3[141] = -171.0F;
-    vipldws2_B.HoughTransform_o3[142] = -170.0F;
-    vipldws2_B.HoughTransform_o3[143] = -169.0F;
-    vipldws2_B.HoughTransform_o3[144] = -168.0F;
-    vipldws2_B.HoughTransform_o3[145] = -167.0F;
-    vipldws2_B.HoughTransform_o3[146] = -166.0F;
-    vipldws2_B.HoughTransform_o3[147] = -165.0F;
-    vipldws2_B.HoughTransform_o3[148] = -164.0F;
-    vipldws2_B.HoughTransform_o3[149] = -163.0F;
-    vipldws2_B.HoughTransform_o3[150] = -162.0F;
-    vipldws2_B.HoughTransform_o3[151] = -161.0F;
-    vipldws2_B.HoughTransform_o3[152] = -160.0F;
-    vipldws2_B.HoughTransform_o3[153] = -159.0F;
-    vipldws2_B.HoughTransform_o3[154] = -158.0F;
-    vipldws2_B.HoughTransform_o3[155] = -157.0F;
-    vipldws2_B.HoughTransform_o3[156] = -156.0F;
-    vipldws2_B.HoughTransform_o3[157] = -155.0F;
-    vipldws2_B.HoughTransform_o3[158] = -154.0F;
-    vipldws2_B.HoughTransform_o3[159] = -153.0F;
-    vipldws2_B.HoughTransform_o3[160] = -152.0F;
-    vipldws2_B.HoughTransform_o3[161] = -151.0F;
-    vipldws2_B.HoughTransform_o3[162] = -150.0F;
-    vipldws2_B.HoughTransform_o3[163] = -149.0F;
-    vipldws2_B.HoughTransform_o3[164] = -148.0F;
-    vipldws2_B.HoughTransform_o3[165] = -147.0F;
-    vipldws2_B.HoughTransform_o3[166] = -146.0F;
-    vipldws2_B.HoughTransform_o3[167] = -145.0F;
-    vipldws2_B.HoughTransform_o3[168] = -144.0F;
-    vipldws2_B.HoughTransform_o3[169] = -143.0F;
-    vipldws2_B.HoughTransform_o3[170] = -142.0F;
-    vipldws2_B.HoughTransform_o3[171] = -141.0F;
-    vipldws2_B.HoughTransform_o3[172] = -140.0F;
-    vipldws2_B.HoughTransform_o3[173] = -139.0F;
-    vipldws2_B.HoughTransform_o3[174] = -138.0F;
-    vipldws2_B.HoughTransform_o3[175] = -137.0F;
-    vipldws2_B.HoughTransform_o3[176] = -136.0F;
-    vipldws2_B.HoughTransform_o3[177] = -135.0F;
-    vipldws2_B.HoughTransform_o3[178] = -134.0F;
-    vipldws2_B.HoughTransform_o3[179] = -133.0F;
-    vipldws2_B.HoughTransform_o3[180] = -132.0F;
-    vipldws2_B.HoughTransform_o3[181] = -131.0F;
-    vipldws2_B.HoughTransform_o3[182] = -130.0F;
-    vipldws2_B.HoughTransform_o3[183] = -129.0F;
-    vipldws2_B.HoughTransform_o3[184] = -128.0F;
-    vipldws2_B.HoughTransform_o3[185] = -127.0F;
-    vipldws2_B.HoughTransform_o3[186] = -126.0F;
-    vipldws2_B.HoughTransform_o3[187] = -125.0F;
-    vipldws2_B.HoughTransform_o3[188] = -124.0F;
-    vipldws2_B.HoughTransform_o3[189] = -123.0F;
-    vipldws2_B.HoughTransform_o3[190] = -122.0F;
-    vipldws2_B.HoughTransform_o3[191] = -121.0F;
-    vipldws2_B.HoughTransform_o3[192] = -120.0F;
-    vipldws2_B.HoughTransform_o3[193] = -119.0F;
-    vipldws2_B.HoughTransform_o3[194] = -118.0F;
-    vipldws2_B.HoughTransform_o3[195] = -117.0F;
-    vipldws2_B.HoughTransform_o3[196] = -116.0F;
-    vipldws2_B.HoughTransform_o3[197] = -115.0F;
-    vipldws2_B.HoughTransform_o3[198] = -114.0F;
-    vipldws2_B.HoughTransform_o3[199] = -113.0F;
-    vipldws2_B.HoughTransform_o3[200] = -112.0F;
-    vipldws2_B.HoughTransform_o3[201] = -111.0F;
-    vipldws2_B.HoughTransform_o3[202] = -110.0F;
-    vipldws2_B.HoughTransform_o3[203] = -109.0F;
-    vipldws2_B.HoughTransform_o3[204] = -108.0F;
-    vipldws2_B.HoughTransform_o3[205] = -107.0F;
-    vipldws2_B.HoughTransform_o3[206] = -106.0F;
-    vipldws2_B.HoughTransform_o3[207] = -105.0F;
-    vipldws2_B.HoughTransform_o3[208] = -104.0F;
-    vipldws2_B.HoughTransform_o3[209] = -103.0F;
-    vipldws2_B.HoughTransform_o3[210] = -102.0F;
-    vipldws2_B.HoughTransform_o3[211] = -101.0F;
-    vipldws2_B.HoughTransform_o3[212] = -100.0F;
-    vipldws2_B.HoughTransform_o3[213] = -99.0F;
-    vipldws2_B.HoughTransform_o3[214] = -98.0F;
-    vipldws2_B.HoughTransform_o3[215] = -97.0F;
-    vipldws2_B.HoughTransform_o3[216] = -96.0F;
-    vipldws2_B.HoughTransform_o3[217] = -95.0F;
-    vipldws2_B.HoughTransform_o3[218] = -94.0F;
-    vipldws2_B.HoughTransform_o3[219] = -93.0F;
-    vipldws2_B.HoughTransform_o3[220] = -92.0F;
-    vipldws2_B.HoughTransform_o3[221] = -91.0F;
-    vipldws2_B.HoughTransform_o3[222] = -90.0F;
-    vipldws2_B.HoughTransform_o3[223] = -89.0F;
-    vipldws2_B.HoughTransform_o3[224] = -88.0F;
-    vipldws2_B.HoughTransform_o3[225] = -87.0F;
-    vipldws2_B.HoughTransform_o3[226] = -86.0F;
-    vipldws2_B.HoughTransform_o3[227] = -85.0F;
-    vipldws2_B.HoughTransform_o3[228] = -84.0F;
-    vipldws2_B.HoughTransform_o3[229] = -83.0F;
-    vipldws2_B.HoughTransform_o3[230] = -82.0F;
-    vipldws2_B.HoughTransform_o3[231] = -81.0F;
-    vipldws2_B.HoughTransform_o3[232] = -80.0F;
-    vipldws2_B.HoughTransform_o3[233] = -79.0F;
-    vipldws2_B.HoughTransform_o3[234] = -78.0F;
-    vipldws2_B.HoughTransform_o3[235] = -77.0F;
-    vipldws2_B.HoughTransform_o3[236] = -76.0F;
-    vipldws2_B.HoughTransform_o3[237] = -75.0F;
-    vipldws2_B.HoughTransform_o3[238] = -74.0F;
-    vipldws2_B.HoughTransform_o3[239] = -73.0F;
-    vipldws2_B.HoughTransform_o3[240] = -72.0F;
-    vipldws2_B.HoughTransform_o3[241] = -71.0F;
-    vipldws2_B.HoughTransform_o3[242] = -70.0F;
-    vipldws2_B.HoughTransform_o3[243] = -69.0F;
-    vipldws2_B.HoughTransform_o3[244] = -68.0F;
-    vipldws2_B.HoughTransform_o3[245] = -67.0F;
-    vipldws2_B.HoughTransform_o3[246] = -66.0F;
-    vipldws2_B.HoughTransform_o3[247] = -65.0F;
-    vipldws2_B.HoughTransform_o3[248] = -64.0F;
-    vipldws2_B.HoughTransform_o3[249] = -63.0F;
-    vipldws2_B.HoughTransform_o3[250] = -62.0F;
-    vipldws2_B.HoughTransform_o3[251] = -61.0F;
-    vipldws2_B.HoughTransform_o3[252] = -60.0F;
-    vipldws2_B.HoughTransform_o3[253] = -59.0F;
-    vipldws2_B.HoughTransform_o3[254] = -58.0F;
-    vipldws2_B.HoughTransform_o3[255] = -57.0F;
-    vipldws2_B.HoughTransform_o3[256] = -56.0F;
-    vipldws2_B.HoughTransform_o3[257] = -55.0F;
-    vipldws2_B.HoughTransform_o3[258] = -54.0F;
-    vipldws2_B.HoughTransform_o3[259] = -53.0F;
-    vipldws2_B.HoughTransform_o3[260] = -52.0F;
-    vipldws2_B.HoughTransform_o3[261] = -51.0F;
-    vipldws2_B.HoughTransform_o3[262] = -50.0F;
-    vipldws2_B.HoughTransform_o3[263] = -49.0F;
-    vipldws2_B.HoughTransform_o3[264] = -48.0F;
-    vipldws2_B.HoughTransform_o3[265] = -47.0F;
-    vipldws2_B.HoughTransform_o3[266] = -46.0F;
-    vipldws2_B.HoughTransform_o3[267] = -45.0F;
-    vipldws2_B.HoughTransform_o3[268] = -44.0F;
-    vipldws2_B.HoughTransform_o3[269] = -43.0F;
-    vipldws2_B.HoughTransform_o3[270] = -42.0F;
-    vipldws2_B.HoughTransform_o3[271] = -41.0F;
-    vipldws2_B.HoughTransform_o3[272] = -40.0F;
-    vipldws2_B.HoughTransform_o3[273] = -39.0F;
-    vipldws2_B.HoughTransform_o3[274] = -38.0F;
-    vipldws2_B.HoughTransform_o3[275] = -37.0F;
-    vipldws2_B.HoughTransform_o3[276] = -36.0F;
-    vipldws2_B.HoughTransform_o3[277] = -35.0F;
-    vipldws2_B.HoughTransform_o3[278] = -34.0F;
-    vipldws2_B.HoughTransform_o3[279] = -33.0F;
-    vipldws2_B.HoughTransform_o3[280] = -32.0F;
-    vipldws2_B.HoughTransform_o3[281] = -31.0F;
-    vipldws2_B.HoughTransform_o3[282] = -30.0F;
-    vipldws2_B.HoughTransform_o3[283] = -29.0F;
-    vipldws2_B.HoughTransform_o3[284] = -28.0F;
-    vipldws2_B.HoughTransform_o3[285] = -27.0F;
-    vipldws2_B.HoughTransform_o3[286] = -26.0F;
-    vipldws2_B.HoughTransform_o3[287] = -25.0F;
-    vipldws2_B.HoughTransform_o3[288] = -24.0F;
-    vipldws2_B.HoughTransform_o3[289] = -23.0F;
-    vipldws2_B.HoughTransform_o3[290] = -22.0F;
-    vipldws2_B.HoughTransform_o3[291] = -21.0F;
-    vipldws2_B.HoughTransform_o3[292] = -20.0F;
-    vipldws2_B.HoughTransform_o3[293] = -19.0F;
-    vipldws2_B.HoughTransform_o3[294] = -18.0F;
-    vipldws2_B.HoughTransform_o3[295] = -17.0F;
-    vipldws2_B.HoughTransform_o3[296] = -16.0F;
-    vipldws2_B.HoughTransform_o3[297] = -15.0F;
-    vipldws2_B.HoughTransform_o3[298] = -14.0F;
-    vipldws2_B.HoughTransform_o3[299] = -13.0F;
-    vipldws2_B.HoughTransform_o3[300] = -12.0F;
-    vipldws2_B.HoughTransform_o3[301] = -11.0F;
-    vipldws2_B.HoughTransform_o3[302] = -10.0F;
-    vipldws2_B.HoughTransform_o3[303] = -9.0F;
-    vipldws2_B.HoughTransform_o3[304] = -8.0F;
-    vipldws2_B.HoughTransform_o3[305] = -7.0F;
-    vipldws2_B.HoughTransform_o3[306] = -6.0F;
-    vipldws2_B.HoughTransform_o3[307] = -5.0F;
-    vipldws2_B.HoughTransform_o3[308] = -4.0F;
-    vipldws2_B.HoughTransform_o3[309] = -3.0F;
-    vipldws2_B.HoughTransform_o3[310] = -2.0F;
-    vipldws2_B.HoughTransform_o3[311] = -1.0F;
-    vipldws2_B.HoughTransform_o3[312] = 0.0F;
-    vipldws2_B.HoughTransform_o3[313] = 1.0F;
-    vipldws2_B.HoughTransform_o3[314] = 2.0F;
-    vipldws2_B.HoughTransform_o3[315] = 3.0F;
-    vipldws2_B.HoughTransform_o3[316] = 4.0F;
-    vipldws2_B.HoughTransform_o3[317] = 5.0F;
-    vipldws2_B.HoughTransform_o3[318] = 6.0F;
-    vipldws2_B.HoughTransform_o3[319] = 7.0F;
-    vipldws2_B.HoughTransform_o3[320] = 8.0F;
-    vipldws2_B.HoughTransform_o3[321] = 9.0F;
-    vipldws2_B.HoughTransform_o3[322] = 10.0F;
-    vipldws2_B.HoughTransform_o3[323] = 11.0F;
-    vipldws2_B.HoughTransform_o3[324] = 12.0F;
-    vipldws2_B.HoughTransform_o3[325] = 13.0F;
-    vipldws2_B.HoughTransform_o3[326] = 14.0F;
-    vipldws2_B.HoughTransform_o3[327] = 15.0F;
-    vipldws2_B.HoughTransform_o3[328] = 16.0F;
-    vipldws2_B.HoughTransform_o3[329] = 17.0F;
-    vipldws2_B.HoughTransform_o3[330] = 18.0F;
-    vipldws2_B.HoughTransform_o3[331] = 19.0F;
-    vipldws2_B.HoughTransform_o3[332] = 20.0F;
-    vipldws2_B.HoughTransform_o3[333] = 21.0F;
-    vipldws2_B.HoughTransform_o3[334] = 22.0F;
-    vipldws2_B.HoughTransform_o3[335] = 23.0F;
-    vipldws2_B.HoughTransform_o3[336] = 24.0F;
-    vipldws2_B.HoughTransform_o3[337] = 25.0F;
-    vipldws2_B.HoughTransform_o3[338] = 26.0F;
-    vipldws2_B.HoughTransform_o3[339] = 27.0F;
-    vipldws2_B.HoughTransform_o3[340] = 28.0F;
-    vipldws2_B.HoughTransform_o3[341] = 29.0F;
-    vipldws2_B.HoughTransform_o3[342] = 30.0F;
-    vipldws2_B.HoughTransform_o3[343] = 31.0F;
-    vipldws2_B.HoughTransform_o3[344] = 32.0F;
-    vipldws2_B.HoughTransform_o3[345] = 33.0F;
-    vipldws2_B.HoughTransform_o3[346] = 34.0F;
-    vipldws2_B.HoughTransform_o3[347] = 35.0F;
-    vipldws2_B.HoughTransform_o3[348] = 36.0F;
-    vipldws2_B.HoughTransform_o3[349] = 37.0F;
-    vipldws2_B.HoughTransform_o3[350] = 38.0F;
-    vipldws2_B.HoughTransform_o3[351] = 39.0F;
-    vipldws2_B.HoughTransform_o3[352] = 40.0F;
-    vipldws2_B.HoughTransform_o3[353] = 41.0F;
-    vipldws2_B.HoughTransform_o3[354] = 42.0F;
-    vipldws2_B.HoughTransform_o3[355] = 43.0F;
-    vipldws2_B.HoughTransform_o3[356] = 44.0F;
-    vipldws2_B.HoughTransform_o3[357] = 45.0F;
-    vipldws2_B.HoughTransform_o3[358] = 46.0F;
-    vipldws2_B.HoughTransform_o3[359] = 47.0F;
-    vipldws2_B.HoughTransform_o3[360] = 48.0F;
-    vipldws2_B.HoughTransform_o3[361] = 49.0F;
-    vipldws2_B.HoughTransform_o3[362] = 50.0F;
-    vipldws2_B.HoughTransform_o3[363] = 51.0F;
-    vipldws2_B.HoughTransform_o3[364] = 52.0F;
-    vipldws2_B.HoughTransform_o3[365] = 53.0F;
-    vipldws2_B.HoughTransform_o3[366] = 54.0F;
-    vipldws2_B.HoughTransform_o3[367] = 55.0F;
-    vipldws2_B.HoughTransform_o3[368] = 56.0F;
-    vipldws2_B.HoughTransform_o3[369] = 57.0F;
-    vipldws2_B.HoughTransform_o3[370] = 58.0F;
-    vipldws2_B.HoughTransform_o3[371] = 59.0F;
-    vipldws2_B.HoughTransform_o3[372] = 60.0F;
-    vipldws2_B.HoughTransform_o3[373] = 61.0F;
-    vipldws2_B.HoughTransform_o3[374] = 62.0F;
-    vipldws2_B.HoughTransform_o3[375] = 63.0F;
-    vipldws2_B.HoughTransform_o3[376] = 64.0F;
-    vipldws2_B.HoughTransform_o3[377] = 65.0F;
-    vipldws2_B.HoughTransform_o3[378] = 66.0F;
-    vipldws2_B.HoughTransform_o3[379] = 67.0F;
-    vipldws2_B.HoughTransform_o3[380] = 68.0F;
-    vipldws2_B.HoughTransform_o3[381] = 69.0F;
-    vipldws2_B.HoughTransform_o3[382] = 70.0F;
-    vipldws2_B.HoughTransform_o3[383] = 71.0F;
-    vipldws2_B.HoughTransform_o3[384] = 72.0F;
-    vipldws2_B.HoughTransform_o3[385] = 73.0F;
-    vipldws2_B.HoughTransform_o3[386] = 74.0F;
-    vipldws2_B.HoughTransform_o3[387] = 75.0F;
-    vipldws2_B.HoughTransform_o3[388] = 76.0F;
-    vipldws2_B.HoughTransform_o3[389] = 77.0F;
-    vipldws2_B.HoughTransform_o3[390] = 78.0F;
-    vipldws2_B.HoughTransform_o3[391] = 79.0F;
-    vipldws2_B.HoughTransform_o3[392] = 80.0F;
-    vipldws2_B.HoughTransform_o3[393] = 81.0F;
-    vipldws2_B.HoughTransform_o3[394] = 82.0F;
-    vipldws2_B.HoughTransform_o3[395] = 83.0F;
-    vipldws2_B.HoughTransform_o3[396] = 84.0F;
-    vipldws2_B.HoughTransform_o3[397] = 85.0F;
-    vipldws2_B.HoughTransform_o3[398] = 86.0F;
-    vipldws2_B.HoughTransform_o3[399] = 87.0F;
-    vipldws2_B.HoughTransform_o3[400] = 88.0F;
-    vipldws2_B.HoughTransform_o3[401] = 89.0F;
-    vipldws2_B.HoughTransform_o3[402] = 90.0F;
-    vipldws2_B.HoughTransform_o3[403] = 91.0F;
-    vipldws2_B.HoughTransform_o3[404] = 92.0F;
-    vipldws2_B.HoughTransform_o3[405] = 93.0F;
-    vipldws2_B.HoughTransform_o3[406] = 94.0F;
-    vipldws2_B.HoughTransform_o3[407] = 95.0F;
-    vipldws2_B.HoughTransform_o3[408] = 96.0F;
-    vipldws2_B.HoughTransform_o3[409] = 97.0F;
-    vipldws2_B.HoughTransform_o3[410] = 98.0F;
-    vipldws2_B.HoughTransform_o3[411] = 99.0F;
-    vipldws2_B.HoughTransform_o3[412] = 100.0F;
-    vipldws2_B.HoughTransform_o3[413] = 101.0F;
-    vipldws2_B.HoughTransform_o3[414] = 102.0F;
-    vipldws2_B.HoughTransform_o3[415] = 103.0F;
-    vipldws2_B.HoughTransform_o3[416] = 104.0F;
-    vipldws2_B.HoughTransform_o3[417] = 105.0F;
-    vipldws2_B.HoughTransform_o3[418] = 106.0F;
-    vipldws2_B.HoughTransform_o3[419] = 107.0F;
-    vipldws2_B.HoughTransform_o3[420] = 108.0F;
-    vipldws2_B.HoughTransform_o3[421] = 109.0F;
-    vipldws2_B.HoughTransform_o3[422] = 110.0F;
-    vipldws2_B.HoughTransform_o3[423] = 111.0F;
-    vipldws2_B.HoughTransform_o3[424] = 112.0F;
-    vipldws2_B.HoughTransform_o3[425] = 113.0F;
-    vipldws2_B.HoughTransform_o3[426] = 114.0F;
-    vipldws2_B.HoughTransform_o3[427] = 115.0F;
-    vipldws2_B.HoughTransform_o3[428] = 116.0F;
-    vipldws2_B.HoughTransform_o3[429] = 117.0F;
-    vipldws2_B.HoughTransform_o3[430] = 118.0F;
-    vipldws2_B.HoughTransform_o3[431] = 119.0F;
-    vipldws2_B.HoughTransform_o3[432] = 120.0F;
-    vipldws2_B.HoughTransform_o3[433] = 121.0F;
-    vipldws2_B.HoughTransform_o3[434] = 122.0F;
-    vipldws2_B.HoughTransform_o3[435] = 123.0F;
-    vipldws2_B.HoughTransform_o3[436] = 124.0F;
-    vipldws2_B.HoughTransform_o3[437] = 125.0F;
-    vipldws2_B.HoughTransform_o3[438] = 126.0F;
-    vipldws2_B.HoughTransform_o3[439] = 127.0F;
-    vipldws2_B.HoughTransform_o3[440] = 128.0F;
-    vipldws2_B.HoughTransform_o3[441] = 129.0F;
-    vipldws2_B.HoughTransform_o3[442] = 130.0F;
-    vipldws2_B.HoughTransform_o3[443] = 131.0F;
-    vipldws2_B.HoughTransform_o3[444] = 132.0F;
-    vipldws2_B.HoughTransform_o3[445] = 133.0F;
-    vipldws2_B.HoughTransform_o3[446] = 134.0F;
-    vipldws2_B.HoughTransform_o3[447] = 135.0F;
-    vipldws2_B.HoughTransform_o3[448] = 136.0F;
-    vipldws2_B.HoughTransform_o3[449] = 137.0F;
-    vipldws2_B.HoughTransform_o3[450] = 138.0F;
-    vipldws2_B.HoughTransform_o3[451] = 139.0F;
-    vipldws2_B.HoughTransform_o3[452] = 140.0F;
-    vipldws2_B.HoughTransform_o3[453] = 141.0F;
-    vipldws2_B.HoughTransform_o3[454] = 142.0F;
-    vipldws2_B.HoughTransform_o3[455] = 143.0F;
-    vipldws2_B.HoughTransform_o3[456] = 144.0F;
-    vipldws2_B.HoughTransform_o3[457] = 145.0F;
-    vipldws2_B.HoughTransform_o3[458] = 146.0F;
-    vipldws2_B.HoughTransform_o3[459] = 147.0F;
-    vipldws2_B.HoughTransform_o3[460] = 148.0F;
-    vipldws2_B.HoughTransform_o3[461] = 149.0F;
-    vipldws2_B.HoughTransform_o3[462] = 150.0F;
-    vipldws2_B.HoughTransform_o3[463] = 151.0F;
-    vipldws2_B.HoughTransform_o3[464] = 152.0F;
-    vipldws2_B.HoughTransform_o3[465] = 153.0F;
-    vipldws2_B.HoughTransform_o3[466] = 154.0F;
-    vipldws2_B.HoughTransform_o3[467] = 155.0F;
-    vipldws2_B.HoughTransform_o3[468] = 156.0F;
-    vipldws2_B.HoughTransform_o3[469] = 157.0F;
-    vipldws2_B.HoughTransform_o3[470] = 158.0F;
-    vipldws2_B.HoughTransform_o3[471] = 159.0F;
-    vipldws2_B.HoughTransform_o3[472] = 160.0F;
-    vipldws2_B.HoughTransform_o3[473] = 161.0F;
-    vipldws2_B.HoughTransform_o3[474] = 162.0F;
-    vipldws2_B.HoughTransform_o3[475] = 163.0F;
-    vipldws2_B.HoughTransform_o3[476] = 164.0F;
-    vipldws2_B.HoughTransform_o3[477] = 165.0F;
-    vipldws2_B.HoughTransform_o3[478] = 166.0F;
-    vipldws2_B.HoughTransform_o3[479] = 167.0F;
-    vipldws2_B.HoughTransform_o3[480] = 168.0F;
-    vipldws2_B.HoughTransform_o3[481] = 169.0F;
-    vipldws2_B.HoughTransform_o3[482] = 170.0F;
-    vipldws2_B.HoughTransform_o3[483] = 171.0F;
-    vipldws2_B.HoughTransform_o3[484] = 172.0F;
-    vipldws2_B.HoughTransform_o3[485] = 173.0F;
-    vipldws2_B.HoughTransform_o3[486] = 174.0F;
-    vipldws2_B.HoughTransform_o3[487] = 175.0F;
-    vipldws2_B.HoughTransform_o3[488] = 176.0F;
-    vipldws2_B.HoughTransform_o3[489] = 177.0F;
-    vipldws2_B.HoughTransform_o3[490] = 178.0F;
-    vipldws2_B.HoughTransform_o3[491] = 179.0F;
-    vipldws2_B.HoughTransform_o3[492] = 180.0F;
-    vipldws2_B.HoughTransform_o3[493] = 181.0F;
-    vipldws2_B.HoughTransform_o3[494] = 182.0F;
-    vipldws2_B.HoughTransform_o3[495] = 183.0F;
-    vipldws2_B.HoughTransform_o3[496] = 184.0F;
-    vipldws2_B.HoughTransform_o3[497] = 185.0F;
-    vipldws2_B.HoughTransform_o3[498] = 186.0F;
-    vipldws2_B.HoughTransform_o3[499] = 187.0F;
-    vipldws2_B.HoughTransform_o3[500] = 188.0F;
-    vipldws2_B.HoughTransform_o3[501] = 189.0F;
-    vipldws2_B.HoughTransform_o3[502] = 190.0F;
-    vipldws2_B.HoughTransform_o3[503] = 191.0F;
-    vipldws2_B.HoughTransform_o3[504] = 192.0F;
-    vipldws2_B.HoughTransform_o3[505] = 193.0F;
-    vipldws2_B.HoughTransform_o3[506] = 194.0F;
-    vipldws2_B.HoughTransform_o3[507] = 195.0F;
-    vipldws2_B.HoughTransform_o3[508] = 196.0F;
-    vipldws2_B.HoughTransform_o3[509] = 197.0F;
-    vipldws2_B.HoughTransform_o3[510] = 198.0F;
-    vipldws2_B.HoughTransform_o3[511] = 199.0F;
-    vipldws2_B.HoughTransform_o3[512] = 200.0F;
-    vipldws2_B.HoughTransform_o3[513] = 201.0F;
-    vipldws2_B.HoughTransform_o3[514] = 202.0F;
-    vipldws2_B.HoughTransform_o3[515] = 203.0F;
-    vipldws2_B.HoughTransform_o3[516] = 204.0F;
-    vipldws2_B.HoughTransform_o3[517] = 205.0F;
-    vipldws2_B.HoughTransform_o3[518] = 206.0F;
-    vipldws2_B.HoughTransform_o3[519] = 207.0F;
-    vipldws2_B.HoughTransform_o3[520] = 208.0F;
-    vipldws2_B.HoughTransform_o3[521] = 209.0F;
-    vipldws2_B.HoughTransform_o3[522] = 210.0F;
-    vipldws2_B.HoughTransform_o3[523] = 211.0F;
-    vipldws2_B.HoughTransform_o3[524] = 212.0F;
-    vipldws2_B.HoughTransform_o3[525] = 213.0F;
-    vipldws2_B.HoughTransform_o3[526] = 214.0F;
-    vipldws2_B.HoughTransform_o3[527] = 215.0F;
-    vipldws2_B.HoughTransform_o3[528] = 216.0F;
-    vipldws2_B.HoughTransform_o3[529] = 217.0F;
-    vipldws2_B.HoughTransform_o3[530] = 218.0F;
-    vipldws2_B.HoughTransform_o3[531] = 219.0F;
-    vipldws2_B.HoughTransform_o3[532] = 220.0F;
-    vipldws2_B.HoughTransform_o3[533] = 221.0F;
-    vipldws2_B.HoughTransform_o3[534] = 222.0F;
-    vipldws2_B.HoughTransform_o3[535] = 223.0F;
-    vipldws2_B.HoughTransform_o3[536] = 224.0F;
-    vipldws2_B.HoughTransform_o3[537] = 225.0F;
-    vipldws2_B.HoughTransform_o3[538] = 226.0F;
-    vipldws2_B.HoughTransform_o3[539] = 227.0F;
-    vipldws2_B.HoughTransform_o3[540] = 228.0F;
-    vipldws2_B.HoughTransform_o3[541] = 229.0F;
-    vipldws2_B.HoughTransform_o3[542] = 230.0F;
-    vipldws2_B.HoughTransform_o3[543] = 231.0F;
-    vipldws2_B.HoughTransform_o3[544] = 232.0F;
-    vipldws2_B.HoughTransform_o3[545] = 233.0F;
-    vipldws2_B.HoughTransform_o3[546] = 234.0F;
-    vipldws2_B.HoughTransform_o3[547] = 235.0F;
-    vipldws2_B.HoughTransform_o3[548] = 236.0F;
-    vipldws2_B.HoughTransform_o3[549] = 237.0F;
-    vipldws2_B.HoughTransform_o3[550] = 238.0F;
-    vipldws2_B.HoughTransform_o3[551] = 239.0F;
-    vipldws2_B.HoughTransform_o3[552] = 240.0F;
-    vipldws2_B.HoughTransform_o3[553] = 241.0F;
-    vipldws2_B.HoughTransform_o3[554] = 242.0F;
-    vipldws2_B.HoughTransform_o3[555] = 243.0F;
-    vipldws2_B.HoughTransform_o3[556] = 244.0F;
-    vipldws2_B.HoughTransform_o3[557] = 245.0F;
-    vipldws2_B.HoughTransform_o3[558] = 246.0F;
-    vipldws2_B.HoughTransform_o3[559] = 247.0F;
-    vipldws2_B.HoughTransform_o3[560] = 248.0F;
-    vipldws2_B.HoughTransform_o3[561] = 249.0F;
-    vipldws2_B.HoughTransform_o3[562] = 250.0F;
-    vipldws2_B.HoughTransform_o3[563] = 251.0F;
-    vipldws2_B.HoughTransform_o3[564] = 252.0F;
-    vipldws2_B.HoughTransform_o3[565] = 253.0F;
-    vipldws2_B.HoughTransform_o3[566] = 254.0F;
-    vipldws2_B.HoughTransform_o3[567] = 255.0F;
-    vipldws2_B.HoughTransform_o3[568] = 256.0F;
-    vipldws2_B.HoughTransform_o3[569] = 257.0F;
-    vipldws2_B.HoughTransform_o3[570] = 258.0F;
-    vipldws2_B.HoughTransform_o3[571] = 259.0F;
-    vipldws2_B.HoughTransform_o3[572] = 260.0F;
-    vipldws2_B.HoughTransform_o3[573] = 261.0F;
-    vipldws2_B.HoughTransform_o3[574] = 262.0F;
-    vipldws2_B.HoughTransform_o3[575] = 263.0F;
-    vipldws2_B.HoughTransform_o3[576] = 264.0F;
-    vipldws2_B.HoughTransform_o3[577] = 265.0F;
-    vipldws2_B.HoughTransform_o3[578] = 266.0F;
-    vipldws2_B.HoughTransform_o3[579] = 267.0F;
-    vipldws2_B.HoughTransform_o3[580] = 268.0F;
-    vipldws2_B.HoughTransform_o3[581] = 269.0F;
-    vipldws2_B.HoughTransform_o3[582] = 270.0F;
-    vipldws2_B.HoughTransform_o3[583] = 271.0F;
-    vipldws2_B.HoughTransform_o3[584] = 272.0F;
-    vipldws2_B.HoughTransform_o3[585] = 273.0F;
-    vipldws2_B.HoughTransform_o3[586] = 274.0F;
-    vipldws2_B.HoughTransform_o3[587] = 275.0F;
-    vipldws2_B.HoughTransform_o3[588] = 276.0F;
-    vipldws2_B.HoughTransform_o3[589] = 277.0F;
-    vipldws2_B.HoughTransform_o3[590] = 278.0F;
-    vipldws2_B.HoughTransform_o3[591] = 279.0F;
-    vipldws2_B.HoughTransform_o3[592] = 280.0F;
-    vipldws2_B.HoughTransform_o3[593] = 281.0F;
-    vipldws2_B.HoughTransform_o3[594] = 282.0F;
-    vipldws2_B.HoughTransform_o3[595] = 283.0F;
-    vipldws2_B.HoughTransform_o3[596] = 284.0F;
-    vipldws2_B.HoughTransform_o3[597] = 285.0F;
-    vipldws2_B.HoughTransform_o3[598] = 286.0F;
-    vipldws2_B.HoughTransform_o3[599] = 287.0F;
-    vipldws2_B.HoughTransform_o3[600] = 288.0F;
-    vipldws2_B.HoughTransform_o3[601] = 289.0F;
-    vipldws2_B.HoughTransform_o3[602] = 290.0F;
-    vipldws2_B.HoughTransform_o3[603] = 291.0F;
-    vipldws2_B.HoughTransform_o3[604] = 292.0F;
-    vipldws2_B.HoughTransform_o3[605] = 293.0F;
-    vipldws2_B.HoughTransform_o3[606] = 294.0F;
-    vipldws2_B.HoughTransform_o3[607] = 295.0F;
-    vipldws2_B.HoughTransform_o3[608] = 296.0F;
-    vipldws2_B.HoughTransform_o3[609] = 297.0F;
-    vipldws2_B.HoughTransform_o3[610] = 298.0F;
-    vipldws2_B.HoughTransform_o3[611] = 299.0F;
-    vipldws2_B.HoughTransform_o3[612] = 300.0F;
-    vipldws2_B.HoughTransform_o3[613] = 301.0F;
-    vipldws2_B.HoughTransform_o3[614] = 302.0F;
-    vipldws2_B.HoughTransform_o3[615] = 303.0F;
-    vipldws2_B.HoughTransform_o3[616] = 304.0F;
-    vipldws2_B.HoughTransform_o3[617] = 305.0F;
-    vipldws2_B.HoughTransform_o3[618] = 306.0F;
-    vipldws2_B.HoughTransform_o3[619] = 307.0F;
-    vipldws2_B.HoughTransform_o3[620] = 308.0F;
-    vipldws2_B.HoughTransform_o3[621] = 309.0F;
-    vipldws2_B.HoughTransform_o3[622] = 310.0F;
-    vipldws2_B.HoughTransform_o3[623] = 311.0F;
-    vipldws2_B.HoughTransform_o3[624] = 312.0F;
+    vipldws2_B.HoughTransform_o3[0] = -341.0F;
+    vipldws2_B.HoughTransform_o3[1] = -340.0F;
+    vipldws2_B.HoughTransform_o3[2] = -339.0F;
+    vipldws2_B.HoughTransform_o3[3] = -338.0F;
+    vipldws2_B.HoughTransform_o3[4] = -337.0F;
+    vipldws2_B.HoughTransform_o3[5] = -336.0F;
+    vipldws2_B.HoughTransform_o3[6] = -335.0F;
+    vipldws2_B.HoughTransform_o3[7] = -334.0F;
+    vipldws2_B.HoughTransform_o3[8] = -333.0F;
+    vipldws2_B.HoughTransform_o3[9] = -332.0F;
+    vipldws2_B.HoughTransform_o3[10] = -331.0F;
+    vipldws2_B.HoughTransform_o3[11] = -330.0F;
+    vipldws2_B.HoughTransform_o3[12] = -329.0F;
+    vipldws2_B.HoughTransform_o3[13] = -328.0F;
+    vipldws2_B.HoughTransform_o3[14] = -327.0F;
+    vipldws2_B.HoughTransform_o3[15] = -326.0F;
+    vipldws2_B.HoughTransform_o3[16] = -325.0F;
+    vipldws2_B.HoughTransform_o3[17] = -324.0F;
+    vipldws2_B.HoughTransform_o3[18] = -323.0F;
+    vipldws2_B.HoughTransform_o3[19] = -322.0F;
+    vipldws2_B.HoughTransform_o3[20] = -321.0F;
+    vipldws2_B.HoughTransform_o3[21] = -320.0F;
+    vipldws2_B.HoughTransform_o3[22] = -319.0F;
+    vipldws2_B.HoughTransform_o3[23] = -318.0F;
+    vipldws2_B.HoughTransform_o3[24] = -317.0F;
+    vipldws2_B.HoughTransform_o3[25] = -316.0F;
+    vipldws2_B.HoughTransform_o3[26] = -315.0F;
+    vipldws2_B.HoughTransform_o3[27] = -314.0F;
+    vipldws2_B.HoughTransform_o3[28] = -313.0F;
+    vipldws2_B.HoughTransform_o3[29] = -312.0F;
+    vipldws2_B.HoughTransform_o3[30] = -311.0F;
+    vipldws2_B.HoughTransform_o3[31] = -310.0F;
+    vipldws2_B.HoughTransform_o3[32] = -309.0F;
+    vipldws2_B.HoughTransform_o3[33] = -308.0F;
+    vipldws2_B.HoughTransform_o3[34] = -307.0F;
+    vipldws2_B.HoughTransform_o3[35] = -306.0F;
+    vipldws2_B.HoughTransform_o3[36] = -305.0F;
+    vipldws2_B.HoughTransform_o3[37] = -304.0F;
+    vipldws2_B.HoughTransform_o3[38] = -303.0F;
+    vipldws2_B.HoughTransform_o3[39] = -302.0F;
+    vipldws2_B.HoughTransform_o3[40] = -301.0F;
+    vipldws2_B.HoughTransform_o3[41] = -300.0F;
+    vipldws2_B.HoughTransform_o3[42] = -299.0F;
+    vipldws2_B.HoughTransform_o3[43] = -298.0F;
+    vipldws2_B.HoughTransform_o3[44] = -297.0F;
+    vipldws2_B.HoughTransform_o3[45] = -296.0F;
+    vipldws2_B.HoughTransform_o3[46] = -295.0F;
+    vipldws2_B.HoughTransform_o3[47] = -294.0F;
+    vipldws2_B.HoughTransform_o3[48] = -293.0F;
+    vipldws2_B.HoughTransform_o3[49] = -292.0F;
+    vipldws2_B.HoughTransform_o3[50] = -291.0F;
+    vipldws2_B.HoughTransform_o3[51] = -290.0F;
+    vipldws2_B.HoughTransform_o3[52] = -289.0F;
+    vipldws2_B.HoughTransform_o3[53] = -288.0F;
+    vipldws2_B.HoughTransform_o3[54] = -287.0F;
+    vipldws2_B.HoughTransform_o3[55] = -286.0F;
+    vipldws2_B.HoughTransform_o3[56] = -285.0F;
+    vipldws2_B.HoughTransform_o3[57] = -284.0F;
+    vipldws2_B.HoughTransform_o3[58] = -283.0F;
+    vipldws2_B.HoughTransform_o3[59] = -282.0F;
+    vipldws2_B.HoughTransform_o3[60] = -281.0F;
+    vipldws2_B.HoughTransform_o3[61] = -280.0F;
+    vipldws2_B.HoughTransform_o3[62] = -279.0F;
+    vipldws2_B.HoughTransform_o3[63] = -278.0F;
+    vipldws2_B.HoughTransform_o3[64] = -277.0F;
+    vipldws2_B.HoughTransform_o3[65] = -276.0F;
+    vipldws2_B.HoughTransform_o3[66] = -275.0F;
+    vipldws2_B.HoughTransform_o3[67] = -274.0F;
+    vipldws2_B.HoughTransform_o3[68] = -273.0F;
+    vipldws2_B.HoughTransform_o3[69] = -272.0F;
+    vipldws2_B.HoughTransform_o3[70] = -271.0F;
+    vipldws2_B.HoughTransform_o3[71] = -270.0F;
+    vipldws2_B.HoughTransform_o3[72] = -269.0F;
+    vipldws2_B.HoughTransform_o3[73] = -268.0F;
+    vipldws2_B.HoughTransform_o3[74] = -267.0F;
+    vipldws2_B.HoughTransform_o3[75] = -266.0F;
+    vipldws2_B.HoughTransform_o3[76] = -265.0F;
+    vipldws2_B.HoughTransform_o3[77] = -264.0F;
+    vipldws2_B.HoughTransform_o3[78] = -263.0F;
+    vipldws2_B.HoughTransform_o3[79] = -262.0F;
+    vipldws2_B.HoughTransform_o3[80] = -261.0F;
+    vipldws2_B.HoughTransform_o3[81] = -260.0F;
+    vipldws2_B.HoughTransform_o3[82] = -259.0F;
+    vipldws2_B.HoughTransform_o3[83] = -258.0F;
+    vipldws2_B.HoughTransform_o3[84] = -257.0F;
+    vipldws2_B.HoughTransform_o3[85] = -256.0F;
+    vipldws2_B.HoughTransform_o3[86] = -255.0F;
+    vipldws2_B.HoughTransform_o3[87] = -254.0F;
+    vipldws2_B.HoughTransform_o3[88] = -253.0F;
+    vipldws2_B.HoughTransform_o3[89] = -252.0F;
+    vipldws2_B.HoughTransform_o3[90] = -251.0F;
+    vipldws2_B.HoughTransform_o3[91] = -250.0F;
+    vipldws2_B.HoughTransform_o3[92] = -249.0F;
+    vipldws2_B.HoughTransform_o3[93] = -248.0F;
+    vipldws2_B.HoughTransform_o3[94] = -247.0F;
+    vipldws2_B.HoughTransform_o3[95] = -246.0F;
+    vipldws2_B.HoughTransform_o3[96] = -245.0F;
+    vipldws2_B.HoughTransform_o3[97] = -244.0F;
+    vipldws2_B.HoughTransform_o3[98] = -243.0F;
+    vipldws2_B.HoughTransform_o3[99] = -242.0F;
+    vipldws2_B.HoughTransform_o3[100] = -241.0F;
+    vipldws2_B.HoughTransform_o3[101] = -240.0F;
+    vipldws2_B.HoughTransform_o3[102] = -239.0F;
+    vipldws2_B.HoughTransform_o3[103] = -238.0F;
+    vipldws2_B.HoughTransform_o3[104] = -237.0F;
+    vipldws2_B.HoughTransform_o3[105] = -236.0F;
+    vipldws2_B.HoughTransform_o3[106] = -235.0F;
+    vipldws2_B.HoughTransform_o3[107] = -234.0F;
+    vipldws2_B.HoughTransform_o3[108] = -233.0F;
+    vipldws2_B.HoughTransform_o3[109] = -232.0F;
+    vipldws2_B.HoughTransform_o3[110] = -231.0F;
+    vipldws2_B.HoughTransform_o3[111] = -230.0F;
+    vipldws2_B.HoughTransform_o3[112] = -229.0F;
+    vipldws2_B.HoughTransform_o3[113] = -228.0F;
+    vipldws2_B.HoughTransform_o3[114] = -227.0F;
+    vipldws2_B.HoughTransform_o3[115] = -226.0F;
+    vipldws2_B.HoughTransform_o3[116] = -225.0F;
+    vipldws2_B.HoughTransform_o3[117] = -224.0F;
+    vipldws2_B.HoughTransform_o3[118] = -223.0F;
+    vipldws2_B.HoughTransform_o3[119] = -222.0F;
+    vipldws2_B.HoughTransform_o3[120] = -221.0F;
+    vipldws2_B.HoughTransform_o3[121] = -220.0F;
+    vipldws2_B.HoughTransform_o3[122] = -219.0F;
+    vipldws2_B.HoughTransform_o3[123] = -218.0F;
+    vipldws2_B.HoughTransform_o3[124] = -217.0F;
+    vipldws2_B.HoughTransform_o3[125] = -216.0F;
+    vipldws2_B.HoughTransform_o3[126] = -215.0F;
+    vipldws2_B.HoughTransform_o3[127] = -214.0F;
+    vipldws2_B.HoughTransform_o3[128] = -213.0F;
+    vipldws2_B.HoughTransform_o3[129] = -212.0F;
+    vipldws2_B.HoughTransform_o3[130] = -211.0F;
+    vipldws2_B.HoughTransform_o3[131] = -210.0F;
+    vipldws2_B.HoughTransform_o3[132] = -209.0F;
+    vipldws2_B.HoughTransform_o3[133] = -208.0F;
+    vipldws2_B.HoughTransform_o3[134] = -207.0F;
+    vipldws2_B.HoughTransform_o3[135] = -206.0F;
+    vipldws2_B.HoughTransform_o3[136] = -205.0F;
+    vipldws2_B.HoughTransform_o3[137] = -204.0F;
+    vipldws2_B.HoughTransform_o3[138] = -203.0F;
+    vipldws2_B.HoughTransform_o3[139] = -202.0F;
+    vipldws2_B.HoughTransform_o3[140] = -201.0F;
+    vipldws2_B.HoughTransform_o3[141] = -200.0F;
+    vipldws2_B.HoughTransform_o3[142] = -199.0F;
+    vipldws2_B.HoughTransform_o3[143] = -198.0F;
+    vipldws2_B.HoughTransform_o3[144] = -197.0F;
+    vipldws2_B.HoughTransform_o3[145] = -196.0F;
+    vipldws2_B.HoughTransform_o3[146] = -195.0F;
+    vipldws2_B.HoughTransform_o3[147] = -194.0F;
+    vipldws2_B.HoughTransform_o3[148] = -193.0F;
+    vipldws2_B.HoughTransform_o3[149] = -192.0F;
+    vipldws2_B.HoughTransform_o3[150] = -191.0F;
+    vipldws2_B.HoughTransform_o3[151] = -190.0F;
+    vipldws2_B.HoughTransform_o3[152] = -189.0F;
+    vipldws2_B.HoughTransform_o3[153] = -188.0F;
+    vipldws2_B.HoughTransform_o3[154] = -187.0F;
+    vipldws2_B.HoughTransform_o3[155] = -186.0F;
+    vipldws2_B.HoughTransform_o3[156] = -185.0F;
+    vipldws2_B.HoughTransform_o3[157] = -184.0F;
+    vipldws2_B.HoughTransform_o3[158] = -183.0F;
+    vipldws2_B.HoughTransform_o3[159] = -182.0F;
+    vipldws2_B.HoughTransform_o3[160] = -181.0F;
+    vipldws2_B.HoughTransform_o3[161] = -180.0F;
+    vipldws2_B.HoughTransform_o3[162] = -179.0F;
+    vipldws2_B.HoughTransform_o3[163] = -178.0F;
+    vipldws2_B.HoughTransform_o3[164] = -177.0F;
+    vipldws2_B.HoughTransform_o3[165] = -176.0F;
+    vipldws2_B.HoughTransform_o3[166] = -175.0F;
+    vipldws2_B.HoughTransform_o3[167] = -174.0F;
+    vipldws2_B.HoughTransform_o3[168] = -173.0F;
+    vipldws2_B.HoughTransform_o3[169] = -172.0F;
+    vipldws2_B.HoughTransform_o3[170] = -171.0F;
+    vipldws2_B.HoughTransform_o3[171] = -170.0F;
+    vipldws2_B.HoughTransform_o3[172] = -169.0F;
+    vipldws2_B.HoughTransform_o3[173] = -168.0F;
+    vipldws2_B.HoughTransform_o3[174] = -167.0F;
+    vipldws2_B.HoughTransform_o3[175] = -166.0F;
+    vipldws2_B.HoughTransform_o3[176] = -165.0F;
+    vipldws2_B.HoughTransform_o3[177] = -164.0F;
+    vipldws2_B.HoughTransform_o3[178] = -163.0F;
+    vipldws2_B.HoughTransform_o3[179] = -162.0F;
+    vipldws2_B.HoughTransform_o3[180] = -161.0F;
+    vipldws2_B.HoughTransform_o3[181] = -160.0F;
+    vipldws2_B.HoughTransform_o3[182] = -159.0F;
+    vipldws2_B.HoughTransform_o3[183] = -158.0F;
+    vipldws2_B.HoughTransform_o3[184] = -157.0F;
+    vipldws2_B.HoughTransform_o3[185] = -156.0F;
+    vipldws2_B.HoughTransform_o3[186] = -155.0F;
+    vipldws2_B.HoughTransform_o3[187] = -154.0F;
+    vipldws2_B.HoughTransform_o3[188] = -153.0F;
+    vipldws2_B.HoughTransform_o3[189] = -152.0F;
+    vipldws2_B.HoughTransform_o3[190] = -151.0F;
+    vipldws2_B.HoughTransform_o3[191] = -150.0F;
+    vipldws2_B.HoughTransform_o3[192] = -149.0F;
+    vipldws2_B.HoughTransform_o3[193] = -148.0F;
+    vipldws2_B.HoughTransform_o3[194] = -147.0F;
+    vipldws2_B.HoughTransform_o3[195] = -146.0F;
+    vipldws2_B.HoughTransform_o3[196] = -145.0F;
+    vipldws2_B.HoughTransform_o3[197] = -144.0F;
+    vipldws2_B.HoughTransform_o3[198] = -143.0F;
+    vipldws2_B.HoughTransform_o3[199] = -142.0F;
+    vipldws2_B.HoughTransform_o3[200] = -141.0F;
+    vipldws2_B.HoughTransform_o3[201] = -140.0F;
+    vipldws2_B.HoughTransform_o3[202] = -139.0F;
+    vipldws2_B.HoughTransform_o3[203] = -138.0F;
+    vipldws2_B.HoughTransform_o3[204] = -137.0F;
+    vipldws2_B.HoughTransform_o3[205] = -136.0F;
+    vipldws2_B.HoughTransform_o3[206] = -135.0F;
+    vipldws2_B.HoughTransform_o3[207] = -134.0F;
+    vipldws2_B.HoughTransform_o3[208] = -133.0F;
+    vipldws2_B.HoughTransform_o3[209] = -132.0F;
+    vipldws2_B.HoughTransform_o3[210] = -131.0F;
+    vipldws2_B.HoughTransform_o3[211] = -130.0F;
+    vipldws2_B.HoughTransform_o3[212] = -129.0F;
+    vipldws2_B.HoughTransform_o3[213] = -128.0F;
+    vipldws2_B.HoughTransform_o3[214] = -127.0F;
+    vipldws2_B.HoughTransform_o3[215] = -126.0F;
+    vipldws2_B.HoughTransform_o3[216] = -125.0F;
+    vipldws2_B.HoughTransform_o3[217] = -124.0F;
+    vipldws2_B.HoughTransform_o3[218] = -123.0F;
+    vipldws2_B.HoughTransform_o3[219] = -122.0F;
+    vipldws2_B.HoughTransform_o3[220] = -121.0F;
+    vipldws2_B.HoughTransform_o3[221] = -120.0F;
+    vipldws2_B.HoughTransform_o3[222] = -119.0F;
+    vipldws2_B.HoughTransform_o3[223] = -118.0F;
+    vipldws2_B.HoughTransform_o3[224] = -117.0F;
+    vipldws2_B.HoughTransform_o3[225] = -116.0F;
+    vipldws2_B.HoughTransform_o3[226] = -115.0F;
+    vipldws2_B.HoughTransform_o3[227] = -114.0F;
+    vipldws2_B.HoughTransform_o3[228] = -113.0F;
+    vipldws2_B.HoughTransform_o3[229] = -112.0F;
+    vipldws2_B.HoughTransform_o3[230] = -111.0F;
+    vipldws2_B.HoughTransform_o3[231] = -110.0F;
+    vipldws2_B.HoughTransform_o3[232] = -109.0F;
+    vipldws2_B.HoughTransform_o3[233] = -108.0F;
+    vipldws2_B.HoughTransform_o3[234] = -107.0F;
+    vipldws2_B.HoughTransform_o3[235] = -106.0F;
+    vipldws2_B.HoughTransform_o3[236] = -105.0F;
+    vipldws2_B.HoughTransform_o3[237] = -104.0F;
+    vipldws2_B.HoughTransform_o3[238] = -103.0F;
+    vipldws2_B.HoughTransform_o3[239] = -102.0F;
+    vipldws2_B.HoughTransform_o3[240] = -101.0F;
+    vipldws2_B.HoughTransform_o3[241] = -100.0F;
+    vipldws2_B.HoughTransform_o3[242] = -99.0F;
+    vipldws2_B.HoughTransform_o3[243] = -98.0F;
+    vipldws2_B.HoughTransform_o3[244] = -97.0F;
+    vipldws2_B.HoughTransform_o3[245] = -96.0F;
+    vipldws2_B.HoughTransform_o3[246] = -95.0F;
+    vipldws2_B.HoughTransform_o3[247] = -94.0F;
+    vipldws2_B.HoughTransform_o3[248] = -93.0F;
+    vipldws2_B.HoughTransform_o3[249] = -92.0F;
+    vipldws2_B.HoughTransform_o3[250] = -91.0F;
+    vipldws2_B.HoughTransform_o3[251] = -90.0F;
+    vipldws2_B.HoughTransform_o3[252] = -89.0F;
+    vipldws2_B.HoughTransform_o3[253] = -88.0F;
+    vipldws2_B.HoughTransform_o3[254] = -87.0F;
+    vipldws2_B.HoughTransform_o3[255] = -86.0F;
+    vipldws2_B.HoughTransform_o3[256] = -85.0F;
+    vipldws2_B.HoughTransform_o3[257] = -84.0F;
+    vipldws2_B.HoughTransform_o3[258] = -83.0F;
+    vipldws2_B.HoughTransform_o3[259] = -82.0F;
+    vipldws2_B.HoughTransform_o3[260] = -81.0F;
+    vipldws2_B.HoughTransform_o3[261] = -80.0F;
+    vipldws2_B.HoughTransform_o3[262] = -79.0F;
+    vipldws2_B.HoughTransform_o3[263] = -78.0F;
+    vipldws2_B.HoughTransform_o3[264] = -77.0F;
+    vipldws2_B.HoughTransform_o3[265] = -76.0F;
+    vipldws2_B.HoughTransform_o3[266] = -75.0F;
+    vipldws2_B.HoughTransform_o3[267] = -74.0F;
+    vipldws2_B.HoughTransform_o3[268] = -73.0F;
+    vipldws2_B.HoughTransform_o3[269] = -72.0F;
+    vipldws2_B.HoughTransform_o3[270] = -71.0F;
+    vipldws2_B.HoughTransform_o3[271] = -70.0F;
+    vipldws2_B.HoughTransform_o3[272] = -69.0F;
+    vipldws2_B.HoughTransform_o3[273] = -68.0F;
+    vipldws2_B.HoughTransform_o3[274] = -67.0F;
+    vipldws2_B.HoughTransform_o3[275] = -66.0F;
+    vipldws2_B.HoughTransform_o3[276] = -65.0F;
+    vipldws2_B.HoughTransform_o3[277] = -64.0F;
+    vipldws2_B.HoughTransform_o3[278] = -63.0F;
+    vipldws2_B.HoughTransform_o3[279] = -62.0F;
+    vipldws2_B.HoughTransform_o3[280] = -61.0F;
+    vipldws2_B.HoughTransform_o3[281] = -60.0F;
+    vipldws2_B.HoughTransform_o3[282] = -59.0F;
+    vipldws2_B.HoughTransform_o3[283] = -58.0F;
+    vipldws2_B.HoughTransform_o3[284] = -57.0F;
+    vipldws2_B.HoughTransform_o3[285] = -56.0F;
+    vipldws2_B.HoughTransform_o3[286] = -55.0F;
+    vipldws2_B.HoughTransform_o3[287] = -54.0F;
+    vipldws2_B.HoughTransform_o3[288] = -53.0F;
+    vipldws2_B.HoughTransform_o3[289] = -52.0F;
+    vipldws2_B.HoughTransform_o3[290] = -51.0F;
+    vipldws2_B.HoughTransform_o3[291] = -50.0F;
+    vipldws2_B.HoughTransform_o3[292] = -49.0F;
+    vipldws2_B.HoughTransform_o3[293] = -48.0F;
+    vipldws2_B.HoughTransform_o3[294] = -47.0F;
+    vipldws2_B.HoughTransform_o3[295] = -46.0F;
+    vipldws2_B.HoughTransform_o3[296] = -45.0F;
+    vipldws2_B.HoughTransform_o3[297] = -44.0F;
+    vipldws2_B.HoughTransform_o3[298] = -43.0F;
+    vipldws2_B.HoughTransform_o3[299] = -42.0F;
+    vipldws2_B.HoughTransform_o3[300] = -41.0F;
+    vipldws2_B.HoughTransform_o3[301] = -40.0F;
+    vipldws2_B.HoughTransform_o3[302] = -39.0F;
+    vipldws2_B.HoughTransform_o3[303] = -38.0F;
+    vipldws2_B.HoughTransform_o3[304] = -37.0F;
+    vipldws2_B.HoughTransform_o3[305] = -36.0F;
+    vipldws2_B.HoughTransform_o3[306] = -35.0F;
+    vipldws2_B.HoughTransform_o3[307] = -34.0F;
+    vipldws2_B.HoughTransform_o3[308] = -33.0F;
+    vipldws2_B.HoughTransform_o3[309] = -32.0F;
+    vipldws2_B.HoughTransform_o3[310] = -31.0F;
+    vipldws2_B.HoughTransform_o3[311] = -30.0F;
+    vipldws2_B.HoughTransform_o3[312] = -29.0F;
+    vipldws2_B.HoughTransform_o3[313] = -28.0F;
+    vipldws2_B.HoughTransform_o3[314] = -27.0F;
+    vipldws2_B.HoughTransform_o3[315] = -26.0F;
+    vipldws2_B.HoughTransform_o3[316] = -25.0F;
+    vipldws2_B.HoughTransform_o3[317] = -24.0F;
+    vipldws2_B.HoughTransform_o3[318] = -23.0F;
+    vipldws2_B.HoughTransform_o3[319] = -22.0F;
+    vipldws2_B.HoughTransform_o3[320] = -21.0F;
+    vipldws2_B.HoughTransform_o3[321] = -20.0F;
+    vipldws2_B.HoughTransform_o3[322] = -19.0F;
+    vipldws2_B.HoughTransform_o3[323] = -18.0F;
+    vipldws2_B.HoughTransform_o3[324] = -17.0F;
+    vipldws2_B.HoughTransform_o3[325] = -16.0F;
+    vipldws2_B.HoughTransform_o3[326] = -15.0F;
+    vipldws2_B.HoughTransform_o3[327] = -14.0F;
+    vipldws2_B.HoughTransform_o3[328] = -13.0F;
+    vipldws2_B.HoughTransform_o3[329] = -12.0F;
+    vipldws2_B.HoughTransform_o3[330] = -11.0F;
+    vipldws2_B.HoughTransform_o3[331] = -10.0F;
+    vipldws2_B.HoughTransform_o3[332] = -9.0F;
+    vipldws2_B.HoughTransform_o3[333] = -8.0F;
+    vipldws2_B.HoughTransform_o3[334] = -7.0F;
+    vipldws2_B.HoughTransform_o3[335] = -6.0F;
+    vipldws2_B.HoughTransform_o3[336] = -5.0F;
+    vipldws2_B.HoughTransform_o3[337] = -4.0F;
+    vipldws2_B.HoughTransform_o3[338] = -3.0F;
+    vipldws2_B.HoughTransform_o3[339] = -2.0F;
+    vipldws2_B.HoughTransform_o3[340] = -1.0F;
+    vipldws2_B.HoughTransform_o3[341] = 0.0F;
+    vipldws2_B.HoughTransform_o3[342] = 1.0F;
+    vipldws2_B.HoughTransform_o3[343] = 2.0F;
+    vipldws2_B.HoughTransform_o3[344] = 3.0F;
+    vipldws2_B.HoughTransform_o3[345] = 4.0F;
+    vipldws2_B.HoughTransform_o3[346] = 5.0F;
+    vipldws2_B.HoughTransform_o3[347] = 6.0F;
+    vipldws2_B.HoughTransform_o3[348] = 7.0F;
+    vipldws2_B.HoughTransform_o3[349] = 8.0F;
+    vipldws2_B.HoughTransform_o3[350] = 9.0F;
+    vipldws2_B.HoughTransform_o3[351] = 10.0F;
+    vipldws2_B.HoughTransform_o3[352] = 11.0F;
+    vipldws2_B.HoughTransform_o3[353] = 12.0F;
+    vipldws2_B.HoughTransform_o3[354] = 13.0F;
+    vipldws2_B.HoughTransform_o3[355] = 14.0F;
+    vipldws2_B.HoughTransform_o3[356] = 15.0F;
+    vipldws2_B.HoughTransform_o3[357] = 16.0F;
+    vipldws2_B.HoughTransform_o3[358] = 17.0F;
+    vipldws2_B.HoughTransform_o3[359] = 18.0F;
+    vipldws2_B.HoughTransform_o3[360] = 19.0F;
+    vipldws2_B.HoughTransform_o3[361] = 20.0F;
+    vipldws2_B.HoughTransform_o3[362] = 21.0F;
+    vipldws2_B.HoughTransform_o3[363] = 22.0F;
+    vipldws2_B.HoughTransform_o3[364] = 23.0F;
+    vipldws2_B.HoughTransform_o3[365] = 24.0F;
+    vipldws2_B.HoughTransform_o3[366] = 25.0F;
+    vipldws2_B.HoughTransform_o3[367] = 26.0F;
+    vipldws2_B.HoughTransform_o3[368] = 27.0F;
+    vipldws2_B.HoughTransform_o3[369] = 28.0F;
+    vipldws2_B.HoughTransform_o3[370] = 29.0F;
+    vipldws2_B.HoughTransform_o3[371] = 30.0F;
+    vipldws2_B.HoughTransform_o3[372] = 31.0F;
+    vipldws2_B.HoughTransform_o3[373] = 32.0F;
+    vipldws2_B.HoughTransform_o3[374] = 33.0F;
+    vipldws2_B.HoughTransform_o3[375] = 34.0F;
+    vipldws2_B.HoughTransform_o3[376] = 35.0F;
+    vipldws2_B.HoughTransform_o3[377] = 36.0F;
+    vipldws2_B.HoughTransform_o3[378] = 37.0F;
+    vipldws2_B.HoughTransform_o3[379] = 38.0F;
+    vipldws2_B.HoughTransform_o3[380] = 39.0F;
+    vipldws2_B.HoughTransform_o3[381] = 40.0F;
+    vipldws2_B.HoughTransform_o3[382] = 41.0F;
+    vipldws2_B.HoughTransform_o3[383] = 42.0F;
+    vipldws2_B.HoughTransform_o3[384] = 43.0F;
+    vipldws2_B.HoughTransform_o3[385] = 44.0F;
+    vipldws2_B.HoughTransform_o3[386] = 45.0F;
+    vipldws2_B.HoughTransform_o3[387] = 46.0F;
+    vipldws2_B.HoughTransform_o3[388] = 47.0F;
+    vipldws2_B.HoughTransform_o3[389] = 48.0F;
+    vipldws2_B.HoughTransform_o3[390] = 49.0F;
+    vipldws2_B.HoughTransform_o3[391] = 50.0F;
+    vipldws2_B.HoughTransform_o3[392] = 51.0F;
+    vipldws2_B.HoughTransform_o3[393] = 52.0F;
+    vipldws2_B.HoughTransform_o3[394] = 53.0F;
+    vipldws2_B.HoughTransform_o3[395] = 54.0F;
+    vipldws2_B.HoughTransform_o3[396] = 55.0F;
+    vipldws2_B.HoughTransform_o3[397] = 56.0F;
+    vipldws2_B.HoughTransform_o3[398] = 57.0F;
+    vipldws2_B.HoughTransform_o3[399] = 58.0F;
+    vipldws2_B.HoughTransform_o3[400] = 59.0F;
+    vipldws2_B.HoughTransform_o3[401] = 60.0F;
+    vipldws2_B.HoughTransform_o3[402] = 61.0F;
+    vipldws2_B.HoughTransform_o3[403] = 62.0F;
+    vipldws2_B.HoughTransform_o3[404] = 63.0F;
+    vipldws2_B.HoughTransform_o3[405] = 64.0F;
+    vipldws2_B.HoughTransform_o3[406] = 65.0F;
+    vipldws2_B.HoughTransform_o3[407] = 66.0F;
+    vipldws2_B.HoughTransform_o3[408] = 67.0F;
+    vipldws2_B.HoughTransform_o3[409] = 68.0F;
+    vipldws2_B.HoughTransform_o3[410] = 69.0F;
+    vipldws2_B.HoughTransform_o3[411] = 70.0F;
+    vipldws2_B.HoughTransform_o3[412] = 71.0F;
+    vipldws2_B.HoughTransform_o3[413] = 72.0F;
+    vipldws2_B.HoughTransform_o3[414] = 73.0F;
+    vipldws2_B.HoughTransform_o3[415] = 74.0F;
+    vipldws2_B.HoughTransform_o3[416] = 75.0F;
+    vipldws2_B.HoughTransform_o3[417] = 76.0F;
+    vipldws2_B.HoughTransform_o3[418] = 77.0F;
+    vipldws2_B.HoughTransform_o3[419] = 78.0F;
+    vipldws2_B.HoughTransform_o3[420] = 79.0F;
+    vipldws2_B.HoughTransform_o3[421] = 80.0F;
+    vipldws2_B.HoughTransform_o3[422] = 81.0F;
+    vipldws2_B.HoughTransform_o3[423] = 82.0F;
+    vipldws2_B.HoughTransform_o3[424] = 83.0F;
+    vipldws2_B.HoughTransform_o3[425] = 84.0F;
+    vipldws2_B.HoughTransform_o3[426] = 85.0F;
+    vipldws2_B.HoughTransform_o3[427] = 86.0F;
+    vipldws2_B.HoughTransform_o3[428] = 87.0F;
+    vipldws2_B.HoughTransform_o3[429] = 88.0F;
+    vipldws2_B.HoughTransform_o3[430] = 89.0F;
+    vipldws2_B.HoughTransform_o3[431] = 90.0F;
+    vipldws2_B.HoughTransform_o3[432] = 91.0F;
+    vipldws2_B.HoughTransform_o3[433] = 92.0F;
+    vipldws2_B.HoughTransform_o3[434] = 93.0F;
+    vipldws2_B.HoughTransform_o3[435] = 94.0F;
+    vipldws2_B.HoughTransform_o3[436] = 95.0F;
+    vipldws2_B.HoughTransform_o3[437] = 96.0F;
+    vipldws2_B.HoughTransform_o3[438] = 97.0F;
+    vipldws2_B.HoughTransform_o3[439] = 98.0F;
+    vipldws2_B.HoughTransform_o3[440] = 99.0F;
+    vipldws2_B.HoughTransform_o3[441] = 100.0F;
+    vipldws2_B.HoughTransform_o3[442] = 101.0F;
+    vipldws2_B.HoughTransform_o3[443] = 102.0F;
+    vipldws2_B.HoughTransform_o3[444] = 103.0F;
+    vipldws2_B.HoughTransform_o3[445] = 104.0F;
+    vipldws2_B.HoughTransform_o3[446] = 105.0F;
+    vipldws2_B.HoughTransform_o3[447] = 106.0F;
+    vipldws2_B.HoughTransform_o3[448] = 107.0F;
+    vipldws2_B.HoughTransform_o3[449] = 108.0F;
+    vipldws2_B.HoughTransform_o3[450] = 109.0F;
+    vipldws2_B.HoughTransform_o3[451] = 110.0F;
+    vipldws2_B.HoughTransform_o3[452] = 111.0F;
+    vipldws2_B.HoughTransform_o3[453] = 112.0F;
+    vipldws2_B.HoughTransform_o3[454] = 113.0F;
+    vipldws2_B.HoughTransform_o3[455] = 114.0F;
+    vipldws2_B.HoughTransform_o3[456] = 115.0F;
+    vipldws2_B.HoughTransform_o3[457] = 116.0F;
+    vipldws2_B.HoughTransform_o3[458] = 117.0F;
+    vipldws2_B.HoughTransform_o3[459] = 118.0F;
+    vipldws2_B.HoughTransform_o3[460] = 119.0F;
+    vipldws2_B.HoughTransform_o3[461] = 120.0F;
+    vipldws2_B.HoughTransform_o3[462] = 121.0F;
+    vipldws2_B.HoughTransform_o3[463] = 122.0F;
+    vipldws2_B.HoughTransform_o3[464] = 123.0F;
+    vipldws2_B.HoughTransform_o3[465] = 124.0F;
+    vipldws2_B.HoughTransform_o3[466] = 125.0F;
+    vipldws2_B.HoughTransform_o3[467] = 126.0F;
+    vipldws2_B.HoughTransform_o3[468] = 127.0F;
+    vipldws2_B.HoughTransform_o3[469] = 128.0F;
+    vipldws2_B.HoughTransform_o3[470] = 129.0F;
+    vipldws2_B.HoughTransform_o3[471] = 130.0F;
+    vipldws2_B.HoughTransform_o3[472] = 131.0F;
+    vipldws2_B.HoughTransform_o3[473] = 132.0F;
+    vipldws2_B.HoughTransform_o3[474] = 133.0F;
+    vipldws2_B.HoughTransform_o3[475] = 134.0F;
+    vipldws2_B.HoughTransform_o3[476] = 135.0F;
+    vipldws2_B.HoughTransform_o3[477] = 136.0F;
+    vipldws2_B.HoughTransform_o3[478] = 137.0F;
+    vipldws2_B.HoughTransform_o3[479] = 138.0F;
+    vipldws2_B.HoughTransform_o3[480] = 139.0F;
+    vipldws2_B.HoughTransform_o3[481] = 140.0F;
+    vipldws2_B.HoughTransform_o3[482] = 141.0F;
+    vipldws2_B.HoughTransform_o3[483] = 142.0F;
+    vipldws2_B.HoughTransform_o3[484] = 143.0F;
+    vipldws2_B.HoughTransform_o3[485] = 144.0F;
+    vipldws2_B.HoughTransform_o3[486] = 145.0F;
+    vipldws2_B.HoughTransform_o3[487] = 146.0F;
+    vipldws2_B.HoughTransform_o3[488] = 147.0F;
+    vipldws2_B.HoughTransform_o3[489] = 148.0F;
+    vipldws2_B.HoughTransform_o3[490] = 149.0F;
+    vipldws2_B.HoughTransform_o3[491] = 150.0F;
+    vipldws2_B.HoughTransform_o3[492] = 151.0F;
+    vipldws2_B.HoughTransform_o3[493] = 152.0F;
+    vipldws2_B.HoughTransform_o3[494] = 153.0F;
+    vipldws2_B.HoughTransform_o3[495] = 154.0F;
+    vipldws2_B.HoughTransform_o3[496] = 155.0F;
+    vipldws2_B.HoughTransform_o3[497] = 156.0F;
+    vipldws2_B.HoughTransform_o3[498] = 157.0F;
+    vipldws2_B.HoughTransform_o3[499] = 158.0F;
+    vipldws2_B.HoughTransform_o3[500] = 159.0F;
+    vipldws2_B.HoughTransform_o3[501] = 160.0F;
+    vipldws2_B.HoughTransform_o3[502] = 161.0F;
+    vipldws2_B.HoughTransform_o3[503] = 162.0F;
+    vipldws2_B.HoughTransform_o3[504] = 163.0F;
+    vipldws2_B.HoughTransform_o3[505] = 164.0F;
+    vipldws2_B.HoughTransform_o3[506] = 165.0F;
+    vipldws2_B.HoughTransform_o3[507] = 166.0F;
+    vipldws2_B.HoughTransform_o3[508] = 167.0F;
+    vipldws2_B.HoughTransform_o3[509] = 168.0F;
+    vipldws2_B.HoughTransform_o3[510] = 169.0F;
+    vipldws2_B.HoughTransform_o3[511] = 170.0F;
+    vipldws2_B.HoughTransform_o3[512] = 171.0F;
+    vipldws2_B.HoughTransform_o3[513] = 172.0F;
+    vipldws2_B.HoughTransform_o3[514] = 173.0F;
+    vipldws2_B.HoughTransform_o3[515] = 174.0F;
+    vipldws2_B.HoughTransform_o3[516] = 175.0F;
+    vipldws2_B.HoughTransform_o3[517] = 176.0F;
+    vipldws2_B.HoughTransform_o3[518] = 177.0F;
+    vipldws2_B.HoughTransform_o3[519] = 178.0F;
+    vipldws2_B.HoughTransform_o3[520] = 179.0F;
+    vipldws2_B.HoughTransform_o3[521] = 180.0F;
+    vipldws2_B.HoughTransform_o3[522] = 181.0F;
+    vipldws2_B.HoughTransform_o3[523] = 182.0F;
+    vipldws2_B.HoughTransform_o3[524] = 183.0F;
+    vipldws2_B.HoughTransform_o3[525] = 184.0F;
+    vipldws2_B.HoughTransform_o3[526] = 185.0F;
+    vipldws2_B.HoughTransform_o3[527] = 186.0F;
+    vipldws2_B.HoughTransform_o3[528] = 187.0F;
+    vipldws2_B.HoughTransform_o3[529] = 188.0F;
+    vipldws2_B.HoughTransform_o3[530] = 189.0F;
+    vipldws2_B.HoughTransform_o3[531] = 190.0F;
+    vipldws2_B.HoughTransform_o3[532] = 191.0F;
+    vipldws2_B.HoughTransform_o3[533] = 192.0F;
+    vipldws2_B.HoughTransform_o3[534] = 193.0F;
+    vipldws2_B.HoughTransform_o3[535] = 194.0F;
+    vipldws2_B.HoughTransform_o3[536] = 195.0F;
+    vipldws2_B.HoughTransform_o3[537] = 196.0F;
+    vipldws2_B.HoughTransform_o3[538] = 197.0F;
+    vipldws2_B.HoughTransform_o3[539] = 198.0F;
+    vipldws2_B.HoughTransform_o3[540] = 199.0F;
+    vipldws2_B.HoughTransform_o3[541] = 200.0F;
+    vipldws2_B.HoughTransform_o3[542] = 201.0F;
+    vipldws2_B.HoughTransform_o3[543] = 202.0F;
+    vipldws2_B.HoughTransform_o3[544] = 203.0F;
+    vipldws2_B.HoughTransform_o3[545] = 204.0F;
+    vipldws2_B.HoughTransform_o3[546] = 205.0F;
+    vipldws2_B.HoughTransform_o3[547] = 206.0F;
+    vipldws2_B.HoughTransform_o3[548] = 207.0F;
+    vipldws2_B.HoughTransform_o3[549] = 208.0F;
+    vipldws2_B.HoughTransform_o3[550] = 209.0F;
+    vipldws2_B.HoughTransform_o3[551] = 210.0F;
+    vipldws2_B.HoughTransform_o3[552] = 211.0F;
+    vipldws2_B.HoughTransform_o3[553] = 212.0F;
+    vipldws2_B.HoughTransform_o3[554] = 213.0F;
+    vipldws2_B.HoughTransform_o3[555] = 214.0F;
+    vipldws2_B.HoughTransform_o3[556] = 215.0F;
+    vipldws2_B.HoughTransform_o3[557] = 216.0F;
+    vipldws2_B.HoughTransform_o3[558] = 217.0F;
+    vipldws2_B.HoughTransform_o3[559] = 218.0F;
+    vipldws2_B.HoughTransform_o3[560] = 219.0F;
+    vipldws2_B.HoughTransform_o3[561] = 220.0F;
+    vipldws2_B.HoughTransform_o3[562] = 221.0F;
+    vipldws2_B.HoughTransform_o3[563] = 222.0F;
+    vipldws2_B.HoughTransform_o3[564] = 223.0F;
+    vipldws2_B.HoughTransform_o3[565] = 224.0F;
+    vipldws2_B.HoughTransform_o3[566] = 225.0F;
+    vipldws2_B.HoughTransform_o3[567] = 226.0F;
+    vipldws2_B.HoughTransform_o3[568] = 227.0F;
+    vipldws2_B.HoughTransform_o3[569] = 228.0F;
+    vipldws2_B.HoughTransform_o3[570] = 229.0F;
+    vipldws2_B.HoughTransform_o3[571] = 230.0F;
+    vipldws2_B.HoughTransform_o3[572] = 231.0F;
+    vipldws2_B.HoughTransform_o3[573] = 232.0F;
+    vipldws2_B.HoughTransform_o3[574] = 233.0F;
+    vipldws2_B.HoughTransform_o3[575] = 234.0F;
+    vipldws2_B.HoughTransform_o3[576] = 235.0F;
+    vipldws2_B.HoughTransform_o3[577] = 236.0F;
+    vipldws2_B.HoughTransform_o3[578] = 237.0F;
+    vipldws2_B.HoughTransform_o3[579] = 238.0F;
+    vipldws2_B.HoughTransform_o3[580] = 239.0F;
+    vipldws2_B.HoughTransform_o3[581] = 240.0F;
+    vipldws2_B.HoughTransform_o3[582] = 241.0F;
+    vipldws2_B.HoughTransform_o3[583] = 242.0F;
+    vipldws2_B.HoughTransform_o3[584] = 243.0F;
+    vipldws2_B.HoughTransform_o3[585] = 244.0F;
+    vipldws2_B.HoughTransform_o3[586] = 245.0F;
+    vipldws2_B.HoughTransform_o3[587] = 246.0F;
+    vipldws2_B.HoughTransform_o3[588] = 247.0F;
+    vipldws2_B.HoughTransform_o3[589] = 248.0F;
+    vipldws2_B.HoughTransform_o3[590] = 249.0F;
+    vipldws2_B.HoughTransform_o3[591] = 250.0F;
+    vipldws2_B.HoughTransform_o3[592] = 251.0F;
+    vipldws2_B.HoughTransform_o3[593] = 252.0F;
+    vipldws2_B.HoughTransform_o3[594] = 253.0F;
+    vipldws2_B.HoughTransform_o3[595] = 254.0F;
+    vipldws2_B.HoughTransform_o3[596] = 255.0F;
+    vipldws2_B.HoughTransform_o3[597] = 256.0F;
+    vipldws2_B.HoughTransform_o3[598] = 257.0F;
+    vipldws2_B.HoughTransform_o3[599] = 258.0F;
+    vipldws2_B.HoughTransform_o3[600] = 259.0F;
+    vipldws2_B.HoughTransform_o3[601] = 260.0F;
+    vipldws2_B.HoughTransform_o3[602] = 261.0F;
+    vipldws2_B.HoughTransform_o3[603] = 262.0F;
+    vipldws2_B.HoughTransform_o3[604] = 263.0F;
+    vipldws2_B.HoughTransform_o3[605] = 264.0F;
+    vipldws2_B.HoughTransform_o3[606] = 265.0F;
+    vipldws2_B.HoughTransform_o3[607] = 266.0F;
+    vipldws2_B.HoughTransform_o3[608] = 267.0F;
+    vipldws2_B.HoughTransform_o3[609] = 268.0F;
+    vipldws2_B.HoughTransform_o3[610] = 269.0F;
+    vipldws2_B.HoughTransform_o3[611] = 270.0F;
+    vipldws2_B.HoughTransform_o3[612] = 271.0F;
+    vipldws2_B.HoughTransform_o3[613] = 272.0F;
+    vipldws2_B.HoughTransform_o3[614] = 273.0F;
+    vipldws2_B.HoughTransform_o3[615] = 274.0F;
+    vipldws2_B.HoughTransform_o3[616] = 275.0F;
+    vipldws2_B.HoughTransform_o3[617] = 276.0F;
+    vipldws2_B.HoughTransform_o3[618] = 277.0F;
+    vipldws2_B.HoughTransform_o3[619] = 278.0F;
+    vipldws2_B.HoughTransform_o3[620] = 279.0F;
+    vipldws2_B.HoughTransform_o3[621] = 280.0F;
+    vipldws2_B.HoughTransform_o3[622] = 281.0F;
+    vipldws2_B.HoughTransform_o3[623] = 282.0F;
+    vipldws2_B.HoughTransform_o3[624] = 283.0F;
+    vipldws2_B.HoughTransform_o3[625] = 284.0F;
+    vipldws2_B.HoughTransform_o3[626] = 285.0F;
+    vipldws2_B.HoughTransform_o3[627] = 286.0F;
+    vipldws2_B.HoughTransform_o3[628] = 287.0F;
+    vipldws2_B.HoughTransform_o3[629] = 288.0F;
+    vipldws2_B.HoughTransform_o3[630] = 289.0F;
+    vipldws2_B.HoughTransform_o3[631] = 290.0F;
+    vipldws2_B.HoughTransform_o3[632] = 291.0F;
+    vipldws2_B.HoughTransform_o3[633] = 292.0F;
+    vipldws2_B.HoughTransform_o3[634] = 293.0F;
+    vipldws2_B.HoughTransform_o3[635] = 294.0F;
+    vipldws2_B.HoughTransform_o3[636] = 295.0F;
+    vipldws2_B.HoughTransform_o3[637] = 296.0F;
+    vipldws2_B.HoughTransform_o3[638] = 297.0F;
+    vipldws2_B.HoughTransform_o3[639] = 298.0F;
+    vipldws2_B.HoughTransform_o3[640] = 299.0F;
+    vipldws2_B.HoughTransform_o3[641] = 300.0F;
+    vipldws2_B.HoughTransform_o3[642] = 301.0F;
+    vipldws2_B.HoughTransform_o3[643] = 302.0F;
+    vipldws2_B.HoughTransform_o3[644] = 303.0F;
+    vipldws2_B.HoughTransform_o3[645] = 304.0F;
+    vipldws2_B.HoughTransform_o3[646] = 305.0F;
+    vipldws2_B.HoughTransform_o3[647] = 306.0F;
+    vipldws2_B.HoughTransform_o3[648] = 307.0F;
+    vipldws2_B.HoughTransform_o3[649] = 308.0F;
+    vipldws2_B.HoughTransform_o3[650] = 309.0F;
+    vipldws2_B.HoughTransform_o3[651] = 310.0F;
+    vipldws2_B.HoughTransform_o3[652] = 311.0F;
+    vipldws2_B.HoughTransform_o3[653] = 312.0F;
+    vipldws2_B.HoughTransform_o3[654] = 313.0F;
+    vipldws2_B.HoughTransform_o3[655] = 314.0F;
+    vipldws2_B.HoughTransform_o3[656] = 315.0F;
+    vipldws2_B.HoughTransform_o3[657] = 316.0F;
+    vipldws2_B.HoughTransform_o3[658] = 317.0F;
+    vipldws2_B.HoughTransform_o3[659] = 318.0F;
+    vipldws2_B.HoughTransform_o3[660] = 319.0F;
+    vipldws2_B.HoughTransform_o3[661] = 320.0F;
+    vipldws2_B.HoughTransform_o3[662] = 321.0F;
+    vipldws2_B.HoughTransform_o3[663] = 322.0F;
+    vipldws2_B.HoughTransform_o3[664] = 323.0F;
+    vipldws2_B.HoughTransform_o3[665] = 324.0F;
+    vipldws2_B.HoughTransform_o3[666] = 325.0F;
+    vipldws2_B.HoughTransform_o3[667] = 326.0F;
+    vipldws2_B.HoughTransform_o3[668] = 327.0F;
+    vipldws2_B.HoughTransform_o3[669] = 328.0F;
+    vipldws2_B.HoughTransform_o3[670] = 329.0F;
+    vipldws2_B.HoughTransform_o3[671] = 330.0F;
+    vipldws2_B.HoughTransform_o3[672] = 331.0F;
+    vipldws2_B.HoughTransform_o3[673] = 332.0F;
+    vipldws2_B.HoughTransform_o3[674] = 333.0F;
+    vipldws2_B.HoughTransform_o3[675] = 334.0F;
+    vipldws2_B.HoughTransform_o3[676] = 335.0F;
+    vipldws2_B.HoughTransform_o3[677] = 336.0F;
+    vipldws2_B.HoughTransform_o3[678] = 337.0F;
+    vipldws2_B.HoughTransform_o3[679] = 338.0F;
+    vipldws2_B.HoughTransform_o3[680] = 339.0F;
+    vipldws2_B.HoughTransform_o3[681] = 340.0F;
+    vipldws2_B.HoughTransform_o3[682] = 341.0F;
   }
 
   /* states (dwork) */
@@ -11675,7 +11745,7 @@ void vipldws2_initialize(void)
 
   {
     int32_T i;
-    for (i = 0; i < 112500; i++) {
+    for (i = 0; i < 122940; i++) {
       vipldws2_DW.FindLocalMaxima_TEMP_IN_DWORKS[i] = 0.0F;
     }
   }
@@ -11689,7 +11759,7 @@ void vipldws2_initialize(void)
 
   {
     int32_T i;
-    for (i = 0; i < 86400; i++) {
+    for (i = 0; i < 115200; i++) {
       vipldws2_DW.ColorSpaceConversion1_DWORK1[i] = 0.0F;
     }
   }
@@ -11736,30 +11806,26 @@ void vipldws2_initialize(void)
                         240U, 2U, 2U, 1U, 0.033333333333333333);
 
     /* Start for Probe: '<S1>/Width of the image' */
-    vipldws2_B.Widthoftheimage[0] = 200;
-    vipldws2_B.Widthoftheimage[1] = 240;
+    vipldws2_B.Widthoftheimage[0] = 120;
+    vipldws2_B.Widthoftheimage[1] = 320;
 
     /* Start for Enabled SubSystem: '<S5>/Subsystem' */
-    /* Start for Enabled SubSystem: '<S66>/Draw  Polygon' */
-    /* Start for S-Function (svipdrawshapes): '<S68>/DrawShapes' */
+    /* Start for Enabled SubSystem: '<S67>/Draw  Polygon' */
+    /* Start for S-Function (svipdrawshapes): '<S69>/DrawShapes' */
     /* Calculate FillColor times Opacity. */
-    vipldws2_DW.DrawShapes_DW_FillColorAdd[0] =
-      vipldws2_P.DrawShapes_RTP_FILLCOLOR_o[0] *
-      vipldws2_P.DrawShapes_RTP_OPACITY;
-    vipldws2_DW.DrawShapes_DW_FillColorAdd[1] =
-      vipldws2_P.DrawShapes_RTP_FILLCOLOR_o[1] *
-      vipldws2_P.DrawShapes_RTP_OPACITY;
-    vipldws2_DW.DrawShapes_DW_FillColorAdd[2] =
-      vipldws2_P.DrawShapes_RTP_FILLCOLOR_o[2] *
-      vipldws2_P.DrawShapes_RTP_OPACITY;
+    vipldws2_DW.DrawShapes_DW_FillColorAdd[0] = vipldws2_P.DrawShapes_color[0] *
+      vipldws2_P.DrawShapes_opacity;
+    vipldws2_DW.DrawShapes_DW_FillColorAdd[1] = vipldws2_P.DrawShapes_color[1] *
+      vipldws2_P.DrawShapes_opacity;
+    vipldws2_DW.DrawShapes_DW_FillColorAdd[2] = vipldws2_P.DrawShapes_color[2] *
+      vipldws2_P.DrawShapes_opacity;
 
     /* Calculate One minus Opacity. */
-    vipldws2_DW.DrawShapes_DW_OneMOpacity = 1.0F -
-      vipldws2_P.DrawShapes_RTP_OPACITY;
+    vipldws2_DW.DrawShapes_DW_OneMOpacity = 1.0F - vipldws2_P.DrawShapes_opacity;
 
-    /* End of Start for SubSystem: '<S66>/Draw  Polygon' */
+    /* End of Start for SubSystem: '<S67>/Draw  Polygon' */
 
-    /* Start for FromWorkspace: '<S70>/From Workspace' */
+    /* Start for FromWorkspace: '<S71>/From Workspace' */
     {
       static real32_T pDataValues0[] = { 1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F,
         0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F } ;
@@ -11769,55 +11835,55 @@ void vipldws2_initialize(void)
       vipldws2_DW.FromWorkspace_IWORK.PrevIndex = -1;
     }
 
-    /* Start for S-Function (sviptextrender): '<S66>/Insert Text' */
+    /* Start for S-Function (sviptextrender): '<S67>/Insert Text' */
     memcpy(&vipldws2_DW.InsertText_StringDataDW[0],
            &vipldws2_ConstP.InsertText_StrArray[0], 74U * sizeof(uint8_T));
     for (i = 0; i < 53; i++) {
-      /* Start for S-Function (sviptextrender): '<S69>/Insert Text: Left Lane' */
+      /* Start for S-Function (sviptextrender): '<S70>/Insert Text: Left Lane' */
       vipldws2_DW.InsertTextLeftLane_StringDataDW[i] =
-        vipldws2_ConstP.pooled15[i];
+        vipldws2_ConstP.pooled16[i];
 
-      /* Start for S-Function (sviptextrender): '<S69>/Insert Text: Right Lane' */
+      /* Start for S-Function (sviptextrender): '<S70>/Insert Text: Right Lane' */
       vipldws2_DW.InsertTextRightLane_StringDataD[i] =
-        vipldws2_ConstP.pooled15[i];
+        vipldws2_ConstP.pooled16[i];
     }
 
     /* End of Start for SubSystem: '<S5>/Subsystem' */
-    /* Start for MATLABSystem: '<S65>/MATLAB System' */
+    /* Start for MATLABSystem: '<S66>/MATLAB System' */
     vipldws2_DW.obj.isInitialized = 0;
     vipldws2_DW.objisempty = true;
     vipldws2_DW.obj.isInitialized = 1;
     vipldws2_DW.obj.PixelFormatEnum = 1;
-    MW_SDL_videoDisplayInit(vipldws2_DW.obj.PixelFormatEnum, 1, 1, 320.0, 240.0);
+    MW_SDL_videoDisplayInit(vipldws2_DW.obj.PixelFormatEnum, 1, 1, 240.0, 320.0);
 
     /* End of Start for SubSystem: '<S5>/SDL Video Display' */
     vipldws2_PrevZCX.SampleandHold_Trig_ZCE = UNINITIALIZED_ZCSIG;
 
-    /* InitializeConditions for UnitDelay: '<S37>/FixPt Unit Delay2' */
+    /* InitializeConditions for UnitDelay: '<S38>/FixPt Unit Delay2' */
     vipldws2_DW.FixPtUnitDelay2_DSTATE =
       vipldws2_P.FixPtUnitDelay2_InitialConditio;
 
-    /* InitializeConditions for UnitDelay: '<S37>/FixPt Unit Delay1' */
+    /* InitializeConditions for UnitDelay: '<S38>/FixPt Unit Delay1' */
     memcpy(&vipldws2_DW.FixPtUnitDelay1_DSTATE[0],
            &vipldws2_P.UnitDelayResettable1_vinit[0], 40U * sizeof(real32_T));
 
-    /* InitializeConditions for UnitDelay: '<S36>/FixPt Unit Delay2' */
+    /* InitializeConditions for UnitDelay: '<S37>/FixPt Unit Delay2' */
     vipldws2_DW.FixPtUnitDelay2_DSTATE_b =
       vipldws2_P.FixPtUnitDelay2_InitialCondit_p;
     for (i = 0; i < 20; i++) {
-      /* InitializeConditions for UnitDelay: '<S36>/FixPt Unit Delay1' */
+      /* InitializeConditions for UnitDelay: '<S37>/FixPt Unit Delay1' */
       vipldws2_DW.FixPtUnitDelay1_DSTATE_d[i] =
         vipldws2_P.UnitDelayResettable_vinit;
 
-      /* InitializeConditions for UnitDelay: '<S33>/En_Delay' */
+      /* InitializeConditions for UnitDelay: '<S34>/En_Delay' */
       vipldws2_DW.En_Delay_DSTATE[i] = vipldws2_P.En_Delay_InitialCondition;
     }
 
-    /* InitializeConditions for UnitDelay: '<S33>/Unit Delay2' */
+    /* InitializeConditions for UnitDelay: '<S34>/Unit Delay2' */
     memcpy(&vipldws2_DW.UnitDelay2_DSTATE[0],
            &vipldws2_P.UnitDelay2_InitialCondition[0], 80U * sizeof(real32_T));
 
-    /* InitializeConditions for UnitDelay: '<S33>/Unit Delay3' */
+    /* InitializeConditions for UnitDelay: '<S34>/Unit Delay3' */
     memcpy(&vipldws2_DW.UnitDelay3_DSTATE[0],
            &vipldws2_P.UnitDelay3_InitialCondition[0], 320U * sizeof(real32_T));
 
@@ -11837,23 +11903,23 @@ void vipldws2_initialize(void)
     /* DSP System Toolbox N-Sample Enable  (sdspnsamp2) - '<S5>/N-Sample Enable' */
     vipldws2_DW.NSampleEnable_Counter = (uint32_T) 0;
 
-    /* SystemInitialize for Iterator SubSystem: '<S34>/Find the best  matches between the current  lines and those in the repository' */
-    /* InitializeConditions for Delay: '<S52>/Delay1' */
+    /* SystemInitialize for Iterator SubSystem: '<S35>/Find the best  matches between the current  lines and those in the repository' */
+    /* InitializeConditions for Delay: '<S53>/Delay1' */
     for (i = 0; i < 400; i++) {
       vipldws2_DW.Delay1_DSTATE[i] = vipldws2_P.Delay1_InitialCondition;
     }
 
-    /* End of InitializeConditions for Delay: '<S52>/Delay1' */
-    /* End of SystemInitialize for SubSystem: '<S34>/Find the best  matches between the current  lines and those in the repository' */
+    /* End of InitializeConditions for Delay: '<S53>/Delay1' */
+    /* End of SystemInitialize for SubSystem: '<S35>/Find the best  matches between the current  lines and those in the repository' */
 
-    /* SystemInitialize for Iterator SubSystem: '<S34>/Update the repository' */
-    /* InitializeConditions for Delay: '<S53>/Delay1' */
+    /* SystemInitialize for Iterator SubSystem: '<S35>/Update the repository' */
+    /* InitializeConditions for Delay: '<S54>/Delay1' */
     for (i = 0; i < 20; i++) {
       vipldws2_DW.Delay1_DSTATE_g[i] = vipldws2_P.Delay1_InitialCondition_n;
     }
 
-    /* End of InitializeConditions for Delay: '<S53>/Delay1' */
-    /* End of SystemInitialize for SubSystem: '<S34>/Update the repository' */
+    /* End of InitializeConditions for Delay: '<S54>/Delay1' */
+    /* End of SystemInitialize for SubSystem: '<S35>/Update the repository' */
 
     /* SystemInitialize for Iterator SubSystem: '<S1>/Find the left and  right lanes from the depository' */
     /* InitializeConditions for UnitDelay: '<S24>/Min_left_dis' */
@@ -11910,15 +11976,15 @@ void vipldws2_terminate(void)
   /* Terminate for S-Function (v4l2_video_capture_sfcn): '<S2>/V4L2 Video Capture' */
   MW_videoCaptureTerminate(vipldws2_ConstP.V4L2VideoCapture_p1);
 
-  /* Start for MATLABSystem: '<S65>/MATLAB System' incorporates:
-   *  Terminate for MATLABSystem: '<S65>/MATLAB System'
+  /* Start for MATLABSystem: '<S66>/MATLAB System' incorporates:
+   *  Terminate for MATLABSystem: '<S66>/MATLAB System'
    */
   if (vipldws2_DW.obj.isInitialized == 1) {
     vipldws2_DW.obj.isInitialized = 2;
     MW_SDL_videoDisplayTerminate(0, 0);
   }
 
-  /* End of Start for MATLABSystem: '<S65>/MATLAB System' */
+  /* End of Start for MATLABSystem: '<S66>/MATLAB System' */
   /* End of Terminate for SubSystem: '<S5>/SDL Video Display' */
 }
 
