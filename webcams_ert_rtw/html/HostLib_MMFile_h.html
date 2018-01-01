@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="./js/coder_app.js"></script>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="./rtwreport_utils.js"></script>
+<script type="text/javascript" src="./rtwannotate.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/coder_app.css"/>
+</head>
+<body onload="srcFileOnload();">
+<pre id="code">
+<table class="code" id="codeTbl">
+<tr name="1" id="1">
+<td><a id="l1" class='ln'>1</a></td><td><span class="ct">/**</span></td></tr>
+<tr name="2" id="2">
+<td><a id="l2" class='ln'>2</a></td><td><span class="ct"> * @file HostLib_MMFile.h</span></td></tr>
+<tr name="3" id="3">
+<td><a id="l3" class='ln'>3</a></td><td><span class="ct"> * @brief Helper for the To/FromMMFile block.</span></td></tr>
+<tr name="4" id="4">
+<td><a id="l4" class='ln'>4</a></td><td><span class="ct"> * Copyright 2008-2016 The MathWorks, Inc.</span></td></tr>
+<tr name="5" id="5">
+<td><a id="l5" class='ln'>5</a></td><td><span class="ct"> */</span> </td></tr>
+<tr name="6" id="6">
+<td><a id="l6" class='ln'>6</a></td><td></td></tr>
+<tr name="7" id="7">
+<td><a id="l7" class='ln'>7</a></td><td><span class="pp">#ifndef</span> <a id="7c9" class="tk">HOSTLIB_MMFILE_H_</a></td></tr>
+<tr name="8" id="8">
+<td><a id="l8" class='ln'>8</a></td><td><span class="pp">#define</span> <a id="8c9" class="tk">HOSTLIB_MMFILE_H_</a></td></tr>
+<tr name="9" id="9">
+<td><a id="l9" class='ln'>9</a></td><td></td></tr>
+<tr name="10" id="10">
+<td><a id="l10" class='ln'>10</a></td><td><span class="ct">/* Wrap everything in extern C */</span></td></tr>
+<tr name="11" id="11">
+<td><a id="l11" class='ln'>11</a></td><td><span class="pp">#ifdef</span> <a id="11c8" class="tk">__cplusplus</a></td></tr>
+<tr name="12" id="12">
+<td><a id="l12" class='ln'>12</a></td><td><span class="kw">extern</span> "C" <span class="br">{</span></td></tr>
+<tr name="13" id="13">
+<td><a id="l13" class='ln'>13</a></td><td><span class="pp">#endif</span> </td></tr>
+<tr name="14" id="14">
+<td><a id="l14" class='ln'>14</a></td><td></td></tr>
+<tr name="15" id="15">
+<td><a id="l15" class='ln'>15</a></td><td><span class="kw">extern</span> <span class="kw">const</span> <span class="kw">char</span> <a id="15c19" class="tk">*</a><a id="15c20" class="tk">libName_FromMMFile</a>;</td></tr>
+<tr name="16" id="16">
+<td><a id="l16" class='ln'>16</a></td><td><span class="kw">extern</span> <span class="kw">const</span> <span class="kw">char</span> <a id="16c19" class="tk">*</a><a id="16c20" class="tk">libName_ToMMFile</a>;</td></tr>
+<tr name="17" id="17">
+<td><a id="l17" class='ln'>17</a></td><td></td></tr>
+<tr name="18" id="18">
+<td><a id="l18" class='ln'>18</a></td><td><span class="pp">#include "VideoDefs.hpp"</span></td></tr>
+<tr name="19" id="19">
+<td><a id="l19" class='ln'>19</a></td><td><span class="pp">#include "AudioDefs.hpp"</span></td></tr>
+<tr name="20" id="20">
+<td><a id="l20" class='ln'>20</a></td><td>  </td></tr>
+<tr name="21" id="21">
+<td><a id="l21" class='ln'>21</a></td><td><span class="ct">/*******************************</span></td></tr>
+<tr name="22" id="22">
+<td><a id="l22" class='ln'>22</a></td><td><span class="ct"> * Routines which are defined in the library in question</span></td></tr>
+<tr name="23" id="23">
+<td><a id="l23" class='ln'>23</a></td><td><span class="ct"> *******************************/</span></td></tr>
+<tr name="24" id="24">
+<td><a id="l24" class='ln'>24</a></td><td><span class="kw">typedef</span> <span class="kw">void</span><a id="24c13" class="tk">*</a> (<a id="24c16" class="tk">*</a><a id="24c17" class="tk">pFnLibCreate_FromMMFile</a>)(<span class="kw">char</span> <a id="24c47" class="tk">*</a><a id="24c48" class="tk">err</a>, <span class="kw">char</span> <a id="24c58" class="tk">*</a><a id="24c59" class="tk">warn</a>, <span class="kw">const</span> <span class="kw">void</span> <a id="24c76" class="tk">*</a><a id="24c77" class="tk">fileName</a>, <span class="kw">unsigned</span> <span class="kw">int</span> <a id="24c100" class="tk">fromCG</a>, <span class="kw">const</span> <span class="kw">char</span> <a id="24c119" class="tk">*</a><a id="24c120" class="tk">pluginPaths</a>, <span class="kw">const</span> <span class="kw">char</span><a id="24c143" class="tk">*</a> <a id="24c145" class="tk">arConverterPath</a>,</td></tr>
+<tr name="25" id="25">
+<td><a id="l25" class='ln'>25</a></td><td>                                         <a id="25c42" class="tk">MMAudioInfo</a><a id="25c53" class="tk">*</a> <a id="25c55" class="tk">aInfo</a>, <a id="25c62" class="tk">MMVideoInfo</a><a id="25c73" class="tk">*</a> <a id="25c75" class="tk">vInfo</a>, </td></tr>
+<tr name="26" id="26">
+<td><a id="l26" class='ln'>26</a></td><td>                                         <span class="kw">unsigned</span> <span class="kw">int</span> <a id="26c55" class="tk">numRepeats</a>, <span class="kw">unsigned</span> <span class="kw">char</span> <a id="26c81" class="tk">loopIndef</a>, </td></tr>
+<tr name="27" id="27">
+<td><a id="l27" class='ln'>27</a></td><td>                                         <a id="27c42" class="tk">FourCCType</a> <a id="27c53" class="tk">fourcc</a>,</td></tr>
+<tr name="28" id="28">
+<td><a id="l28" class='ln'>28</a></td><td>                                         <span class="kw">unsigned</span> <span class="kw">char</span> <a id="28c56" class="tk">scaledDoubleAudio</a>, <span class="kw">unsigned</span> <span class="kw">char</span> <a id="28c89" class="tk">scaledDoubleVideo</a>, <span class="kw">unsigned</span> <span class="kw">char</span> <a id="28c122" class="tk">isHwAccel</a>);</td></tr>
+<tr name="29" id="29">
+<td><a id="l29" class='ln'>29</a></td><td></td></tr>
+<tr name="30" id="30">
+<td><a id="l30" class='ln'>30</a></td><td><span class="kw">typedef</span> <span class="kw">void</span> (<a id="30c15" class="tk">*</a><a id="30c16" class="tk">pFnLibOutputs_FromMMFile</a>)(<span class="kw">void</span> <a id="30c47" class="tk">*</a><a id="30c48" class="tk">hostLib</a>, <span class="kw">char</span> <a id="30c62" class="tk">*</a><a id="30c63" class="tk">err</a>, <span class="kw">unsigned</span> <span class="kw">char</span> <a id="30c82" class="tk">*</a><a id="30c83" class="tk">bDone</a>, <span class="kw">void</span> <a id="30c95" class="tk">*</a><a id="30c96" class="tk">audio</a>, <span class="kw">void</span> <a id="30c108" class="tk">*</a><a id="30c109" class="tk">R</a>, <span class="kw">void</span> <a id="30c117" class="tk">*</a><a id="30c118" class="tk">G</a>, <span class="kw">void</span> <a id="30c126" class="tk">*</a><a id="30c127" class="tk">B</a>);</td></tr>
+<tr name="31" id="31">
+<td><a id="l31" class='ln'>31</a></td><td></td></tr>
+<tr name="32" id="32">
+<td><a id="l32" class='ln'>32</a></td><td></td></tr>
+<tr name="33" id="33">
+<td><a id="l33" class='ln'>33</a></td><td><span class="kw">typedef</span> <span class="kw">void</span><a id="33c13" class="tk">*</a> (<a id="33c16" class="tk">*</a><a id="33c17" class="tk">pFnLibCreate_ToMMFile</a>)(<span class="kw">char</span> <a id="33c45" class="tk">*</a><a id="33c46" class="tk">err</a>, <span class="kw">char</span> <a id="33c56" class="tk">*</a><a id="33c57" class="tk">warn</a>, <span class="kw">const</span> <span class="kw">void</span> <a id="33c74" class="tk">*</a><a id="33c75" class="tk">fileName</a>, <span class="kw">unsigned</span> <span class="kw">int</span> <a id="33c98" class="tk">fromCG</a>, <a id="33c106" class="tk">MMFileType</a> <a id="33c117" class="tk">fileType</a>,</td></tr>
+<tr name="34" id="34">
+<td><a id="l34" class='ln'>34</a></td><td>                                        <a id="34c41" class="tk">MMAudioInfo</a><a id="34c52" class="tk">*</a> <a id="34c54" class="tk">aInfo</a>, <a id="34c61" class="tk">MMVideoInfo</a><a id="34c72" class="tk">*</a> <a id="34c74" class="tk">vInfo</a>,</td></tr>
+<tr name="35" id="35">
+<td><a id="l35" class='ln'>35</a></td><td>                                        <span class="kw">unsigned</span> <span class="kw">char</span> <a id="35c55" class="tk">scaledDoubleAudio</a>, <span class="kw">unsigned</span> <span class="kw">char</span> <a id="35c88" class="tk">scaledDoubleVideo</a>,</td></tr>
+<tr name="36" id="36">
+<td><a id="l36" class='ln'>36</a></td><td>                                        <span class="kw">char</span><a id="36c45" class="tk">*</a> <a id="36c47" class="tk">awPluginPath</a>, <span class="kw">char</span><a id="36c65" class="tk">*</a> <a id="36c67" class="tk">awConverterPath</a>, <span class="kw">char</span><a id="36c88" class="tk">*</a> <a id="36c90" class="tk">awFilterPath</a>,</td></tr>
+<tr name="37" id="37">
+<td><a id="l37" class='ln'>37</a></td><td>                                        <span class="kw">unsigned</span> <span class="kw">int</span> <a id="37c54" class="tk">imageQuality</a>, <span class="kw">unsigned</span> <span class="kw">int</span> <a id="37c81" class="tk">mj2000CompFactor</a> );</td></tr>
+<tr name="38" id="38">
+<td><a id="l38" class='ln'>38</a></td><td><span class="kw">typedef</span> <span class="kw">void</span> (<a id="38c15" class="tk">*</a><a id="38c16" class="tk">pFnLibUpdate_ToMMFile</a>)(<span class="kw">void</span> <a id="38c44" class="tk">*</a><a id="38c45" class="tk">hostLib</a>, <span class="kw">char</span> <a id="38c59" class="tk">*</a><a id="38c60" class="tk">err</a>, <span class="kw">const</span> <span class="kw">void</span> <a id="38c76" class="tk">*</a><a id="38c77" class="tk">audio</a>, <span class="kw">const</span> <span class="kw">void</span> <a id="38c95" class="tk">*</a><a id="38c96" class="tk">R</a>, <span class="kw">const</span> <span class="kw">void</span> <a id="38c110" class="tk">*</a><a id="38c111" class="tk">G</a>, <span class="kw">const</span> <span class="kw">void</span> <a id="38c125" class="tk">*</a><a id="38c126" class="tk">B</a>);</td></tr>
+<tr name="39" id="39">
+<td><a id="l39" class='ln'>39</a></td><td></td></tr>
+<tr name="40" id="40">
+<td><a id="l40" class='ln'>40</a></td><td></td></tr>
+<tr name="41" id="41">
+<td><a id="l41" class='ln'>41</a></td><td><span class="ct">/*******************************</span></td></tr>
+<tr name="42" id="42">
+<td><a id="l42" class='ln'>42</a></td><td><span class="ct"> * Routines which we define to call the functions in the library </span></td></tr>
+<tr name="43" id="43">
+<td><a id="l43" class='ln'>43</a></td><td><span class="ct"> *******************************/</span></td></tr>
+<tr name="44" id="44">
+<td><a id="l44" class='ln'>44</a></td><td><span class="kw">void</span> <a id="44c6" class="tk">LibCreate_FromMMFile</a>(<span class="kw">void</span> <a id="44c32" class="tk">*</a><a id="44c33" class="tk">hostLib</a>, <span class="kw">char</span> <a id="44c47" class="tk">*</a><a id="44c48" class="tk">warn</a>, <span class="kw">const</span> <span class="kw">void</span> <a id="44c65" class="tk">*</a><a id="44c66" class="tk">fileName</a>, <span class="kw">unsigned</span> <span class="kw">int</span> <a id="44c89" class="tk">fromCG</a>, <span class="kw">const</span> <span class="kw">char</span> <a id="44c108" class="tk">*</a><a id="44c109" class="tk">pluginPaths</a>, <span class="kw">const</span> <span class="kw">char</span><a id="44c132" class="tk">*</a> <a id="44c134" class="tk">arConverterPath</a>,</td></tr>
+<tr name="45" id="45">
+<td><a id="l45" class='ln'>45</a></td><td>                          <span class="kw">void</span><a id="45c31" class="tk">*</a> <a id="45c33" class="tk">aInfo</a>, <span class="kw">void</span><a id="45c44" class="tk">*</a> <a id="45c46" class="tk">vInfo</a>, </td></tr>
+<tr name="46" id="46">
+<td><a id="l46" class='ln'>46</a></td><td>                          <span class="kw">unsigned</span> <span class="kw">int</span> <a id="46c40" class="tk">numRepeats</a>, <span class="kw">unsigned</span> <span class="kw">char</span> <a id="46c66" class="tk">loopIndef</a>, </td></tr>
+<tr name="47" id="47">
+<td><a id="l47" class='ln'>47</a></td><td>                          <span class="kw">int</span> <a id="47c31" class="tk">fourcc</a>,</td></tr>
+<tr name="48" id="48">
+<td><a id="l48" class='ln'>48</a></td><td>                          <span class="kw">unsigned</span> <span class="kw">char</span> <a id="48c41" class="tk">scaledDoubleAudio</a>, <span class="kw">unsigned</span> <span class="kw">char</span> <a id="48c74" class="tk">scaledDoubleVideo</a>, <span class="kw">unsigned</span> <span class="kw">char</span> <a id="48c107" class="tk">isHwAccel</a>);</td></tr>
+<tr name="49" id="49">
+<td><a id="l49" class='ln'>49</a></td><td><span class="kw">void</span> <a id="49c6" class="tk">LibOutputs_FromMMFile</a>(<span class="kw">void</span> <a id="49c33" class="tk">*</a><a id="49c34" class="tk">hostLib</a>, <span class="kw">void</span> <a id="49c48" class="tk">*</a><a id="49c49" class="tk">bDone</a>, <span class="kw">void</span> <a id="49c61" class="tk">*</a><a id="49c62" class="tk">audio</a>, <span class="kw">void</span> <a id="49c74" class="tk">*</a><a id="49c75" class="tk">R</a>, <span class="kw">void</span> <a id="49c83" class="tk">*</a><a id="49c84" class="tk">G</a>, <span class="kw">void</span> <a id="49c92" class="tk">*</a><a id="49c93" class="tk">B</a>);</td></tr>
+<tr name="50" id="50">
+<td><a id="l50" class='ln'>50</a></td><td></td></tr>
+<tr name="51" id="51">
+<td><a id="l51" class='ln'>51</a></td><td></td></tr>
+<tr name="52" id="52">
+<td><a id="l52" class='ln'>52</a></td><td><span class="kw">void</span> <a id="52c6" class="tk">LibCreate_ToMMFile</a>(<span class="kw">void</span> <a id="52c30" class="tk">*</a><a id="52c31" class="tk">hostLib</a>, <span class="kw">char</span> <a id="52c45" class="tk">*</a><a id="52c46" class="tk">warn</a>, <span class="kw">const</span> <span class="kw">void</span> <a id="52c63" class="tk">*</a><a id="52c64" class="tk">fileName</a>, <span class="kw">unsigned</span> <span class="kw">int</span> <a id="52c87" class="tk">fromCG</a>, <span class="kw">int</span> <a id="52c99" class="tk">fileType</a>,</td></tr>
+<tr name="53" id="53">
+<td><a id="l53" class='ln'>53</a></td><td>                         <span class="kw">void</span><a id="53c30" class="tk">*</a> <a id="53c32" class="tk">aInfo</a>, <span class="kw">void</span><a id="53c43" class="tk">*</a> <a id="53c45" class="tk">vInfo</a>,</td></tr>
+<tr name="54" id="54">
+<td><a id="l54" class='ln'>54</a></td><td>                         <span class="kw">unsigned</span> <span class="kw">char</span> <a id="54c40" class="tk">scaledDoubleAudio</a>, <span class="kw">unsigned</span> <span class="kw">char</span> <a id="54c73" class="tk">scaledDoubleVideo</a>,</td></tr>
+<tr name="55" id="55">
+<td><a id="l55" class='ln'>55</a></td><td>                         <span class="kw">char</span><a id="55c30" class="tk">*</a> <a id="55c32" class="tk">awPluginPath</a>, <span class="kw">char</span><a id="55c50" class="tk">*</a> <a id="55c52" class="tk">awConverterPath</a>, <span class="kw">char</span><a id="55c73" class="tk">*</a> <a id="55c75" class="tk">awFilterPath</a>, </td></tr>
+<tr name="56" id="56">
+<td><a id="l56" class='ln'>56</a></td><td>                         <span class="kw">unsigned</span> <span class="kw">int</span> <a id="56c39" class="tk">imageQuality</a>, <span class="kw">unsigned</span> <span class="kw">int</span> <a id="56c66" class="tk">mj2000CompFactor</a> );</td></tr>
+<tr name="57" id="57">
+<td><a id="l57" class='ln'>57</a></td><td><span class="kw">void</span> <a id="57c6" class="tk">LibUpdate_ToMMFile</a>(<span class="kw">void</span> <a id="57c30" class="tk">*</a><a id="57c31" class="tk">hostLib</a>, <span class="kw">const</span> <span class="kw">void</span> <a id="57c51" class="tk">*</a><a id="57c52" class="tk">audio</a>, <span class="kw">const</span> <span class="kw">void</span> <a id="57c70" class="tk">*</a><a id="57c71" class="tk">R</a>, <span class="kw">const</span> <span class="kw">void</span> <a id="57c85" class="tk">*</a><a id="57c86" class="tk">G</a>, <span class="kw">const</span> <span class="kw">void</span> <a id="57c100" class="tk">*</a><a id="57c101" class="tk">B</a>);</td></tr>
+<tr name="58" id="58">
+<td><a id="l58" class='ln'>58</a></td><td></td></tr>
+<tr name="59" id="59">
+<td><a id="l59" class='ln'>59</a></td><td></td></tr>
+<tr name="60" id="60">
+<td><a id="l60" class='ln'>60</a></td><td><span class="ct">/* Include HostLib for declarations of LibStart, LibTerminate, CreateHostLibrary, and DestroyHostLibrary. */</span></td></tr>
+<tr name="61" id="61">
+<td><a id="l61" class='ln'>61</a></td><td><span class="pp">#include "HostLib_rtw.h"</span></td></tr>
+<tr name="62" id="62">
+<td><a id="l62" class='ln'>62</a></td><td></td></tr>
+<tr name="63" id="63">
+<td><a id="l63" class='ln'>63</a></td><td></td></tr>
+<tr name="64" id="64">
+<td><a id="l64" class='ln'>64</a></td><td><span class="pp">#ifdef</span> <a id="64c8" class="tk">__cplusplus</a></td></tr>
+<tr name="65" id="65">
+<td><a id="l65" class='ln'>65</a></td><td><span class="br">}</span> <span class="ct">// extern "C"</span></td></tr>
+<tr name="66" id="66">
+<td><a id="l66" class='ln'>66</a></td><td><span class="pp">#endif</span> </td></tr>
+<tr name="67" id="67">
+<td><a id="l67" class='ln'>67</a></td><td></td></tr>
+<tr name="68" id="68">
+<td><a id="l68" class='ln'>68</a></td><td><span class="pp">#endif</span> </td></tr>
+<tr name="69" id="69">
+<td><a id="l69" class='ln'>69</a></td><td></td></tr>
+<tr name="70" id="70">
+<td><a id="l70" class='ln'>70</a></td><td></td></tr>
+</table>
+</pre>
+</body>
+</html>
