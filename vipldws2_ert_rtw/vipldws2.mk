@@ -2,7 +2,7 @@
 ## Makefile generated for Simulink model 'vipldws2'. 
 ## 
 ## Makefile     : vipldws2.mk
-## Generated on : Mon Jan 01 17:15:38 2018
+## Generated on : Tue Jan 02 21:19:32 2018
 ## MATLAB Coder version: 3.3 (R2017a)
 ## 
 ## Build Info:
@@ -204,7 +204,7 @@ DEFINES = $(DEFINES_) $(DEFINES_BUILD_ARGS) $(DEFINES_IMPLIED) $(DEFINES_OPTS) $
 ## SOURCE FILES
 ###########################################################################
 
-SRCS = MW_SDL_video_display.c ssprintf_rt.c vipdrawtext_main_rt.c v4l2_capture.c v4l2_capture_linux.c hough_d_rt.c hough_r_rt.c rtGetInf.c rtGetNaN.c rt_i32zcfcn.c rt_nonfinite.c vipldws2.c vipldws2_data.c ext_svr.c updown.c ext_work.c rtiostream_utils.c linuxinitialize.c rtiostream_interface.c rtiostream_tcpip.c
+SRCS = ssprintf_rt.c vipdrawtext_main_rt.c v4l2_capture.c v4l2_capture_linux.c hough_d_rt.c hough_r_rt.c rtGetInf.c rtGetNaN.c rt_i32zcfcn.c rt_nonfinite.c vipldws2.c vipldws2_data.c ext_svr.c updown.c ext_work.c rtiostream_utils.c linuxinitialize.c rtiostream_interface.c rtiostream_tcpip.c
 
 MAIN_SRC = ert_main.c
 
@@ -214,7 +214,7 @@ ALL_SRCS = $(SRCS) $(MAIN_SRC)
 ## OBJECTS
 ###########################################################################
 
-OBJS = MW_SDL_video_display.c.o ssprintf_rt.c.o vipdrawtext_main_rt.c.o v4l2_capture.c.o v4l2_capture_linux.c.o hough_d_rt.c.o hough_r_rt.c.o rtGetInf.c.o rtGetNaN.c.o rt_i32zcfcn.c.o rt_nonfinite.c.o vipldws2.c.o vipldws2_data.c.o ext_svr.c.o updown.c.o ext_work.c.o rtiostream_utils.c.o linuxinitialize.c.o rtiostream_interface.c.o rtiostream_tcpip.c.o
+OBJS = ssprintf_rt.c.o vipdrawtext_main_rt.c.o v4l2_capture.c.o v4l2_capture_linux.c.o hough_d_rt.c.o hough_r_rt.c.o rtGetInf.c.o rtGetNaN.c.o rt_i32zcfcn.c.o rt_nonfinite.c.o vipldws2.c.o vipldws2_data.c.o ext_svr.c.o updown.c.o ext_work.c.o rtiostream_utils.c.o linuxinitialize.c.o rtiostream_interface.c.o rtiostream_tcpip.c.o
 
 MAIN_OBJ = ert_main.c.o
 
@@ -264,7 +264,7 @@ CPPFLAGS += $(CPPFLAGS_SKIPFORSIL) $(CPPFLAGS_BASIC)
 # C++ Linker
 #---------------
 
-CPP_LDFLAGS_SKIPFORSIL = -lSDL  
+CPP_LDFLAGS_SKIPFORSIL =  
 
 CPP_LDFLAGS += $(CPP_LDFLAGS_SKIPFORSIL)
 
@@ -272,7 +272,7 @@ CPP_LDFLAGS += $(CPP_LDFLAGS_SKIPFORSIL)
 # C++ Shared Library Linker
 #------------------------------
 
-CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL = -lSDL  
+CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL =  
 
 CPP_SHAREDLIB_LDFLAGS += $(CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL)
 
@@ -280,7 +280,7 @@ CPP_SHAREDLIB_LDFLAGS += $(CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL)
 # Linker
 #-----------
 
-LDFLAGS_SKIPFORSIL = -lSDL  
+LDFLAGS_SKIPFORSIL =  
 
 LDFLAGS += $(LDFLAGS_SKIPFORSIL)
 
@@ -288,7 +288,7 @@ LDFLAGS += $(LDFLAGS_SKIPFORSIL)
 # Shared Library Linker
 #--------------------------
 
-SHAREDLIB_LDFLAGS_SKIPFORSIL = -lSDL  
+SHAREDLIB_LDFLAGS_SKIPFORSIL =  
 
 SHAREDLIB_LDFLAGS += $(SHAREDLIB_LDFLAGS_SKIPFORSIL)
 
@@ -491,10 +491,6 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS) $(MAIN_OBJ)
 
 %.cpp.o : %.cpp
 	$(CPP) $(CPPFLAGS) -o $@ $<
-
-
-MW_SDL_video_display.c.o : MW_SDL_video_display.c
-	$(CC) $(CFLAGS) -o $@ $<
 
 
 linuxinitialize.c.o : linuxinitialize.c

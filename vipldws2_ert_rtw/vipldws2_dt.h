@@ -3,9 +3,9 @@
  *
  * Code generation for model "vipldws2".
  *
- * Model version              : 1.2212
+ * Model version              : 1.2214
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C source code generated on : Mon Jan 01 17:35:43 2018
+ * C source code generated on : Tue Jan 02 21:19:24 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -38,7 +38,6 @@ static uint_T rtDataTypeSizes[] = {
   sizeof(int8_T),
   sizeof(int8_T),
   sizeof(int16_T),
-  sizeof(codertarget_linux_blocks_SDLV_T),
   sizeof(int32_T)
 };
 
@@ -63,50 +62,47 @@ static const char_T * rtDataTypeNames[] = {
   "int8_T",
   "int8_T",
   "int16_T",
-  "codertarget_linux_blocks_SDLV_T",
   "int32_T"
 };
 
 /* data type transitions for block I/O structure */
 static DataTypeTransition rtBTransitions[] = {
-  { (char_T *)(&vipldws2_B.ColorSpaceConversion[0]), 1, 0, 1159740 },
+  { (char_T *)(&vipldws2_B.ImageDataTypeConversion[0]), 1, 0, 469403 },
 
-  { (char_T *)(&vipldws2_B.HoughTransform_o2[0]), 1, 0, 863 },
-
-  { (char_T *)(&vipldws2_B.Init[0]), 1, 0, 80 },
-
-  { (char_T *)(&vipldws2_B.KTrans[0]), 1, 0, 8 },
-
-  { (char_T *)(&vipldws2_B.HoughLines[0]), 6, 0, 16 },
+  { (char_T *)(&vipldws2_B.Init[0]), 1, 0, 40 },
 
   { (char_T *)(&vipldws2_B.Probe[0]), 0, 0, 3 },
 
-  { (char_T *)(&vipldws2_B.ImageDataTypeConversion[0]), 1, 0, 576404 },
+  { (char_T *)(&vipldws2_B.MatrixConcatenation3[0]), 1, 0, 1037308 },
 
-  { (char_T *)(&vipldws2_B.MatrixConcatenation2[0]), 1, 0, 900367 },
+  { (char_T *)(&vipldws2_B.MatrixConcatenation2[0]), 1, 0, 439553 },
 
-  { (char_T *)(&vipldws2_B.DataTypeConversion1), 1, 0, 68 },
+  { (char_T *)(&vipldws2_B.DataTypeConversion1), 1, 0, 691226 },
 
-  { (char_T *)(&vipldws2_B.Init_p[0]), 6, 0, 202 },
+  { (char_T *)(&vipldws2_B.Init_p[0]), 6, 0, 214 },
 
-  { (char_T *)(&vipldws2_B.rho_1), 6, 0, 2070 },
+  { (char_T *)(&vipldws2_B.rho_1), 6, 0, 2072 },
 
-  { (char_T *)(&vipldws2_B.Minimum_o1), 6, 0, 5 },
+  { (char_T *)(&vipldws2_B.Minimum_o1), 6, 0, 7 },
 
-  { (char_T *)(&vipldws2_B.Minimum), 7, 0, 4 },
+  { (char_T *)(&vipldws2_B.Minimum_o2[0]), 7, 0, 2 },
 
-  { (char_T *)(&vipldws2_B.FindLocalMaxima1_o1[0]), 5, 0, 26 },
+  { (char_T *)(&vipldws2_B.FindLocalMaxima[0]), 5, 0, 12 },
+
+  { (char_T *)(&vipldws2_B.Minimum), 7, 0, 2 },
+
+  { (char_T *)(&vipldws2_B.FindLocalMaxima1_o1[0]), 5, 0, 14 },
 
   { (char_T *)(&vipldws2_B.RawMessage), 2, 0, 9 },
 
-  { (char_T *)(&vipldws2_B.MatrixConcatenate[0]), 3, 0, 1382400 },
+  { (char_T *)(&vipldws2_B.MatrixConcatenate[0]), 3, 0, 1152000 },
 
   { (char_T *)(&vipldws2_B.Compare), 8, 0, 38480 }
   ,
 
-  { (char_T *)(&vipldws2_DW.obj), 19, 0, 1 },
+  { (char_T *)(&vipldws2_DW.FrameRateDisplay_PrevTime), 0, 0, 3 },
 
-  { (char_T *)(&vipldws2_DW.MatrixConcatenation3_PWORK), 11, 0, 4 },
+  { (char_T *)(&vipldws2_DW.MatrixConcatenation3_PWORK), 11, 0, 3 },
 
   { (char_T *)(&vipldws2_DW.FixPtUnitDelay1_DSTATE[0]), 1, 0, 440 },
 
@@ -132,18 +128,18 @@ static DataTypeTransition rtBTransitions[] = {
 
   { (char_T *)(&vipldws2_DW.DrawShapes_DW_PixCount[0]), 3, 0, 512 },
 
-  { (char_T *)(&vipldws2_DW.uDFIRFilter_isHgtUpd[0]), 8, 0, 4 }
+  { (char_T *)(&vipldws2_DW.uDFIRFilter_isHgtUpd[0]), 8, 0, 3 }
 };
 
 /* data type transition table for block I/O structure */
 static DataTypeTransitionTable rtBTransTable = {
-  32U,
+  31U,
   rtBTransitions
 };
 
 /* data type transitions for Parameters structure */
 static DataTypeTransition rtPTransitions[] = {
-  { (char_T *)(&vipldws2_P.DrawShapes_color[0]), 1, 0, 50 },
+  { (char_T *)(&vipldws2_P.uDFIRFilter_filterMtrx[0]), 1, 0, 46 },
 
   { (char_T *)(&vipldws2_P.CompareToConstant2_const), 6, 0, 12 },
 
@@ -153,11 +149,11 @@ static DataTypeTransition rtPTransitions[] = {
 
   { (char_T *)(&vipldws2_P.CompareToConstant_const_h), 2, 0, 8 },
 
-  { (char_T *)(&vipldws2_P.Rotate_fillVal), 3, 0, 2 },
+  { (char_T *)(&vipldws2_P.Rotate_fillVal), 3, 0, 1 },
 
-  { (char_T *)(&vipldws2_P.Constant1_Value), 0, 0, 2 },
+  { (char_T *)(&vipldws2_P.Constant1_Value), 0, 0, 3 },
 
-  { (char_T *)(&vipldws2_P.Constant3_Value[0]), 1, 0, 523 },
+  { (char_T *)(&vipldws2_P.Constant3_Value[0]), 1, 0, 527 },
 
   { (char_T *)(&vipldws2_P.ForIterator_IterationLimit), 6, 0, 541 },
 

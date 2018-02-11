@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'vipldws2'.
  *
- * Model version                  : 1.2212
+ * Model version                  : 1.2214
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Mon Jan 01 17:35:43 2018
+ * C/C++ source code generated on : Tue Jan 02 21:19:24 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -20,26 +20,6 @@
 #include "rtwtypes.h"
 #include "multiword_types.h"
 #include "zero_crossing_types.h"
-#ifndef typedef_codertarget_linux_blocks_SDLV_T
-#define typedef_codertarget_linux_blocks_SDLV_T
-
-typedef struct {
-  int32_T isInitialized;
-  int32_T PixelFormatEnum;
-} codertarget_linux_blocks_SDLV_T;
-
-#endif                                 /*typedef_codertarget_linux_blocks_SDLV_T*/
-
-#ifndef typedef_struct_T_vipldws2_T
-#define typedef_struct_T_vipldws2_T
-
-typedef struct {
-  real_T f1[2];
-  real_T f2[2];
-  real_T f3[2];
-} struct_T_vipldws2_T;
-
-#endif                                 /*typedef_struct_T_vipldws2_T*/
 
 /* Parameters (auto storage) */
 typedef struct P_vipldws2_T_ P_vipldws2_T;
