@@ -11,7 +11,7 @@ function CodeMetrics() {
 	 this.metricsArray.var["lane_departure.c:rtDataTypeSizes"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure_dt.h",
 	size: 76};
 	 this.metricsArray.var["rtB"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
-	size: 752252};
+	size: 867464};
 	 this.metricsArray.var["rtDW"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
 	size: 905884};
 	 this.metricsArray.var["rtM_"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
@@ -34,6 +34,9 @@ function CodeMetrics() {
 	 this.metricsArray.fcn["floor"] = {file: "C:\\Program Files\\MATLAB\\R2017a\\sys\\lcc\\include\\math.h",
 	stack: 0,
 	stackTotal: 0};
+	 this.metricsArray.fcn["lane_departure.c:imrotate"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
+	stack: 12,
+	stackTotal: 12};
 	 this.metricsArray.fcn["lane_departure.c:rate_monotonic_scheduler"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
 	stack: 0,
 	stackTotal: 0};
@@ -45,13 +48,13 @@ function CodeMetrics() {
 	stackTotal: 25};
 	 this.metricsArray.fcn["lane_departure_step"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
 	stack: 0,
-	stackTotal: 97};
+	stackTotal: 85};
 	 this.metricsArray.fcn["lane_departure_step0"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
 	stack: 0,
 	stackTotal: 0};
 	 this.metricsArray.fcn["lane_departure_step1"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
-	stack: 61,
-	stackTotal: 97};
+	stack: 49,
+	stackTotal: 85};
 	 this.metricsArray.fcn["memcpy"] = {file: "C:\\Program Files\\MATLAB\\R2017a\\sys\\lcc\\include\\string.h",
 	stack: 0,
 	stackTotal: 0};
@@ -89,6 +92,6 @@ function CodeMetrics() {
 			 data.type = "var";
 		 }
 	 return data; }; 
-	 this.codeMetricsSummary = '<a href="lane_departure_metrics.html">Global Memory: 1658487(bytes) Maximum Stack: 61(bytes)</a>';
+	 this.codeMetricsSummary = '<a href="lane_departure_metrics.html">Global Memory: 1773699(bytes) Maximum Stack: 49(bytes)</a>';
 	}
 CodeMetrics.instance = new CodeMetrics();

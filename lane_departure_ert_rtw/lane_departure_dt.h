@@ -3,9 +3,9 @@
  *
  * Code generation for model "lane_departure".
  *
- * Model version              : 1.44
+ * Model version              : 1.47
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C source code generated on : Mon Feb 12 22:10:15 2018
+ * C source code generated on : Tue Feb 13 01:16:57 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -67,7 +67,7 @@ static const char_T * rtDataTypeNames[] = {
 static DataTypeTransition rtBTransitions[] = {
   { (char_T *)(&rtB.HoughTransform_o1[0]), 0, 0, 71820 },
 
-  { (char_T *)(&rtB.MatrixConcatenate[0]), 3, 0, 115200 },
+  { (char_T *)(&rtB.MatrixConcatenate[0]), 3, 0, 172800 },
 
   { (char_T *)(&rtB.HoughTransform_o2[0]), 0, 0, 579 },
 

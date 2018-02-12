@@ -2,7 +2,7 @@
 ## Makefile generated for Simulink model 'lane_departure'. 
 ## 
 ## Makefile     : lane_departure.mk
-## Generated on : Mon Feb 12 22:00:24 2018
+## Generated on : Tue Feb 13 01:10:46 2018
 ## MATLAB Coder version: 3.3 (R2017a)
 ## 
 ## Build Info:

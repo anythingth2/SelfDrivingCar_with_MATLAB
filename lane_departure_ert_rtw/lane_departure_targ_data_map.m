@@ -79,8 +79,8 @@
       sigMap.sections(1) = section;
       clear section
       
-      section.nData     = 2;
-      section.data(2)  = dumData; %prealloc
+      section.nData     = 3;
+      section.data(3)  = dumData; %prealloc
       
 	  ;% rtB.MatrixConcatenate
 	  section.data(1).logicalSrcIdx = 4;
@@ -89,6 +89,10 @@
 	  ;% rtB.DrawShapes
 	  section.data(2).logicalSrcIdx = 5;
 	  section.data(2).dtTransOffset = 57600;
+	
+	  ;% rtB.Image
+	  section.data(3).logicalSrcIdx = 6;
+	  section.data(3).dtTransOffset = 115200;
 	
       nTotData = nTotData + section.nData;
       sigMap.sections(2) = section;
@@ -113,7 +117,7 @@
       section.data(1)  = dumData; %prealloc
       
 	  ;% rtB.EdgeDetection
-	  section.data(1).logicalSrcIdx = 7;
+	  section.data(1).logicalSrcIdx = 8;
 	  section.data(1).dtTransOffset = 0;
 	
       nTotData = nTotData + section.nData;
@@ -351,8 +355,8 @@
   ;%
 
 
-  targMap.checksum0 = 1917102677;
-  targMap.checksum1 = 1693815341;
-  targMap.checksum2 = 2059061006;
-  targMap.checksum3 = 728033140;
+  targMap.checksum0 = 2742049912;
+  targMap.checksum1 = 3215783529;
+  targMap.checksum2 = 1863095128;
+  targMap.checksum3 = 3618466718;
 

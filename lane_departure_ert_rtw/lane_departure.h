@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'lane_departure'.
  *
- * Model version                  : 1.44
+ * Model version                  : 1.47
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Mon Feb 12 22:10:15 2018
+ * C/C++ source code generated on : Tue Feb 13 01:16:57 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -17,6 +17,8 @@
 
 #ifndef RTW_HEADER_lane_departure_h_
 #define RTW_HEADER_lane_departure_h_
+#include "rtwtypes.h"
+#include "multiword_types.h"
 #include <math.h>
 #include <string.h>
 #include <float.h>
@@ -86,11 +88,56 @@
 /* Forward declaration for rtModel */
 typedef struct tag_RTM RT_MODEL;
 
+/* Custom Type definition for MATLAB Function: '<S1>/MATLAB Function' */
+#ifndef typedef_struct_T
+#define typedef_struct_T
+
+typedef struct {
+  char_T f1[7];
+  char_T f2[7];
+} struct_T;
+
+#endif                                 /*typedef_struct_T*/
+
+#ifndef typedef_c_struct_T
+#define typedef_c_struct_T
+
+typedef struct {
+  char_T f1[7];
+} c_struct_T;
+
+#endif                                 /*typedef_c_struct_T*/
+
+#ifndef typedef_d_struct_T
+#define typedef_d_struct_T
+
+typedef struct {
+  char_T f1[4];
+  char_T f2[6];
+} d_struct_T;
+
+#endif                                 /*typedef_d_struct_T*/
+
+#ifndef typedef_e_struct_T
+#define typedef_e_struct_T
+
+typedef struct {
+  char_T f1[7];
+  char_T f2[8];
+  char_T f3[7];
+  char_T f4[4];
+  char_T f5[5];
+} e_struct_T;
+
+#endif                                 /*typedef_e_struct_T*/
+
 /* Block signals (auto storage) */
 typedef struct {
   real_T HoughTransform_o1[71820];     /* '<Root>/Hough Transform' */
   uint8_T MatrixConcatenate[57600];    /* '<S1>/Matrix Concatenate' */
   uint8_T DrawShapes[57600];           /* '<Root>/Draw Shapes' */
+  uint8_T Image[57600];                /* '<S1>/MATLAB Function' */
+  uint8_T uv0[57600];
   uint8_T Erosion[19200];              /* '<Root>/Erosion' */
   uint8_T ColorSpaceConversion[19200];
   real_T HoughTransform_o2[180];       /* '<Root>/Hough Transform' */
@@ -109,6 +156,9 @@ typedef struct {
   real_T maxValue;
   int32_T accumFour;
   int32_T curNumNonZ;
+  int32_T lastRow;
+  int32_T row;
+  int32_T outIdxAdj;
   uint32_T toIdx;
   uint32_T fromIdx;
 } B;
@@ -292,7 +342,7 @@ extern RT_MODEL *const rtM;
  *
  * '<Root>' : 'lane_departure'
  * '<S1>'   : 'lane_departure/Input '
- * '<S2>'   : 'lane_departure/roi '
+ * '<S2>'   : 'lane_departure/Input /MATLAB Function'
  */
 #endif                                 /* RTW_HEADER_lane_departure_h_ */
 
