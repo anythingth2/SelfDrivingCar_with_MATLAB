@@ -5,7 +5,7 @@
  *
  * Model version              : 1.0
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C source code generated on : Fri Feb 02 15:40:31 2018
+ * C source code generated on : Tue Feb 13 19:11:27 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -55,9 +55,7 @@ static const char_T * rtDataTypeNames[] = {
 
 /* data type transitions for block I/O structure */
 static DataTypeTransition rtBTransitions[] = {
-  { (char_T *)(&untitled_B.V4L2VideoCapture_o1[0]), 3, 0, 76800 },
-
-  { (char_T *)(&untitled_B.V4L2VideoCapture_o2[0]), 3, 0, 76800 }
+  { (char_T *)(&untitled_B.V4L2VideoCapture_o1[0]), 3, 0, 921600 }
   ,
 
   { (char_T *)(&untitled_DW.obj), 14, 0, 1 },
@@ -67,7 +65,7 @@ static DataTypeTransition rtBTransitions[] = {
 
 /* data type transition table for block I/O structure */
 static DataTypeTransitionTable rtBTransTable = {
-  4U,
+  3U,
   rtBTransitions
 };
 

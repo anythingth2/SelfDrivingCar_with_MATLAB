@@ -2,7 +2,7 @@
 ## Makefile generated for Simulink model 'untitled'. 
 ## 
 ## Makefile     : untitled.mk
-## Generated on : Fri Feb 02 15:40:44 2018
+## Generated on : Tue Feb 13 19:08:50 2018
 ## MATLAB Coder version: 3.3 (R2017a)
 ## 
 ## Build Info:
@@ -29,7 +29,7 @@ MATLAB_ROOT               = .
 MATLAB_BIN                = .
 MATLAB_ARCH_BIN           = .
 MASTER_ANCHOR_DIR         = 
-START_DIR                 = /home/pi/Desktop/
+START_DIR                 = /home/pi/Desktop/AMAS
 ARCH                      = glnx
 SOLVER                    = 
 SOLVER_OBJ                = 

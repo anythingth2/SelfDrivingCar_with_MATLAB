@@ -5,7 +5,7 @@
  *
  * Model version                  : 1.0
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Fri Feb 02 15:40:31 2018
+ * C/C++ source code generated on : Tue Feb 13 19:11:27 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -73,12 +73,12 @@
 
 /* Block signals (auto storage) */
 typedef struct {
-  uint8_T V4L2VideoCapture_o1[76800];  /* '<Root>/V4L2 Video Capture' */
-  uint8_T u0[76800];
-  uint8_T V4L2VideoCapture_o2[38400];  /* '<Root>/V4L2 Video Capture' */
-  uint8_T V4L2VideoCapture_o3[38400];  /* '<Root>/V4L2 Video Capture' */
-  uint8_T u1[38400];
-  uint8_T u2[38400];
+  uint8_T V4L2VideoCapture_o1[307200]; /* '<Root>/V4L2 Video Capture' */
+  uint8_T V4L2VideoCapture_o2[307200]; /* '<Root>/V4L2 Video Capture' */
+  uint8_T V4L2VideoCapture_o3[307200]; /* '<Root>/V4L2 Video Capture' */
+  uint8_T u0[307200];
+  uint8_T u1[307200];
+  uint8_T u2[307200];
 } B_untitled_T;
 
 /* Block states (auto storage) for system '<Root>' */

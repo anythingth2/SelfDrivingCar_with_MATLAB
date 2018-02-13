@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'lane_departure'.
  *
- * Model version                  : 1.47
+ * Model version                  : 1.64
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Tue Feb 13 01:16:57 2018
+ * C/C++ source code generated on : Wed Feb 14 01:43:31 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -20,7 +20,7 @@
 /* Constant parameters (auto storage) */
 const ConstP rtConstP = {
   /* Computed Parameter: HoughTransform_SINE_TABLE_RTP
-   * Referenced by: '<Root>/Hough Transform'
+   * Referenced by: '<S2>/Hough Transform'
    */
   { -1.0, -0.99984769515639127, -0.99939082701909565, -0.99862953475457383,
     -0.9975640502598242, -0.99619469809174555, -0.9945218953682734,
@@ -54,9 +54,9 @@ const ConstP rtConstP = {
     -0.034899496702500969, -0.017452406437283512, 0.0 },
 
   /* Computed Parameter: HoughTransform_FIRSTRHO_RTP
-   * Referenced by: '<Root>/Hough Transform'
+   * Referenced by: '<S2>/Hough Transform'
    */
-  -199.0,
+  -399.0,
 
   /* Computed Parameter: EdgeDetection_VRO_RTP
    * Referenced by: '<Root>/Edge Detection'

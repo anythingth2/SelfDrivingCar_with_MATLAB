@@ -2,7 +2,7 @@
 ## Makefile generated for Simulink model 'lane_departure'. 
 ## 
 ## Makefile     : lane_departure.mk
-## Generated on : Tue Feb 13 01:10:46 2018
+## Generated on : Wed Feb 14 01:43:36 2018
 ## MATLAB Coder version: 3.3 (R2017a)
 ## 
 ## Build Info:
@@ -191,12 +191,12 @@ INCLUDES = $(INCLUDES_BUILDINFO)
 ## DEFINES
 ###########################################################################
 
-DEFINES_ = -DMODEL=lane_departure -DNUMST=2 -DNCSTATES=0 -DHAVESTDIO -DON_TARGET_WAIT_FOR_START=1 -DTERMFCN=0 -DONESTEPFCN=1 -DMAT_FILE=0 -DMULTI_INSTANCE_CODE=0 -DEXT_MODE=1 -DINTEGER_CODE=0 -DMT=1 -DCLASSIC_INTERFACE=0 -DALLOCATIONFCN=0 -DTID01EQ=0 -DARM_PROJECT -D_USE_TARGET_UDP_ -D_RUNONTARGETHARDWARE_BUILD_ -DSTACK_SIZE=64 -D__MW_TARGET_USE_HARDWARE_RESOURCES_H__ -DRT
-DEFINES_BUILD_ARGS = -DTERMFCN=0 -DONESTEPFCN=1 -DMAT_FILE=0 -DMULTI_INSTANCE_CODE=0 -DEXT_MODE=1 -DINTEGER_CODE=0 -DMT=1 -DCLASSIC_INTERFACE=0 -DALLOCATIONFCN=0
+DEFINES_ = -DMODEL=lane_departure -DNUMST=1 -DNCSTATES=0 -DHAVESTDIO -DON_TARGET_WAIT_FOR_START=1 -DTERMFCN=0 -DONESTEPFCN=1 -DMAT_FILE=0 -DMULTI_INSTANCE_CODE=0 -DEXT_MODE=1 -DINTEGER_CODE=0 -DMT=0 -DCLASSIC_INTERFACE=0 -DALLOCATIONFCN=0 -DTID01EQ=0 -DARM_PROJECT -D_USE_TARGET_UDP_ -D_RUNONTARGETHARDWARE_BUILD_ -DSTACK_SIZE=64 -D__MW_TARGET_USE_HARDWARE_RESOURCES_H__ -DRT
+DEFINES_BUILD_ARGS = -DTERMFCN=0 -DONESTEPFCN=1 -DMAT_FILE=0 -DMULTI_INSTANCE_CODE=0 -DEXT_MODE=1 -DINTEGER_CODE=0 -DMT=0 -DCLASSIC_INTERFACE=0 -DALLOCATIONFCN=0
 DEFINES_IMPLIED = -DTID01EQ=0
 DEFINES_OPTS = -DON_TARGET_WAIT_FOR_START=1
 DEFINES_SKIPFORSIL = -DARM_PROJECT -D_USE_TARGET_UDP_ -D_RUNONTARGETHARDWARE_BUILD_ -DSTACK_SIZE=64 -DRT
-DEFINES_STANDARD = -DMODEL=lane_departure -DNUMST=2 -DNCSTATES=0 -DHAVESTDIO
+DEFINES_STANDARD = -DMODEL=lane_departure -DNUMST=1 -DNCSTATES=0 -DHAVESTDIO
 
 DEFINES = $(DEFINES_) $(DEFINES_BUILD_ARGS) $(DEFINES_IMPLIED) $(DEFINES_OPTS) $(DEFINES_SKIPFORSIL) $(DEFINES_STANDARD)
 
@@ -204,7 +204,7 @@ DEFINES = $(DEFINES_) $(DEFINES_BUILD_ARGS) $(DEFINES_IMPLIED) $(DEFINES_OPTS) $
 ## SOURCE FILES
 ###########################################################################
 
-SRCS = v4l2_capture.c v4l2_capture_linux.c hough_d_rt.c hough_r_rt.c lane_departure.c lane_departure_data.c ext_svr.c updown.c ext_work.c rtiostream_utils.c linuxinitialize.c rtiostream_interface.c rtiostream_tcpip.c
+SRCS = MW_SDL_video_display.c v4l2_capture.c v4l2_capture_linux.c hough_d_rt.c hough_r_rt.c lane_departure.c lane_departure_data.c ext_svr.c updown.c ext_work.c rtiostream_utils.c linuxinitialize.c rtiostream_interface.c rtiostream_tcpip.c
 
 MAIN_SRC = ert_main.c
 
@@ -214,7 +214,7 @@ ALL_SRCS = $(SRCS) $(MAIN_SRC)
 ## OBJECTS
 ###########################################################################
 
-OBJS = v4l2_capture.c.o v4l2_capture_linux.c.o hough_d_rt.c.o hough_r_rt.c.o lane_departure.c.o lane_departure_data.c.o ext_svr.c.o updown.c.o ext_work.c.o rtiostream_utils.c.o linuxinitialize.c.o rtiostream_interface.c.o rtiostream_tcpip.c.o
+OBJS = MW_SDL_video_display.c.o v4l2_capture.c.o v4l2_capture_linux.c.o hough_d_rt.c.o hough_r_rt.c.o lane_departure.c.o lane_departure_data.c.o ext_svr.c.o updown.c.o ext_work.c.o rtiostream_utils.c.o linuxinitialize.c.o rtiostream_interface.c.o rtiostream_tcpip.c.o
 
 MAIN_OBJ = ert_main.c.o
 
@@ -264,7 +264,7 @@ CPPFLAGS += $(CPPFLAGS_SKIPFORSIL) $(CPPFLAGS_BASIC)
 # C++ Linker
 #---------------
 
-CPP_LDFLAGS_SKIPFORSIL =  
+CPP_LDFLAGS_SKIPFORSIL = -lSDL  
 
 CPP_LDFLAGS += $(CPP_LDFLAGS_SKIPFORSIL)
 
@@ -272,7 +272,7 @@ CPP_LDFLAGS += $(CPP_LDFLAGS_SKIPFORSIL)
 # C++ Shared Library Linker
 #------------------------------
 
-CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL =  
+CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL = -lSDL  
 
 CPP_SHAREDLIB_LDFLAGS += $(CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL)
 
@@ -280,7 +280,7 @@ CPP_SHAREDLIB_LDFLAGS += $(CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL)
 # Linker
 #-----------
 
-LDFLAGS_SKIPFORSIL =  
+LDFLAGS_SKIPFORSIL = -lSDL  
 
 LDFLAGS += $(LDFLAGS_SKIPFORSIL)
 
@@ -288,7 +288,7 @@ LDFLAGS += $(LDFLAGS_SKIPFORSIL)
 # Shared Library Linker
 #--------------------------
 
-SHAREDLIB_LDFLAGS_SKIPFORSIL =  
+SHAREDLIB_LDFLAGS_SKIPFORSIL = -lSDL  
 
 SHAREDLIB_LDFLAGS += $(SHAREDLIB_LDFLAGS_SKIPFORSIL)
 
@@ -479,6 +479,10 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS) $(MAIN_OBJ)
 
 %.cpp.o : %.cpp
 	$(CPP) $(CPPFLAGS) -o $@ $<
+
+
+MW_SDL_video_display.c.o : MW_SDL_video_display.c
+	$(CC) $(CFLAGS) -o $@ $<
 
 
 linuxinitialize.c.o : linuxinitialize.c

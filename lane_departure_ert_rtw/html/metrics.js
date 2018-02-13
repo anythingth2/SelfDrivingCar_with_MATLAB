@@ -5,17 +5,17 @@ function CodeMetrics() {
 	 this.metricsArray.var["lane_departure.c:rtBTransTable"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure_dt.h",
 	size: 8};
 	 this.metricsArray.var["lane_departure.c:rtBTransitions"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure_dt.h",
-	size: 128};
+	size: 144};
 	 this.metricsArray.var["lane_departure.c:rtDataTypeNames"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure_dt.h",
-	size: 76};
+	size: 80};
 	 this.metricsArray.var["lane_departure.c:rtDataTypeSizes"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure_dt.h",
-	size: 76};
+	size: 80};
 	 this.metricsArray.var["rtB"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
-	size: 867464};
+	size: 1696252};
 	 this.metricsArray.var["rtDW"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
-	size: 905884};
+	size: 2234936};
 	 this.metricsArray.var["rtM_"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
-	size: 63};
+	size: 57};
 	 this.metricsArray.fcn["MWVIP_Hough_D"] = {file: "C:\\Program Files\\MATLAB\\R2017a\\toolbox\\vision\\visionrt\\export\\include\\visionrt\\viphough_rt.h",
 	stack: 0,
 	stackTotal: 0};
@@ -34,27 +34,12 @@ function CodeMetrics() {
 	 this.metricsArray.fcn["floor"] = {file: "C:\\Program Files\\MATLAB\\R2017a\\sys\\lcc\\include\\math.h",
 	stack: 0,
 	stackTotal: 0};
-	 this.metricsArray.fcn["lane_departure.c:imrotate"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
-	stack: 12,
-	stackTotal: 12};
-	 this.metricsArray.fcn["lane_departure.c:rate_monotonic_scheduler"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
-	stack: 0,
-	stackTotal: 0};
-	 this.metricsArray.fcn["lane_departure_SetEventsForThisBaseStep"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
-	stack: 0,
-	stackTotal: 0};
 	 this.metricsArray.fcn["lane_departure_initialize"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
 	stack: 25,
 	stackTotal: 25};
 	 this.metricsArray.fcn["lane_departure_step"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
-	stack: 0,
-	stackTotal: 85};
-	 this.metricsArray.fcn["lane_departure_step0"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
-	stack: 0,
-	stackTotal: 0};
-	 this.metricsArray.fcn["lane_departure_step1"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
-	stack: 49,
-	stackTotal: 85};
+	stack: 61,
+	stackTotal: 97};
 	 this.metricsArray.fcn["memcpy"] = {file: "C:\\Program Files\\MATLAB\\R2017a\\sys\\lcc\\include\\string.h",
 	stack: 0,
 	stackTotal: 0};
@@ -92,6 +77,6 @@ function CodeMetrics() {
 			 data.type = "var";
 		 }
 	 return data; }; 
-	 this.codeMetricsSummary = '<a href="lane_departure_metrics.html">Global Memory: 1773699(bytes) Maximum Stack: 49(bytes)</a>';
+	 this.codeMetricsSummary = '<a href="lane_departure_metrics.html">Global Memory: 3931557(bytes) Maximum Stack: 61(bytes)</a>';
 	}
 CodeMetrics.instance = new CodeMetrics();

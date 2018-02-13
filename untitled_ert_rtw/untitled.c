@@ -5,7 +5,7 @@
  *
  * Model version                  : 1.0
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Fri Feb 02 15:40:31 2018
+ * C/C++ source code generated on : Tue Feb 13 19:11:27 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -37,11 +37,11 @@ void untitled_step(void)
                         untitled_B.V4L2VideoCapture_o3);
 
   /* MATLABSystem: '<S1>/MATLAB System' */
-  memcpy(&untitled_B.u0[0], &untitled_B.V4L2VideoCapture_o1[0], 76800U * sizeof
+  memcpy(&untitled_B.u0[0], &untitled_B.V4L2VideoCapture_o1[0], 307200U * sizeof
          (uint8_T));
-  memcpy(&untitled_B.u1[0], &untitled_B.V4L2VideoCapture_o2[0], 38400U * sizeof
+  memcpy(&untitled_B.u1[0], &untitled_B.V4L2VideoCapture_o2[0], 307200U * sizeof
          (uint8_T));
-  memcpy(&untitled_B.u2[0], &untitled_B.V4L2VideoCapture_o3[0], 38400U * sizeof
+  memcpy(&untitled_B.u2[0], &untitled_B.V4L2VideoCapture_o3[0], 307200U * sizeof
          (uint8_T));
 
   /* Start for MATLABSystem: '<S1>/MATLAB System' incorporates:
@@ -87,14 +87,14 @@ void untitled_initialize(void)
   /* initialize real-time model */
   (void) memset((void *)untitled_M, 0,
                 sizeof(RT_MODEL_untitled_T));
-  rtmSetTFinal(untitled_M, 10.0);
+  rtmSetTFinal(untitled_M, -1);
   untitled_M->Timing.stepSize0 = 0.1;
 
   /* External mode info */
-  untitled_M->Sizes.checksums[0] = (2081362685U);
-  untitled_M->Sizes.checksums[1] = (401707958U);
-  untitled_M->Sizes.checksums[2] = (1772082872U);
-  untitled_M->Sizes.checksums[3] = (1186633758U);
+  untitled_M->Sizes.checksums[0] = (1252808289U);
+  untitled_M->Sizes.checksums[1] = (292692517U);
+  untitled_M->Sizes.checksums[2] = (1954658084U);
+  untitled_M->Sizes.checksums[3] = (2281432028U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
@@ -134,14 +134,14 @@ void untitled_initialize(void)
   }
 
   /* Start for S-Function (v4l2_video_capture_sfcn): '<Root>/V4L2 Video Capture' */
-  MW_videoCaptureInit(untitled_ConstP.V4L2VideoCapture_p1, 0, 0, 0, 0, 320U,
-                      240U, 1U, 2U, 1U, 0.1);
+  MW_videoCaptureInit(untitled_ConstP.V4L2VideoCapture_p1, 0, 0, 0, 0, 640U,
+                      480U, 2U, 2U, 1U, 0.1);
 
   /* Start for MATLABSystem: '<S1>/MATLAB System' */
   untitled_DW.obj.isInitialized = 0;
   untitled_DW.obj.isInitialized = 1;
-  untitled_DW.obj.PixelFormatEnum = 2;
-  MW_SDL_videoDisplayInit(untitled_DW.obj.PixelFormatEnum, 1, 1, 320.0, 240.0);
+  untitled_DW.obj.PixelFormatEnum = 1;
+  MW_SDL_videoDisplayInit(untitled_DW.obj.PixelFormatEnum, 1, 1, 640.0, 480.0);
 
   /* End of Start for SubSystem: '<Root>/SDL Video Display' */
 }

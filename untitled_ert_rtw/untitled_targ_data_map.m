@@ -45,7 +45,7 @@
   ;%**************************
       
     nTotData      = 0; %add to this count as we go
-    nTotSects     = 2;
+    nTotSects     = 1;
     sectIdxOffset = 0;
     
     ;%
@@ -68,30 +68,23 @@
     ;%
     ;% Auto data (untitled_B)
     ;%
-      section.nData     = 1;
-      section.data(1)  = dumData; %prealloc
+      section.nData     = 3;
+      section.data(3)  = dumData; %prealloc
       
 	  ;% untitled_B.V4L2VideoCapture_o1
 	  section.data(1).logicalSrcIdx = 0;
 	  section.data(1).dtTransOffset = 0;
 	
-      nTotData = nTotData + section.nData;
-      sigMap.sections(1) = section;
-      clear section
-      
-      section.nData     = 2;
-      section.data(2)  = dumData; %prealloc
-      
 	  ;% untitled_B.V4L2VideoCapture_o2
-	  section.data(1).logicalSrcIdx = 1;
-	  section.data(1).dtTransOffset = 0;
+	  section.data(2).logicalSrcIdx = 1;
+	  section.data(2).dtTransOffset = 307200;
 	
 	  ;% untitled_B.V4L2VideoCapture_o3
-	  section.data(2).logicalSrcIdx = 2;
-	  section.data(2).dtTransOffset = 38400;
+	  section.data(3).logicalSrcIdx = 2;
+	  section.data(3).dtTransOffset = 614400;
 	
       nTotData = nTotData + section.nData;
-      sigMap.sections(2) = section;
+      sigMap.sections(1) = section;
       clear section
       
     
@@ -113,7 +106,7 @@
       
     nTotData      = 0; %add to this count as we go
     nTotSects     = 2;
-    sectIdxOffset = 2;
+    sectIdxOffset = 1;
     
     ;%
     ;% Define dummy sections & preallocate arrays
@@ -183,8 +176,8 @@
   ;%
 
 
-  targMap.checksum0 = 2081362685;
-  targMap.checksum1 = 401707958;
-  targMap.checksum2 = 1772082872;
-  targMap.checksum3 = 1186633758;
+  targMap.checksum0 = 1252808289;
+  targMap.checksum1 = 292692517;
+  targMap.checksum2 = 1954658084;
+  targMap.checksum3 = 2281432028;
 

@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'lane_departure'.
  *
- * Model version                  : 1.47
+ * Model version                  : 1.64
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Tue Feb 13 01:16:57 2018
+ * C/C++ source code generated on : Wed Feb 14 01:43:31 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -91,12 +91,6 @@ void mul_wide_su32(int32_T in0, uint32_T in1, uint32_T *ptrOutBitsHi, uint32_T
                    *ptrOutBitsLo);
 int32_T mul_ssu32_loSR(int32_T a, uint32_T b, uint32_T aShift);
 int32_T div_nde_s32_floor(int32_T numerator, int32_T denominator);
-extern void lane_departure_step0(void);
-extern void lane_departure_step1(void);
-
-/* Forward declaration for local functions */
-static void imrotate(const uint8_T varargin_1[57600], uint8_T B_0[57600]);
-static void rate_monotonic_scheduler(void);
 void mul_wide_s32(int32_T in0, int32_T in1, uint32_T *ptrOutBitsHi, uint32_T
                   *ptrOutBitsLo)
 {
@@ -212,156 +206,48 @@ int32_T div_nde_s32_floor(int32_T numerator, int32_T denominator)
            0) ? -1 : 0) + numerator / denominator;
 }
 
-/*
- * Set which subrates need to run this base step (base rate always runs).
- * This function must be called prior to calling the model step function
- * in order to "remember" which rates need to run this base step.  The
- * buffering of events allows for overlapping preemption.
- */
-void lane_departure_SetEventsForThisBaseStep(boolean_T *eventFlags)
-{
-  /* Task runs when its counter is zero, computed via rtmStepTask macro */
-  eventFlags[1] = ((boolean_T)rtmStepTask(rtM, 1));
-}
-
-/*
- *   This function updates active task flag for each subrate
- * and rate transition flags for tasks that exchange data.
- * The function assumes rate-monotonic multitasking scheduler.
- * The function must be called at model base rate so that
- * the generated code self-manages all its subrates and rate
- * transition flags.
- */
-static void rate_monotonic_scheduler(void)
-{
-  /* Compute which subrates run during the next base time step.  Subrates
-   * are an integer multiple of the base rate counter.  Therefore, the subtask
-   * counter is reset when it reaches its limit (zero means run).
-   */
-  (rtM->Timing.TaskCounters.TID[1])++;
-  if ((rtM->Timing.TaskCounters.TID[1]) > 5) {/* Sample time: [0.2s, 0.0s] */
-    rtM->Timing.TaskCounters.TID[1] = 0;
-  }
-}
-
-/* Function for MATLAB Function: '<S1>/MATLAB Function' */
-static void imrotate(const uint8_T varargin_1[57600], uint8_T B_0[57600])
-{
-  int32_T p;
-  int32_T i;
-  int32_T j;
-  for (p = 0; p < 3; p++) {
-    for (i = 0; i < 120; i++) {
-      for (j = 0; j < 160; j++) {
-        B_0[(i + 120 * j) + 19200 * p] = varargin_1[((119 - i) * 160 + j) +
-          19200 * p];
-      }
-    }
-  }
-}
-
-/* Model step function for TID0 */
-void lane_departure_step0(void)        /* Sample time: [0.033333333333333333s, 0.0s] */
-{
-  {                                    /* Sample time: [0.033333333333333333s, 0.0s] */
-    rate_monotonic_scheduler();
-  }
-
-  /* External mode */
-  rtExtModeUploadCheckTrigger(2);
-  rtExtModeUpload(0, rtM->Timing.taskTime0);
-
-  /* signal main to stop simulation */
-  {                                    /* Sample time: [0.033333333333333333s, 0.0s] */
-    if ((rtmGetTFinal(rtM)!=-1) &&
-        !((rtmGetTFinal(rtM)-rtM->Timing.taskTime0) > rtM->Timing.taskTime0 *
-          (DBL_EPSILON))) {
-      rtmSetErrorStatus(rtM, "Simulation finished");
-    }
-
-    if (rtmGetStopRequested(rtM)) {
-      rtmSetErrorStatus(rtM, "Simulation finished");
-    }
-  }
-
-  /* Update absolute time */
-  /* The "clockTick0" counts the number of times the code of this task has
-   * been executed. The absolute time is the multiplication of "clockTick0"
-   * and "Timing.stepSize0". Size of "clockTick0" ensures timer will not
-   * overflow during the application lifespan selected.
-   */
-  rtM->Timing.taskTime0 =
-    (++rtM->Timing.clockTick0) * rtM->Timing.stepSize0;
-}
-
-/* Model step function for TID1 */
-void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
+/* Model step function */
+void lane_departure_step(void)
 {
   boolean_T done;
   boolean_T b4;
   boolean_T b3;
   boolean_T b2;
   uint8_T minVal;
+  int32_T outIdx;
+  int32_T outIdxAdj;
   int32_T inIdx;
   int32_T col;
   int32_T hOffset;
   int32_T gOffset;
-  int32_T iter;
   int32_T numIter;
   int32_T numEleTmp;
   int32_T lastBlockCol;
-  int32_T lineOff;
+  int32_T i;
   int32_T ky;
   int32_T ku;
+  int32_T line_idx_3;
+  int32_T line_idx_2;
 
   /* S-Function (v4l2_video_capture_sfcn): '<S1>/V4L2 Video Capture' */
-  MW_videoCaptureOutput(rtConstP.V4L2VideoCapture_p1, &rtB.MatrixConcatenate[0],
-                        &rtB.MatrixConcatenate[19200], &rtB.MatrixConcatenate
-                        [38400]);
-
-  /* MATLAB Function: '<S1>/MATLAB Function' */
-  /* MATLAB Function 'Input /MATLAB Function': '<S2>:1' */
-  /* '<S2>:1:2' Image = imrotate(I,90,'bilinear'); */
-  memcpy(&rtB.uv0[0], &rtB.MatrixConcatenate[0], 57600U * sizeof(uint8_T));
-  imrotate(rtB.uv0, rtB.Image);
-
-  /* '<S2>:1:3' Image = flip(Image,2); */
-  for (numEleTmp = 0; numEleTmp < 3; numEleTmp++) {
-    for (lineOff = 0; lineOff < 120; lineOff++) {
-      ky = numEleTmp * 19200 + lineOff;
-      for (ku = 0; ku < 80; ku++) {
-        minVal = rtB.Image[ku * 120 + ky];
-        rtB.Image[ky + ku * 120] = rtB.Image[(159 - ku) * 120 + ky];
-        rtB.Image[ky + (159 - ku) * 120] = minVal;
-      }
-    }
-  }
-
-  /* End of MATLAB Function: '<S1>/MATLAB Function' */
-  /* S-Function (svipcolorconv): '<Root>/Color Space  Conversion' */
-  for (lineOff = 0; lineOff < 19200; lineOff++) {
-    rtB.ColorSpaceConversion[lineOff] = (uint8_T)((((rtB.Image[19200 + lineOff] *
-      38470U + rtB.Image[lineOff] * 19595U) + rtB.Image[38400 + lineOff] * 7471U)
-      + 32768U) >> 16);
-  }
-
-  /* End of S-Function (svipcolorconv): '<Root>/Color Space  Conversion' */
+  MW_videoCaptureOutput(rtConstP.V4L2VideoCapture_p1, rtB.V4L2VideoCapture_o1,
+                        rtB.V4L2VideoCapture_o2, rtB.V4L2VideoCapture_o3);
 
   /* S-Function (svipmorphop): '<Root>/Erosion' */
   ku = 0;
   rtDW.Erosion_ONE_PAD_IMG_DW[0] = MAX_uint8_T;
   ky = 1;
-  for (numEleTmp = 0; numEleTmp < 126; numEleTmp++) {
+  for (numEleTmp = 0; numEleTmp < 326; numEleTmp++) {
     rtDW.Erosion_ONE_PAD_IMG_DW[ky] = MAX_uint8_T;
     ky++;
   }
 
-  for (lineOff = 0; lineOff < 160; lineOff++) {
+  for (i = 0; i < 240; i++) {
     rtDW.Erosion_ONE_PAD_IMG_DW[ky] = MAX_uint8_T;
-    memcpy(&rtDW.Erosion_ONE_PAD_IMG_DW[ky + 1], &rtB.ColorSpaceConversion[ku],
-           120U * sizeof(uint8_T));
-    ky += 121;
-    ku += 120;
+    memcpy(&rtDW.Erosion_ONE_PAD_IMG_DW[ky + 1], &rtB.V4L2VideoCapture_o1[ku],
+           320U * sizeof(uint8_T));
+    ky += 321;
+    ku += 320;
     rtDW.Erosion_ONE_PAD_IMG_DW[ky] = MAX_uint8_T;
     ky++;
     for (numEleTmp = 0; numEleTmp < 5; numEleTmp++) {
@@ -370,73 +256,73 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
     }
   }
 
-  for (lineOff = 0; lineOff < 6; lineOff++) {
+  for (i = 0; i < 6; i++) {
     rtDW.Erosion_ONE_PAD_IMG_DW[ky] = MAX_uint8_T;
     ky++;
-    for (numEleTmp = 0; numEleTmp < 126; numEleTmp++) {
+    for (numEleTmp = 0; numEleTmp < 326; numEleTmp++) {
       rtDW.Erosion_ONE_PAD_IMG_DW[ky] = MAX_uint8_T;
       ky++;
     }
   }
 
-  memset(&rtDW.Erosion_TWO_PAD_IMG_DW[0], 255, 21209U * sizeof(uint8_T));
-  rtB.curNumNonZ = rtDW.Erosion_NUMNONZ_DW[0];
+  memset(&rtDW.Erosion_TWO_PAD_IMG_DW[0], 255, 80769U * sizeof(uint8_T));
+  ky = rtDW.Erosion_NUMNONZ_DW[0];
   inIdx = 0;
-  ky = 1;
+  outIdx = 1;
   if (rtDW.Erosion_STREL_DW[0] == 0) {
-    for (col = 0; col < 166; col++) {
+    for (col = 0; col < 246; col++) {
       rtB.row = 0;
-      while (rtB.row < 123) {
+      while (rtB.row < 323) {
         minVal = rtDW.Erosion_ONE_PAD_IMG_DW[inIdx + rtDW.Erosion_ERODE_OFF_DW[0]];
-        for (lineOff = 1; lineOff < rtB.curNumNonZ; lineOff++) {
-          if (rtDW.Erosion_ONE_PAD_IMG_DW[inIdx +
-              rtDW.Erosion_ERODE_OFF_DW[lineOff]] < minVal) {
+        for (i = 1; i < ky; i++) {
+          if (rtDW.Erosion_ONE_PAD_IMG_DW[inIdx + rtDW.Erosion_ERODE_OFF_DW[i]] <
+              minVal) {
             minVal = rtDW.Erosion_ONE_PAD_IMG_DW[inIdx +
-              rtDW.Erosion_ERODE_OFF_DW[lineOff]];
+              rtDW.Erosion_ERODE_OFF_DW[i]];
           }
         }
 
-        rtDW.Erosion_TWO_PAD_IMG_DW[ky] = minVal;
+        rtDW.Erosion_TWO_PAD_IMG_DW[outIdx] = minVal;
         inIdx++;
-        ky++;
+        outIdx++;
         rtB.row++;
       }
 
       inIdx += 4;
-      ky += 4;
+      outIdx += 4;
     }
   } else if (rtDW.Erosion_STREL_DW[0] == 1) {
-    numIter = 124 / rtDW.Erosion_NUMNONZ_DW[0];
-    numEleTmp = rtDW.Erosion_ERODE_OFF_DW[0] / 127 * 127;
-    lineOff = rtDW.Erosion_ERODE_OFF_DW[0] - numEleTmp;
-    gOffset = (rtDW.Erosion_NUMNONZ_DW[0] + lineOff) - 1;
-    hOffset = lineOff - 1;
+    numIter = 324 / rtDW.Erosion_NUMNONZ_DW[0];
+    numEleTmp = rtDW.Erosion_ERODE_OFF_DW[0] / 327 * 327;
+    i = rtDW.Erosion_ERODE_OFF_DW[0] - numEleTmp;
+    gOffset = (rtDW.Erosion_NUMNONZ_DW[0] + i) - 1;
+    hOffset = i - 1;
     inIdx = 1 + numEleTmp;
     lastBlockCol = numIter * rtDW.Erosion_NUMNONZ_DW[0];
-    for (lineOff = 0; lineOff < rtB.curNumNonZ; lineOff++) {
-      rtDW.Erosion_GBUF_DW[lineOff] = MAX_uint8_T;
+    for (i = 0; i < ky; i++) {
+      rtDW.Erosion_GBUF_DW[i] = MAX_uint8_T;
     }
 
     numEleTmp = (numIter + 1) * rtDW.Erosion_NUMNONZ_DW[0];
-    for (lineOff = numEleTmp; lineOff < numEleTmp + rtB.curNumNonZ; lineOff++) {
-      rtDW.Erosion_GBUF_DW[lineOff] = MAX_uint8_T;
+    for (i = numEleTmp; i < numEleTmp + ky; i++) {
+      rtDW.Erosion_GBUF_DW[i] = MAX_uint8_T;
     }
 
-    for (lineOff = 0; lineOff < rtB.curNumNonZ; lineOff++) {
-      rtDW.Erosion_HBUF_DW[lineOff] = MAX_uint8_T;
+    for (i = 0; i < ky; i++) {
+      rtDW.Erosion_HBUF_DW[i] = MAX_uint8_T;
     }
 
-    for (lineOff = numEleTmp; lineOff < numEleTmp + rtB.curNumNonZ; lineOff++) {
-      rtDW.Erosion_HBUF_DW[lineOff] = MAX_uint8_T;
+    for (i = numEleTmp; i < numEleTmp + ky; i++) {
+      rtDW.Erosion_HBUF_DW[i] = MAX_uint8_T;
     }
 
-    for (col = 0; col < 166; col++) {
-      numEleTmp = rtB.curNumNonZ;
-      for (iter = 0; iter < numIter; iter++) {
+    for (col = 0; col < 246; col++) {
+      numEleTmp = ky;
+      for (ku = 0; ku < numIter; ku++) {
         rtDW.Erosion_GBUF_DW[numEleTmp] = rtDW.Erosion_ONE_PAD_IMG_DW[inIdx];
         numEleTmp++;
         inIdx++;
-        for (lineOff = 1; lineOff < rtB.curNumNonZ; lineOff++) {
+        for (i = 1; i < ky; i++) {
           if (rtDW.Erosion_GBUF_DW[numEleTmp - 1] <
               rtDW.Erosion_ONE_PAD_IMG_DW[inIdx]) {
             rtDW.Erosion_GBUF_DW[numEleTmp] = rtDW.Erosion_GBUF_DW[numEleTmp - 1];
@@ -449,13 +335,13 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
         }
       }
 
-      if (lastBlockCol <= 123) {
+      if (lastBlockCol <= 323) {
         rtDW.Erosion_GBUF_DW[numEleTmp] = rtDW.Erosion_ONE_PAD_IMG_DW[inIdx];
         numEleTmp++;
         inIdx++;
-        iter = lastBlockCol + rtB.curNumNonZ;
-        for (lineOff = lastBlockCol + 1; lineOff < iter; lineOff++) {
-          if (lineOff < 123) {
+        ku = lastBlockCol + ky;
+        for (i = lastBlockCol + 1; i < ku; i++) {
+          if (i < 323) {
             if (rtDW.Erosion_GBUF_DW[numEleTmp - 1] <
                 rtDW.Erosion_ONE_PAD_IMG_DW[inIdx]) {
               rtDW.Erosion_GBUF_DW[numEleTmp] = rtDW.Erosion_GBUF_DW[numEleTmp -
@@ -474,9 +360,9 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
       }
 
       inIdx--;
-      if (lastBlockCol <= 123) {
-        for (lineOff = 1; lineOff - 1 < rtB.curNumNonZ; lineOff++) {
-          if ((rtB.curNumNonZ - lineOff) + lastBlockCol < 123) {
+      if (lastBlockCol <= 323) {
+        for (i = 1; i - 1 < ky; i++) {
+          if ((ky - i) + lastBlockCol < 323) {
             if (rtDW.Erosion_HBUF_DW[numEleTmp] <
                 rtDW.Erosion_ONE_PAD_IMG_DW[inIdx]) {
               rtDW.Erosion_HBUF_DW[numEleTmp - 1] =
@@ -494,11 +380,11 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
         }
       }
 
-      for (iter = 0; iter < numIter; iter++) {
+      for (ku = 0; ku < numIter; ku++) {
         rtDW.Erosion_HBUF_DW[numEleTmp - 1] = rtDW.Erosion_ONE_PAD_IMG_DW[inIdx];
         numEleTmp--;
         inIdx--;
-        for (lineOff = 1; lineOff < rtB.curNumNonZ; lineOff++) {
+        for (i = 1; i < ky; i++) {
           if (rtDW.Erosion_HBUF_DW[numEleTmp] <
               rtDW.Erosion_ONE_PAD_IMG_DW[inIdx]) {
             rtDW.Erosion_HBUF_DW[numEleTmp - 1] = rtDW.Erosion_HBUF_DW[numEleTmp];
@@ -513,56 +399,56 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
       }
 
       rtB.row = 0;
-      while (rtB.row < 123) {
+      while (rtB.row < 323) {
         if (rtDW.Erosion_GBUF_DW[(numEleTmp + gOffset) - 1] <
             rtDW.Erosion_HBUF_DW[numEleTmp + hOffset]) {
-          rtDW.Erosion_TWO_PAD_IMG_DW[ky] = rtDW.Erosion_GBUF_DW[(numEleTmp +
-            gOffset) - 1];
+          rtDW.Erosion_TWO_PAD_IMG_DW[outIdx] = rtDW.Erosion_GBUF_DW[(numEleTmp
+            + gOffset) - 1];
         } else {
-          rtDW.Erosion_TWO_PAD_IMG_DW[ky] = rtDW.Erosion_HBUF_DW[numEleTmp +
+          rtDW.Erosion_TWO_PAD_IMG_DW[outIdx] = rtDW.Erosion_HBUF_DW[numEleTmp +
             hOffset];
         }
 
         numEleTmp++;
-        ky++;
+        outIdx++;
         rtB.row++;
       }
 
-      inIdx += 128;
-      ky += 4;
+      inIdx += 328;
+      outIdx += 4;
     }
   } else {
-    numIter = 166 / rtDW.Erosion_NUMNONZ_DW[0];
-    lineOff = rtDW.Erosion_ERODE_OFF_DW[0] / 127;
-    gOffset = rtDW.Erosion_NUMNONZ_DW[0] + lineOff;
-    hOffset = lineOff;
-    inIdx = rtDW.Erosion_ERODE_OFF_DW[0] - lineOff * 127;
+    numIter = 246 / rtDW.Erosion_NUMNONZ_DW[0];
+    i = rtDW.Erosion_ERODE_OFF_DW[0] / 327;
+    gOffset = rtDW.Erosion_NUMNONZ_DW[0] + i;
+    hOffset = i;
+    inIdx = rtDW.Erosion_ERODE_OFF_DW[0] - i * 327;
     lastBlockCol = numIter * rtDW.Erosion_NUMNONZ_DW[0];
-    for (lineOff = 0; lineOff < rtB.curNumNonZ; lineOff++) {
-      rtDW.Erosion_GBUF_DW[lineOff] = MAX_uint8_T;
+    for (i = 0; i < ky; i++) {
+      rtDW.Erosion_GBUF_DW[i] = MAX_uint8_T;
     }
 
     numEleTmp = (numIter + 1) * rtDW.Erosion_NUMNONZ_DW[0];
-    for (lineOff = numEleTmp; lineOff < numEleTmp + rtB.curNumNonZ; lineOff++) {
-      rtDW.Erosion_GBUF_DW[lineOff] = MAX_uint8_T;
+    for (i = numEleTmp; i < numEleTmp + ky; i++) {
+      rtDW.Erosion_GBUF_DW[i] = MAX_uint8_T;
     }
 
-    for (lineOff = 0; lineOff < rtB.curNumNonZ; lineOff++) {
-      rtDW.Erosion_HBUF_DW[lineOff] = MAX_uint8_T;
+    for (i = 0; i < ky; i++) {
+      rtDW.Erosion_HBUF_DW[i] = MAX_uint8_T;
     }
 
-    for (lineOff = numEleTmp; lineOff < numEleTmp + rtB.curNumNonZ; lineOff++) {
-      rtDW.Erosion_HBUF_DW[lineOff] = MAX_uint8_T;
+    for (i = numEleTmp; i < numEleTmp + ky; i++) {
+      rtDW.Erosion_HBUF_DW[i] = MAX_uint8_T;
     }
 
     rtB.row = 0;
-    while (rtB.row < 123) {
-      numEleTmp = rtB.curNumNonZ;
-      for (iter = 0; iter < numIter; iter++) {
+    while (rtB.row < 323) {
+      numEleTmp = ky;
+      for (ku = 0; ku < numIter; ku++) {
         rtDW.Erosion_GBUF_DW[numEleTmp] = rtDW.Erosion_ONE_PAD_IMG_DW[inIdx];
         numEleTmp++;
-        inIdx += 127;
-        for (lineOff = 1; lineOff < rtB.curNumNonZ; lineOff++) {
+        inIdx += 327;
+        for (i = 1; i < ky; i++) {
           if (rtDW.Erosion_GBUF_DW[numEleTmp - 1] <
               rtDW.Erosion_ONE_PAD_IMG_DW[inIdx]) {
             rtDW.Erosion_GBUF_DW[numEleTmp] = rtDW.Erosion_GBUF_DW[numEleTmp - 1];
@@ -571,17 +457,17 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
           }
 
           numEleTmp++;
-          inIdx += 127;
+          inIdx += 327;
         }
       }
 
-      if (lastBlockCol <= 166) {
+      if (lastBlockCol <= 246) {
         rtDW.Erosion_GBUF_DW[numEleTmp] = rtDW.Erosion_ONE_PAD_IMG_DW[inIdx];
         numEleTmp++;
-        inIdx += 127;
-        iter = lastBlockCol + rtB.curNumNonZ;
-        for (lineOff = lastBlockCol + 1; lineOff < iter; lineOff++) {
-          if (lineOff < 166) {
+        inIdx += 327;
+        ku = lastBlockCol + ky;
+        for (i = lastBlockCol + 1; i < ku; i++) {
+          if (i < 246) {
             if (rtDW.Erosion_GBUF_DW[numEleTmp - 1] <
                 rtDW.Erosion_ONE_PAD_IMG_DW[inIdx]) {
               rtDW.Erosion_GBUF_DW[numEleTmp] = rtDW.Erosion_GBUF_DW[numEleTmp -
@@ -595,14 +481,14 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
           }
 
           numEleTmp++;
-          inIdx += 127;
+          inIdx += 327;
         }
       }
 
-      inIdx -= 127;
-      if (lastBlockCol <= 166) {
-        for (lineOff = 1; lineOff - 1 < rtB.curNumNonZ; lineOff++) {
-          if ((rtB.curNumNonZ - lineOff) + lastBlockCol < 166) {
+      inIdx -= 327;
+      if (lastBlockCol <= 246) {
+        for (i = 1; i - 1 < ky; i++) {
+          if ((ky - i) + lastBlockCol < 246) {
             if (rtDW.Erosion_HBUF_DW[numEleTmp] <
                 rtDW.Erosion_ONE_PAD_IMG_DW[inIdx]) {
               rtDW.Erosion_HBUF_DW[numEleTmp - 1] =
@@ -616,15 +502,15 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
           }
 
           numEleTmp--;
-          inIdx -= 127;
+          inIdx -= 327;
         }
       }
 
-      for (iter = 0; iter < numIter; iter++) {
+      for (ku = 0; ku < numIter; ku++) {
         rtDW.Erosion_HBUF_DW[numEleTmp - 1] = rtDW.Erosion_ONE_PAD_IMG_DW[inIdx];
         numEleTmp--;
-        inIdx -= 127;
-        for (lineOff = 1; lineOff < rtB.curNumNonZ; lineOff++) {
+        inIdx -= 327;
+        for (i = 1; i < ky; i++) {
           if (rtDW.Erosion_HBUF_DW[numEleTmp] <
               rtDW.Erosion_ONE_PAD_IMG_DW[inIdx]) {
             rtDW.Erosion_HBUF_DW[numEleTmp - 1] = rtDW.Erosion_HBUF_DW[numEleTmp];
@@ -634,90 +520,89 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
           }
 
           numEleTmp--;
-          inIdx -= 127;
+          inIdx -= 327;
         }
       }
 
-      for (col = 0; col < 166; col++) {
+      for (col = 0; col < 246; col++) {
         if (rtDW.Erosion_GBUF_DW[(numEleTmp + gOffset) - 1] <
             rtDW.Erosion_HBUF_DW[numEleTmp + hOffset]) {
-          rtDW.Erosion_TWO_PAD_IMG_DW[ky] = rtDW.Erosion_GBUF_DW[(numEleTmp +
-            gOffset) - 1];
+          rtDW.Erosion_TWO_PAD_IMG_DW[outIdx] = rtDW.Erosion_GBUF_DW[(numEleTmp
+            + gOffset) - 1];
         } else {
-          rtDW.Erosion_TWO_PAD_IMG_DW[ky] = rtDW.Erosion_HBUF_DW[numEleTmp +
+          rtDW.Erosion_TWO_PAD_IMG_DW[outIdx] = rtDW.Erosion_HBUF_DW[numEleTmp +
             hOffset];
         }
 
         numEleTmp++;
-        ky += 127;
+        outIdx += 327;
       }
 
-      inIdx += 128;
-      ky += -21081;
+      inIdx += 328;
+      outIdx += -80441;
       rtB.row++;
     }
   }
 
   numEleTmp = rtDW.Erosion_NUMNONZ_DW[0];
-  rtB.curNumNonZ = rtDW.Erosion_NUMNONZ_DW[1];
+  ky = rtDW.Erosion_NUMNONZ_DW[1];
   inIdx = 1;
-  ky = 0;
+  outIdx = 0;
   if (rtDW.Erosion_STREL_DW[1] == 0) {
-    for (col = 0; col < 160; col++) {
+    for (col = 0; col < 240; col++) {
       rtB.row = 1;
-      while (rtB.row < 121) {
+      while (rtB.row < 321) {
         minVal = rtDW.Erosion_TWO_PAD_IMG_DW[inIdx +
           rtDW.Erosion_ERODE_OFF_DW[numEleTmp]];
-        for (lineOff = 1; lineOff < rtB.curNumNonZ; lineOff++) {
-          if (rtDW.Erosion_TWO_PAD_IMG_DW[rtDW.Erosion_ERODE_OFF_DW[lineOff +
+        for (i = 1; i < ky; i++) {
+          if (rtDW.Erosion_TWO_PAD_IMG_DW[rtDW.Erosion_ERODE_OFF_DW[i +
               numEleTmp] + inIdx] < minVal) {
-            minVal =
-              rtDW.Erosion_TWO_PAD_IMG_DW[rtDW.Erosion_ERODE_OFF_DW[lineOff +
+            minVal = rtDW.Erosion_TWO_PAD_IMG_DW[rtDW.Erosion_ERODE_OFF_DW[i +
               numEleTmp] + inIdx];
           }
         }
 
-        rtB.Erosion[ky] = minVal;
+        rtB.Erosion[outIdx] = minVal;
         inIdx++;
-        ky++;
+        outIdx++;
         rtB.row++;
       }
 
       inIdx += 7;
     }
   } else if (rtDW.Erosion_STREL_DW[1] == 1) {
-    numIter = 120 / rtDW.Erosion_NUMNONZ_DW[1];
-    numEleTmp = rtDW.Erosion_ERODE_OFF_DW[rtDW.Erosion_NUMNONZ_DW[0]] / 127 *
-      127;
-    lineOff = rtDW.Erosion_ERODE_OFF_DW[rtDW.Erosion_NUMNONZ_DW[0]] - numEleTmp;
-    gOffset = rtDW.Erosion_NUMNONZ_DW[1] + lineOff;
-    hOffset = lineOff;
+    numIter = 320 / rtDW.Erosion_NUMNONZ_DW[1];
+    numEleTmp = rtDW.Erosion_ERODE_OFF_DW[rtDW.Erosion_NUMNONZ_DW[0]] / 327 *
+      327;
+    i = rtDW.Erosion_ERODE_OFF_DW[rtDW.Erosion_NUMNONZ_DW[0]] - numEleTmp;
+    gOffset = rtDW.Erosion_NUMNONZ_DW[1] + i;
+    hOffset = i;
     inIdx = numEleTmp + 1;
     lastBlockCol = numIter * rtDW.Erosion_NUMNONZ_DW[1] + 1;
-    for (lineOff = 0; lineOff < rtB.curNumNonZ; lineOff++) {
-      rtDW.Erosion_GBUF_DW[lineOff] = MAX_uint8_T;
+    for (i = 0; i < ky; i++) {
+      rtDW.Erosion_GBUF_DW[i] = MAX_uint8_T;
     }
 
     numEleTmp = (numIter + 1) * rtDW.Erosion_NUMNONZ_DW[1];
-    for (lineOff = numEleTmp; lineOff < numEleTmp + rtB.curNumNonZ; lineOff++) {
-      rtDW.Erosion_GBUF_DW[lineOff] = MAX_uint8_T;
+    for (i = numEleTmp; i < numEleTmp + ky; i++) {
+      rtDW.Erosion_GBUF_DW[i] = MAX_uint8_T;
     }
 
-    for (lineOff = 0; lineOff < rtB.curNumNonZ; lineOff++) {
-      rtDW.Erosion_HBUF_DW[lineOff] = MAX_uint8_T;
+    for (i = 0; i < ky; i++) {
+      rtDW.Erosion_HBUF_DW[i] = MAX_uint8_T;
     }
 
-    for (lineOff = numEleTmp; lineOff < numEleTmp + rtB.curNumNonZ; lineOff++) {
-      rtDW.Erosion_HBUF_DW[lineOff] = MAX_uint8_T;
+    for (i = numEleTmp; i < numEleTmp + ky; i++) {
+      rtDW.Erosion_HBUF_DW[i] = MAX_uint8_T;
     }
 
-    for (col = 0; col < 160; col++) {
-      numEleTmp = rtB.curNumNonZ;
-      for (iter = 0; iter < numIter; iter++) {
+    for (col = 0; col < 240; col++) {
+      numEleTmp = ky;
+      for (ku = 0; ku < numIter; ku++) {
         rtDW.Erosion_GBUF_DW[numEleTmp] = rtDW.Erosion_TWO_PAD_IMG_DW[inIdx];
         numEleTmp++;
         inIdx++;
-        for (lineOff = 1; lineOff < rtB.curNumNonZ; lineOff++) {
+        for (i = 1; i < ky; i++) {
           if (rtDW.Erosion_GBUF_DW[numEleTmp - 1] <
               rtDW.Erosion_TWO_PAD_IMG_DW[inIdx]) {
             rtDW.Erosion_GBUF_DW[numEleTmp] = rtDW.Erosion_GBUF_DW[numEleTmp - 1];
@@ -730,13 +615,13 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
         }
       }
 
-      if (lastBlockCol <= 121) {
+      if (lastBlockCol <= 321) {
         rtDW.Erosion_GBUF_DW[numEleTmp] = rtDW.Erosion_TWO_PAD_IMG_DW[inIdx];
         numEleTmp++;
         inIdx++;
-        iter = lastBlockCol + rtB.curNumNonZ;
-        for (lineOff = lastBlockCol + 1; lineOff < iter; lineOff++) {
-          if (lineOff < 121) {
+        ku = lastBlockCol + ky;
+        for (i = lastBlockCol + 1; i < ku; i++) {
+          if (i < 321) {
             if (rtDW.Erosion_GBUF_DW[numEleTmp - 1] <
                 rtDW.Erosion_TWO_PAD_IMG_DW[inIdx]) {
               rtDW.Erosion_GBUF_DW[numEleTmp] = rtDW.Erosion_GBUF_DW[numEleTmp -
@@ -755,9 +640,9 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
       }
 
       inIdx--;
-      if (lastBlockCol <= 121) {
-        for (lineOff = 1; lineOff - 1 < rtB.curNumNonZ; lineOff++) {
-          if ((rtB.curNumNonZ - lineOff) + lastBlockCol < 121) {
+      if (lastBlockCol <= 321) {
+        for (i = 1; i - 1 < ky; i++) {
+          if ((ky - i) + lastBlockCol < 321) {
             if (rtDW.Erosion_HBUF_DW[numEleTmp] <
                 rtDW.Erosion_TWO_PAD_IMG_DW[inIdx]) {
               rtDW.Erosion_HBUF_DW[numEleTmp - 1] =
@@ -775,11 +660,11 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
         }
       }
 
-      for (iter = 0; iter < numIter; iter++) {
+      for (ku = 0; ku < numIter; ku++) {
         rtDW.Erosion_HBUF_DW[numEleTmp - 1] = rtDW.Erosion_TWO_PAD_IMG_DW[inIdx];
         numEleTmp--;
         inIdx--;
-        for (lineOff = 1; lineOff < rtB.curNumNonZ; lineOff++) {
+        for (i = 1; i < ky; i++) {
           if (rtDW.Erosion_HBUF_DW[numEleTmp] <
               rtDW.Erosion_TWO_PAD_IMG_DW[inIdx]) {
             rtDW.Erosion_HBUF_DW[numEleTmp - 1] = rtDW.Erosion_HBUF_DW[numEleTmp];
@@ -794,54 +679,54 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
       }
 
       rtB.row = 1;
-      while (rtB.row < 121) {
+      while (rtB.row < 321) {
         if (rtDW.Erosion_GBUF_DW[(numEleTmp + gOffset) - 1] <
             rtDW.Erosion_HBUF_DW[numEleTmp + hOffset]) {
-          rtB.Erosion[ky] = rtDW.Erosion_GBUF_DW[(numEleTmp + gOffset) - 1];
+          rtB.Erosion[outIdx] = rtDW.Erosion_GBUF_DW[(numEleTmp + gOffset) - 1];
         } else {
-          rtB.Erosion[ky] = rtDW.Erosion_HBUF_DW[numEleTmp + hOffset];
+          rtB.Erosion[outIdx] = rtDW.Erosion_HBUF_DW[numEleTmp + hOffset];
         }
 
         numEleTmp++;
-        ky++;
+        outIdx++;
         rtB.row++;
       }
 
-      inIdx += 128;
+      inIdx += 328;
     }
   } else {
-    numIter = 161 / rtDW.Erosion_NUMNONZ_DW[1];
-    lineOff = rtDW.Erosion_ERODE_OFF_DW[rtDW.Erosion_NUMNONZ_DW[0]] / 127;
-    gOffset = (rtDW.Erosion_NUMNONZ_DW[1] + lineOff) - 1;
-    hOffset = lineOff - 1;
-    inIdx = (rtDW.Erosion_ERODE_OFF_DW[rtDW.Erosion_NUMNONZ_DW[0]] - lineOff *
-             127) + 128;
+    numIter = 241 / rtDW.Erosion_NUMNONZ_DW[1];
+    i = rtDW.Erosion_ERODE_OFF_DW[rtDW.Erosion_NUMNONZ_DW[0]] / 327;
+    gOffset = (rtDW.Erosion_NUMNONZ_DW[1] + i) - 1;
+    hOffset = i - 1;
+    inIdx = (rtDW.Erosion_ERODE_OFF_DW[rtDW.Erosion_NUMNONZ_DW[0]] - i * 327) +
+      328;
     lastBlockCol = numIter * rtDW.Erosion_NUMNONZ_DW[1];
-    for (lineOff = 0; lineOff < rtB.curNumNonZ; lineOff++) {
-      rtDW.Erosion_GBUF_DW[lineOff] = MAX_uint8_T;
+    for (i = 0; i < ky; i++) {
+      rtDW.Erosion_GBUF_DW[i] = MAX_uint8_T;
     }
 
     numEleTmp = (numIter + 1) * rtDW.Erosion_NUMNONZ_DW[1];
-    for (lineOff = numEleTmp; lineOff < numEleTmp + rtB.curNumNonZ; lineOff++) {
-      rtDW.Erosion_GBUF_DW[lineOff] = MAX_uint8_T;
+    for (i = numEleTmp; i < numEleTmp + ky; i++) {
+      rtDW.Erosion_GBUF_DW[i] = MAX_uint8_T;
     }
 
-    for (lineOff = 0; lineOff < rtB.curNumNonZ; lineOff++) {
-      rtDW.Erosion_HBUF_DW[lineOff] = MAX_uint8_T;
+    for (i = 0; i < ky; i++) {
+      rtDW.Erosion_HBUF_DW[i] = MAX_uint8_T;
     }
 
-    for (lineOff = numEleTmp; lineOff < numEleTmp + rtB.curNumNonZ; lineOff++) {
-      rtDW.Erosion_HBUF_DW[lineOff] = MAX_uint8_T;
+    for (i = numEleTmp; i < numEleTmp + ky; i++) {
+      rtDW.Erosion_HBUF_DW[i] = MAX_uint8_T;
     }
 
     rtB.row = 1;
-    while (rtB.row < 121) {
-      numEleTmp = rtB.curNumNonZ;
-      for (iter = 0; iter < numIter; iter++) {
+    while (rtB.row < 321) {
+      numEleTmp = ky;
+      for (ku = 0; ku < numIter; ku++) {
         rtDW.Erosion_GBUF_DW[numEleTmp] = rtDW.Erosion_TWO_PAD_IMG_DW[inIdx];
         numEleTmp++;
-        inIdx += 127;
-        for (lineOff = 1; lineOff < rtB.curNumNonZ; lineOff++) {
+        inIdx += 327;
+        for (i = 1; i < ky; i++) {
           if (rtDW.Erosion_GBUF_DW[numEleTmp - 1] <
               rtDW.Erosion_TWO_PAD_IMG_DW[inIdx]) {
             rtDW.Erosion_GBUF_DW[numEleTmp] = rtDW.Erosion_GBUF_DW[numEleTmp - 1];
@@ -850,17 +735,17 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
           }
 
           numEleTmp++;
-          inIdx += 127;
+          inIdx += 327;
         }
       }
 
-      if (lastBlockCol <= 160) {
+      if (lastBlockCol <= 240) {
         rtDW.Erosion_GBUF_DW[numEleTmp] = rtDW.Erosion_TWO_PAD_IMG_DW[inIdx];
         numEleTmp++;
-        inIdx += 127;
-        iter = lastBlockCol + rtB.curNumNonZ;
-        for (lineOff = lastBlockCol + 1; lineOff < iter; lineOff++) {
-          if (lineOff < 160) {
+        inIdx += 327;
+        ku = lastBlockCol + ky;
+        for (i = lastBlockCol + 1; i < ku; i++) {
+          if (i < 240) {
             if (rtDW.Erosion_GBUF_DW[numEleTmp - 1] <
                 rtDW.Erosion_TWO_PAD_IMG_DW[inIdx]) {
               rtDW.Erosion_GBUF_DW[numEleTmp] = rtDW.Erosion_GBUF_DW[numEleTmp -
@@ -874,14 +759,14 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
           }
 
           numEleTmp++;
-          inIdx += 127;
+          inIdx += 327;
         }
       }
 
-      inIdx -= 127;
-      if (lastBlockCol <= 160) {
-        for (lineOff = 1; lineOff - 1 < rtB.curNumNonZ; lineOff++) {
-          if ((rtB.curNumNonZ - lineOff) + lastBlockCol < 160) {
+      inIdx -= 327;
+      if (lastBlockCol <= 240) {
+        for (i = 1; i - 1 < ky; i++) {
+          if ((ky - i) + lastBlockCol < 240) {
             if (rtDW.Erosion_HBUF_DW[numEleTmp] <
                 rtDW.Erosion_TWO_PAD_IMG_DW[inIdx]) {
               rtDW.Erosion_HBUF_DW[numEleTmp - 1] =
@@ -895,15 +780,15 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
           }
 
           numEleTmp--;
-          inIdx -= 127;
+          inIdx -= 327;
         }
       }
 
-      for (iter = 0; iter < numIter; iter++) {
+      for (ku = 0; ku < numIter; ku++) {
         rtDW.Erosion_HBUF_DW[numEleTmp - 1] = rtDW.Erosion_TWO_PAD_IMG_DW[inIdx];
         numEleTmp--;
-        inIdx -= 127;
-        for (lineOff = 1; lineOff < rtB.curNumNonZ; lineOff++) {
+        inIdx -= 327;
+        for (i = 1; i < ky; i++) {
           if (rtDW.Erosion_HBUF_DW[numEleTmp] <
               rtDW.Erosion_TWO_PAD_IMG_DW[inIdx]) {
             rtDW.Erosion_HBUF_DW[numEleTmp - 1] = rtDW.Erosion_HBUF_DW[numEleTmp];
@@ -913,24 +798,24 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
           }
 
           numEleTmp--;
-          inIdx -= 127;
+          inIdx -= 327;
         }
       }
 
-      for (col = 0; col < 160; col++) {
+      for (col = 0; col < 240; col++) {
         if (rtDW.Erosion_GBUF_DW[(numEleTmp + gOffset) - 1] <
             rtDW.Erosion_HBUF_DW[numEleTmp + hOffset]) {
-          rtB.Erosion[ky] = rtDW.Erosion_GBUF_DW[(numEleTmp + gOffset) - 1];
+          rtB.Erosion[outIdx] = rtDW.Erosion_GBUF_DW[(numEleTmp + gOffset) - 1];
         } else {
-          rtB.Erosion[ky] = rtDW.Erosion_HBUF_DW[numEleTmp + hOffset];
+          rtB.Erosion[outIdx] = rtDW.Erosion_HBUF_DW[numEleTmp + hOffset];
         }
 
         numEleTmp++;
-        ky += 120;
+        outIdx += 320;
       }
 
-      inIdx += 128;
-      ky += -19199;
+      inIdx += 328;
+      outIdx += -76799;
       rtB.row++;
     }
   }
@@ -938,254 +823,249 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
   /* End of S-Function (svipmorphop): '<Root>/Erosion' */
 
   /* S-Function (svipedge): '<Root>/Edge Detection' */
-  for (ky = 0; ky < 158; ky++) {
-    for (numEleTmp = 0; numEleTmp < 118; numEleTmp++) {
-      ku = 0;
+  for (numEleTmp = 0; numEleTmp < 238; numEleTmp++) {
+    for (lastBlockCol = 0; lastBlockCol < 318; lastBlockCol++) {
       inIdx = 0;
-      rtB.lastRow = ((ky + 1) * 120 + numEleTmp) + 1;
-      for (lineOff = 0; lineOff < 6; lineOff++) {
-        ku += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[lineOff],
-                             rtB.Erosion[rtB.lastRow +
-                             rtDW.EdgeDetection_VO_DW[lineOff]], 23U);
-        inIdx += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[lineOff],
-          rtB.Erosion[rtB.lastRow + rtDW.EdgeDetection_HO_DW[lineOff]], 23U);
+      numIter = 0;
+      outIdx = ((numEleTmp + 1) * 320 + lastBlockCol) + 1;
+      for (i = 0; i < 6; i++) {
+        inIdx += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[i],
+          rtB.Erosion[outIdx + rtDW.EdgeDetection_VO_DW[i]], 23U);
+        numIter += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[i],
+          rtB.Erosion[outIdx + rtDW.EdgeDetection_HO_DW[i]], 23U);
       }
 
-      rtDW.EdgeDetection_GV_SQUARED_DW[rtB.lastRow] = mul_s32_loSR(ku, ku, 8U);
-      rtDW.EdgeDetection_GH_SQUARED_DW[rtB.lastRow] = mul_s32_loSR(inIdx, inIdx,
+      rtDW.EdgeDetection_GV_SQUARED_DW[outIdx] = mul_s32_loSR(inIdx, inIdx, 8U);
+      rtDW.EdgeDetection_GH_SQUARED_DW[outIdx] = mul_s32_loSR(numIter, numIter,
         8U);
     }
   }
 
-  for (ky = 0; ky < 158; ky++) {
-    ku = 0;
+  for (numEleTmp = 0; numEleTmp < 238; numEleTmp++) {
     inIdx = 0;
-    hOffset = 0;
+    numIter = 0;
+    ku = 0;
     rtB.accumFour = 0;
-    numEleTmp = (ky + 1) * 120;
-    rtB.lastRow = (ky + 1) * 120 + 119;
-    for (lineOff = 0; lineOff < 6; lineOff++) {
-      ku += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[lineOff],
-                           rtB.Erosion[numEleTmp +
-                           rtDW.EdgeDetection_HOU_DW[lineOff]], 23U);
-      inIdx += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[lineOff],
-        rtB.Erosion[rtB.lastRow + rtDW.EdgeDetection_HOD_DW[lineOff]], 23U);
-      hOffset += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[lineOff],
-        rtB.Erosion[numEleTmp + rtDW.EdgeDetection_VOU_DW[lineOff]], 23U);
-      rtB.accumFour += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[lineOff],
-        rtB.Erosion[rtB.lastRow + rtDW.EdgeDetection_VOD_DW[lineOff]], 23U);
+    lastBlockCol = (numEleTmp + 1) * 320;
+    outIdx = (numEleTmp + 1) * 320 + 319;
+    for (i = 0; i < 6; i++) {
+      inIdx += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[i],
+        rtB.Erosion[lastBlockCol + rtDW.EdgeDetection_HOU_DW[i]], 23U);
+      numIter += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[i],
+        rtB.Erosion[outIdx + rtDW.EdgeDetection_HOD_DW[i]], 23U);
+      ku += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[i],
+                           rtB.Erosion[lastBlockCol +
+                           rtDW.EdgeDetection_VOU_DW[i]], 23U);
+      rtB.accumFour += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[i],
+        rtB.Erosion[outIdx + rtDW.EdgeDetection_VOD_DW[i]], 23U);
     }
 
-    rtDW.EdgeDetection_GV_SQUARED_DW[numEleTmp] = mul_s32_loSR(hOffset, hOffset,
+    rtDW.EdgeDetection_GV_SQUARED_DW[lastBlockCol] = mul_s32_loSR(ku, ku, 8U);
+    rtDW.EdgeDetection_GH_SQUARED_DW[lastBlockCol] = mul_s32_loSR(inIdx, inIdx,
       8U);
-    rtDW.EdgeDetection_GH_SQUARED_DW[numEleTmp] = mul_s32_loSR(ku, ku, 8U);
-    rtDW.EdgeDetection_GV_SQUARED_DW[rtB.lastRow] = mul_s32_loSR(rtB.accumFour,
+    rtDW.EdgeDetection_GV_SQUARED_DW[outIdx] = mul_s32_loSR(rtB.accumFour,
       rtB.accumFour, 8U);
-    rtDW.EdgeDetection_GH_SQUARED_DW[rtB.lastRow] = mul_s32_loSR(inIdx, inIdx,
-      8U);
+    rtDW.EdgeDetection_GH_SQUARED_DW[outIdx] = mul_s32_loSR(numIter, numIter, 8U);
   }
 
-  for (numEleTmp = 0; numEleTmp < 118; numEleTmp++) {
-    ku = 0;
+  for (lastBlockCol = 0; lastBlockCol < 318; lastBlockCol++) {
     inIdx = 0;
-    hOffset = 0;
+    numIter = 0;
+    ku = 0;
     rtB.accumFour = 0;
-    ky = numEleTmp + 19081;
-    for (lineOff = 0; lineOff < 6; lineOff++) {
-      ku += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[lineOff], rtB.Erosion
-                           [(numEleTmp + rtDW.EdgeDetection_VOL_DW[lineOff]) + 1],
+    numEleTmp = lastBlockCol + 76481;
+    for (i = 0; i < 6; i++) {
+      inIdx += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[i], rtB.Erosion
+        [(lastBlockCol + rtDW.EdgeDetection_VOL_DW[i]) + 1], 23U);
+      numIter += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[i],
+        rtB.Erosion[numEleTmp + rtDW.EdgeDetection_VOR_DW[i]], 23U);
+      ku += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[i], rtB.Erosion
+                           [(lastBlockCol + rtDW.EdgeDetection_HOL_DW[i]) + 1],
                            23U);
-      inIdx += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[lineOff],
-        rtB.Erosion[ky + rtDW.EdgeDetection_VOR_DW[lineOff]], 23U);
-      hOffset += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[lineOff],
-        rtB.Erosion[(numEleTmp + rtDW.EdgeDetection_HOL_DW[lineOff]) + 1], 23U);
-      rtB.accumFour += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[lineOff],
-        rtB.Erosion[ky + rtDW.EdgeDetection_HOR_DW[lineOff]], 23U);
+      rtB.accumFour += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[i],
+        rtB.Erosion[numEleTmp + rtDW.EdgeDetection_HOR_DW[i]], 23U);
     }
 
-    rtDW.EdgeDetection_GV_SQUARED_DW[numEleTmp + 1] = mul_s32_loSR(ku, ku, 8U);
-    rtDW.EdgeDetection_GH_SQUARED_DW[numEleTmp + 1] = mul_s32_loSR(hOffset,
-      hOffset, 8U);
-    rtDW.EdgeDetection_GV_SQUARED_DW[ky] = mul_s32_loSR(inIdx, inIdx, 8U);
-    rtDW.EdgeDetection_GH_SQUARED_DW[ky] = mul_s32_loSR(rtB.accumFour,
+    rtDW.EdgeDetection_GV_SQUARED_DW[lastBlockCol + 1] = mul_s32_loSR(inIdx,
+      inIdx, 8U);
+    rtDW.EdgeDetection_GH_SQUARED_DW[lastBlockCol + 1] = mul_s32_loSR(ku, ku, 8U);
+    rtDW.EdgeDetection_GV_SQUARED_DW[numEleTmp] = mul_s32_loSR(numIter, numIter,
+      8U);
+    rtDW.EdgeDetection_GH_SQUARED_DW[numEleTmp] = mul_s32_loSR(rtB.accumFour,
       rtB.accumFour, 8U);
   }
 
-  ku = 0;
   inIdx = 0;
-  hOffset = 0;
+  numIter = 0;
+  ku = 0;
   rtB.accumFour = 0;
-  for (lineOff = 0; lineOff < 6; lineOff++) {
-    ku += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[lineOff],
-                         rtB.Erosion[rtDW.EdgeDetection_VOUL_DW[lineOff]], 23U);
-    inIdx += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[lineOff],
-      rtB.Erosion[rtDW.EdgeDetection_HOUL_DW[lineOff]], 23U);
-    hOffset += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[lineOff],
-      rtB.Erosion[119 + rtDW.EdgeDetection_VOLL_DW[lineOff]], 23U);
-    rtB.accumFour += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[lineOff],
-      rtB.Erosion[119 + rtDW.EdgeDetection_HOLL_DW[lineOff]], 23U);
+  for (i = 0; i < 6; i++) {
+    inIdx += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[i],
+      rtB.Erosion[rtDW.EdgeDetection_VOUL_DW[i]], 23U);
+    numIter += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[i],
+      rtB.Erosion[rtDW.EdgeDetection_HOUL_DW[i]], 23U);
+    ku += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[i], rtB.Erosion[319 +
+                         rtDW.EdgeDetection_VOLL_DW[i]], 23U);
+    rtB.accumFour += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[i],
+      rtB.Erosion[319 + rtDW.EdgeDetection_HOLL_DW[i]], 23U);
   }
 
-  rtDW.EdgeDetection_GV_SQUARED_DW[0] = mul_s32_loSR(ku, ku, 8U);
-  rtDW.EdgeDetection_GH_SQUARED_DW[0] = mul_s32_loSR(inIdx, inIdx, 8U);
-  rtDW.EdgeDetection_GV_SQUARED_DW[119] = mul_s32_loSR(hOffset, hOffset, 8U);
-  rtDW.EdgeDetection_GH_SQUARED_DW[119] = mul_s32_loSR(rtB.accumFour,
-    rtB.accumFour, 8U);
-  ku = 0;
-  inIdx = 0;
-  hOffset = 0;
-  rtB.accumFour = 0;
-  for (lineOff = 0; lineOff < 6; lineOff++) {
-    ku += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[lineOff], rtB.Erosion
-                         [19080 + rtDW.EdgeDetection_VOUR_DW[lineOff]], 23U);
-    inIdx += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[lineOff], rtB.Erosion
-      [19080 + rtDW.EdgeDetection_HOUR_DW[lineOff]], 23U);
-    hOffset += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[lineOff],
-      rtB.Erosion[19199 + rtDW.EdgeDetection_VOLR_DW[lineOff]], 23U);
-    rtB.accumFour += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[lineOff],
-      rtB.Erosion[19199 + rtDW.EdgeDetection_HOLR_DW[lineOff]], 23U);
-  }
-
-  rtDW.EdgeDetection_GV_SQUARED_DW[19080] = mul_s32_loSR(ku, ku, 8U);
-  rtDW.EdgeDetection_GH_SQUARED_DW[19080] = mul_s32_loSR(inIdx, inIdx, 8U);
-  rtDW.EdgeDetection_GV_SQUARED_DW[19199] = mul_s32_loSR(hOffset, hOffset, 8U);
-  rtDW.EdgeDetection_GH_SQUARED_DW[19199] = mul_s32_loSR(rtB.accumFour,
+  rtDW.EdgeDetection_GV_SQUARED_DW[0] = mul_s32_loSR(inIdx, inIdx, 8U);
+  rtDW.EdgeDetection_GH_SQUARED_DW[0] = mul_s32_loSR(numIter, numIter, 8U);
+  rtDW.EdgeDetection_GV_SQUARED_DW[319] = mul_s32_loSR(ku, ku, 8U);
+  rtDW.EdgeDetection_GH_SQUARED_DW[319] = mul_s32_loSR(rtB.accumFour,
     rtB.accumFour, 8U);
   inIdx = 0;
-  for (lineOff = 0; lineOff < 19200; lineOff++) {
-    rtDW.EdgeDetection_GRAD_SUM_DW[lineOff] =
-      rtDW.EdgeDetection_GV_SQUARED_DW[lineOff];
-    rtDW.EdgeDetection_GRAD_SUM_DW[lineOff] +=
-      rtDW.EdgeDetection_GH_SQUARED_DW[lineOff];
-    inIdx += mul_s32_loSR(rtDW.EdgeDetection_GRAD_SUM_DW[lineOff],
-                          rtDW.EdgeDetection_MEAN_FACTOR_DW, 31U);
+  numIter = 0;
+  ku = 0;
+  rtB.accumFour = 0;
+  for (i = 0; i < 6; i++) {
+    inIdx += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[i], rtB.Erosion[76480
+      + rtDW.EdgeDetection_VOUR_DW[i]], 23U);
+    numIter += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[i], rtB.Erosion
+      [76480 + rtDW.EdgeDetection_HOUR_DW[i]], 23U);
+    ku += mul_ssu32_loSR(rtConstP.EdgeDetection_VC_RTP[i], rtB.Erosion[76799 +
+                         rtDW.EdgeDetection_VOLR_DW[i]], 23U);
+    rtB.accumFour += mul_ssu32_loSR(rtConstP.EdgeDetection_HC_RTP[i],
+      rtB.Erosion[76799 + rtDW.EdgeDetection_HOLR_DW[i]], 23U);
   }
 
-  ku = inIdx << 2;
-  for (ky = 0; ky < 160; ky++) {
-    for (numEleTmp = 0; numEleTmp < 120; numEleTmp++) {
-      lineOff = ky * 120 + numEleTmp;
+  rtDW.EdgeDetection_GV_SQUARED_DW[76480] = mul_s32_loSR(inIdx, inIdx, 8U);
+  rtDW.EdgeDetection_GH_SQUARED_DW[76480] = mul_s32_loSR(numIter, numIter, 8U);
+  rtDW.EdgeDetection_GV_SQUARED_DW[76799] = mul_s32_loSR(ku, ku, 8U);
+  rtDW.EdgeDetection_GH_SQUARED_DW[76799] = mul_s32_loSR(rtB.accumFour,
+    rtB.accumFour, 8U);
+  numIter = 0;
+  for (i = 0; i < 76800; i++) {
+    rtDW.EdgeDetection_GRAD_SUM_DW[i] = rtDW.EdgeDetection_GV_SQUARED_DW[i];
+    rtDW.EdgeDetection_GRAD_SUM_DW[i] += rtDW.EdgeDetection_GH_SQUARED_DW[i];
+    numIter += mul_s32_loSR(rtDW.EdgeDetection_GRAD_SUM_DW[i],
+      rtDW.EdgeDetection_MEAN_FACTOR_DW, 31U);
+  }
+
+  inIdx = numIter << 2;
+  for (numEleTmp = 0; numEleTmp < 240; numEleTmp++) {
+    for (lastBlockCol = 0; lastBlockCol < 320; lastBlockCol++) {
+      i = numEleTmp * 320 + lastBlockCol;
       done = true;
       b2 = true;
       b3 = true;
       b4 = true;
-      if (ky != 0) {
-        done = (rtDW.EdgeDetection_GRAD_SUM_DW[lineOff - 120] <=
-                rtDW.EdgeDetection_GRAD_SUM_DW[lineOff]);
-      }
-
-      if (ky != 159) {
-        b2 = (rtDW.EdgeDetection_GRAD_SUM_DW[lineOff] >
-              rtDW.EdgeDetection_GRAD_SUM_DW[lineOff + 120]);
-      }
-
       if (numEleTmp != 0) {
-        b3 = (rtDW.EdgeDetection_GRAD_SUM_DW[lineOff - 1] <=
-              rtDW.EdgeDetection_GRAD_SUM_DW[lineOff]);
+        done = (rtDW.EdgeDetection_GRAD_SUM_DW[i - 320] <=
+                rtDW.EdgeDetection_GRAD_SUM_DW[i]);
       }
 
-      if (numEleTmp != 119) {
-        b4 = (rtDW.EdgeDetection_GRAD_SUM_DW[lineOff] >
-              rtDW.EdgeDetection_GRAD_SUM_DW[lineOff + 1]);
+      if (numEleTmp != 239) {
+        b2 = (rtDW.EdgeDetection_GRAD_SUM_DW[i] >
+              rtDW.EdgeDetection_GRAD_SUM_DW[i + 320]);
       }
 
-      rtB.EdgeDetection[lineOff] = ((rtDW.EdgeDetection_GRAD_SUM_DW[lineOff] >
-        ku) && (((rtDW.EdgeDetection_GV_SQUARED_DW[lineOff] >=
-                  rtDW.EdgeDetection_GH_SQUARED_DW[lineOff]) && done && b2) ||
-                ((rtDW.EdgeDetection_GH_SQUARED_DW[lineOff] >=
-                  rtDW.EdgeDetection_GV_SQUARED_DW[lineOff]) && b3 && b4)));
+      if (lastBlockCol != 0) {
+        b3 = (rtDW.EdgeDetection_GRAD_SUM_DW[i - 1] <=
+              rtDW.EdgeDetection_GRAD_SUM_DW[i]);
+      }
+
+      if (lastBlockCol != 319) {
+        b4 = (rtDW.EdgeDetection_GRAD_SUM_DW[i] >
+              rtDW.EdgeDetection_GRAD_SUM_DW[i + 1]);
+      }
+
+      rtB.EdgeDetection[i] = ((rtDW.EdgeDetection_GRAD_SUM_DW[i] > inIdx) &&
+        (((rtDW.EdgeDetection_GV_SQUARED_DW[i] >=
+           rtDW.EdgeDetection_GH_SQUARED_DW[i]) && done && b2) ||
+         ((rtDW.EdgeDetection_GH_SQUARED_DW[i] >=
+           rtDW.EdgeDetection_GV_SQUARED_DW[i]) && b3 && b4)));
     }
   }
 
   /* End of S-Function (svipedge): '<Root>/Edge Detection' */
 
-  /* S-Function (sviphough): '<Root>/Hough Transform' */
+  /* S-Function (sviphough): '<S2>/Hough Transform' */
   MWVIP_Hough_D(&rtB.EdgeDetection[0], &rtB.HoughTransform_o1[0],
                 &rtConstP.HoughTransform_SINE_TABLE_RTP[0],
-                &rtConstP.HoughTransform_FIRSTRHO_RTP, 120, 160, 399, 91);
+                &rtConstP.HoughTransform_FIRSTRHO_RTP, 320, 240, 799, 91);
 
-  /* S-Function (svipfindlocalmax): '<Root>/Find Local Maxima' */
+  /* S-Function (svipfindlocalmax): '<S2>/Find Local Maxima' */
   ku = 0;
   done = false;
-  for (lineOff = 0; lineOff < 71820; lineOff++) {
-    rtDW.FindLocalMaxima_TEMP_IN_DWORKS[lineOff] = rtB.HoughTransform_o1[lineOff];
+  for (i = 0; i < 143820; i++) {
+    rtDW.FindLocalMaxima_TEMP_IN_DWORKS[i] = rtB.HoughTransform_o1[i];
   }
 
-  for (lineOff = 0; lineOff < 6; lineOff++) {
-    rtB.FindLocalMaxima[lineOff] = 0.0;
+  for (i = 0; i < 6; i++) {
+    rtB.FindLocalMaxima[i] = 0.0;
   }
 
   while (!done) {
-    rtB.curNumNonZ = 0;
+    ky = 0;
     rtB.maxValue = rtDW.FindLocalMaxima_TEMP_IN_DWORKS[0];
-    for (lineOff = 0; lineOff < 71820; lineOff++) {
-      if (rtDW.FindLocalMaxima_TEMP_IN_DWORKS[lineOff] > rtB.maxValue) {
-        rtB.curNumNonZ = lineOff;
-        rtB.maxValue = rtDW.FindLocalMaxima_TEMP_IN_DWORKS[lineOff];
+    for (i = 0; i < 143820; i++) {
+      if (rtDW.FindLocalMaxima_TEMP_IN_DWORKS[i] > rtB.maxValue) {
+        ky = i;
+        rtB.maxValue = rtDW.FindLocalMaxima_TEMP_IN_DWORKS[i];
       }
     }
 
-    ky = rtB.curNumNonZ % 399;
-    lineOff = rtB.curNumNonZ / 399;
-    if (rtDW.FindLocalMaxima_TEMP_IN_DWORKS[rtB.curNumNonZ] >= 10.0) {
-      rtB.FindLocalMaxima[ku] = 1.0 + (real_T)lineOff;
-      rtB.FindLocalMaxima[3U + ku] = 1 + ky;
+    numEleTmp = ky % 799;
+    i = ky / 799;
+    if (rtDW.FindLocalMaxima_TEMP_IN_DWORKS[ky] >= 10.0) {
+      rtB.FindLocalMaxima[ku] = 1.0 + (real_T)i;
+      rtB.FindLocalMaxima[3U + ku] = 1 + numEleTmp;
       ku++;
       if (ku == 3) {
         done = true;
       }
 
-      rtB.curNumNonZ = ky - 2;
-      if (!(rtB.curNumNonZ > 0)) {
-        rtB.curNumNonZ = 0;
+      ky = numEleTmp - 2;
+      if (!(ky > 0)) {
+        ky = 0;
       }
 
-      ky += 2;
-      if (!(ky < 398)) {
-        ky = 398;
+      lastBlockCol = numEleTmp + 2;
+      if (!(lastBlockCol < 798)) {
+        lastBlockCol = 798;
       }
 
-      rtB.lastRow = lineOff - 3;
-      rtB.accumFour = lineOff + 3;
-      if (!((rtB.lastRow < 0) || (rtB.accumFour > 179))) {
-        while (rtB.lastRow <= rtB.accumFour) {
-          inIdx = rtB.lastRow * 399;
-          for (lineOff = rtB.curNumNonZ; lineOff <= ky; lineOff++) {
-            rtDW.FindLocalMaxima_TEMP_IN_DWORKS[lineOff + inIdx] = 0.0;
+      outIdx = i - 3;
+      rtB.accumFour = i + 3;
+      if (!((outIdx < 0) || (rtB.accumFour > 179))) {
+        while (outIdx <= rtB.accumFour) {
+          inIdx = outIdx * 799;
+          for (i = ky; i <= lastBlockCol; i++) {
+            rtDW.FindLocalMaxima_TEMP_IN_DWORKS[i + inIdx] = 0.0;
           }
 
-          rtB.lastRow++;
+          outIdx++;
         }
       } else {
-        if (rtB.lastRow < 0) {
-          for (numEleTmp = rtB.lastRow; numEleTmp <= rtB.accumFour; numEleTmp++)
-          {
+        if (outIdx < 0) {
+          for (numEleTmp = outIdx; numEleTmp <= rtB.accumFour; numEleTmp++) {
             if (numEleTmp < 0) {
-              inIdx = (numEleTmp + 180) * 399 + 398;
-              for (lineOff = rtB.curNumNonZ; lineOff <= ky; lineOff++) {
-                rtDW.FindLocalMaxima_TEMP_IN_DWORKS[inIdx - lineOff] = 0.0;
+              inIdx = (numEleTmp + 180) * 799 + 798;
+              for (i = ky; i <= lastBlockCol; i++) {
+                rtDW.FindLocalMaxima_TEMP_IN_DWORKS[inIdx - i] = 0.0;
               }
             } else {
-              inIdx = numEleTmp * 399;
-              for (lineOff = rtB.curNumNonZ; lineOff <= ky; lineOff++) {
-                rtDW.FindLocalMaxima_TEMP_IN_DWORKS[lineOff + inIdx] = 0.0;
+              inIdx = numEleTmp * 799;
+              for (i = ky; i <= lastBlockCol; i++) {
+                rtDW.FindLocalMaxima_TEMP_IN_DWORKS[i + inIdx] = 0.0;
               }
             }
           }
         }
 
         if (rtB.accumFour > 179) {
-          for (numEleTmp = rtB.lastRow; numEleTmp <= rtB.accumFour; numEleTmp++)
-          {
+          for (numEleTmp = outIdx; numEleTmp <= rtB.accumFour; numEleTmp++) {
             if (numEleTmp > 179) {
-              inIdx = (numEleTmp - 180) * 399 + 398;
-              for (lineOff = rtB.curNumNonZ; lineOff <= ky; lineOff++) {
-                rtDW.FindLocalMaxima_TEMP_IN_DWORKS[inIdx - lineOff] = 0.0;
+              inIdx = (numEleTmp - 180) * 799 + 798;
+              for (i = ky; i <= lastBlockCol; i++) {
+                rtDW.FindLocalMaxima_TEMP_IN_DWORKS[inIdx - i] = 0.0;
               }
             } else {
-              inIdx = numEleTmp * 399;
-              for (lineOff = rtB.curNumNonZ; lineOff <= ky; lineOff++) {
-                rtDW.FindLocalMaxima_TEMP_IN_DWORKS[lineOff + inIdx] = 0.0;
+              inIdx = numEleTmp * 799;
+              for (i = ky; i <= lastBlockCol; i++) {
+                rtDW.FindLocalMaxima_TEMP_IN_DWORKS[i + inIdx] = 0.0;
               }
             }
           }
@@ -1198,7 +1078,7 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
 
   rtB.fromIdx = 3U;
   rtB.toIdx = (uint32_T)ku;
-  for (lineOff = 0; lineOff < ku; lineOff++) {
+  for (i = 0; i < ku; i++) {
     rtB.FindLocalMaxima[rtB.toIdx] = rtB.FindLocalMaxima[rtB.fromIdx];
     rtB.fromIdx++;
     rtB.toIdx++;
@@ -1207,90 +1087,92 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
   rtDW.FindLocalMaxima_DIMS1[0] = ku;
   rtDW.FindLocalMaxima_DIMS1[1] = 2;
 
-  /* End of S-Function (svipfindlocalmax): '<Root>/Find Local Maxima' */
+  /* End of S-Function (svipfindlocalmax): '<S2>/Find Local Maxima' */
 
-  /* Selector: '<Root>/Selector' */
+  /* Selector: '<S2>/Selector' */
   rtDW.Selector_DIMS1[0] = rtDW.FindLocalMaxima_DIMS1[0];
   rtDW.Selector_DIMS1[1] = 1;
-  lineOff = rtDW.FindLocalMaxima_DIMS1[0];
-  for (numEleTmp = 0; numEleTmp < lineOff; numEleTmp++) {
+  i = rtDW.FindLocalMaxima_DIMS1[0];
+  for (numEleTmp = 0; numEleTmp < i; numEleTmp++) {
     rtB.rtb_FindLocalMaxima_data[numEleTmp] = rtB.FindLocalMaxima[numEleTmp];
   }
 
-  lineOff = rtDW.FindLocalMaxima_DIMS1[0];
-  for (numEleTmp = 0; numEleTmp < lineOff; numEleTmp++) {
+  i = rtDW.FindLocalMaxima_DIMS1[0];
+  for (numEleTmp = 0; numEleTmp < i; numEleTmp++) {
     rtB.Selector[numEleTmp] = rtB.rtb_FindLocalMaxima_data[numEleTmp];
   }
 
-  /* End of Selector: '<Root>/Selector' */
+  /* End of Selector: '<S2>/Selector' */
 
-  /* Selector: '<Root>/Selector1' */
+  /* Selector: '<S2>/Selector1' */
   rtDW.Selector1_DIMS1[0] = 1;
   rtDW.Selector1_DIMS1[1] = rtDW.Selector_DIMS1[0] * rtDW.Selector_DIMS1[1];
-  lineOff = rtDW.Selector_DIMS1[1];
-  for (numEleTmp = 0; numEleTmp < lineOff; numEleTmp++) {
-    rtB.lastRow = rtDW.Selector_DIMS1[0];
-    for (ku = 0; ku < rtB.lastRow; ku++) {
-      rtB.rtb_Selector_data[ku + rtDW.Selector_DIMS1[0] * numEleTmp] = (int32_T)
-        rtB.Selector[rtDW.Selector_DIMS1[0] * numEleTmp + ku] - 1;
+  i = rtDW.Selector_DIMS1[1];
+  for (numEleTmp = 0; numEleTmp < i; numEleTmp++) {
+    outIdx = rtDW.Selector_DIMS1[0];
+    for (lastBlockCol = 0; lastBlockCol < outIdx; lastBlockCol++) {
+      rtB.rtb_Selector_data[lastBlockCol + rtDW.Selector_DIMS1[0] * numEleTmp] =
+        (int32_T)rtB.Selector[rtDW.Selector_DIMS1[0] * numEleTmp + lastBlockCol]
+        - 1;
     }
   }
 
-  lineOff = rtDW.Selector_DIMS1[0] * rtDW.Selector_DIMS1[1];
-  for (numEleTmp = 0; numEleTmp < lineOff; numEleTmp++) {
+  i = rtDW.Selector_DIMS1[0] * rtDW.Selector_DIMS1[1];
+  for (numEleTmp = 0; numEleTmp < i; numEleTmp++) {
     rtB.Selector1[rtDW.Selector1_DIMS1[0] * numEleTmp] =
       rtB.HoughTransform_o2[rtB.rtb_Selector_data[numEleTmp]];
   }
 
-  /* End of Selector: '<Root>/Selector1' */
+  /* End of Selector: '<S2>/Selector1' */
 
-  /* Selector: '<Root>/Selector2' */
+  /* Selector: '<S2>/Selector2' */
   rtDW.Selector2_DIMS1[0] = rtDW.FindLocalMaxima_DIMS1[0];
   rtDW.Selector2_DIMS1[1] = 1;
-  lineOff = rtDW.FindLocalMaxima_DIMS1[0];
-  for (numEleTmp = 0; numEleTmp < lineOff; numEleTmp++) {
+  i = rtDW.FindLocalMaxima_DIMS1[0];
+  for (numEleTmp = 0; numEleTmp < i; numEleTmp++) {
     rtB.rtb_FindLocalMaxima_data[numEleTmp] = rtB.FindLocalMaxima[numEleTmp +
       rtDW.FindLocalMaxima_DIMS1[0]];
   }
 
-  lineOff = rtDW.FindLocalMaxima_DIMS1[0];
-  for (numEleTmp = 0; numEleTmp < lineOff; numEleTmp++) {
+  i = rtDW.FindLocalMaxima_DIMS1[0];
+  for (numEleTmp = 0; numEleTmp < i; numEleTmp++) {
     rtB.Selector[numEleTmp] = rtB.rtb_FindLocalMaxima_data[numEleTmp];
   }
 
-  /* End of Selector: '<Root>/Selector2' */
+  /* End of Selector: '<S2>/Selector2' */
 
-  /* Selector: '<Root>/Selector5' */
+  /* Selector: '<S2>/Selector5' */
   rtDW.Selector5_DIMS1[0] = 1;
   rtDW.Selector5_DIMS1[1] = rtDW.Selector2_DIMS1[0] * rtDW.Selector2_DIMS1[1];
-  lineOff = rtDW.Selector2_DIMS1[1];
-  for (numEleTmp = 0; numEleTmp < lineOff; numEleTmp++) {
-    rtB.lastRow = rtDW.Selector2_DIMS1[0];
-    for (ku = 0; ku < rtB.lastRow; ku++) {
-      rtB.rtb_Selector_data[ku + rtDW.Selector2_DIMS1[0] * numEleTmp] = (int32_T)
-        rtB.Selector[rtDW.Selector2_DIMS1[0] * numEleTmp + ku] - 1;
+  i = rtDW.Selector2_DIMS1[1];
+  for (numEleTmp = 0; numEleTmp < i; numEleTmp++) {
+    outIdx = rtDW.Selector2_DIMS1[0];
+    for (lastBlockCol = 0; lastBlockCol < outIdx; lastBlockCol++) {
+      rtB.rtb_Selector_data[lastBlockCol + rtDW.Selector2_DIMS1[0] * numEleTmp] =
+        (int32_T)rtB.Selector[rtDW.Selector2_DIMS1[0] * numEleTmp + lastBlockCol]
+        - 1;
     }
   }
 
-  lineOff = rtDW.Selector2_DIMS1[0] * rtDW.Selector2_DIMS1[1];
-  for (numEleTmp = 0; numEleTmp < lineOff; numEleTmp++) {
+  i = rtDW.Selector2_DIMS1[0] * rtDW.Selector2_DIMS1[1];
+  for (numEleTmp = 0; numEleTmp < i; numEleTmp++) {
     rtB.Selector5[rtDW.Selector5_DIMS1[0] * numEleTmp] =
       rtB.HoughTransform_o3[rtB.rtb_Selector_data[numEleTmp]];
   }
 
-  /* End of Selector: '<Root>/Selector5' */
+  /* End of Selector: '<S2>/Selector5' */
 
-  /* S-Function (sviphoughlines): '<Root>/Hough Lines' */
+  /* S-Function (sviphoughlines): '<S2>/Hough Lines' */
   rtDW.HoughLines_DIMS1[1] = 4;
   rtDW.HoughLines_DIMS1[0] = rtDW.Selector1_DIMS1[0] * rtDW.Selector1_DIMS1[1];
-  for (lineOff = 0; lineOff < rtDW.Selector1_DIMS1[1]; lineOff++) {
+  for (i = 0; i < rtDW.Selector1_DIMS1[1]; i++) {
     ky = 0;
-    rtB.maxValue = (rtB.Selector5[lineOff] + 2.2204460492503131E-16) / (cos
-      (rtB.Selector1[lineOff]) + 2.2204460492503131E-16);
+    rtB.maxValue = (rtB.Selector5[i] + 2.2204460492503131E-16) / (cos
+      (rtB.Selector1[i]) + 2.2204460492503131E-16);
 
     /* part-1: top horizontal axis */
     rtB.tmpRound = floor(rtB.maxValue + 0.5);
-    if ((rtB.tmpRound >= 0.0) && (rtB.tmpRound <= 159.0)) {
+    if ((rtB.tmpRound >= 0.0) && (rtB.tmpRound <= 239.0)) {
       rtB.tmpOutRC[0U] = 0;
       if (rtB.tmpRound >= 0.5) {
         rtB.tmpOutRC[1U] = (int32_T)floor(rtB.tmpRound + 0.5);
@@ -1301,12 +1183,12 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
       ky = 1;
     }
 
-    rtB.y2 = (rtB.Selector5[lineOff] + 2.2204460492503131E-16) / (sin
-      (rtB.Selector1[lineOff]) + 2.2204460492503131E-16);
+    rtB.y2 = (rtB.Selector5[i] + 2.2204460492503131E-16) / (sin(rtB.Selector1[i])
+      + 2.2204460492503131E-16);
 
     /* part-2: left vertical axis */
     rtB.tmpRound = floor(rtB.y2 + 0.5);
-    if ((rtB.tmpRound >= 0.0) && (rtB.tmpRound <= 119.0)) {
+    if ((rtB.tmpRound >= 0.0) && (rtB.tmpRound <= 319.0)) {
       if (rtB.tmpRound >= 0.5) {
         rtB.tmpOutRC[ky << 1] = (int32_T)floor(rtB.tmpRound + 0.5);
       } else {
@@ -1319,25 +1201,25 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
 
     /* part-3: Right vertical axis */
     if (ky < 2) {
-      rtB.tmpRound = floor((rtB.maxValue - 159.0) * (rtB.y2 / rtB.maxValue) +
+      rtB.tmpRound = floor((rtB.maxValue - 239.0) * (rtB.y2 / rtB.maxValue) +
                            0.5);
-      if ((rtB.tmpRound >= 0.0) && (rtB.tmpRound <= 119.0)) {
+      if ((rtB.tmpRound >= 0.0) && (rtB.tmpRound <= 319.0)) {
         if (rtB.tmpRound >= 0.5) {
           rtB.tmpOutRC[ky << 1] = (int32_T)floor(rtB.tmpRound + 0.5);
         } else {
           rtB.tmpOutRC[ky << 1] = 0;
         }
 
-        rtB.tmpOutRC[1 + (ky << 1)] = 159;
+        rtB.tmpOutRC[1 + (ky << 1)] = 239;
         ky++;
       }
     }
 
     /* part-4: bottom horizontal axis */
     if (ky < 2) {
-      rtB.tmpRound = floor((rtB.maxValue - rtB.maxValue / rtB.y2 * 119.0) + 0.5);
-      if ((rtB.tmpRound >= 0.0) && (rtB.tmpRound <= 159.0)) {
-        rtB.tmpOutRC[ky << 1] = 119;
+      rtB.tmpRound = floor((rtB.maxValue - rtB.maxValue / rtB.y2 * 319.0) + 0.5);
+      if ((rtB.tmpRound >= 0.0) && (rtB.tmpRound <= 239.0)) {
+        rtB.tmpOutRC[ky << 1] = 319;
         if (rtB.tmpRound >= 0.5) {
           rtB.tmpOutRC[1 + (ky << 1)] = (int32_T)floor(rtB.tmpRound + 0.5);
         } else {
@@ -1355,24 +1237,22 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
       rtB.tmpOutRC[3U] = -1;
     }
 
-    rtB.HoughLines[lineOff] = rtB.tmpOutRC[1] + 1;
-    rtB.HoughLines[lineOff + rtDW.Selector1_DIMS1[1]] = rtB.tmpOutRC[0] + 1;
+    rtB.HoughLines[i] = rtB.tmpOutRC[1] + 1;
+    rtB.HoughLines[i + rtDW.Selector1_DIMS1[1]] = rtB.tmpOutRC[0] + 1;
     if (rtB.tmpOutRC[3] > 2147483646) {
-      rtB.HoughLines[lineOff + (rtDW.Selector1_DIMS1[1] << 1)] = MAX_int32_T;
+      rtB.HoughLines[i + (rtDW.Selector1_DIMS1[1] << 1)] = MAX_int32_T;
     } else {
-      rtB.HoughLines[lineOff + (rtDW.Selector1_DIMS1[1] << 1)] = rtB.tmpOutRC[3]
-        + 1;
+      rtB.HoughLines[i + (rtDW.Selector1_DIMS1[1] << 1)] = rtB.tmpOutRC[3] + 1;
     }
 
     if (rtB.tmpOutRC[2] > 2147483646) {
-      rtB.HoughLines[lineOff + 3 * rtDW.Selector1_DIMS1[1]] = MAX_int32_T;
+      rtB.HoughLines[i + 3 * rtDW.Selector1_DIMS1[1]] = MAX_int32_T;
     } else {
-      rtB.HoughLines[lineOff + 3 * rtDW.Selector1_DIMS1[1]] = rtB.tmpOutRC[2] +
-        1;
+      rtB.HoughLines[i + 3 * rtDW.Selector1_DIMS1[1]] = rtB.tmpOutRC[2] + 1;
     }
   }
 
-  /* End of S-Function (sviphoughlines): '<Root>/Hough Lines' */
+  /* End of S-Function (sviphoughlines): '<S2>/Hough Lines' */
 
   /* S-Function (svipdrawshapes): '<Root>/Draw Shapes' */
   /* Compute output for unity line width
@@ -1392,57 +1272,57 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
   }
 
   /* Copy the image from input to output. */
-  memcpy(&rtB.DrawShapes[0], &rtB.Image[0], 57600U * sizeof(uint8_T));
+  memcpy(&rtB.DrawShapes[0], &rtB.V4L2VideoCapture_o1[0], 76800U * sizeof
+         (uint8_T));
   if (done && (ky > 0)) {
     /* Update view port. */
-    rtB.lastRow = 0;
-    while (rtB.lastRow < ky) {
+    for (lastBlockCol = 0; lastBlockCol < ky; lastBlockCol++) {
+      outIdx = 0;
       rtB.accumFour = 0;
-      for (inIdx = 0; inIdx < ku - 1; inIdx++) {
-        col = rtB.HoughLines[((rtB.accumFour * ky << 1) + rtB.lastRow) + ky] - 1;
-        rtB.row = rtB.HoughLines[(rtB.accumFour * ky << 1) + rtB.lastRow] - 1;
-        rtB.accumFour++;
-        lastBlockCol = rtB.HoughLines[((rtB.accumFour * ky << 1) + rtB.lastRow)
-          + ky] - 1;
-        iter = rtB.HoughLines[(rtB.accumFour * ky << 1) + rtB.lastRow] - 1;
-        if ((rtB.HoughLines[((rtB.accumFour * ky << 1) + rtB.lastRow) + ky] - 1
-             != col) || (rtB.HoughLines[(rtB.accumFour * ky << 1) + rtB.lastRow]
-                         - 1 != rtB.row)) {
+      while (rtB.accumFour < ku - 1) {
+        col = rtB.HoughLines[((outIdx * ky << 1) + lastBlockCol) + ky] - 1;
+        rtB.row = rtB.HoughLines[(outIdx * ky << 1) + lastBlockCol] - 1;
+        outIdx++;
+        outIdxAdj = rtB.HoughLines[((outIdx * ky << 1) + lastBlockCol) + ky] - 1;
+        line_idx_3 = rtB.HoughLines[(outIdx * ky << 1) + lastBlockCol] - 1;
+        if ((rtB.HoughLines[((outIdx * ky << 1) + lastBlockCol) + ky] - 1 != col)
+            || (rtB.HoughLines[(outIdx * ky << 1) + lastBlockCol] - 1 != rtB.row))
+        {
           b2 = false;
 
           /* Find the visible portion of a line. */
           b3 = false;
           b4 = false;
           done = false;
-          hOffset = col;
-          numIter = rtB.row;
-          rtB.curNumNonZ = lastBlockCol;
-          gOffset = iter;
+          numIter = col;
+          hOffset = rtB.row;
+          line_idx_2 = outIdxAdj;
+          gOffset = line_idx_3;
           while (!done) {
             rtB.fromIdx = 0U;
             rtB.toIdx = 0U;
 
             /* Determine viewport violations. */
-            if (hOffset < 0) {
+            if (numIter < 0) {
               rtB.fromIdx = 4U;
             } else {
-              if (hOffset > 119) {
+              if (numIter > 319) {
                 rtB.fromIdx = 8U;
               }
             }
 
-            if (rtB.curNumNonZ < 0) {
+            if (line_idx_2 < 0) {
               rtB.toIdx = 4U;
             } else {
-              if (rtB.curNumNonZ > 119) {
+              if (line_idx_2 > 319) {
                 rtB.toIdx = 8U;
               }
             }
 
-            if (numIter < 0) {
+            if (hOffset < 0) {
               rtB.fromIdx |= 1U;
             } else {
-              if (numIter > 159) {
+              if (hOffset > 239) {
                 rtB.fromIdx |= 2U;
               }
             }
@@ -1450,7 +1330,7 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
             if (gOffset < 0) {
               rtB.toIdx |= 1U;
             } else {
-              if (gOffset > 159) {
+              if (gOffset > 239) {
                 rtB.toIdx |= 2U;
               }
             }
@@ -1466,185 +1346,167 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
             } else if (rtB.fromIdx != 0U) {
               /* Clip 1st point; if it's in-bounds, clip 2nd point. */
               if (b3) {
-                hOffset = col;
-                numIter = rtB.row;
+                numIter = col;
+                hOffset = rtB.row;
               }
 
-              lineOff = rtB.curNumNonZ - hOffset;
-              numEleTmp = gOffset - numIter;
-              if ((lineOff > 1073741824) || (lineOff < -1073741824) ||
-                  ((numEleTmp > 1073741824) || (numEleTmp < -1073741824))) {
+              i = line_idx_2 - numIter;
+              numEleTmp = gOffset - hOffset;
+              if ((i > 1073741824) || (i < -1073741824) || ((numEleTmp >
+                    1073741824) || (numEleTmp < -1073741824))) {
                 /* Possible Inf or Nan. */
                 done = true;
                 b2 = false;
                 b3 = true;
               } else if ((rtB.fromIdx & 4U) != 0U) {
                 /* Violated RMin. */
-                rtB.outIdxAdj = -hOffset * numEleTmp;
-                if ((rtB.outIdxAdj > 1073741824) || (rtB.outIdxAdj < -1073741824))
-                {
+                inIdx = -numIter * numEleTmp;
+                if ((inIdx > 1073741824) || (inIdx < -1073741824)) {
                   /* Check for Inf or Nan. */
                   done = true;
                   b2 = false;
-                } else if (((rtB.outIdxAdj >= 0) && (lineOff >= 0)) ||
-                           ((rtB.outIdxAdj < 0) && (lineOff < 0))) {
-                  numIter += (div_nde_s32_floor(rtB.outIdxAdj << 1, lineOff) + 1)
-                    >> 1;
-                } else {
-                  numIter -= (div_nde_s32_floor(-rtB.outIdxAdj << 1, lineOff) +
-                              1) >> 1;
-                }
-
-                hOffset = 0;
-                b3 = true;
-              } else if ((rtB.fromIdx & 8U) != 0U) {
-                /* Violated RMax. */
-                rtB.outIdxAdj = (119 - hOffset) * numEleTmp;
-                if ((rtB.outIdxAdj > 1073741824) || (rtB.outIdxAdj < -1073741824))
+                } else if (((inIdx >= 0) && (i >= 0)) || ((inIdx < 0) && (i < 0)))
                 {
-                  /* Check for Inf or Nan. */
-                  done = true;
-                  b2 = false;
-                } else if (((rtB.outIdxAdj >= 0) && (lineOff >= 0)) ||
-                           ((rtB.outIdxAdj < 0) && (lineOff < 0))) {
-                  numIter += (div_nde_s32_floor(rtB.outIdxAdj << 1, lineOff) + 1)
-                    >> 1;
+                  hOffset += (div_nde_s32_floor(inIdx << 1, i) + 1) >> 1;
                 } else {
-                  numIter -= (div_nde_s32_floor(-rtB.outIdxAdj << 1, lineOff) +
-                              1) >> 1;
-                }
-
-                hOffset = 119;
-                b3 = true;
-              } else if ((rtB.fromIdx & 1U) != 0U) {
-                /* Violated CMin. */
-                rtB.outIdxAdj = -numIter * lineOff;
-                if ((rtB.outIdxAdj > 1073741824) || (rtB.outIdxAdj < -1073741824))
-                {
-                  /* Check for Inf or Nan. */
-                  done = true;
-                  b2 = false;
-                } else if (((rtB.outIdxAdj >= 0) && (numEleTmp >= 0)) ||
-                           ((rtB.outIdxAdj < 0) && (numEleTmp < 0))) {
-                  hOffset += (div_nde_s32_floor(rtB.outIdxAdj << 1, numEleTmp) +
-                              1) >> 1;
-                } else {
-                  hOffset -= (div_nde_s32_floor(-rtB.outIdxAdj << 1, numEleTmp)
-                              + 1) >> 1;
+                  hOffset -= (div_nde_s32_floor(-inIdx << 1, i) + 1) >> 1;
                 }
 
                 numIter = 0;
                 b3 = true;
-              } else {
-                /* Violated CMax. */
-                rtB.outIdxAdj = (159 - numIter) * lineOff;
-                if ((rtB.outIdxAdj > 1073741824) || (rtB.outIdxAdj < -1073741824))
-                {
+              } else if ((rtB.fromIdx & 8U) != 0U) {
+                /* Violated RMax. */
+                inIdx = (319 - numIter) * numEleTmp;
+                if ((inIdx > 1073741824) || (inIdx < -1073741824)) {
                   /* Check for Inf or Nan. */
                   done = true;
                   b2 = false;
-                } else if (((rtB.outIdxAdj >= 0) && (numEleTmp >= 0)) ||
-                           ((rtB.outIdxAdj < 0) && (numEleTmp < 0))) {
-                  hOffset += (div_nde_s32_floor(rtB.outIdxAdj << 1, numEleTmp) +
-                              1) >> 1;
+                } else if (((inIdx >= 0) && (i >= 0)) || ((inIdx < 0) && (i < 0)))
+                {
+                  hOffset += (div_nde_s32_floor(inIdx << 1, i) + 1) >> 1;
                 } else {
-                  hOffset -= (div_nde_s32_floor(-rtB.outIdxAdj << 1, numEleTmp)
-                              + 1) >> 1;
+                  hOffset -= (div_nde_s32_floor(-inIdx << 1, i) + 1) >> 1;
                 }
 
-                numIter = 159;
+                numIter = 319;
+                b3 = true;
+              } else if ((rtB.fromIdx & 1U) != 0U) {
+                /* Violated CMin. */
+                inIdx = -hOffset * i;
+                if ((inIdx > 1073741824) || (inIdx < -1073741824)) {
+                  /* Check for Inf or Nan. */
+                  done = true;
+                  b2 = false;
+                } else if (((inIdx >= 0) && (numEleTmp >= 0)) || ((inIdx < 0) &&
+                            (numEleTmp < 0))) {
+                  numIter += (div_nde_s32_floor(inIdx << 1, numEleTmp) + 1) >> 1;
+                } else {
+                  numIter -= (div_nde_s32_floor(-inIdx << 1, numEleTmp) + 1) >>
+                    1;
+                }
+
+                hOffset = 0;
+                b3 = true;
+              } else {
+                /* Violated CMax. */
+                inIdx = (239 - hOffset) * i;
+                if ((inIdx > 1073741824) || (inIdx < -1073741824)) {
+                  /* Check for Inf or Nan. */
+                  done = true;
+                  b2 = false;
+                } else if (((inIdx >= 0) && (numEleTmp >= 0)) || ((inIdx < 0) &&
+                            (numEleTmp < 0))) {
+                  numIter += (div_nde_s32_floor(inIdx << 1, numEleTmp) + 1) >> 1;
+                } else {
+                  numIter -= (div_nde_s32_floor(-inIdx << 1, numEleTmp) + 1) >>
+                    1;
+                }
+
+                hOffset = 239;
                 b3 = true;
               }
             } else {
               /* Clip the 2nd point. */
               if (b4) {
-                rtB.curNumNonZ = lastBlockCol;
-                gOffset = iter;
+                line_idx_2 = outIdxAdj;
+                gOffset = line_idx_3;
               }
 
-              lineOff = rtB.curNumNonZ - hOffset;
-              numEleTmp = gOffset - numIter;
-              if ((lineOff > 1073741824) || (lineOff < -1073741824) ||
-                  ((numEleTmp > 1073741824) || (numEleTmp < -1073741824))) {
+              i = line_idx_2 - numIter;
+              numEleTmp = gOffset - hOffset;
+              if ((i > 1073741824) || (i < -1073741824) || ((numEleTmp >
+                    1073741824) || (numEleTmp < -1073741824))) {
                 /* Possible Inf or Nan. */
                 done = true;
                 b2 = false;
                 b4 = true;
               } else if ((rtB.toIdx & 4U) != 0U) {
                 /* Violated RMin. */
-                rtB.outIdxAdj = -rtB.curNumNonZ * numEleTmp;
-                if ((rtB.outIdxAdj > 1073741824) || (rtB.outIdxAdj < -1073741824))
-                {
+                inIdx = -line_idx_2 * numEleTmp;
+                if ((inIdx > 1073741824) || (inIdx < -1073741824)) {
                   /* Check for Inf or Nan. */
                   done = true;
                   b2 = false;
-                } else if (((rtB.outIdxAdj >= 0) && (lineOff >= 0)) ||
-                           ((rtB.outIdxAdj < 0) && (lineOff < 0))) {
-                  gOffset += (div_nde_s32_floor(rtB.outIdxAdj << 1, lineOff) + 1)
-                    >> 1;
+                } else if (((inIdx >= 0) && (i >= 0)) || ((inIdx < 0) && (i < 0)))
+                {
+                  gOffset += (div_nde_s32_floor(inIdx << 1, i) + 1) >> 1;
                 } else {
-                  gOffset -= (div_nde_s32_floor(-rtB.outIdxAdj << 1, lineOff) +
-                              1) >> 1;
+                  gOffset -= (div_nde_s32_floor(-inIdx << 1, i) + 1) >> 1;
                 }
 
-                rtB.curNumNonZ = 0;
+                line_idx_2 = 0;
                 b4 = true;
               } else if ((rtB.toIdx & 8U) != 0U) {
                 /* Violated RMax. */
-                rtB.outIdxAdj = (119 - rtB.curNumNonZ) * numEleTmp;
-                if ((rtB.outIdxAdj > 1073741824) || (rtB.outIdxAdj < -1073741824))
-                {
+                inIdx = (319 - line_idx_2) * numEleTmp;
+                if ((inIdx > 1073741824) || (inIdx < -1073741824)) {
                   /* Check for Inf or Nan. */
                   done = true;
                   b2 = false;
-                } else if (((rtB.outIdxAdj >= 0) && (lineOff >= 0)) ||
-                           ((rtB.outIdxAdj < 0) && (lineOff < 0))) {
-                  gOffset += (div_nde_s32_floor(rtB.outIdxAdj << 1, lineOff) + 1)
-                    >> 1;
+                } else if (((inIdx >= 0) && (i >= 0)) || ((inIdx < 0) && (i < 0)))
+                {
+                  gOffset += (div_nde_s32_floor(inIdx << 1, i) + 1) >> 1;
                 } else {
-                  gOffset -= (div_nde_s32_floor(-rtB.outIdxAdj << 1, lineOff) +
-                              1) >> 1;
+                  gOffset -= (div_nde_s32_floor(-inIdx << 1, i) + 1) >> 1;
                 }
 
-                rtB.curNumNonZ = 119;
+                line_idx_2 = 319;
                 b4 = true;
               } else if ((rtB.toIdx & 1U) != 0U) {
                 /* Violated CMin. */
-                rtB.outIdxAdj = -gOffset * lineOff;
-                if ((rtB.outIdxAdj > 1073741824) || (rtB.outIdxAdj < -1073741824))
-                {
+                inIdx = -gOffset * i;
+                if ((inIdx > 1073741824) || (inIdx < -1073741824)) {
                   /* Check for Inf or Nan. */
                   done = true;
                   b2 = false;
-                } else if (((rtB.outIdxAdj >= 0) && (numEleTmp >= 0)) ||
-                           ((rtB.outIdxAdj < 0) && (numEleTmp < 0))) {
-                  rtB.curNumNonZ += (div_nde_s32_floor(rtB.outIdxAdj << 1,
-                    numEleTmp) + 1) >> 1;
+                } else if (((inIdx >= 0) && (numEleTmp >= 0)) || ((inIdx < 0) &&
+                            (numEleTmp < 0))) {
+                  line_idx_2 += (div_nde_s32_floor(inIdx << 1, numEleTmp) + 1) >>
+                    1;
                 } else {
-                  rtB.curNumNonZ -= (div_nde_s32_floor(-rtB.outIdxAdj << 1,
-                    numEleTmp) + 1) >> 1;
+                  line_idx_2 -= (div_nde_s32_floor(-inIdx << 1, numEleTmp) + 1) >>
+                    1;
                 }
 
                 gOffset = 0;
                 b4 = true;
               } else {
                 /* Violated CMax. */
-                rtB.outIdxAdj = (159 - gOffset) * lineOff;
-                if ((rtB.outIdxAdj > 1073741824) || (rtB.outIdxAdj < -1073741824))
-                {
+                inIdx = (239 - gOffset) * i;
+                if ((inIdx > 1073741824) || (inIdx < -1073741824)) {
                   /* Check for Inf or Nan. */
                   done = true;
                   b2 = false;
-                } else if (((rtB.outIdxAdj >= 0) && (numEleTmp >= 0)) ||
-                           ((rtB.outIdxAdj < 0) && (numEleTmp < 0))) {
-                  rtB.curNumNonZ += (div_nde_s32_floor(rtB.outIdxAdj << 1,
-                    numEleTmp) + 1) >> 1;
+                } else if (((inIdx >= 0) && (numEleTmp >= 0)) || ((inIdx < 0) &&
+                            (numEleTmp < 0))) {
+                  line_idx_2 += (div_nde_s32_floor(inIdx << 1, numEleTmp) + 1) >>
+                    1;
                 } else {
-                  rtB.curNumNonZ -= (div_nde_s32_floor(-rtB.outIdxAdj << 1,
-                    numEleTmp) + 1) >> 1;
+                  line_idx_2 -= (div_nde_s32_floor(-inIdx << 1, numEleTmp) + 1) >>
+                    1;
                 }
 
-                gOffset = 159;
+                gOffset = 239;
                 b4 = true;
               }
             }
@@ -1653,109 +1515,115 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
           if (b2) {
             /* Draw a line using Bresenham algorithm. */
             /* Initialize the Bresenham algorithm. */
-            if (rtB.curNumNonZ >= hOffset) {
-              lastBlockCol = rtB.curNumNonZ - hOffset;
+            if (line_idx_2 >= numIter) {
+              outIdxAdj = line_idx_2 - numIter;
             } else {
-              lastBlockCol = hOffset - rtB.curNumNonZ;
+              outIdxAdj = numIter - line_idx_2;
             }
 
-            if (gOffset >= numIter) {
-              iter = gOffset - numIter;
+            if (gOffset >= hOffset) {
+              line_idx_3 = gOffset - hOffset;
             } else {
-              iter = numIter - gOffset;
+              line_idx_3 = hOffset - gOffset;
             }
 
-            if (lastBlockCol > iter) {
-              lineOff = 1;
-              numEleTmp = 120;
+            if (outIdxAdj > line_idx_3) {
+              i = 1;
+              numEleTmp = 320;
             } else {
-              lineOff = 120;
+              i = 320;
               numEleTmp = 1;
-              rtB.outIdxAdj = hOffset;
-              hOffset = numIter;
-              numIter = rtB.outIdxAdj;
-              rtB.outIdxAdj = rtB.curNumNonZ;
-              rtB.curNumNonZ = gOffset;
-              gOffset = rtB.outIdxAdj;
+              inIdx = numIter;
+              numIter = hOffset;
+              hOffset = inIdx;
+              inIdx = line_idx_2;
+              line_idx_2 = gOffset;
+              gOffset = inIdx;
             }
 
-            if (hOffset > rtB.curNumNonZ) {
-              rtB.outIdxAdj = hOffset;
-              hOffset = rtB.curNumNonZ;
-              rtB.curNumNonZ = rtB.outIdxAdj;
-              rtB.outIdxAdj = numIter;
-              numIter = gOffset;
-              gOffset = rtB.outIdxAdj;
+            if (numIter > line_idx_2) {
+              inIdx = numIter;
+              numIter = line_idx_2;
+              line_idx_2 = inIdx;
+              inIdx = hOffset;
+              hOffset = gOffset;
+              gOffset = inIdx;
             }
 
-            rtB.outIdxAdj = rtB.curNumNonZ - hOffset;
-            if (numIter <= gOffset) {
+            inIdx = line_idx_2 - numIter;
+            if (hOffset <= gOffset) {
               col = 1;
-              gOffset -= numIter;
+              outIdxAdj = gOffset - hOffset;
             } else {
               col = -1;
-              gOffset = numIter - gOffset;
+              outIdxAdj = hOffset - gOffset;
             }
 
-            rtB.row = -((rtB.outIdxAdj + 1) >> 1);
-            lastBlockCol = hOffset * lineOff + numIter * numEleTmp;
-            iter = col * numEleTmp + lineOff;
-            done = (hOffset <= rtB.curNumNonZ);
+            gOffset = -((inIdx + 1) >> 1);
+            hOffset = numIter * i + hOffset * numEleTmp;
+            rtB.row = col * numEleTmp + i;
+            done = (numIter <= line_idx_2);
             while (done) {
-              rtB.DrawShapes[lastBlockCol] = MAX_uint8_T;
-              numIter = lastBlockCol + 19200;
-              rtB.DrawShapes[numIter] = MAX_uint8_T;
-              numIter += 19200;
-              rtB.DrawShapes[numIter] = MAX_uint8_T;
+              rtB.DrawShapes[hOffset] = MAX_uint8_T;
 
               /* Compute the next location using Bresenham algorithm. */
               /* Move to the next pixel location. */
-              rtB.row += gOffset;
-              if (rtB.row >= 0) {
-                rtB.row -= rtB.outIdxAdj;
-                lastBlockCol += iter;
+              gOffset += outIdxAdj;
+              if (gOffset >= 0) {
+                gOffset -= inIdx;
+                hOffset += rtB.row;
               } else {
-                lastBlockCol += lineOff;
+                hOffset += i;
               }
 
-              hOffset++;
-              done = (hOffset <= rtB.curNumNonZ);
+              numIter++;
+              done = (numIter <= line_idx_2);
             }
           }
         }
-      }
 
-      rtB.lastRow++;
+        rtB.accumFour++;
+      }
     }
   }
 
   /* End of S-Function (svipdrawshapes): '<Root>/Draw Shapes' */
-  rtExtModeUpload(1, ((rtM->Timing.clockTick1) * 0.2));
-
-  /* Update absolute time */
-  /* The "clockTick1" counts the number of times the code of this task has
-   * been executed. The resolution of this integer timer is 0.2, which is the step size
-   * of the task. Size of "clockTick1" ensures timer will not overflow during the
-   * application lifespan selected.
+  /* Start for MATLABSystem: '<S4>/MATLAB System' incorporates:
+   *  MATLABSystem: '<S4>/MATLAB System'
    */
-  rtM->Timing.clockTick1++;
-}
+  memcpy(&rtB.Erosion[0], &rtB.DrawShapes[0], 76800U * sizeof(uint8_T));
+  memcpy(&rtB.pln2[0], &rtB.DrawShapes[0], 76800U * sizeof(uint8_T));
+  memcpy(&rtB.pln3[0], &rtB.DrawShapes[0], 76800U * sizeof(uint8_T));
+  MW_SDL_videoDisplayOutput(rtB.Erosion, rtB.pln2, rtB.pln3);
 
-/* Model step wrapper function for compatibility with a static main program */
-void lane_departure_step(int_T tid)
-{
-  switch (tid) {
-   case 0 :
-    lane_departure_step0();
-    break;
+  /* External mode */
+  rtExtModeUploadCheckTrigger(1);
 
-   case 1 :
-    lane_departure_step1();
-    break;
-
-   default :
-    break;
+  {                                    /* Sample time: [0.033333333333333333s, 0.0s] */
+    rtExtModeUpload(0, rtM->Timing.taskTime0);
   }
+
+  /* signal main to stop simulation */
+  {                                    /* Sample time: [0.033333333333333333s, 0.0s] */
+    if ((rtmGetTFinal(rtM)!=-1) &&
+        !((rtmGetTFinal(rtM)-rtM->Timing.taskTime0) > rtM->Timing.taskTime0 *
+          (DBL_EPSILON))) {
+      rtmSetErrorStatus(rtM, "Simulation finished");
+    }
+
+    if (rtmGetStopRequested(rtM)) {
+      rtmSetErrorStatus(rtM, "Simulation finished");
+    }
+  }
+
+  /* Update absolute time for base rate */
+  /* The "clockTick0" counts the number of times the code of this task has
+   * been executed. The absolute time is the multiplication of "clockTick0"
+   * and "Timing.stepSize0". Size of "clockTick0" ensures timer will not
+   * overflow during the application lifespan selected.
+   */
+  rtM->Timing.taskTime0 =
+    (++rtM->Timing.clockTick0) * rtM->Timing.stepSize0;
 }
 
 /* Model initialize function */
@@ -1766,19 +1634,20 @@ void lane_departure_initialize(void)
   rtM->Timing.stepSize0 = 0.033333333333333333;
 
   /* External mode info */
-  rtM->Sizes.checksums[0] = (2742049912U);
-  rtM->Sizes.checksums[1] = (3215783529U);
-  rtM->Sizes.checksums[2] = (1863095128U);
-  rtM->Sizes.checksums[3] = (3618466718U);
+  rtM->Sizes.checksums[0] = (608052785U);
+  rtM->Sizes.checksums[1] = (3207004011U);
+  rtM->Sizes.checksums[2] = (243929478U);
+  rtM->Sizes.checksums[3] = (1842160048U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
     static RTWExtModeInfo rt_ExtModeInfo;
-    static const sysRanDType *systemRan[2];
+    static const sysRanDType *systemRan[3];
     rtM->extModeInfo = (&rt_ExtModeInfo);
     rteiSetSubSystemActiveVectorAddresses(&rt_ExtModeInfo, systemRan);
     systemRan[0] = &rtAlwaysEnabled;
     systemRan[1] = &rtAlwaysEnabled;
+    systemRan[2] = &rtAlwaysEnabled;
     rteiSetModelMappingInfoPtr(rtM->extModeInfo, &rtM->SpecialInfo.mappingInfo);
     rteiSetChecksumsPtr(rtM->extModeInfo, rtM->Sizes.checksums);
     rteiSetTPtr(rtM->extModeInfo, rtmGetTPtr(rtM));
@@ -1965,404 +1834,804 @@ void lane_departure_initialize(void)
     rtB.HoughTransform_o2[177] = 1.5184364492350666;
     rtB.HoughTransform_o2[178] = 1.53588974175501;
     rtB.HoughTransform_o2[179] = 1.5533430342749532;
-    rtB.HoughTransform_o3[0] = -199.0;
-    rtB.HoughTransform_o3[1] = -198.0;
-    rtB.HoughTransform_o3[2] = -197.0;
-    rtB.HoughTransform_o3[3] = -196.0;
-    rtB.HoughTransform_o3[4] = -195.0;
-    rtB.HoughTransform_o3[5] = -194.0;
-    rtB.HoughTransform_o3[6] = -193.0;
-    rtB.HoughTransform_o3[7] = -192.0;
-    rtB.HoughTransform_o3[8] = -191.0;
-    rtB.HoughTransform_o3[9] = -190.0;
-    rtB.HoughTransform_o3[10] = -189.0;
-    rtB.HoughTransform_o3[11] = -188.0;
-    rtB.HoughTransform_o3[12] = -187.0;
-    rtB.HoughTransform_o3[13] = -186.0;
-    rtB.HoughTransform_o3[14] = -185.0;
-    rtB.HoughTransform_o3[15] = -184.0;
-    rtB.HoughTransform_o3[16] = -183.0;
-    rtB.HoughTransform_o3[17] = -182.0;
-    rtB.HoughTransform_o3[18] = -181.0;
-    rtB.HoughTransform_o3[19] = -180.0;
-    rtB.HoughTransform_o3[20] = -179.0;
-    rtB.HoughTransform_o3[21] = -178.0;
-    rtB.HoughTransform_o3[22] = -177.0;
-    rtB.HoughTransform_o3[23] = -176.0;
-    rtB.HoughTransform_o3[24] = -175.0;
-    rtB.HoughTransform_o3[25] = -174.0;
-    rtB.HoughTransform_o3[26] = -173.0;
-    rtB.HoughTransform_o3[27] = -172.0;
-    rtB.HoughTransform_o3[28] = -171.0;
-    rtB.HoughTransform_o3[29] = -170.0;
-    rtB.HoughTransform_o3[30] = -169.0;
-    rtB.HoughTransform_o3[31] = -168.0;
-    rtB.HoughTransform_o3[32] = -167.0;
-    rtB.HoughTransform_o3[33] = -166.0;
-    rtB.HoughTransform_o3[34] = -165.0;
-    rtB.HoughTransform_o3[35] = -164.0;
-    rtB.HoughTransform_o3[36] = -163.0;
-    rtB.HoughTransform_o3[37] = -162.0;
-    rtB.HoughTransform_o3[38] = -161.0;
-    rtB.HoughTransform_o3[39] = -160.0;
-    rtB.HoughTransform_o3[40] = -159.0;
-    rtB.HoughTransform_o3[41] = -158.0;
-    rtB.HoughTransform_o3[42] = -157.0;
-    rtB.HoughTransform_o3[43] = -156.0;
-    rtB.HoughTransform_o3[44] = -155.0;
-    rtB.HoughTransform_o3[45] = -154.0;
-    rtB.HoughTransform_o3[46] = -153.0;
-    rtB.HoughTransform_o3[47] = -152.0;
-    rtB.HoughTransform_o3[48] = -151.0;
-    rtB.HoughTransform_o3[49] = -150.0;
-    rtB.HoughTransform_o3[50] = -149.0;
-    rtB.HoughTransform_o3[51] = -148.0;
-    rtB.HoughTransform_o3[52] = -147.0;
-    rtB.HoughTransform_o3[53] = -146.0;
-    rtB.HoughTransform_o3[54] = -145.0;
-    rtB.HoughTransform_o3[55] = -144.0;
-    rtB.HoughTransform_o3[56] = -143.0;
-    rtB.HoughTransform_o3[57] = -142.0;
-    rtB.HoughTransform_o3[58] = -141.0;
-    rtB.HoughTransform_o3[59] = -140.0;
-    rtB.HoughTransform_o3[60] = -139.0;
-    rtB.HoughTransform_o3[61] = -138.0;
-    rtB.HoughTransform_o3[62] = -137.0;
-    rtB.HoughTransform_o3[63] = -136.0;
-    rtB.HoughTransform_o3[64] = -135.0;
-    rtB.HoughTransform_o3[65] = -134.0;
-    rtB.HoughTransform_o3[66] = -133.0;
-    rtB.HoughTransform_o3[67] = -132.0;
-    rtB.HoughTransform_o3[68] = -131.0;
-    rtB.HoughTransform_o3[69] = -130.0;
-    rtB.HoughTransform_o3[70] = -129.0;
-    rtB.HoughTransform_o3[71] = -128.0;
-    rtB.HoughTransform_o3[72] = -127.0;
-    rtB.HoughTransform_o3[73] = -126.0;
-    rtB.HoughTransform_o3[74] = -125.0;
-    rtB.HoughTransform_o3[75] = -124.0;
-    rtB.HoughTransform_o3[76] = -123.0;
-    rtB.HoughTransform_o3[77] = -122.0;
-    rtB.HoughTransform_o3[78] = -121.0;
-    rtB.HoughTransform_o3[79] = -120.0;
-    rtB.HoughTransform_o3[80] = -119.0;
-    rtB.HoughTransform_o3[81] = -118.0;
-    rtB.HoughTransform_o3[82] = -117.0;
-    rtB.HoughTransform_o3[83] = -116.0;
-    rtB.HoughTransform_o3[84] = -115.0;
-    rtB.HoughTransform_o3[85] = -114.0;
-    rtB.HoughTransform_o3[86] = -113.0;
-    rtB.HoughTransform_o3[87] = -112.0;
-    rtB.HoughTransform_o3[88] = -111.0;
-    rtB.HoughTransform_o3[89] = -110.0;
-    rtB.HoughTransform_o3[90] = -109.0;
-    rtB.HoughTransform_o3[91] = -108.0;
-    rtB.HoughTransform_o3[92] = -107.0;
-    rtB.HoughTransform_o3[93] = -106.0;
-    rtB.HoughTransform_o3[94] = -105.0;
-    rtB.HoughTransform_o3[95] = -104.0;
-    rtB.HoughTransform_o3[96] = -103.0;
-    rtB.HoughTransform_o3[97] = -102.0;
-    rtB.HoughTransform_o3[98] = -101.0;
-    rtB.HoughTransform_o3[99] = -100.0;
-    rtB.HoughTransform_o3[100] = -99.0;
-    rtB.HoughTransform_o3[101] = -98.0;
-    rtB.HoughTransform_o3[102] = -97.0;
-    rtB.HoughTransform_o3[103] = -96.0;
-    rtB.HoughTransform_o3[104] = -95.0;
-    rtB.HoughTransform_o3[105] = -94.0;
-    rtB.HoughTransform_o3[106] = -93.0;
-    rtB.HoughTransform_o3[107] = -92.0;
-    rtB.HoughTransform_o3[108] = -91.0;
-    rtB.HoughTransform_o3[109] = -90.0;
-    rtB.HoughTransform_o3[110] = -89.0;
-    rtB.HoughTransform_o3[111] = -88.0;
-    rtB.HoughTransform_o3[112] = -87.0;
-    rtB.HoughTransform_o3[113] = -86.0;
-    rtB.HoughTransform_o3[114] = -85.0;
-    rtB.HoughTransform_o3[115] = -84.0;
-    rtB.HoughTransform_o3[116] = -83.0;
-    rtB.HoughTransform_o3[117] = -82.0;
-    rtB.HoughTransform_o3[118] = -81.0;
-    rtB.HoughTransform_o3[119] = -80.0;
-    rtB.HoughTransform_o3[120] = -79.0;
-    rtB.HoughTransform_o3[121] = -78.0;
-    rtB.HoughTransform_o3[122] = -77.0;
-    rtB.HoughTransform_o3[123] = -76.0;
-    rtB.HoughTransform_o3[124] = -75.0;
-    rtB.HoughTransform_o3[125] = -74.0;
-    rtB.HoughTransform_o3[126] = -73.0;
-    rtB.HoughTransform_o3[127] = -72.0;
-    rtB.HoughTransform_o3[128] = -71.0;
-    rtB.HoughTransform_o3[129] = -70.0;
-    rtB.HoughTransform_o3[130] = -69.0;
-    rtB.HoughTransform_o3[131] = -68.0;
-    rtB.HoughTransform_o3[132] = -67.0;
-    rtB.HoughTransform_o3[133] = -66.0;
-    rtB.HoughTransform_o3[134] = -65.0;
-    rtB.HoughTransform_o3[135] = -64.0;
-    rtB.HoughTransform_o3[136] = -63.0;
-    rtB.HoughTransform_o3[137] = -62.0;
-    rtB.HoughTransform_o3[138] = -61.0;
-    rtB.HoughTransform_o3[139] = -60.0;
-    rtB.HoughTransform_o3[140] = -59.0;
-    rtB.HoughTransform_o3[141] = -58.0;
-    rtB.HoughTransform_o3[142] = -57.0;
-    rtB.HoughTransform_o3[143] = -56.0;
-    rtB.HoughTransform_o3[144] = -55.0;
-    rtB.HoughTransform_o3[145] = -54.0;
-    rtB.HoughTransform_o3[146] = -53.0;
-    rtB.HoughTransform_o3[147] = -52.0;
-    rtB.HoughTransform_o3[148] = -51.0;
-    rtB.HoughTransform_o3[149] = -50.0;
-    rtB.HoughTransform_o3[150] = -49.0;
-    rtB.HoughTransform_o3[151] = -48.0;
-    rtB.HoughTransform_o3[152] = -47.0;
-    rtB.HoughTransform_o3[153] = -46.0;
-    rtB.HoughTransform_o3[154] = -45.0;
-    rtB.HoughTransform_o3[155] = -44.0;
-    rtB.HoughTransform_o3[156] = -43.0;
-    rtB.HoughTransform_o3[157] = -42.0;
-    rtB.HoughTransform_o3[158] = -41.0;
-    rtB.HoughTransform_o3[159] = -40.0;
-    rtB.HoughTransform_o3[160] = -39.0;
-    rtB.HoughTransform_o3[161] = -38.0;
-    rtB.HoughTransform_o3[162] = -37.0;
-    rtB.HoughTransform_o3[163] = -36.0;
-    rtB.HoughTransform_o3[164] = -35.0;
-    rtB.HoughTransform_o3[165] = -34.0;
-    rtB.HoughTransform_o3[166] = -33.0;
-    rtB.HoughTransform_o3[167] = -32.0;
-    rtB.HoughTransform_o3[168] = -31.0;
-    rtB.HoughTransform_o3[169] = -30.0;
-    rtB.HoughTransform_o3[170] = -29.0;
-    rtB.HoughTransform_o3[171] = -28.0;
-    rtB.HoughTransform_o3[172] = -27.0;
-    rtB.HoughTransform_o3[173] = -26.0;
-    rtB.HoughTransform_o3[174] = -25.0;
-    rtB.HoughTransform_o3[175] = -24.0;
-    rtB.HoughTransform_o3[176] = -23.0;
-    rtB.HoughTransform_o3[177] = -22.0;
-    rtB.HoughTransform_o3[178] = -21.0;
-    rtB.HoughTransform_o3[179] = -20.0;
-    rtB.HoughTransform_o3[180] = -19.0;
-    rtB.HoughTransform_o3[181] = -18.0;
-    rtB.HoughTransform_o3[182] = -17.0;
-    rtB.HoughTransform_o3[183] = -16.0;
-    rtB.HoughTransform_o3[184] = -15.0;
-    rtB.HoughTransform_o3[185] = -14.0;
-    rtB.HoughTransform_o3[186] = -13.0;
-    rtB.HoughTransform_o3[187] = -12.0;
-    rtB.HoughTransform_o3[188] = -11.0;
-    rtB.HoughTransform_o3[189] = -10.0;
-    rtB.HoughTransform_o3[190] = -9.0;
-    rtB.HoughTransform_o3[191] = -8.0;
-    rtB.HoughTransform_o3[192] = -7.0;
-    rtB.HoughTransform_o3[193] = -6.0;
-    rtB.HoughTransform_o3[194] = -5.0;
-    rtB.HoughTransform_o3[195] = -4.0;
-    rtB.HoughTransform_o3[196] = -3.0;
-    rtB.HoughTransform_o3[197] = -2.0;
-    rtB.HoughTransform_o3[198] = -1.0;
-    rtB.HoughTransform_o3[200] = 1.0;
-    rtB.HoughTransform_o3[201] = 2.0;
-    rtB.HoughTransform_o3[202] = 3.0;
-    rtB.HoughTransform_o3[203] = 4.0;
-    rtB.HoughTransform_o3[204] = 5.0;
-    rtB.HoughTransform_o3[205] = 6.0;
-    rtB.HoughTransform_o3[206] = 7.0;
-    rtB.HoughTransform_o3[207] = 8.0;
-    rtB.HoughTransform_o3[208] = 9.0;
-    rtB.HoughTransform_o3[209] = 10.0;
-    rtB.HoughTransform_o3[210] = 11.0;
-    rtB.HoughTransform_o3[211] = 12.0;
-    rtB.HoughTransform_o3[212] = 13.0;
-    rtB.HoughTransform_o3[213] = 14.0;
-    rtB.HoughTransform_o3[214] = 15.0;
-    rtB.HoughTransform_o3[215] = 16.0;
-    rtB.HoughTransform_o3[216] = 17.0;
-    rtB.HoughTransform_o3[217] = 18.0;
-    rtB.HoughTransform_o3[218] = 19.0;
-    rtB.HoughTransform_o3[219] = 20.0;
-    rtB.HoughTransform_o3[220] = 21.0;
-    rtB.HoughTransform_o3[221] = 22.0;
-    rtB.HoughTransform_o3[222] = 23.0;
-    rtB.HoughTransform_o3[223] = 24.0;
-    rtB.HoughTransform_o3[224] = 25.0;
-    rtB.HoughTransform_o3[225] = 26.0;
-    rtB.HoughTransform_o3[226] = 27.0;
-    rtB.HoughTransform_o3[227] = 28.0;
-    rtB.HoughTransform_o3[228] = 29.0;
-    rtB.HoughTransform_o3[229] = 30.0;
-    rtB.HoughTransform_o3[230] = 31.0;
-    rtB.HoughTransform_o3[231] = 32.0;
-    rtB.HoughTransform_o3[232] = 33.0;
-    rtB.HoughTransform_o3[233] = 34.0;
-    rtB.HoughTransform_o3[234] = 35.0;
-    rtB.HoughTransform_o3[235] = 36.0;
-    rtB.HoughTransform_o3[236] = 37.0;
-    rtB.HoughTransform_o3[237] = 38.0;
-    rtB.HoughTransform_o3[238] = 39.0;
-    rtB.HoughTransform_o3[239] = 40.0;
-    rtB.HoughTransform_o3[240] = 41.0;
-    rtB.HoughTransform_o3[241] = 42.0;
-    rtB.HoughTransform_o3[242] = 43.0;
-    rtB.HoughTransform_o3[243] = 44.0;
-    rtB.HoughTransform_o3[244] = 45.0;
-    rtB.HoughTransform_o3[245] = 46.0;
-    rtB.HoughTransform_o3[246] = 47.0;
-    rtB.HoughTransform_o3[247] = 48.0;
-    rtB.HoughTransform_o3[248] = 49.0;
-    rtB.HoughTransform_o3[249] = 50.0;
-    rtB.HoughTransform_o3[250] = 51.0;
-    rtB.HoughTransform_o3[251] = 52.0;
-    rtB.HoughTransform_o3[252] = 53.0;
-    rtB.HoughTransform_o3[253] = 54.0;
-    rtB.HoughTransform_o3[254] = 55.0;
-    rtB.HoughTransform_o3[255] = 56.0;
-    rtB.HoughTransform_o3[256] = 57.0;
-    rtB.HoughTransform_o3[257] = 58.0;
-    rtB.HoughTransform_o3[258] = 59.0;
-    rtB.HoughTransform_o3[259] = 60.0;
-    rtB.HoughTransform_o3[260] = 61.0;
-    rtB.HoughTransform_o3[261] = 62.0;
-    rtB.HoughTransform_o3[262] = 63.0;
-    rtB.HoughTransform_o3[263] = 64.0;
-    rtB.HoughTransform_o3[264] = 65.0;
-    rtB.HoughTransform_o3[265] = 66.0;
-    rtB.HoughTransform_o3[266] = 67.0;
-    rtB.HoughTransform_o3[267] = 68.0;
-    rtB.HoughTransform_o3[268] = 69.0;
-    rtB.HoughTransform_o3[269] = 70.0;
-    rtB.HoughTransform_o3[270] = 71.0;
-    rtB.HoughTransform_o3[271] = 72.0;
-    rtB.HoughTransform_o3[272] = 73.0;
-    rtB.HoughTransform_o3[273] = 74.0;
-    rtB.HoughTransform_o3[274] = 75.0;
-    rtB.HoughTransform_o3[275] = 76.0;
-    rtB.HoughTransform_o3[276] = 77.0;
-    rtB.HoughTransform_o3[277] = 78.0;
-    rtB.HoughTransform_o3[278] = 79.0;
-    rtB.HoughTransform_o3[279] = 80.0;
-    rtB.HoughTransform_o3[280] = 81.0;
-    rtB.HoughTransform_o3[281] = 82.0;
-    rtB.HoughTransform_o3[282] = 83.0;
-    rtB.HoughTransform_o3[283] = 84.0;
-    rtB.HoughTransform_o3[284] = 85.0;
-    rtB.HoughTransform_o3[285] = 86.0;
-    rtB.HoughTransform_o3[286] = 87.0;
-    rtB.HoughTransform_o3[287] = 88.0;
-    rtB.HoughTransform_o3[288] = 89.0;
-    rtB.HoughTransform_o3[289] = 90.0;
-    rtB.HoughTransform_o3[290] = 91.0;
-    rtB.HoughTransform_o3[291] = 92.0;
-    rtB.HoughTransform_o3[292] = 93.0;
-    rtB.HoughTransform_o3[293] = 94.0;
-    rtB.HoughTransform_o3[294] = 95.0;
-    rtB.HoughTransform_o3[295] = 96.0;
-    rtB.HoughTransform_o3[296] = 97.0;
-    rtB.HoughTransform_o3[297] = 98.0;
-    rtB.HoughTransform_o3[298] = 99.0;
-    rtB.HoughTransform_o3[299] = 100.0;
-    rtB.HoughTransform_o3[300] = 101.0;
-    rtB.HoughTransform_o3[301] = 102.0;
-    rtB.HoughTransform_o3[302] = 103.0;
-    rtB.HoughTransform_o3[303] = 104.0;
-    rtB.HoughTransform_o3[304] = 105.0;
-    rtB.HoughTransform_o3[305] = 106.0;
-    rtB.HoughTransform_o3[306] = 107.0;
-    rtB.HoughTransform_o3[307] = 108.0;
-    rtB.HoughTransform_o3[308] = 109.0;
-    rtB.HoughTransform_o3[309] = 110.0;
-    rtB.HoughTransform_o3[310] = 111.0;
-    rtB.HoughTransform_o3[311] = 112.0;
-    rtB.HoughTransform_o3[312] = 113.0;
-    rtB.HoughTransform_o3[313] = 114.0;
-    rtB.HoughTransform_o3[314] = 115.0;
-    rtB.HoughTransform_o3[315] = 116.0;
-    rtB.HoughTransform_o3[316] = 117.0;
-    rtB.HoughTransform_o3[317] = 118.0;
-    rtB.HoughTransform_o3[318] = 119.0;
-    rtB.HoughTransform_o3[319] = 120.0;
-    rtB.HoughTransform_o3[320] = 121.0;
-    rtB.HoughTransform_o3[321] = 122.0;
-    rtB.HoughTransform_o3[322] = 123.0;
-    rtB.HoughTransform_o3[323] = 124.0;
-    rtB.HoughTransform_o3[324] = 125.0;
-    rtB.HoughTransform_o3[325] = 126.0;
-    rtB.HoughTransform_o3[326] = 127.0;
-    rtB.HoughTransform_o3[327] = 128.0;
-    rtB.HoughTransform_o3[328] = 129.0;
-    rtB.HoughTransform_o3[329] = 130.0;
-    rtB.HoughTransform_o3[330] = 131.0;
-    rtB.HoughTransform_o3[331] = 132.0;
-    rtB.HoughTransform_o3[332] = 133.0;
-    rtB.HoughTransform_o3[333] = 134.0;
-    rtB.HoughTransform_o3[334] = 135.0;
-    rtB.HoughTransform_o3[335] = 136.0;
-    rtB.HoughTransform_o3[336] = 137.0;
-    rtB.HoughTransform_o3[337] = 138.0;
-    rtB.HoughTransform_o3[338] = 139.0;
-    rtB.HoughTransform_o3[339] = 140.0;
-    rtB.HoughTransform_o3[340] = 141.0;
-    rtB.HoughTransform_o3[341] = 142.0;
-    rtB.HoughTransform_o3[342] = 143.0;
-    rtB.HoughTransform_o3[343] = 144.0;
-    rtB.HoughTransform_o3[344] = 145.0;
-    rtB.HoughTransform_o3[345] = 146.0;
-    rtB.HoughTransform_o3[346] = 147.0;
-    rtB.HoughTransform_o3[347] = 148.0;
-    rtB.HoughTransform_o3[348] = 149.0;
-    rtB.HoughTransform_o3[349] = 150.0;
-    rtB.HoughTransform_o3[350] = 151.0;
-    rtB.HoughTransform_o3[351] = 152.0;
-    rtB.HoughTransform_o3[352] = 153.0;
-    rtB.HoughTransform_o3[353] = 154.0;
-    rtB.HoughTransform_o3[354] = 155.0;
-    rtB.HoughTransform_o3[355] = 156.0;
-    rtB.HoughTransform_o3[356] = 157.0;
-    rtB.HoughTransform_o3[357] = 158.0;
-    rtB.HoughTransform_o3[358] = 159.0;
-    rtB.HoughTransform_o3[359] = 160.0;
-    rtB.HoughTransform_o3[360] = 161.0;
-    rtB.HoughTransform_o3[361] = 162.0;
-    rtB.HoughTransform_o3[362] = 163.0;
-    rtB.HoughTransform_o3[363] = 164.0;
-    rtB.HoughTransform_o3[364] = 165.0;
-    rtB.HoughTransform_o3[365] = 166.0;
-    rtB.HoughTransform_o3[366] = 167.0;
-    rtB.HoughTransform_o3[367] = 168.0;
-    rtB.HoughTransform_o3[368] = 169.0;
-    rtB.HoughTransform_o3[369] = 170.0;
-    rtB.HoughTransform_o3[370] = 171.0;
-    rtB.HoughTransform_o3[371] = 172.0;
-    rtB.HoughTransform_o3[372] = 173.0;
-    rtB.HoughTransform_o3[373] = 174.0;
-    rtB.HoughTransform_o3[374] = 175.0;
-    rtB.HoughTransform_o3[375] = 176.0;
-    rtB.HoughTransform_o3[376] = 177.0;
-    rtB.HoughTransform_o3[377] = 178.0;
-    rtB.HoughTransform_o3[378] = 179.0;
-    rtB.HoughTransform_o3[379] = 180.0;
-    rtB.HoughTransform_o3[380] = 181.0;
-    rtB.HoughTransform_o3[381] = 182.0;
-    rtB.HoughTransform_o3[382] = 183.0;
-    rtB.HoughTransform_o3[383] = 184.0;
-    rtB.HoughTransform_o3[384] = 185.0;
-    rtB.HoughTransform_o3[385] = 186.0;
-    rtB.HoughTransform_o3[386] = 187.0;
-    rtB.HoughTransform_o3[387] = 188.0;
-    rtB.HoughTransform_o3[388] = 189.0;
-    rtB.HoughTransform_o3[389] = 190.0;
-    rtB.HoughTransform_o3[390] = 191.0;
-    rtB.HoughTransform_o3[391] = 192.0;
-    rtB.HoughTransform_o3[392] = 193.0;
-    rtB.HoughTransform_o3[393] = 194.0;
-    rtB.HoughTransform_o3[394] = 195.0;
-    rtB.HoughTransform_o3[395] = 196.0;
-    rtB.HoughTransform_o3[396] = 197.0;
-    rtB.HoughTransform_o3[397] = 198.0;
-    rtB.HoughTransform_o3[398] = 199.0;
+    rtB.HoughTransform_o3[0] = -399.0;
+    rtB.HoughTransform_o3[1] = -398.0;
+    rtB.HoughTransform_o3[2] = -397.0;
+    rtB.HoughTransform_o3[3] = -396.0;
+    rtB.HoughTransform_o3[4] = -395.0;
+    rtB.HoughTransform_o3[5] = -394.0;
+    rtB.HoughTransform_o3[6] = -393.0;
+    rtB.HoughTransform_o3[7] = -392.0;
+    rtB.HoughTransform_o3[8] = -391.0;
+    rtB.HoughTransform_o3[9] = -390.0;
+    rtB.HoughTransform_o3[10] = -389.0;
+    rtB.HoughTransform_o3[11] = -388.0;
+    rtB.HoughTransform_o3[12] = -387.0;
+    rtB.HoughTransform_o3[13] = -386.0;
+    rtB.HoughTransform_o3[14] = -385.0;
+    rtB.HoughTransform_o3[15] = -384.0;
+    rtB.HoughTransform_o3[16] = -383.0;
+    rtB.HoughTransform_o3[17] = -382.0;
+    rtB.HoughTransform_o3[18] = -381.0;
+    rtB.HoughTransform_o3[19] = -380.0;
+    rtB.HoughTransform_o3[20] = -379.0;
+    rtB.HoughTransform_o3[21] = -378.0;
+    rtB.HoughTransform_o3[22] = -377.0;
+    rtB.HoughTransform_o3[23] = -376.0;
+    rtB.HoughTransform_o3[24] = -375.0;
+    rtB.HoughTransform_o3[25] = -374.0;
+    rtB.HoughTransform_o3[26] = -373.0;
+    rtB.HoughTransform_o3[27] = -372.0;
+    rtB.HoughTransform_o3[28] = -371.0;
+    rtB.HoughTransform_o3[29] = -370.0;
+    rtB.HoughTransform_o3[30] = -369.0;
+    rtB.HoughTransform_o3[31] = -368.0;
+    rtB.HoughTransform_o3[32] = -367.0;
+    rtB.HoughTransform_o3[33] = -366.0;
+    rtB.HoughTransform_o3[34] = -365.0;
+    rtB.HoughTransform_o3[35] = -364.0;
+    rtB.HoughTransform_o3[36] = -363.0;
+    rtB.HoughTransform_o3[37] = -362.0;
+    rtB.HoughTransform_o3[38] = -361.0;
+    rtB.HoughTransform_o3[39] = -360.0;
+    rtB.HoughTransform_o3[40] = -359.0;
+    rtB.HoughTransform_o3[41] = -358.0;
+    rtB.HoughTransform_o3[42] = -357.0;
+    rtB.HoughTransform_o3[43] = -356.0;
+    rtB.HoughTransform_o3[44] = -355.0;
+    rtB.HoughTransform_o3[45] = -354.0;
+    rtB.HoughTransform_o3[46] = -353.0;
+    rtB.HoughTransform_o3[47] = -352.0;
+    rtB.HoughTransform_o3[48] = -351.0;
+    rtB.HoughTransform_o3[49] = -350.0;
+    rtB.HoughTransform_o3[50] = -349.0;
+    rtB.HoughTransform_o3[51] = -348.0;
+    rtB.HoughTransform_o3[52] = -347.0;
+    rtB.HoughTransform_o3[53] = -346.0;
+    rtB.HoughTransform_o3[54] = -345.0;
+    rtB.HoughTransform_o3[55] = -344.0;
+    rtB.HoughTransform_o3[56] = -343.0;
+    rtB.HoughTransform_o3[57] = -342.0;
+    rtB.HoughTransform_o3[58] = -341.0;
+    rtB.HoughTransform_o3[59] = -340.0;
+    rtB.HoughTransform_o3[60] = -339.0;
+    rtB.HoughTransform_o3[61] = -338.0;
+    rtB.HoughTransform_o3[62] = -337.0;
+    rtB.HoughTransform_o3[63] = -336.0;
+    rtB.HoughTransform_o3[64] = -335.0;
+    rtB.HoughTransform_o3[65] = -334.0;
+    rtB.HoughTransform_o3[66] = -333.0;
+    rtB.HoughTransform_o3[67] = -332.0;
+    rtB.HoughTransform_o3[68] = -331.0;
+    rtB.HoughTransform_o3[69] = -330.0;
+    rtB.HoughTransform_o3[70] = -329.0;
+    rtB.HoughTransform_o3[71] = -328.0;
+    rtB.HoughTransform_o3[72] = -327.0;
+    rtB.HoughTransform_o3[73] = -326.0;
+    rtB.HoughTransform_o3[74] = -325.0;
+    rtB.HoughTransform_o3[75] = -324.0;
+    rtB.HoughTransform_o3[76] = -323.0;
+    rtB.HoughTransform_o3[77] = -322.0;
+    rtB.HoughTransform_o3[78] = -321.0;
+    rtB.HoughTransform_o3[79] = -320.0;
+    rtB.HoughTransform_o3[80] = -319.0;
+    rtB.HoughTransform_o3[81] = -318.0;
+    rtB.HoughTransform_o3[82] = -317.0;
+    rtB.HoughTransform_o3[83] = -316.0;
+    rtB.HoughTransform_o3[84] = -315.0;
+    rtB.HoughTransform_o3[85] = -314.0;
+    rtB.HoughTransform_o3[86] = -313.0;
+    rtB.HoughTransform_o3[87] = -312.0;
+    rtB.HoughTransform_o3[88] = -311.0;
+    rtB.HoughTransform_o3[89] = -310.0;
+    rtB.HoughTransform_o3[90] = -309.0;
+    rtB.HoughTransform_o3[91] = -308.0;
+    rtB.HoughTransform_o3[92] = -307.0;
+    rtB.HoughTransform_o3[93] = -306.0;
+    rtB.HoughTransform_o3[94] = -305.0;
+    rtB.HoughTransform_o3[95] = -304.0;
+    rtB.HoughTransform_o3[96] = -303.0;
+    rtB.HoughTransform_o3[97] = -302.0;
+    rtB.HoughTransform_o3[98] = -301.0;
+    rtB.HoughTransform_o3[99] = -300.0;
+    rtB.HoughTransform_o3[100] = -299.0;
+    rtB.HoughTransform_o3[101] = -298.0;
+    rtB.HoughTransform_o3[102] = -297.0;
+    rtB.HoughTransform_o3[103] = -296.0;
+    rtB.HoughTransform_o3[104] = -295.0;
+    rtB.HoughTransform_o3[105] = -294.0;
+    rtB.HoughTransform_o3[106] = -293.0;
+    rtB.HoughTransform_o3[107] = -292.0;
+    rtB.HoughTransform_o3[108] = -291.0;
+    rtB.HoughTransform_o3[109] = -290.0;
+    rtB.HoughTransform_o3[110] = -289.0;
+    rtB.HoughTransform_o3[111] = -288.0;
+    rtB.HoughTransform_o3[112] = -287.0;
+    rtB.HoughTransform_o3[113] = -286.0;
+    rtB.HoughTransform_o3[114] = -285.0;
+    rtB.HoughTransform_o3[115] = -284.0;
+    rtB.HoughTransform_o3[116] = -283.0;
+    rtB.HoughTransform_o3[117] = -282.0;
+    rtB.HoughTransform_o3[118] = -281.0;
+    rtB.HoughTransform_o3[119] = -280.0;
+    rtB.HoughTransform_o3[120] = -279.0;
+    rtB.HoughTransform_o3[121] = -278.0;
+    rtB.HoughTransform_o3[122] = -277.0;
+    rtB.HoughTransform_o3[123] = -276.0;
+    rtB.HoughTransform_o3[124] = -275.0;
+    rtB.HoughTransform_o3[125] = -274.0;
+    rtB.HoughTransform_o3[126] = -273.0;
+    rtB.HoughTransform_o3[127] = -272.0;
+    rtB.HoughTransform_o3[128] = -271.0;
+    rtB.HoughTransform_o3[129] = -270.0;
+    rtB.HoughTransform_o3[130] = -269.0;
+    rtB.HoughTransform_o3[131] = -268.0;
+    rtB.HoughTransform_o3[132] = -267.0;
+    rtB.HoughTransform_o3[133] = -266.0;
+    rtB.HoughTransform_o3[134] = -265.0;
+    rtB.HoughTransform_o3[135] = -264.0;
+    rtB.HoughTransform_o3[136] = -263.0;
+    rtB.HoughTransform_o3[137] = -262.0;
+    rtB.HoughTransform_o3[138] = -261.0;
+    rtB.HoughTransform_o3[139] = -260.0;
+    rtB.HoughTransform_o3[140] = -259.0;
+    rtB.HoughTransform_o3[141] = -258.0;
+    rtB.HoughTransform_o3[142] = -257.0;
+    rtB.HoughTransform_o3[143] = -256.0;
+    rtB.HoughTransform_o3[144] = -255.0;
+    rtB.HoughTransform_o3[145] = -254.0;
+    rtB.HoughTransform_o3[146] = -253.0;
+    rtB.HoughTransform_o3[147] = -252.0;
+    rtB.HoughTransform_o3[148] = -251.0;
+    rtB.HoughTransform_o3[149] = -250.0;
+    rtB.HoughTransform_o3[150] = -249.0;
+    rtB.HoughTransform_o3[151] = -248.0;
+    rtB.HoughTransform_o3[152] = -247.0;
+    rtB.HoughTransform_o3[153] = -246.0;
+    rtB.HoughTransform_o3[154] = -245.0;
+    rtB.HoughTransform_o3[155] = -244.0;
+    rtB.HoughTransform_o3[156] = -243.0;
+    rtB.HoughTransform_o3[157] = -242.0;
+    rtB.HoughTransform_o3[158] = -241.0;
+    rtB.HoughTransform_o3[159] = -240.0;
+    rtB.HoughTransform_o3[160] = -239.0;
+    rtB.HoughTransform_o3[161] = -238.0;
+    rtB.HoughTransform_o3[162] = -237.0;
+    rtB.HoughTransform_o3[163] = -236.0;
+    rtB.HoughTransform_o3[164] = -235.0;
+    rtB.HoughTransform_o3[165] = -234.0;
+    rtB.HoughTransform_o3[166] = -233.0;
+    rtB.HoughTransform_o3[167] = -232.0;
+    rtB.HoughTransform_o3[168] = -231.0;
+    rtB.HoughTransform_o3[169] = -230.0;
+    rtB.HoughTransform_o3[170] = -229.0;
+    rtB.HoughTransform_o3[171] = -228.0;
+    rtB.HoughTransform_o3[172] = -227.0;
+    rtB.HoughTransform_o3[173] = -226.0;
+    rtB.HoughTransform_o3[174] = -225.0;
+    rtB.HoughTransform_o3[175] = -224.0;
+    rtB.HoughTransform_o3[176] = -223.0;
+    rtB.HoughTransform_o3[177] = -222.0;
+    rtB.HoughTransform_o3[178] = -221.0;
+    rtB.HoughTransform_o3[179] = -220.0;
+    rtB.HoughTransform_o3[180] = -219.0;
+    rtB.HoughTransform_o3[181] = -218.0;
+    rtB.HoughTransform_o3[182] = -217.0;
+    rtB.HoughTransform_o3[183] = -216.0;
+    rtB.HoughTransform_o3[184] = -215.0;
+    rtB.HoughTransform_o3[185] = -214.0;
+    rtB.HoughTransform_o3[186] = -213.0;
+    rtB.HoughTransform_o3[187] = -212.0;
+    rtB.HoughTransform_o3[188] = -211.0;
+    rtB.HoughTransform_o3[189] = -210.0;
+    rtB.HoughTransform_o3[190] = -209.0;
+    rtB.HoughTransform_o3[191] = -208.0;
+    rtB.HoughTransform_o3[192] = -207.0;
+    rtB.HoughTransform_o3[193] = -206.0;
+    rtB.HoughTransform_o3[194] = -205.0;
+    rtB.HoughTransform_o3[195] = -204.0;
+    rtB.HoughTransform_o3[196] = -203.0;
+    rtB.HoughTransform_o3[197] = -202.0;
+    rtB.HoughTransform_o3[198] = -201.0;
+    rtB.HoughTransform_o3[199] = -200.0;
+    rtB.HoughTransform_o3[200] = -199.0;
+    rtB.HoughTransform_o3[201] = -198.0;
+    rtB.HoughTransform_o3[202] = -197.0;
+    rtB.HoughTransform_o3[203] = -196.0;
+    rtB.HoughTransform_o3[204] = -195.0;
+    rtB.HoughTransform_o3[205] = -194.0;
+    rtB.HoughTransform_o3[206] = -193.0;
+    rtB.HoughTransform_o3[207] = -192.0;
+    rtB.HoughTransform_o3[208] = -191.0;
+    rtB.HoughTransform_o3[209] = -190.0;
+    rtB.HoughTransform_o3[210] = -189.0;
+    rtB.HoughTransform_o3[211] = -188.0;
+    rtB.HoughTransform_o3[212] = -187.0;
+    rtB.HoughTransform_o3[213] = -186.0;
+    rtB.HoughTransform_o3[214] = -185.0;
+    rtB.HoughTransform_o3[215] = -184.0;
+    rtB.HoughTransform_o3[216] = -183.0;
+    rtB.HoughTransform_o3[217] = -182.0;
+    rtB.HoughTransform_o3[218] = -181.0;
+    rtB.HoughTransform_o3[219] = -180.0;
+    rtB.HoughTransform_o3[220] = -179.0;
+    rtB.HoughTransform_o3[221] = -178.0;
+    rtB.HoughTransform_o3[222] = -177.0;
+    rtB.HoughTransform_o3[223] = -176.0;
+    rtB.HoughTransform_o3[224] = -175.0;
+    rtB.HoughTransform_o3[225] = -174.0;
+    rtB.HoughTransform_o3[226] = -173.0;
+    rtB.HoughTransform_o3[227] = -172.0;
+    rtB.HoughTransform_o3[228] = -171.0;
+    rtB.HoughTransform_o3[229] = -170.0;
+    rtB.HoughTransform_o3[230] = -169.0;
+    rtB.HoughTransform_o3[231] = -168.0;
+    rtB.HoughTransform_o3[232] = -167.0;
+    rtB.HoughTransform_o3[233] = -166.0;
+    rtB.HoughTransform_o3[234] = -165.0;
+    rtB.HoughTransform_o3[235] = -164.0;
+    rtB.HoughTransform_o3[236] = -163.0;
+    rtB.HoughTransform_o3[237] = -162.0;
+    rtB.HoughTransform_o3[238] = -161.0;
+    rtB.HoughTransform_o3[239] = -160.0;
+    rtB.HoughTransform_o3[240] = -159.0;
+    rtB.HoughTransform_o3[241] = -158.0;
+    rtB.HoughTransform_o3[242] = -157.0;
+    rtB.HoughTransform_o3[243] = -156.0;
+    rtB.HoughTransform_o3[244] = -155.0;
+    rtB.HoughTransform_o3[245] = -154.0;
+    rtB.HoughTransform_o3[246] = -153.0;
+    rtB.HoughTransform_o3[247] = -152.0;
+    rtB.HoughTransform_o3[248] = -151.0;
+    rtB.HoughTransform_o3[249] = -150.0;
+    rtB.HoughTransform_o3[250] = -149.0;
+    rtB.HoughTransform_o3[251] = -148.0;
+    rtB.HoughTransform_o3[252] = -147.0;
+    rtB.HoughTransform_o3[253] = -146.0;
+    rtB.HoughTransform_o3[254] = -145.0;
+    rtB.HoughTransform_o3[255] = -144.0;
+    rtB.HoughTransform_o3[256] = -143.0;
+    rtB.HoughTransform_o3[257] = -142.0;
+    rtB.HoughTransform_o3[258] = -141.0;
+    rtB.HoughTransform_o3[259] = -140.0;
+    rtB.HoughTransform_o3[260] = -139.0;
+    rtB.HoughTransform_o3[261] = -138.0;
+    rtB.HoughTransform_o3[262] = -137.0;
+    rtB.HoughTransform_o3[263] = -136.0;
+    rtB.HoughTransform_o3[264] = -135.0;
+    rtB.HoughTransform_o3[265] = -134.0;
+    rtB.HoughTransform_o3[266] = -133.0;
+    rtB.HoughTransform_o3[267] = -132.0;
+    rtB.HoughTransform_o3[268] = -131.0;
+    rtB.HoughTransform_o3[269] = -130.0;
+    rtB.HoughTransform_o3[270] = -129.0;
+    rtB.HoughTransform_o3[271] = -128.0;
+    rtB.HoughTransform_o3[272] = -127.0;
+    rtB.HoughTransform_o3[273] = -126.0;
+    rtB.HoughTransform_o3[274] = -125.0;
+    rtB.HoughTransform_o3[275] = -124.0;
+    rtB.HoughTransform_o3[276] = -123.0;
+    rtB.HoughTransform_o3[277] = -122.0;
+    rtB.HoughTransform_o3[278] = -121.0;
+    rtB.HoughTransform_o3[279] = -120.0;
+    rtB.HoughTransform_o3[280] = -119.0;
+    rtB.HoughTransform_o3[281] = -118.0;
+    rtB.HoughTransform_o3[282] = -117.0;
+    rtB.HoughTransform_o3[283] = -116.0;
+    rtB.HoughTransform_o3[284] = -115.0;
+    rtB.HoughTransform_o3[285] = -114.0;
+    rtB.HoughTransform_o3[286] = -113.0;
+    rtB.HoughTransform_o3[287] = -112.0;
+    rtB.HoughTransform_o3[288] = -111.0;
+    rtB.HoughTransform_o3[289] = -110.0;
+    rtB.HoughTransform_o3[290] = -109.0;
+    rtB.HoughTransform_o3[291] = -108.0;
+    rtB.HoughTransform_o3[292] = -107.0;
+    rtB.HoughTransform_o3[293] = -106.0;
+    rtB.HoughTransform_o3[294] = -105.0;
+    rtB.HoughTransform_o3[295] = -104.0;
+    rtB.HoughTransform_o3[296] = -103.0;
+    rtB.HoughTransform_o3[297] = -102.0;
+    rtB.HoughTransform_o3[298] = -101.0;
+    rtB.HoughTransform_o3[299] = -100.0;
+    rtB.HoughTransform_o3[300] = -99.0;
+    rtB.HoughTransform_o3[301] = -98.0;
+    rtB.HoughTransform_o3[302] = -97.0;
+    rtB.HoughTransform_o3[303] = -96.0;
+    rtB.HoughTransform_o3[304] = -95.0;
+    rtB.HoughTransform_o3[305] = -94.0;
+    rtB.HoughTransform_o3[306] = -93.0;
+    rtB.HoughTransform_o3[307] = -92.0;
+    rtB.HoughTransform_o3[308] = -91.0;
+    rtB.HoughTransform_o3[309] = -90.0;
+    rtB.HoughTransform_o3[310] = -89.0;
+    rtB.HoughTransform_o3[311] = -88.0;
+    rtB.HoughTransform_o3[312] = -87.0;
+    rtB.HoughTransform_o3[313] = -86.0;
+    rtB.HoughTransform_o3[314] = -85.0;
+    rtB.HoughTransform_o3[315] = -84.0;
+    rtB.HoughTransform_o3[316] = -83.0;
+    rtB.HoughTransform_o3[317] = -82.0;
+    rtB.HoughTransform_o3[318] = -81.0;
+    rtB.HoughTransform_o3[319] = -80.0;
+    rtB.HoughTransform_o3[320] = -79.0;
+    rtB.HoughTransform_o3[321] = -78.0;
+    rtB.HoughTransform_o3[322] = -77.0;
+    rtB.HoughTransform_o3[323] = -76.0;
+    rtB.HoughTransform_o3[324] = -75.0;
+    rtB.HoughTransform_o3[325] = -74.0;
+    rtB.HoughTransform_o3[326] = -73.0;
+    rtB.HoughTransform_o3[327] = -72.0;
+    rtB.HoughTransform_o3[328] = -71.0;
+    rtB.HoughTransform_o3[329] = -70.0;
+    rtB.HoughTransform_o3[330] = -69.0;
+    rtB.HoughTransform_o3[331] = -68.0;
+    rtB.HoughTransform_o3[332] = -67.0;
+    rtB.HoughTransform_o3[333] = -66.0;
+    rtB.HoughTransform_o3[334] = -65.0;
+    rtB.HoughTransform_o3[335] = -64.0;
+    rtB.HoughTransform_o3[336] = -63.0;
+    rtB.HoughTransform_o3[337] = -62.0;
+    rtB.HoughTransform_o3[338] = -61.0;
+    rtB.HoughTransform_o3[339] = -60.0;
+    rtB.HoughTransform_o3[340] = -59.0;
+    rtB.HoughTransform_o3[341] = -58.0;
+    rtB.HoughTransform_o3[342] = -57.0;
+    rtB.HoughTransform_o3[343] = -56.0;
+    rtB.HoughTransform_o3[344] = -55.0;
+    rtB.HoughTransform_o3[345] = -54.0;
+    rtB.HoughTransform_o3[346] = -53.0;
+    rtB.HoughTransform_o3[347] = -52.0;
+    rtB.HoughTransform_o3[348] = -51.0;
+    rtB.HoughTransform_o3[349] = -50.0;
+    rtB.HoughTransform_o3[350] = -49.0;
+    rtB.HoughTransform_o3[351] = -48.0;
+    rtB.HoughTransform_o3[352] = -47.0;
+    rtB.HoughTransform_o3[353] = -46.0;
+    rtB.HoughTransform_o3[354] = -45.0;
+    rtB.HoughTransform_o3[355] = -44.0;
+    rtB.HoughTransform_o3[356] = -43.0;
+    rtB.HoughTransform_o3[357] = -42.0;
+    rtB.HoughTransform_o3[358] = -41.0;
+    rtB.HoughTransform_o3[359] = -40.0;
+    rtB.HoughTransform_o3[360] = -39.0;
+    rtB.HoughTransform_o3[361] = -38.0;
+    rtB.HoughTransform_o3[362] = -37.0;
+    rtB.HoughTransform_o3[363] = -36.0;
+    rtB.HoughTransform_o3[364] = -35.0;
+    rtB.HoughTransform_o3[365] = -34.0;
+    rtB.HoughTransform_o3[366] = -33.0;
+    rtB.HoughTransform_o3[367] = -32.0;
+    rtB.HoughTransform_o3[368] = -31.0;
+    rtB.HoughTransform_o3[369] = -30.0;
+    rtB.HoughTransform_o3[370] = -29.0;
+    rtB.HoughTransform_o3[371] = -28.0;
+    rtB.HoughTransform_o3[372] = -27.0;
+    rtB.HoughTransform_o3[373] = -26.0;
+    rtB.HoughTransform_o3[374] = -25.0;
+    rtB.HoughTransform_o3[375] = -24.0;
+    rtB.HoughTransform_o3[376] = -23.0;
+    rtB.HoughTransform_o3[377] = -22.0;
+    rtB.HoughTransform_o3[378] = -21.0;
+    rtB.HoughTransform_o3[379] = -20.0;
+    rtB.HoughTransform_o3[380] = -19.0;
+    rtB.HoughTransform_o3[381] = -18.0;
+    rtB.HoughTransform_o3[382] = -17.0;
+    rtB.HoughTransform_o3[383] = -16.0;
+    rtB.HoughTransform_o3[384] = -15.0;
+    rtB.HoughTransform_o3[385] = -14.0;
+    rtB.HoughTransform_o3[386] = -13.0;
+    rtB.HoughTransform_o3[387] = -12.0;
+    rtB.HoughTransform_o3[388] = -11.0;
+    rtB.HoughTransform_o3[389] = -10.0;
+    rtB.HoughTransform_o3[390] = -9.0;
+    rtB.HoughTransform_o3[391] = -8.0;
+    rtB.HoughTransform_o3[392] = -7.0;
+    rtB.HoughTransform_o3[393] = -6.0;
+    rtB.HoughTransform_o3[394] = -5.0;
+    rtB.HoughTransform_o3[395] = -4.0;
+    rtB.HoughTransform_o3[396] = -3.0;
+    rtB.HoughTransform_o3[397] = -2.0;
+    rtB.HoughTransform_o3[398] = -1.0;
+    rtB.HoughTransform_o3[400] = 1.0;
+    rtB.HoughTransform_o3[401] = 2.0;
+    rtB.HoughTransform_o3[402] = 3.0;
+    rtB.HoughTransform_o3[403] = 4.0;
+    rtB.HoughTransform_o3[404] = 5.0;
+    rtB.HoughTransform_o3[405] = 6.0;
+    rtB.HoughTransform_o3[406] = 7.0;
+    rtB.HoughTransform_o3[407] = 8.0;
+    rtB.HoughTransform_o3[408] = 9.0;
+    rtB.HoughTransform_o3[409] = 10.0;
+    rtB.HoughTransform_o3[410] = 11.0;
+    rtB.HoughTransform_o3[411] = 12.0;
+    rtB.HoughTransform_o3[412] = 13.0;
+    rtB.HoughTransform_o3[413] = 14.0;
+    rtB.HoughTransform_o3[414] = 15.0;
+    rtB.HoughTransform_o3[415] = 16.0;
+    rtB.HoughTransform_o3[416] = 17.0;
+    rtB.HoughTransform_o3[417] = 18.0;
+    rtB.HoughTransform_o3[418] = 19.0;
+    rtB.HoughTransform_o3[419] = 20.0;
+    rtB.HoughTransform_o3[420] = 21.0;
+    rtB.HoughTransform_o3[421] = 22.0;
+    rtB.HoughTransform_o3[422] = 23.0;
+    rtB.HoughTransform_o3[423] = 24.0;
+    rtB.HoughTransform_o3[424] = 25.0;
+    rtB.HoughTransform_o3[425] = 26.0;
+    rtB.HoughTransform_o3[426] = 27.0;
+    rtB.HoughTransform_o3[427] = 28.0;
+    rtB.HoughTransform_o3[428] = 29.0;
+    rtB.HoughTransform_o3[429] = 30.0;
+    rtB.HoughTransform_o3[430] = 31.0;
+    rtB.HoughTransform_o3[431] = 32.0;
+    rtB.HoughTransform_o3[432] = 33.0;
+    rtB.HoughTransform_o3[433] = 34.0;
+    rtB.HoughTransform_o3[434] = 35.0;
+    rtB.HoughTransform_o3[435] = 36.0;
+    rtB.HoughTransform_o3[436] = 37.0;
+    rtB.HoughTransform_o3[437] = 38.0;
+    rtB.HoughTransform_o3[438] = 39.0;
+    rtB.HoughTransform_o3[439] = 40.0;
+    rtB.HoughTransform_o3[440] = 41.0;
+    rtB.HoughTransform_o3[441] = 42.0;
+    rtB.HoughTransform_o3[442] = 43.0;
+    rtB.HoughTransform_o3[443] = 44.0;
+    rtB.HoughTransform_o3[444] = 45.0;
+    rtB.HoughTransform_o3[445] = 46.0;
+    rtB.HoughTransform_o3[446] = 47.0;
+    rtB.HoughTransform_o3[447] = 48.0;
+    rtB.HoughTransform_o3[448] = 49.0;
+    rtB.HoughTransform_o3[449] = 50.0;
+    rtB.HoughTransform_o3[450] = 51.0;
+    rtB.HoughTransform_o3[451] = 52.0;
+    rtB.HoughTransform_o3[452] = 53.0;
+    rtB.HoughTransform_o3[453] = 54.0;
+    rtB.HoughTransform_o3[454] = 55.0;
+    rtB.HoughTransform_o3[455] = 56.0;
+    rtB.HoughTransform_o3[456] = 57.0;
+    rtB.HoughTransform_o3[457] = 58.0;
+    rtB.HoughTransform_o3[458] = 59.0;
+    rtB.HoughTransform_o3[459] = 60.0;
+    rtB.HoughTransform_o3[460] = 61.0;
+    rtB.HoughTransform_o3[461] = 62.0;
+    rtB.HoughTransform_o3[462] = 63.0;
+    rtB.HoughTransform_o3[463] = 64.0;
+    rtB.HoughTransform_o3[464] = 65.0;
+    rtB.HoughTransform_o3[465] = 66.0;
+    rtB.HoughTransform_o3[466] = 67.0;
+    rtB.HoughTransform_o3[467] = 68.0;
+    rtB.HoughTransform_o3[468] = 69.0;
+    rtB.HoughTransform_o3[469] = 70.0;
+    rtB.HoughTransform_o3[470] = 71.0;
+    rtB.HoughTransform_o3[471] = 72.0;
+    rtB.HoughTransform_o3[472] = 73.0;
+    rtB.HoughTransform_o3[473] = 74.0;
+    rtB.HoughTransform_o3[474] = 75.0;
+    rtB.HoughTransform_o3[475] = 76.0;
+    rtB.HoughTransform_o3[476] = 77.0;
+    rtB.HoughTransform_o3[477] = 78.0;
+    rtB.HoughTransform_o3[478] = 79.0;
+    rtB.HoughTransform_o3[479] = 80.0;
+    rtB.HoughTransform_o3[480] = 81.0;
+    rtB.HoughTransform_o3[481] = 82.0;
+    rtB.HoughTransform_o3[482] = 83.0;
+    rtB.HoughTransform_o3[483] = 84.0;
+    rtB.HoughTransform_o3[484] = 85.0;
+    rtB.HoughTransform_o3[485] = 86.0;
+    rtB.HoughTransform_o3[486] = 87.0;
+    rtB.HoughTransform_o3[487] = 88.0;
+    rtB.HoughTransform_o3[488] = 89.0;
+    rtB.HoughTransform_o3[489] = 90.0;
+    rtB.HoughTransform_o3[490] = 91.0;
+    rtB.HoughTransform_o3[491] = 92.0;
+    rtB.HoughTransform_o3[492] = 93.0;
+    rtB.HoughTransform_o3[493] = 94.0;
+    rtB.HoughTransform_o3[494] = 95.0;
+    rtB.HoughTransform_o3[495] = 96.0;
+    rtB.HoughTransform_o3[496] = 97.0;
+    rtB.HoughTransform_o3[497] = 98.0;
+    rtB.HoughTransform_o3[498] = 99.0;
+    rtB.HoughTransform_o3[499] = 100.0;
+    rtB.HoughTransform_o3[500] = 101.0;
+    rtB.HoughTransform_o3[501] = 102.0;
+    rtB.HoughTransform_o3[502] = 103.0;
+    rtB.HoughTransform_o3[503] = 104.0;
+    rtB.HoughTransform_o3[504] = 105.0;
+    rtB.HoughTransform_o3[505] = 106.0;
+    rtB.HoughTransform_o3[506] = 107.0;
+    rtB.HoughTransform_o3[507] = 108.0;
+    rtB.HoughTransform_o3[508] = 109.0;
+    rtB.HoughTransform_o3[509] = 110.0;
+    rtB.HoughTransform_o3[510] = 111.0;
+    rtB.HoughTransform_o3[511] = 112.0;
+    rtB.HoughTransform_o3[512] = 113.0;
+    rtB.HoughTransform_o3[513] = 114.0;
+    rtB.HoughTransform_o3[514] = 115.0;
+    rtB.HoughTransform_o3[515] = 116.0;
+    rtB.HoughTransform_o3[516] = 117.0;
+    rtB.HoughTransform_o3[517] = 118.0;
+    rtB.HoughTransform_o3[518] = 119.0;
+    rtB.HoughTransform_o3[519] = 120.0;
+    rtB.HoughTransform_o3[520] = 121.0;
+    rtB.HoughTransform_o3[521] = 122.0;
+    rtB.HoughTransform_o3[522] = 123.0;
+    rtB.HoughTransform_o3[523] = 124.0;
+    rtB.HoughTransform_o3[524] = 125.0;
+    rtB.HoughTransform_o3[525] = 126.0;
+    rtB.HoughTransform_o3[526] = 127.0;
+    rtB.HoughTransform_o3[527] = 128.0;
+    rtB.HoughTransform_o3[528] = 129.0;
+    rtB.HoughTransform_o3[529] = 130.0;
+    rtB.HoughTransform_o3[530] = 131.0;
+    rtB.HoughTransform_o3[531] = 132.0;
+    rtB.HoughTransform_o3[532] = 133.0;
+    rtB.HoughTransform_o3[533] = 134.0;
+    rtB.HoughTransform_o3[534] = 135.0;
+    rtB.HoughTransform_o3[535] = 136.0;
+    rtB.HoughTransform_o3[536] = 137.0;
+    rtB.HoughTransform_o3[537] = 138.0;
+    rtB.HoughTransform_o3[538] = 139.0;
+    rtB.HoughTransform_o3[539] = 140.0;
+    rtB.HoughTransform_o3[540] = 141.0;
+    rtB.HoughTransform_o3[541] = 142.0;
+    rtB.HoughTransform_o3[542] = 143.0;
+    rtB.HoughTransform_o3[543] = 144.0;
+    rtB.HoughTransform_o3[544] = 145.0;
+    rtB.HoughTransform_o3[545] = 146.0;
+    rtB.HoughTransform_o3[546] = 147.0;
+    rtB.HoughTransform_o3[547] = 148.0;
+    rtB.HoughTransform_o3[548] = 149.0;
+    rtB.HoughTransform_o3[549] = 150.0;
+    rtB.HoughTransform_o3[550] = 151.0;
+    rtB.HoughTransform_o3[551] = 152.0;
+    rtB.HoughTransform_o3[552] = 153.0;
+    rtB.HoughTransform_o3[553] = 154.0;
+    rtB.HoughTransform_o3[554] = 155.0;
+    rtB.HoughTransform_o3[555] = 156.0;
+    rtB.HoughTransform_o3[556] = 157.0;
+    rtB.HoughTransform_o3[557] = 158.0;
+    rtB.HoughTransform_o3[558] = 159.0;
+    rtB.HoughTransform_o3[559] = 160.0;
+    rtB.HoughTransform_o3[560] = 161.0;
+    rtB.HoughTransform_o3[561] = 162.0;
+    rtB.HoughTransform_o3[562] = 163.0;
+    rtB.HoughTransform_o3[563] = 164.0;
+    rtB.HoughTransform_o3[564] = 165.0;
+    rtB.HoughTransform_o3[565] = 166.0;
+    rtB.HoughTransform_o3[566] = 167.0;
+    rtB.HoughTransform_o3[567] = 168.0;
+    rtB.HoughTransform_o3[568] = 169.0;
+    rtB.HoughTransform_o3[569] = 170.0;
+    rtB.HoughTransform_o3[570] = 171.0;
+    rtB.HoughTransform_o3[571] = 172.0;
+    rtB.HoughTransform_o3[572] = 173.0;
+    rtB.HoughTransform_o3[573] = 174.0;
+    rtB.HoughTransform_o3[574] = 175.0;
+    rtB.HoughTransform_o3[575] = 176.0;
+    rtB.HoughTransform_o3[576] = 177.0;
+    rtB.HoughTransform_o3[577] = 178.0;
+    rtB.HoughTransform_o3[578] = 179.0;
+    rtB.HoughTransform_o3[579] = 180.0;
+    rtB.HoughTransform_o3[580] = 181.0;
+    rtB.HoughTransform_o3[581] = 182.0;
+    rtB.HoughTransform_o3[582] = 183.0;
+    rtB.HoughTransform_o3[583] = 184.0;
+    rtB.HoughTransform_o3[584] = 185.0;
+    rtB.HoughTransform_o3[585] = 186.0;
+    rtB.HoughTransform_o3[586] = 187.0;
+    rtB.HoughTransform_o3[587] = 188.0;
+    rtB.HoughTransform_o3[588] = 189.0;
+    rtB.HoughTransform_o3[589] = 190.0;
+    rtB.HoughTransform_o3[590] = 191.0;
+    rtB.HoughTransform_o3[591] = 192.0;
+    rtB.HoughTransform_o3[592] = 193.0;
+    rtB.HoughTransform_o3[593] = 194.0;
+    rtB.HoughTransform_o3[594] = 195.0;
+    rtB.HoughTransform_o3[595] = 196.0;
+    rtB.HoughTransform_o3[596] = 197.0;
+    rtB.HoughTransform_o3[597] = 198.0;
+    rtB.HoughTransform_o3[598] = 199.0;
+    rtB.HoughTransform_o3[599] = 200.0;
+    rtB.HoughTransform_o3[600] = 201.0;
+    rtB.HoughTransform_o3[601] = 202.0;
+    rtB.HoughTransform_o3[602] = 203.0;
+    rtB.HoughTransform_o3[603] = 204.0;
+    rtB.HoughTransform_o3[604] = 205.0;
+    rtB.HoughTransform_o3[605] = 206.0;
+    rtB.HoughTransform_o3[606] = 207.0;
+    rtB.HoughTransform_o3[607] = 208.0;
+    rtB.HoughTransform_o3[608] = 209.0;
+    rtB.HoughTransform_o3[609] = 210.0;
+    rtB.HoughTransform_o3[610] = 211.0;
+    rtB.HoughTransform_o3[611] = 212.0;
+    rtB.HoughTransform_o3[612] = 213.0;
+    rtB.HoughTransform_o3[613] = 214.0;
+    rtB.HoughTransform_o3[614] = 215.0;
+    rtB.HoughTransform_o3[615] = 216.0;
+    rtB.HoughTransform_o3[616] = 217.0;
+    rtB.HoughTransform_o3[617] = 218.0;
+    rtB.HoughTransform_o3[618] = 219.0;
+    rtB.HoughTransform_o3[619] = 220.0;
+    rtB.HoughTransform_o3[620] = 221.0;
+    rtB.HoughTransform_o3[621] = 222.0;
+    rtB.HoughTransform_o3[622] = 223.0;
+    rtB.HoughTransform_o3[623] = 224.0;
+    rtB.HoughTransform_o3[624] = 225.0;
+    rtB.HoughTransform_o3[625] = 226.0;
+    rtB.HoughTransform_o3[626] = 227.0;
+    rtB.HoughTransform_o3[627] = 228.0;
+    rtB.HoughTransform_o3[628] = 229.0;
+    rtB.HoughTransform_o3[629] = 230.0;
+    rtB.HoughTransform_o3[630] = 231.0;
+    rtB.HoughTransform_o3[631] = 232.0;
+    rtB.HoughTransform_o3[632] = 233.0;
+    rtB.HoughTransform_o3[633] = 234.0;
+    rtB.HoughTransform_o3[634] = 235.0;
+    rtB.HoughTransform_o3[635] = 236.0;
+    rtB.HoughTransform_o3[636] = 237.0;
+    rtB.HoughTransform_o3[637] = 238.0;
+    rtB.HoughTransform_o3[638] = 239.0;
+    rtB.HoughTransform_o3[639] = 240.0;
+    rtB.HoughTransform_o3[640] = 241.0;
+    rtB.HoughTransform_o3[641] = 242.0;
+    rtB.HoughTransform_o3[642] = 243.0;
+    rtB.HoughTransform_o3[643] = 244.0;
+    rtB.HoughTransform_o3[644] = 245.0;
+    rtB.HoughTransform_o3[645] = 246.0;
+    rtB.HoughTransform_o3[646] = 247.0;
+    rtB.HoughTransform_o3[647] = 248.0;
+    rtB.HoughTransform_o3[648] = 249.0;
+    rtB.HoughTransform_o3[649] = 250.0;
+    rtB.HoughTransform_o3[650] = 251.0;
+    rtB.HoughTransform_o3[651] = 252.0;
+    rtB.HoughTransform_o3[652] = 253.0;
+    rtB.HoughTransform_o3[653] = 254.0;
+    rtB.HoughTransform_o3[654] = 255.0;
+    rtB.HoughTransform_o3[655] = 256.0;
+    rtB.HoughTransform_o3[656] = 257.0;
+    rtB.HoughTransform_o3[657] = 258.0;
+    rtB.HoughTransform_o3[658] = 259.0;
+    rtB.HoughTransform_o3[659] = 260.0;
+    rtB.HoughTransform_o3[660] = 261.0;
+    rtB.HoughTransform_o3[661] = 262.0;
+    rtB.HoughTransform_o3[662] = 263.0;
+    rtB.HoughTransform_o3[663] = 264.0;
+    rtB.HoughTransform_o3[664] = 265.0;
+    rtB.HoughTransform_o3[665] = 266.0;
+    rtB.HoughTransform_o3[666] = 267.0;
+    rtB.HoughTransform_o3[667] = 268.0;
+    rtB.HoughTransform_o3[668] = 269.0;
+    rtB.HoughTransform_o3[669] = 270.0;
+    rtB.HoughTransform_o3[670] = 271.0;
+    rtB.HoughTransform_o3[671] = 272.0;
+    rtB.HoughTransform_o3[672] = 273.0;
+    rtB.HoughTransform_o3[673] = 274.0;
+    rtB.HoughTransform_o3[674] = 275.0;
+    rtB.HoughTransform_o3[675] = 276.0;
+    rtB.HoughTransform_o3[676] = 277.0;
+    rtB.HoughTransform_o3[677] = 278.0;
+    rtB.HoughTransform_o3[678] = 279.0;
+    rtB.HoughTransform_o3[679] = 280.0;
+    rtB.HoughTransform_o3[680] = 281.0;
+    rtB.HoughTransform_o3[681] = 282.0;
+    rtB.HoughTransform_o3[682] = 283.0;
+    rtB.HoughTransform_o3[683] = 284.0;
+    rtB.HoughTransform_o3[684] = 285.0;
+    rtB.HoughTransform_o3[685] = 286.0;
+    rtB.HoughTransform_o3[686] = 287.0;
+    rtB.HoughTransform_o3[687] = 288.0;
+    rtB.HoughTransform_o3[688] = 289.0;
+    rtB.HoughTransform_o3[689] = 290.0;
+    rtB.HoughTransform_o3[690] = 291.0;
+    rtB.HoughTransform_o3[691] = 292.0;
+    rtB.HoughTransform_o3[692] = 293.0;
+    rtB.HoughTransform_o3[693] = 294.0;
+    rtB.HoughTransform_o3[694] = 295.0;
+    rtB.HoughTransform_o3[695] = 296.0;
+    rtB.HoughTransform_o3[696] = 297.0;
+    rtB.HoughTransform_o3[697] = 298.0;
+    rtB.HoughTransform_o3[698] = 299.0;
+    rtB.HoughTransform_o3[699] = 300.0;
+    rtB.HoughTransform_o3[700] = 301.0;
+    rtB.HoughTransform_o3[701] = 302.0;
+    rtB.HoughTransform_o3[702] = 303.0;
+    rtB.HoughTransform_o3[703] = 304.0;
+    rtB.HoughTransform_o3[704] = 305.0;
+    rtB.HoughTransform_o3[705] = 306.0;
+    rtB.HoughTransform_o3[706] = 307.0;
+    rtB.HoughTransform_o3[707] = 308.0;
+    rtB.HoughTransform_o3[708] = 309.0;
+    rtB.HoughTransform_o3[709] = 310.0;
+    rtB.HoughTransform_o3[710] = 311.0;
+    rtB.HoughTransform_o3[711] = 312.0;
+    rtB.HoughTransform_o3[712] = 313.0;
+    rtB.HoughTransform_o3[713] = 314.0;
+    rtB.HoughTransform_o3[714] = 315.0;
+    rtB.HoughTransform_o3[715] = 316.0;
+    rtB.HoughTransform_o3[716] = 317.0;
+    rtB.HoughTransform_o3[717] = 318.0;
+    rtB.HoughTransform_o3[718] = 319.0;
+    rtB.HoughTransform_o3[719] = 320.0;
+    rtB.HoughTransform_o3[720] = 321.0;
+    rtB.HoughTransform_o3[721] = 322.0;
+    rtB.HoughTransform_o3[722] = 323.0;
+    rtB.HoughTransform_o3[723] = 324.0;
+    rtB.HoughTransform_o3[724] = 325.0;
+    rtB.HoughTransform_o3[725] = 326.0;
+    rtB.HoughTransform_o3[726] = 327.0;
+    rtB.HoughTransform_o3[727] = 328.0;
+    rtB.HoughTransform_o3[728] = 329.0;
+    rtB.HoughTransform_o3[729] = 330.0;
+    rtB.HoughTransform_o3[730] = 331.0;
+    rtB.HoughTransform_o3[731] = 332.0;
+    rtB.HoughTransform_o3[732] = 333.0;
+    rtB.HoughTransform_o3[733] = 334.0;
+    rtB.HoughTransform_o3[734] = 335.0;
+    rtB.HoughTransform_o3[735] = 336.0;
+    rtB.HoughTransform_o3[736] = 337.0;
+    rtB.HoughTransform_o3[737] = 338.0;
+    rtB.HoughTransform_o3[738] = 339.0;
+    rtB.HoughTransform_o3[739] = 340.0;
+    rtB.HoughTransform_o3[740] = 341.0;
+    rtB.HoughTransform_o3[741] = 342.0;
+    rtB.HoughTransform_o3[742] = 343.0;
+    rtB.HoughTransform_o3[743] = 344.0;
+    rtB.HoughTransform_o3[744] = 345.0;
+    rtB.HoughTransform_o3[745] = 346.0;
+    rtB.HoughTransform_o3[746] = 347.0;
+    rtB.HoughTransform_o3[747] = 348.0;
+    rtB.HoughTransform_o3[748] = 349.0;
+    rtB.HoughTransform_o3[749] = 350.0;
+    rtB.HoughTransform_o3[750] = 351.0;
+    rtB.HoughTransform_o3[751] = 352.0;
+    rtB.HoughTransform_o3[752] = 353.0;
+    rtB.HoughTransform_o3[753] = 354.0;
+    rtB.HoughTransform_o3[754] = 355.0;
+    rtB.HoughTransform_o3[755] = 356.0;
+    rtB.HoughTransform_o3[756] = 357.0;
+    rtB.HoughTransform_o3[757] = 358.0;
+    rtB.HoughTransform_o3[758] = 359.0;
+    rtB.HoughTransform_o3[759] = 360.0;
+    rtB.HoughTransform_o3[760] = 361.0;
+    rtB.HoughTransform_o3[761] = 362.0;
+    rtB.HoughTransform_o3[762] = 363.0;
+    rtB.HoughTransform_o3[763] = 364.0;
+    rtB.HoughTransform_o3[764] = 365.0;
+    rtB.HoughTransform_o3[765] = 366.0;
+    rtB.HoughTransform_o3[766] = 367.0;
+    rtB.HoughTransform_o3[767] = 368.0;
+    rtB.HoughTransform_o3[768] = 369.0;
+    rtB.HoughTransform_o3[769] = 370.0;
+    rtB.HoughTransform_o3[770] = 371.0;
+    rtB.HoughTransform_o3[771] = 372.0;
+    rtB.HoughTransform_o3[772] = 373.0;
+    rtB.HoughTransform_o3[773] = 374.0;
+    rtB.HoughTransform_o3[774] = 375.0;
+    rtB.HoughTransform_o3[775] = 376.0;
+    rtB.HoughTransform_o3[776] = 377.0;
+    rtB.HoughTransform_o3[777] = 378.0;
+    rtB.HoughTransform_o3[778] = 379.0;
+    rtB.HoughTransform_o3[779] = 380.0;
+    rtB.HoughTransform_o3[780] = 381.0;
+    rtB.HoughTransform_o3[781] = 382.0;
+    rtB.HoughTransform_o3[782] = 383.0;
+    rtB.HoughTransform_o3[783] = 384.0;
+    rtB.HoughTransform_o3[784] = 385.0;
+    rtB.HoughTransform_o3[785] = 386.0;
+    rtB.HoughTransform_o3[786] = 387.0;
+    rtB.HoughTransform_o3[787] = 388.0;
+    rtB.HoughTransform_o3[788] = 389.0;
+    rtB.HoughTransform_o3[789] = 390.0;
+    rtB.HoughTransform_o3[790] = 391.0;
+    rtB.HoughTransform_o3[791] = 392.0;
+    rtB.HoughTransform_o3[792] = 393.0;
+    rtB.HoughTransform_o3[793] = 394.0;
+    rtB.HoughTransform_o3[794] = 395.0;
+    rtB.HoughTransform_o3[795] = 396.0;
+    rtB.HoughTransform_o3[796] = 397.0;
+    rtB.HoughTransform_o3[797] = 398.0;
+    rtB.HoughTransform_o3[798] = 399.0;
   }
 
   /* data type transition information */
@@ -2371,7 +2640,7 @@ void lane_departure_initialize(void)
     (void) memset((char_T *) &dtInfo, 0,
                   sizeof(dtInfo));
     rtM->SpecialInfo.mappingInfo = (&dtInfo);
-    dtInfo.numDataTypes = 19;
+    dtInfo.numDataTypes = 20;
     dtInfo.dataTypeSizes = &rtDataTypeSizes[0];
     dtInfo.dataTypeNames = &rtDataTypeNames[0];
 
@@ -2380,17 +2649,17 @@ void lane_departure_initialize(void)
   }
 
   {
-    int32_T previous;
-    int32_T step;
-    boolean_T isValid;
-    int32_T idxOut;
     int32_T curNumNonZ;
     int32_T n;
     int32_T m;
+    int32_T step;
+    boolean_T isValid;
+    int32_T idxOut;
+    int32_T previous;
 
     /* Start for S-Function (v4l2_video_capture_sfcn): '<S1>/V4L2 Video Capture' */
-    MW_videoCaptureInit(rtConstP.V4L2VideoCapture_p1, 0, 0, 0, 0, 160U, 120U, 2U,
-                        2U, 1U, 0.2);
+    MW_videoCaptureInit(rtConstP.V4L2VideoCapture_p1, 0, 0, 0, 0, 320U, 240U, 1U,
+                        2U, 1U, 0.033333333333333333);
 
     /* Start for S-Function (svipmorphop): '<Root>/Erosion' */
     previous = 0;
@@ -2420,12 +2689,12 @@ void lane_departure_initialize(void)
         m++;
       }
 
-      idxOut += 123;
+      idxOut += 323;
       n++;
     }
 
     if (isValid && (curNumNonZ >= 4)) {
-      if (step == 127) {
+      if (step == 327) {
         rtDW.Erosion_STREL_DW[0] = 2;
       } else {
         rtDW.Erosion_STREL_DW[0] = (step == 1);
@@ -2459,12 +2728,12 @@ void lane_departure_initialize(void)
         m++;
       }
 
-      idxOut += 126;
+      idxOut += 326;
       n++;
     }
 
     if (isValid && (curNumNonZ >= 4)) {
-      if (step == 127) {
+      if (step == 327) {
         rtDW.Erosion_STREL_DW[1] = 2;
       } else {
         rtDW.Erosion_STREL_DW[1] = (step == 1);
@@ -2491,7 +2760,7 @@ void lane_departure_initialize(void)
     for (n = 0; n < 4; n++) {
       m = 0;
       while (m < 1) {
-        rtDW.Erosion_ERODE_OFF_DW[previous] = n * 127;
+        rtDW.Erosion_ERODE_OFF_DW[previous] = n * 327;
         curNumNonZ++;
         previous++;
         m = 1;
@@ -2503,28 +2772,28 @@ void lane_departure_initialize(void)
     /* End of Start for S-Function (svipmorphop): '<Root>/Erosion' */
 
     /* Start for S-Function (svipedge): '<Root>/Edge Detection' */
-    rtDW.EdgeDetection_MEAN_FACTOR_DW = 111848;
+    rtDW.EdgeDetection_MEAN_FACTOR_DW = 27962;
     for (previous = 0; previous < 6; previous++) {
       rtDW.EdgeDetection_VO_DW[previous] =
-        rtConstP.EdgeDetection_VRO_RTP[previous] * 120 +
+        rtConstP.EdgeDetection_VRO_RTP[previous] * 320 +
         rtConstP.EdgeDetection_VCO_RTP[previous];
       if (rtConstP.EdgeDetection_VCO_RTP[previous] > 0) {
         rtDW.EdgeDetection_VOU_DW[previous] =
-          rtConstP.EdgeDetection_VRO_RTP[previous] * 120 +
+          rtConstP.EdgeDetection_VRO_RTP[previous] * 320 +
           rtConstP.EdgeDetection_VCO_RTP[previous];
         rtDW.EdgeDetection_VOD_DW[previous] =
-          rtConstP.EdgeDetection_VRO_RTP[previous] * 120;
+          rtConstP.EdgeDetection_VRO_RTP[previous] * 320;
       } else {
         rtDW.EdgeDetection_VOU_DW[previous] =
-          rtConstP.EdgeDetection_VRO_RTP[previous] * 120;
+          rtConstP.EdgeDetection_VRO_RTP[previous] * 320;
         rtDW.EdgeDetection_VOD_DW[previous] =
-          rtConstP.EdgeDetection_VRO_RTP[previous] * 120 +
+          rtConstP.EdgeDetection_VRO_RTP[previous] * 320 +
           rtConstP.EdgeDetection_VCO_RTP[previous];
       }
 
       if (rtConstP.EdgeDetection_VRO_RTP[previous] > 0) {
         rtDW.EdgeDetection_VOL_DW[previous] =
-          rtConstP.EdgeDetection_VRO_RTP[previous] * 120 +
+          rtConstP.EdgeDetection_VRO_RTP[previous] * 320 +
           rtConstP.EdgeDetection_VCO_RTP[previous];
         rtDW.EdgeDetection_VOR_DW[previous] =
           rtConstP.EdgeDetection_VCO_RTP[previous];
@@ -2532,7 +2801,7 @@ void lane_departure_initialize(void)
         rtDW.EdgeDetection_VOL_DW[previous] =
           rtConstP.EdgeDetection_VCO_RTP[previous];
         rtDW.EdgeDetection_VOR_DW[previous] =
-          rtConstP.EdgeDetection_VRO_RTP[previous] * 120 +
+          rtConstP.EdgeDetection_VRO_RTP[previous] * 320 +
           rtConstP.EdgeDetection_VCO_RTP[previous];
       }
 
@@ -2540,34 +2809,34 @@ void lane_departure_initialize(void)
           (rtConstP.EdgeDetection_VRO_RTP[previous] < 0)) {
         rtDW.EdgeDetection_VOUL_DW[previous] = 0;
         rtDW.EdgeDetection_VOLR_DW[previous] =
-          rtConstP.EdgeDetection_VRO_RTP[previous] * 120 +
+          rtConstP.EdgeDetection_VRO_RTP[previous] * 320 +
           rtConstP.EdgeDetection_VCO_RTP[previous];
         rtDW.EdgeDetection_VOLL_DW[previous] =
           rtConstP.EdgeDetection_VCO_RTP[previous];
         rtDW.EdgeDetection_VOUR_DW[previous] =
-          rtConstP.EdgeDetection_VRO_RTP[previous] * 120;
+          rtConstP.EdgeDetection_VRO_RTP[previous] * 320;
       }
 
       if ((rtConstP.EdgeDetection_VCO_RTP[previous] >= 0) &&
           (rtConstP.EdgeDetection_VRO_RTP[previous] < 0)) {
         rtDW.EdgeDetection_VOLL_DW[previous] = 0;
         rtDW.EdgeDetection_VOUR_DW[previous] =
-          rtConstP.EdgeDetection_VRO_RTP[previous] * 120 +
+          rtConstP.EdgeDetection_VRO_RTP[previous] * 320 +
           rtConstP.EdgeDetection_VCO_RTP[previous];
         rtDW.EdgeDetection_VOUL_DW[previous] =
           rtConstP.EdgeDetection_VCO_RTP[previous];
         rtDW.EdgeDetection_VOLR_DW[previous] =
-          rtConstP.EdgeDetection_VRO_RTP[previous] * 120;
+          rtConstP.EdgeDetection_VRO_RTP[previous] * 320;
       }
 
       if ((rtConstP.EdgeDetection_VCO_RTP[previous] < 0) &&
           (rtConstP.EdgeDetection_VRO_RTP[previous] >= 0)) {
         rtDW.EdgeDetection_VOUR_DW[previous] = 0;
         rtDW.EdgeDetection_VOLL_DW[previous] =
-          rtConstP.EdgeDetection_VRO_RTP[previous] * 120 +
+          rtConstP.EdgeDetection_VRO_RTP[previous] * 320 +
           rtConstP.EdgeDetection_VCO_RTP[previous];
         rtDW.EdgeDetection_VOUL_DW[previous] =
-          rtConstP.EdgeDetection_VRO_RTP[previous] * 120;
+          rtConstP.EdgeDetection_VRO_RTP[previous] * 320;
         rtDW.EdgeDetection_VOLR_DW[previous] =
           rtConstP.EdgeDetection_VCO_RTP[previous];
       }
@@ -2576,34 +2845,34 @@ void lane_departure_initialize(void)
           (rtConstP.EdgeDetection_VRO_RTP[previous] >= 0)) {
         rtDW.EdgeDetection_VOLR_DW[previous] = 0;
         rtDW.EdgeDetection_VOUL_DW[previous] =
-          rtConstP.EdgeDetection_VRO_RTP[previous] * 120 +
+          rtConstP.EdgeDetection_VRO_RTP[previous] * 320 +
           rtConstP.EdgeDetection_VCO_RTP[previous];
         rtDW.EdgeDetection_VOLL_DW[previous] =
-          rtConstP.EdgeDetection_VRO_RTP[previous] * 120;
+          rtConstP.EdgeDetection_VRO_RTP[previous] * 320;
         rtDW.EdgeDetection_VOUR_DW[previous] =
           rtConstP.EdgeDetection_VCO_RTP[previous];
       }
 
       rtDW.EdgeDetection_HO_DW[previous] =
-        rtConstP.EdgeDetection_HRO_RTP[previous] * 120 +
+        rtConstP.EdgeDetection_HRO_RTP[previous] * 320 +
         rtConstP.EdgeDetection_HCO_RTP[previous];
       if (rtConstP.EdgeDetection_HCO_RTP[previous] > 0) {
         rtDW.EdgeDetection_HOU_DW[previous] =
-          rtConstP.EdgeDetection_HRO_RTP[previous] * 120 +
+          rtConstP.EdgeDetection_HRO_RTP[previous] * 320 +
           rtConstP.EdgeDetection_HCO_RTP[previous];
         rtDW.EdgeDetection_HOD_DW[previous] =
-          rtConstP.EdgeDetection_HRO_RTP[previous] * 120;
+          rtConstP.EdgeDetection_HRO_RTP[previous] * 320;
       } else {
         rtDW.EdgeDetection_HOU_DW[previous] =
-          rtConstP.EdgeDetection_HRO_RTP[previous] * 120;
+          rtConstP.EdgeDetection_HRO_RTP[previous] * 320;
         rtDW.EdgeDetection_HOD_DW[previous] =
-          rtConstP.EdgeDetection_HRO_RTP[previous] * 120 +
+          rtConstP.EdgeDetection_HRO_RTP[previous] * 320 +
           rtConstP.EdgeDetection_HCO_RTP[previous];
       }
 
       if (rtConstP.EdgeDetection_HRO_RTP[previous] > 0) {
         rtDW.EdgeDetection_HOL_DW[previous] =
-          rtConstP.EdgeDetection_HRO_RTP[previous] * 120 +
+          rtConstP.EdgeDetection_HRO_RTP[previous] * 320 +
           rtConstP.EdgeDetection_HCO_RTP[previous];
         rtDW.EdgeDetection_HOR_DW[previous] =
           rtConstP.EdgeDetection_HCO_RTP[previous];
@@ -2611,7 +2880,7 @@ void lane_departure_initialize(void)
         rtDW.EdgeDetection_HOL_DW[previous] =
           rtConstP.EdgeDetection_HCO_RTP[previous];
         rtDW.EdgeDetection_HOR_DW[previous] =
-          rtConstP.EdgeDetection_HRO_RTP[previous] * 120 +
+          rtConstP.EdgeDetection_HRO_RTP[previous] * 320 +
           rtConstP.EdgeDetection_HCO_RTP[previous];
       }
 
@@ -2619,34 +2888,34 @@ void lane_departure_initialize(void)
           (rtConstP.EdgeDetection_HRO_RTP[previous] < 0)) {
         rtDW.EdgeDetection_HOUL_DW[previous] = 0;
         rtDW.EdgeDetection_HOLR_DW[previous] =
-          rtConstP.EdgeDetection_HRO_RTP[previous] * 120 +
+          rtConstP.EdgeDetection_HRO_RTP[previous] * 320 +
           rtConstP.EdgeDetection_HCO_RTP[previous];
         rtDW.EdgeDetection_HOLL_DW[previous] =
           rtConstP.EdgeDetection_HCO_RTP[previous];
         rtDW.EdgeDetection_HOUR_DW[previous] =
-          rtConstP.EdgeDetection_HRO_RTP[previous] * 120;
+          rtConstP.EdgeDetection_HRO_RTP[previous] * 320;
       }
 
       if ((rtConstP.EdgeDetection_HCO_RTP[previous] >= 0) &&
           (rtConstP.EdgeDetection_HRO_RTP[previous] < 0)) {
         rtDW.EdgeDetection_HOLL_DW[previous] = 0;
         rtDW.EdgeDetection_HOUR_DW[previous] =
-          rtConstP.EdgeDetection_HRO_RTP[previous] * 120 +
+          rtConstP.EdgeDetection_HRO_RTP[previous] * 320 +
           rtConstP.EdgeDetection_HCO_RTP[previous];
         rtDW.EdgeDetection_HOUL_DW[previous] =
           rtConstP.EdgeDetection_HCO_RTP[previous];
         rtDW.EdgeDetection_HOLR_DW[previous] =
-          rtConstP.EdgeDetection_HRO_RTP[previous] * 120;
+          rtConstP.EdgeDetection_HRO_RTP[previous] * 320;
       }
 
       if ((rtConstP.EdgeDetection_HCO_RTP[previous] < 0) &&
           (rtConstP.EdgeDetection_HRO_RTP[previous] >= 0)) {
         rtDW.EdgeDetection_HOUR_DW[previous] = 0;
         rtDW.EdgeDetection_HOLL_DW[previous] =
-          rtConstP.EdgeDetection_HRO_RTP[previous] * 120 +
+          rtConstP.EdgeDetection_HRO_RTP[previous] * 320 +
           rtConstP.EdgeDetection_HCO_RTP[previous];
         rtDW.EdgeDetection_HOUL_DW[previous] =
-          rtConstP.EdgeDetection_HRO_RTP[previous] * 120;
+          rtConstP.EdgeDetection_HRO_RTP[previous] * 320;
         rtDW.EdgeDetection_HOLR_DW[previous] =
           rtConstP.EdgeDetection_HCO_RTP[previous];
       }
@@ -2655,16 +2924,23 @@ void lane_departure_initialize(void)
           (rtConstP.EdgeDetection_HRO_RTP[previous] >= 0)) {
         rtDW.EdgeDetection_HOLR_DW[previous] = 0;
         rtDW.EdgeDetection_HOUL_DW[previous] =
-          rtConstP.EdgeDetection_HRO_RTP[previous] * 120 +
+          rtConstP.EdgeDetection_HRO_RTP[previous] * 320 +
           rtConstP.EdgeDetection_HCO_RTP[previous];
         rtDW.EdgeDetection_HOLL_DW[previous] =
-          rtConstP.EdgeDetection_HRO_RTP[previous] * 120;
+          rtConstP.EdgeDetection_HRO_RTP[previous] * 320;
         rtDW.EdgeDetection_HOUR_DW[previous] =
           rtConstP.EdgeDetection_HCO_RTP[previous];
       }
     }
 
     /* End of Start for S-Function (svipedge): '<Root>/Edge Detection' */
+    /* Start for MATLABSystem: '<S4>/MATLAB System' */
+    rtDW.obj.isInitialized = 0;
+    rtDW.obj.isInitialized = 1;
+    rtDW.obj.PixelFormatEnum = 1;
+    MW_SDL_videoDisplayInit(rtDW.obj.PixelFormatEnum, 1, 1, 320.0, 240.0);
+
+    /* End of Start for SubSystem: '<Root>/SDL Video Display' */
   }
 }
 
