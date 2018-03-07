@@ -3,9 +3,9 @@
  *
  * Code generation for model "lane_departure".
  *
- * Model version              : 1.64
+ * Model version              : 1.117
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C source code generated on : Wed Feb 14 01:43:31 2018
+ * C source code generated on : Thu Mar 08 01:11:10 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -33,12 +33,8 @@ static uint_T rtDataTypeSizes[] = {
   sizeof(pointer_T),
   sizeof(action_T),
   2*sizeof(uint32_T),
-  sizeof(int32_T),
-  sizeof(int32_T),
-  sizeof(codertarget_linux_blocks_SDLVid),
-  sizeof(int32_T),
-  sizeof(int16_T),
-  sizeof(int16_T)
+  sizeof(LaneDetection_MdlrefDW),
+  sizeof(Region_of_Interest_MdlrefDW)
 };
 
 /* data type name table */
@@ -57,40 +53,45 @@ static const char_T * rtDataTypeNames[] = {
   "pointer_T",
   "action_T",
   "timer_uint32_pair_T",
-  "int32_T",
-  "int32_T",
-  "codertarget_linux_blocks_SDLVid",
-  "int32_T",
-  "int16_T",
-  "int16_T"
+  "LaneDetection_MdlrefDW",
+  "Region_of_Interest_MdlrefDW"
 };
 
 /* data type transitions for block I/O structure */
 static DataTypeTransition rtBTransitions[] = {
-  { (char_T *)(&rtB.HoughTransform_o1[0]), 0, 0, 143820 },
+  { (char_T *)(&rtB.V4L2VideoCapture_o1[0]), 3, 0, 76800 },
 
-  { (char_T *)(&rtB.HoughTransform_o2[0]), 0, 0, 979 },
+  { (char_T *)(&rtB.LaneDetection_o1[0]), 6, 0, 20 },
 
-  { (char_T *)(&rtB.HoughLines[0]), 6, 0, 12 },
+  { (char_T *)(&rtB.V4L2VideoCapture_o2[0]), 3, 0, 185442 },
 
-  { (char_T *)(&rtB.V4L2VideoCapture_o1[0]), 3, 0, 230400 },
-
-  { (char_T *)(&rtB.EdgeDetection[0]), 8, 0, 76800 }
+  { (char_T *)(&rtB.LaneDetection_o4[0]), 8, 0, 15921 }
   ,
 
-  { (char_T *)(&rtDW.FrameRateDisplay_PrevTime), 0, 0, 143823 },
+  { (char_T *)(&rtDW.FrameRateDisplay_PrevTime), 0, 0, 3 },
 
-  { (char_T *)(&rtDW.obj), 16, 0, 1 },
+  { (char_T *)(&rtDW.ROI_DWORK1), 15, 0, 1 },
 
-  { (char_T *)(&rtDW.MATLABSystem_PWORK), 11, 0, 1 },
+  { (char_T *)(&rtDW.LaneDetection_DWORK1), 14, 0, 1 },
 
-  { (char_T *)(&rtDW.Erosion_NUMNONZ_DW[0]), 6, 0, 133 }
+  { (char_T *)(&rtDW.LaneDetection_DIMS1[0]), 6, 0, 4 }
 };
 
 /* data type transition table for block I/O structure */
 static DataTypeTransitionTable rtBTransTable = {
-  9U,
+  8U,
   rtBTransitions
+};
+
+/* data type transitions for Parameters structure */
+static DataTypeTransition rtPTransitions[] = {
+  { (char_T *)(&rtP.ROI_X_Value[0]), 0, 0, 322 }
+};
+
+/* data type transition table for Parameters structure */
+static DataTypeTransitionTable rtPTransTable = {
+  1U,
+  rtPTransitions
 };
 
 /* [EOF] lane_departure_dt.h */

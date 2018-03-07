@@ -2,7 +2,7 @@
 ## Makefile generated for Simulink model 'lane_departure'. 
 ## 
 ## Makefile     : lane_departure.mk
-## Generated on : Wed Feb 14 01:43:36 2018
+## Generated on : Thu Mar 08 01:08:44 2018
 ## MATLAB Coder version: 3.3 (R2017a)
 ## 
 ## Build Info:
@@ -21,6 +21,7 @@
 # PRODUCT_NAME            Name of the system to build
 # MAKEFILE                Name of this makefile
 # COMPUTER                Computer type. See the MATLAB "computer" command.
+# SHARED_OBJS             Shared Object Names
 
 PRODUCT_NAME              = lane_departure
 MAKEFILE                  = lane_departure.mk
@@ -40,6 +41,12 @@ MODELREF_LINK_RSPFILE_NAME = lane_departure_ref.rsp
 RELATIVE_PATH_TO_ANCHOR   = ..
 C_STANDARD_OPTS           = 
 CPP_STANDARD_OPTS         = 
+SHARED_SRC_DIR            = ../slprj/ert/_sharedutils
+SHARED_SRC                = $(SHARED_SRC_DIR)/*.c
+SHARED_BIN_DIR            = ../slprj/ert/_sharedutils
+SHARED_LIB                = $(SHARED_BIN_DIR)/rtwshared.lib
+SHARED_OBJS               =  \
+$(addprefix $(join $(SHARED_BIN_DIR),/), $(addsuffix .c.o, $(basename $(notdir $(wildcard $(SHARED_SRC_DIR)/*.c)))))
 
 ###########################################################################
 ## TOOLCHAIN SPECIFICATIONS
@@ -191,12 +198,12 @@ INCLUDES = $(INCLUDES_BUILDINFO)
 ## DEFINES
 ###########################################################################
 
-DEFINES_ = -DMODEL=lane_departure -DNUMST=1 -DNCSTATES=0 -DHAVESTDIO -DON_TARGET_WAIT_FOR_START=1 -DTERMFCN=0 -DONESTEPFCN=1 -DMAT_FILE=0 -DMULTI_INSTANCE_CODE=0 -DEXT_MODE=1 -DINTEGER_CODE=0 -DMT=0 -DCLASSIC_INTERFACE=0 -DALLOCATIONFCN=0 -DTID01EQ=0 -DARM_PROJECT -D_USE_TARGET_UDP_ -D_RUNONTARGETHARDWARE_BUILD_ -DSTACK_SIZE=64 -D__MW_TARGET_USE_HARDWARE_RESOURCES_H__ -DRT
-DEFINES_BUILD_ARGS = -DTERMFCN=0 -DONESTEPFCN=1 -DMAT_FILE=0 -DMULTI_INSTANCE_CODE=0 -DEXT_MODE=1 -DINTEGER_CODE=0 -DMT=0 -DCLASSIC_INTERFACE=0 -DALLOCATIONFCN=0
+DEFINES_ = -DMODEL=lane_departure -DNUMST=2 -DNCSTATES=0 -DHAVESTDIO -DON_TARGET_WAIT_FOR_START=1 -DTERMFCN=0 -DONESTEPFCN=1 -DMAT_FILE=0 -DMULTI_INSTANCE_CODE=0 -DEXT_MODE=1 -DINTEGER_CODE=0 -DMT=1 -DCLASSIC_INTERFACE=0 -DALLOCATIONFCN=0 -DTID01EQ=0 -DARM_PROJECT -D_USE_TARGET_UDP_ -D_RUNONTARGETHARDWARE_BUILD_ -DSTACK_SIZE=64 -D__MW_TARGET_USE_HARDWARE_RESOURCES_H__ -DRT
+DEFINES_BUILD_ARGS = -DTERMFCN=0 -DONESTEPFCN=1 -DMAT_FILE=0 -DMULTI_INSTANCE_CODE=0 -DEXT_MODE=1 -DINTEGER_CODE=0 -DMT=1 -DCLASSIC_INTERFACE=0 -DALLOCATIONFCN=0
 DEFINES_IMPLIED = -DTID01EQ=0
 DEFINES_OPTS = -DON_TARGET_WAIT_FOR_START=1
 DEFINES_SKIPFORSIL = -DARM_PROJECT -D_USE_TARGET_UDP_ -D_RUNONTARGETHARDWARE_BUILD_ -DSTACK_SIZE=64 -DRT
-DEFINES_STANDARD = -DMODEL=lane_departure -DNUMST=1 -DNCSTATES=0 -DHAVESTDIO
+DEFINES_STANDARD = -DMODEL=lane_departure -DNUMST=2 -DNCSTATES=0 -DHAVESTDIO
 
 DEFINES = $(DEFINES_) $(DEFINES_BUILD_ARGS) $(DEFINES_IMPLIED) $(DEFINES_OPTS) $(DEFINES_SKIPFORSIL) $(DEFINES_STANDARD)
 
@@ -204,7 +211,7 @@ DEFINES = $(DEFINES_) $(DEFINES_BUILD_ARGS) $(DEFINES_IMPLIED) $(DEFINES_OPTS) $
 ## SOURCE FILES
 ###########################################################################
 
-SRCS = MW_SDL_video_display.c v4l2_capture.c v4l2_capture_linux.c hough_d_rt.c hough_r_rt.c lane_departure.c lane_departure_data.c ext_svr.c updown.c ext_work.c rtiostream_utils.c linuxinitialize.c rtiostream_interface.c rtiostream_tcpip.c
+SRCS = v4l2_capture.c v4l2_capture_linux.c lane_departure.c lane_departure_data.c ext_svr.c updown.c ext_work.c rtiostream_utils.c linuxinitialize.c rtiostream_interface.c rtiostream_tcpip.c
 
 MAIN_SRC = ert_main.c
 
@@ -214,7 +221,7 @@ ALL_SRCS = $(SRCS) $(MAIN_SRC)
 ## OBJECTS
 ###########################################################################
 
-OBJS = MW_SDL_video_display.c.o v4l2_capture.c.o v4l2_capture_linux.c.o hough_d_rt.c.o hough_r_rt.c.o lane_departure.c.o lane_departure_data.c.o ext_svr.c.o updown.c.o ext_work.c.o rtiostream_utils.c.o linuxinitialize.c.o rtiostream_interface.c.o rtiostream_tcpip.c.o
+OBJS = v4l2_capture.c.o v4l2_capture_linux.c.o lane_departure.c.o lane_departure_data.c.o ext_svr.c.o updown.c.o ext_work.c.o rtiostream_utils.c.o linuxinitialize.c.o rtiostream_interface.c.o rtiostream_tcpip.c.o
 
 MAIN_OBJ = ert_main.c.o
 
@@ -230,7 +237,9 @@ PREBUILT_OBJS =
 ## LIBRARIES
 ###########################################################################
 
-LIBS = 
+MODELREF_LIBS = ./LaneDetection_rtwlib.lib ./Region_of_Interest_rtwlib.lib
+
+LIBS = $(SHARED_LIB)
 
 ###########################################################################
 ## SYSTEM LIBRARIES
@@ -264,7 +273,7 @@ CPPFLAGS += $(CPPFLAGS_SKIPFORSIL) $(CPPFLAGS_BASIC)
 # C++ Linker
 #---------------
 
-CPP_LDFLAGS_SKIPFORSIL = -lSDL  
+CPP_LDFLAGS_SKIPFORSIL =  
 
 CPP_LDFLAGS += $(CPP_LDFLAGS_SKIPFORSIL)
 
@@ -272,7 +281,7 @@ CPP_LDFLAGS += $(CPP_LDFLAGS_SKIPFORSIL)
 # C++ Shared Library Linker
 #------------------------------
 
-CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL = -lSDL  
+CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL =  
 
 CPP_SHAREDLIB_LDFLAGS += $(CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL)
 
@@ -280,7 +289,7 @@ CPP_SHAREDLIB_LDFLAGS += $(CPP_SHAREDLIB_LDFLAGS_SKIPFORSIL)
 # Linker
 #-----------
 
-LDFLAGS_SKIPFORSIL = -lSDL  
+LDFLAGS_SKIPFORSIL =  
 
 LDFLAGS += $(LDFLAGS_SKIPFORSIL)
 
@@ -288,7 +297,7 @@ LDFLAGS += $(LDFLAGS_SKIPFORSIL)
 # Shared Library Linker
 #--------------------------
 
-SHAREDLIB_LDFLAGS_SKIPFORSIL = -lSDL  
+SHAREDLIB_LDFLAGS_SKIPFORSIL =  
 
 SHAREDLIB_LDFLAGS += $(SHAREDLIB_LDFLAGS_SKIPFORSIL)
 
@@ -323,7 +332,7 @@ all : build
 build : prebuild $(PRODUCT)
 
 
-buildobj : prebuild $(OBJS) $(PREBUILT_OBJS)
+buildobj : prebuild $(OBJS) $(PREBUILT_OBJS) $(MODELREF_LIBS) $(LIBS)
 	echo "### Successfully generated all binary outputs."
 
 
@@ -347,9 +356,9 @@ execute : download
 # Create a standalone executable            
 #-------------------------------------------
 
-$(PRODUCT) : $(OBJS) $(PREBUILT_OBJS) $(MAIN_OBJ)
+$(PRODUCT) : $(OBJS) $(PREBUILT_OBJS) $(MODELREF_LIBS) $(LIBS) $(MAIN_OBJ)
 	echo "### Creating standalone executable "$(PRODUCT)" ..."
-	$(LD) $(LDFLAGS) -o $(PRODUCT) $(OBJS) $(MAIN_OBJ) $(SYSTEM_LIBS) $(TOOLCHAIN_LIBS)
+	$(LD) $(LDFLAGS) -o $(PRODUCT) $(OBJS) $(MAIN_OBJ) $(MODELREF_LIBS) $(LIBS) $(SYSTEM_LIBS) $(TOOLCHAIN_LIBS)
 	echo "### Created: $(PRODUCT)"
 
 
@@ -469,28 +478,27 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS) $(MAIN_OBJ)
 	$(CPP) $(CPPFLAGS) -o $@ $<
 
 
-%.c.o : %.c
-	$(CC) $(CFLAGS) -o $@ $<
-
-
-%.s.o : %.s
-	$(AS) $(ASFLAGS) -o $@ $<
-
-
-%.cpp.o : %.cpp
-	$(CPP) $(CPPFLAGS) -o $@ $<
-
-
-MW_SDL_video_display.c.o : MW_SDL_video_display.c
-	$(CC) $(CFLAGS) -o $@ $<
-
-
 linuxinitialize.c.o : linuxinitialize.c
 	$(CC) $(CFLAGS) -o $@ $<
 
 
 rtiostream_tcpip.c.o : rtiostream_tcpip.c
 	$(CC) $(CFLAGS) -o $@ $<
+
+
+%.c.o : %.c
+	echo "### Compiling $< ..."
+	$(CC) $(CFLAGS) -o $@ $<
+
+
+#---------------------------
+# SHARED UTILITY LIBRARY
+#---------------------------
+
+$(SHARED_LIB) : $(SHARED_OBJS)
+	echo "### Creating shared utilities library "$(SHARED_LIB)" ..."
+	$(AR) $(ARFLAGS)  $(SHARED_LIB) $(SHARED_OBJS)
+	echo "### Created: $(SHARED_LIB)"
 
 
 ###########################################################################

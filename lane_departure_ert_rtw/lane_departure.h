@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'lane_departure'.
  *
- * Model version                  : 1.64
+ * Model version                  : 1.117
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Wed Feb 14 01:43:31 2018
+ * C/C++ source code generated on : Thu Mar 08 01:11:10 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -19,7 +19,6 @@
 #define RTW_HEADER_lane_departure_h_
 #include "rtwtypes.h"
 #include "multiword_types.h"
-#include <math.h>
 #include <string.h>
 #include <float.h>
 #include <stddef.h>
@@ -30,14 +29,15 @@
 #include "sysran_types.h"
 #include "dt_info.h"
 #include "ext_work.h"
-#include "MW_SDL_video_display.h"
 #include "v4l2_capture.h"
-#include "math.h"
-#include "viphough_rt.h"
 #endif                                 /* lane_departure_COMMON_INCLUDES_ */
 
 /* Shared type includes */
 #include "multiword_types.h"
+
+/* Child system includes */
+#include "Region_of_Interest.h"
+#include "LaneDetection.h"
 
 /* Macros for accessing real-time model data structure */
 #ifndef rtmGetFinalTime
@@ -54,6 +54,14 @@
 
 #ifndef rtmSetErrorStatus
 # define rtmSetErrorStatus(rtm, val)   ((rtm)->errorStatus = (val))
+#endif
+
+#ifndef rtmGetErrorStatusPointer
+# define rtmGetErrorStatusPointer(rtm) ((const char_T **)(&((rtm)->errorStatus)))
+#endif
+
+#ifndef rtmStepTask
+# define rtmStepTask(rtm, idx)         ((rtm)->Timing.TaskCounters.TID[(idx)] == 0)
 #endif
 
 #ifndef rtmGetStopRequested
@@ -76,154 +84,100 @@
 # define rtmGetTFinal(rtm)             ((rtm)->Timing.tFinal)
 #endif
 
+#ifndef rtmTaskCounter
+# define rtmTaskCounter(rtm, idx)      ((rtm)->Timing.TaskCounters.TID[(idx)])
+#endif
+
 #define lane_departure_M               (rtM)
 
 /* Forward declaration for rtModel */
 typedef struct tag_RTM RT_MODEL;
 
-#ifndef typedef_codertarget_linux_blocks_SDLVid
-#define typedef_codertarget_linux_blocks_SDLVid
-
-typedef struct {
-  int32_T isInitialized;
-  int32_T PixelFormatEnum;
-} codertarget_linux_blocks_SDLVid;
-
-#endif                                 /*typedef_codertarget_linux_blocks_SDLVid*/
-
+/* Custom Type definition for MATLAB Function: '<S1>/MATLAB Function' */
 #ifndef typedef_struct_T
 #define typedef_struct_T
 
 typedef struct {
-  real_T f1[2];
-  real_T f2[2];
-  real_T f3[2];
+  char_T f1[7];
+  char_T f2[7];
 } struct_T;
 
 #endif                                 /*typedef_struct_T*/
 
+#ifndef typedef_c_struct_T
+#define typedef_c_struct_T
+
+typedef struct {
+  char_T f1[7];
+} c_struct_T;
+
+#endif                                 /*typedef_c_struct_T*/
+
+#ifndef typedef_d_struct_T
+#define typedef_d_struct_T
+
+typedef struct {
+  char_T f1[4];
+  char_T f2[6];
+} d_struct_T;
+
+#endif                                 /*typedef_d_struct_T*/
+
+#ifndef typedef_e_struct_T
+#define typedef_e_struct_T
+
+typedef struct {
+  char_T f1[7];
+  char_T f2[8];
+  char_T f3[7];
+  char_T f4[4];
+  char_T f5[5];
+} e_struct_T;
+
+#endif                                 /*typedef_e_struct_T*/
+
 /* Block signals (auto storage) */
 typedef struct {
-  real_T HoughTransform_o1[143820];    /* '<S2>/Hough Transform' */
-  uint8_T pln2[76800];
-  uint8_T pln3[76800];
-  uint8_T Erosion[76800];              /* '<Root>/Erosion' */
-  real_T HoughTransform_o2[180];       /* '<S2>/Hough Transform' */
-  real_T HoughTransform_o3[799];       /* '<S2>/Hough Transform' */
-  int32_T HoughLines[12];              /* '<S2>/Hough Lines' */
   uint8_T V4L2VideoCapture_o1[76800];  /* '<S1>/V4L2 Video Capture' */
+  uint8_T uv0[76800];
+  int32_T LaneDetection_o1[20];        /* '<Root>/LaneDetection' */
   uint8_T V4L2VideoCapture_o2[38400];  /* '<S1>/V4L2 Video Capture' */
   uint8_T V4L2VideoCapture_o3[38400];  /* '<S1>/V4L2 Video Capture' */
-  uint8_T DrawShapes[76800];           /* '<Root>/Draw Shapes' */
-  boolean_T EdgeDetection[76800];      /* '<Root>/Edge Detection' */
-  real_T FindLocalMaxima[6];           /* '<S2>/Find Local Maxima' */
-  real_T Selector1[3];                 /* '<S2>/Selector1' */
-  real_T Selector5[3];                 /* '<S2>/Selector5' */
-  real_T Selector[3];                  /* '<S2>/Selector' */
-  real_T rtb_FindLocalMaxima_data[3];
-  int32_T tmpOutRC[4];
-  int32_T rtb_Selector_data[3];
-  real_T tmpRound;
-  real_T y2;
-  real_T maxValue;
-  int32_T accumFour;
-  int32_T row;
-  uint32_T toIdx;
-  uint32_T fromIdx;
+  uint8_T ROI[15921];                  /* '<Root>/ROI' */
+  uint8_T LaneDetection_o3[15921];     /* '<Root>/LaneDetection' */
+  uint8_T Image[76800];                /* '<S1>/MATLAB Function' */
+  boolean_T LaneDetection_o4[15921];   /* '<Root>/LaneDetection' */
+  real_T LaneDetection_o2[5];          /* '<Root>/LaneDetection' */
+  int32_T i;
+  int32_T k;
+  int32_T i_m;
+  int32_T j;
+  uint8_T tmp;
 } B;
 
 /* Block states (auto storage) for system '<Root>' */
 typedef struct {
-  int32_T EdgeDetection_GV_SQUARED_DW[76800];/* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_GH_SQUARED_DW[76800];/* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_GRAD_SUM_DW[76800];/* '<Root>/Edge Detection' */
-  uint8_T Erosion_TWO_PAD_IMG_DW[80769];/* '<Root>/Erosion' */
-  uint8_T Erosion_ONE_PAD_IMG_DW[80769];/* '<Root>/Erosion' */
-  uint8_T Erosion_HBUF_DW[335];        /* '<Root>/Erosion' */
-  uint8_T Erosion_GBUF_DW[335];        /* '<Root>/Erosion' */
   real_T FrameRateDisplay_PrevTime;    /* '<Root>/Frame Rate Display' */
   real_T FrameRateDisplay_TotalTime;   /* '<Root>/Frame Rate Display' */
   real_T FrameRateDisplay_Count;       /* '<Root>/Frame Rate Display' */
-  real_T FindLocalMaxima_TEMP_IN_DWORKS[143820];/* '<S2>/Find Local Maxima' */
-  codertarget_linux_blocks_SDLVid obj; /* '<S4>/MATLAB System' */
-  void *MATLABSystem_PWORK;            /* '<S4>/MATLAB System' */
-  int32_T Erosion_NUMNONZ_DW[2];       /* '<Root>/Erosion' */
-  int32_T Erosion_STREL_DW[2];         /* '<Root>/Erosion' */
-  int32_T Erosion_ERODE_OFF_DW[8];     /* '<Root>/Erosion' */
-  int32_T EdgeDetection_VO_DW[6];      /* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_HO_DW[6];      /* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_VOU_DW[6];     /* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_VOD_DW[6];     /* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_VOL_DW[6];     /* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_VOR_DW[6];     /* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_HOU_DW[6];     /* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_HOD_DW[6];     /* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_HOL_DW[6];     /* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_HOR_DW[6];     /* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_VOUL_DW[6];    /* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_VOLL_DW[6];    /* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_VOUR_DW[6];    /* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_VOLR_DW[6];    /* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_HOUL_DW[6];    /* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_HOLL_DW[6];    /* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_HOUR_DW[6];    /* '<Root>/Edge Detection' */
-  int32_T EdgeDetection_HOLR_DW[6];    /* '<Root>/Edge Detection' */
-  int32_T FindLocalMaxima_DIMS1[2];    /* '<S2>/Find Local Maxima' */
-  int32_T Selector_DIMS1[2];           /* '<S2>/Selector' */
-  int32_T Selector1_DIMS1[2];          /* '<S2>/Selector1' */
-  int32_T Selector2_DIMS1[2];          /* '<S2>/Selector2' */
-  int32_T Selector5_DIMS1[2];          /* '<S2>/Selector5' */
-  int32_T HoughLines_DIMS1[2];         /* '<S2>/Hough Lines' */
-  int32_T EdgeDetection_MEAN_FACTOR_DW;/* '<Root>/Edge Detection' */
+  Region_of_Interest_MdlrefDW ROI_DWORK1;/* '<Root>/ROI' */
+  LaneDetection_MdlrefDW LaneDetection_DWORK1;/* '<Root>/LaneDetection' */
+  int32_T LaneDetection_DIMS1[2];      /* '<Root>/LaneDetection' */
+  int32_T LaneDetection_DIMS2[2];      /* '<Root>/LaneDetection' */
 } DW;
 
-/* Constant parameters (auto storage) */
-typedef struct {
-  /* Computed Parameter: HoughTransform_SINE_TABLE_RTP
-   * Referenced by: '<S2>/Hough Transform'
-   */
-  real_T HoughTransform_SINE_TABLE_RTP[91];
+/* Parameters (auto storage) */
+struct P_ {
+  real_T ROI_X_Value[261];             /* Expression: [20:280]
+                                        * Referenced by: '<Root>/ROI_X'
+                                        */
+  real_T ROI_Y_Value[61];              /* Expression: [135:195]
+                                        * Referenced by: '<Root>/ROI_Y'
+                                        */
+};
 
-  /* Computed Parameter: HoughTransform_FIRSTRHO_RTP
-   * Referenced by: '<S2>/Hough Transform'
-   */
-  real_T HoughTransform_FIRSTRHO_RTP;
-
-  /* Computed Parameter: EdgeDetection_VRO_RTP
-   * Referenced by: '<Root>/Edge Detection'
-   */
-  int32_T EdgeDetection_VRO_RTP[6];
-
-  /* Computed Parameter: EdgeDetection_VCO_RTP
-   * Referenced by: '<Root>/Edge Detection'
-   */
-  int32_T EdgeDetection_VCO_RTP[6];
-
-  /* Computed Parameter: EdgeDetection_HRO_RTP
-   * Referenced by: '<Root>/Edge Detection'
-   */
-  int32_T EdgeDetection_HRO_RTP[6];
-
-  /* Computed Parameter: EdgeDetection_HCO_RTP
-   * Referenced by: '<Root>/Edge Detection'
-   */
-  int32_T EdgeDetection_HCO_RTP[6];
-
-  /* Computed Parameter: EdgeDetection_VC_RTP
-   * Referenced by: '<Root>/Edge Detection'
-   */
-  int32_T EdgeDetection_VC_RTP[6];
-
-  /* Computed Parameter: EdgeDetection_HC_RTP
-   * Referenced by: '<Root>/Edge Detection'
-   */
-  int32_T EdgeDetection_HC_RTP[6];
-
-  /* Expression: devName
-   * Referenced by: '<S1>/V4L2 Video Capture'
-   */
-  uint8_T V4L2VideoCapture_p1[12];
-} ConstP;
+/* Parameters (auto storage) */
+typedef struct P_ P;
 
 /* Real-time Model Data Structure */
 struct tag_RTM {
@@ -258,10 +212,18 @@ struct tag_RTM {
     time_T taskTime0;
     uint32_T clockTick0;
     time_T stepSize0;
+    uint32_T clockTick1;
+    struct {
+      uint32_T TID[2];
+    } TaskCounters;
+
     time_T tFinal;
     boolean_T stopRequestedFlag;
   } Timing;
 };
+
+/* Block parameters (auto storage) */
+extern P rtP;
 
 /* Block signals (auto storage) */
 extern B rtB;
@@ -269,12 +231,13 @@ extern B rtB;
 /* Block states (auto storage) */
 extern DW rtDW;
 
-/* Constant parameters (auto storage) */
-extern const ConstP rtConstP;
+/* External function called from main */
+extern void lane_departure_SetEventsForThisBaseStep(boolean_T *eventFlags);
 
 /* Model entry point functions */
+extern void lane_departure_SetEventsForThisBaseStep(boolean_T *eventFlags);
 extern void lane_departure_initialize(void);
-extern void lane_departure_step(void);
+extern void lane_departure_step(int_T tid);
 
 /* Real-time Model object */
 extern RT_MODEL *const rtM;
@@ -295,11 +258,8 @@ extern RT_MODEL *const rtM;
  *
  * '<Root>' : 'lane_departure'
  * '<S1>'   : 'lane_departure/Input '
- * '<S2>'   : 'lane_departure/Lane Departure'
- * '<S3>'   : 'lane_departure/ROI'
- * '<S4>'   : 'lane_departure/SDL Video Display'
- * '<S5>'   : 'lane_departure/Input /MATLAB Function'
- * '<S6>'   : 'lane_departure/ROI/mask'
+ * '<S2>'   : 'lane_departure/Input /MATLAB Function'
+ * '<S3>'   : 'lane_departure/Input /MATLAB Function1'
  */
 #endif                                 /* RTW_HEADER_lane_departure_h_ */
 

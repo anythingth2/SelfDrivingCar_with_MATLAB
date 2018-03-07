@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="./js/coder_app.js"></script>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="./rtwreport_utils.js"></script>
+<script type="text/javascript" src="./rtwannotate.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/coder_app.css"/>
+</head>
+<body onload="srcFileOnload();">
+<pre id="code">
+<table class="code" id="codeTbl">
+<tr name="1" id="1">
+<td><a id="l1" class='ln'>1</a></td><td><span class="ct">/*</span></td></tr>
+<tr name="2" id="2">
+<td><a id="l2" class='ln'>2</a></td><td><span class="ct"> * const_params.c</span></td></tr>
+<tr name="3" id="3">
+<td><a id="l3" class='ln'>3</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="4" id="4">
+<td><a id="l4" class='ln'>4</a></td><td><span class="ct"> * Code generation for model "lane_departure".</span></td></tr>
+<tr name="5" id="5">
+<td><a id="l5" class='ln'>5</a></td><td><span class="ct"> *</span></td></tr>
+<tr name="6" id="6">
+<td><a id="l6" class='ln'>6</a></td><td><span class="ct"> * Model version              : 1.117</span></td></tr>
+<tr name="7" id="7">
+<td><a id="l7" class='ln'>7</a></td><td><span class="ct"> * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017</span></td></tr>
+<tr name="8" id="8">
+<td><a id="l8" class='ln'>8</a></td><td><span class="ct"> * C source code generated on : Thu Mar 08 01:08:37 2018</span></td></tr>
+<tr name="9" id="9">
+<td><a id="l9" class='ln'>9</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="10" id="10">
+<td><a id="l10" class='ln'>10</a></td><td><span class="pp">#include "rtwtypes.h"</span></td></tr>
+<tr name="11" id="11">
+<td><a id="l11" class='ln'>11</a></td><td></td></tr>
+<tr name="12" id="12">
+<td><a id="l12" class='ln'>12</a></td><td><span class="kw">extern</span> <span class="kw">const</span> <a id="12c14" class="tk">int32_T</a> <a id="12c22" class="tk">rtCP_pooled_9H9mPzIgD49d</a>[6];</td></tr>
+<tr name="13" id="13">
+<td><a id="l13" class='ln'>13</a></td><td><span class="kw">const</span> <a id="13c7" class="tk">int32_T</a> <a id="13c15" class="tk">rtCP_pooled_9H9mPzIgD49d</a>[6] = <span class="br">{</span> <a id="13c47" class="tk">-</a>1, <a id="13c51" class="tk">-</a>1, <a id="13c55" class="tk">-</a>1, 1, 1, 1 <span class="br">}</span> ;</td></tr>
+<tr name="14" id="14">
+<td><a id="l14" class='ln'>14</a></td><td></td></tr>
+<tr name="15" id="15">
+<td><a id="l15" class='ln'>15</a></td><td><span class="kw">extern</span> <span class="kw">const</span> <a id="15c14" class="tk">int32_T</a> <a id="15c22" class="tk">rtCP_pooled_C08a0ezfB1lz</a>[6];</td></tr>
+<tr name="16" id="16">
+<td><a id="l16" class='ln'>16</a></td><td><span class="kw">const</span> <a id="16c7" class="tk">int32_T</a> <a id="16c15" class="tk">rtCP_pooled_C08a0ezfB1lz</a>[6] = <span class="br">{</span> 268435456, <a id="16c58" class="tk">-</a>268435456, 536870912,</td></tr>
+<tr name="17" id="17">
+<td><a id="l17" class='ln'>17</a></td><td>  <a id="17c3" class="tk">-</a>536870912, 268435456, <a id="17c26" class="tk">-</a>268435456 <span class="br">}</span> ;</td></tr>
+<tr name="18" id="18">
+<td><a id="l18" class='ln'>18</a></td><td></td></tr>
+<tr name="19" id="19">
+<td><a id="l19" class='ln'>19</a></td><td><span class="kw">extern</span> <span class="kw">const</span> <a id="19c14" class="tk">int32_T</a> <a id="19c22" class="tk">rtCP_pooled_I29smDgh1ZlF</a>[6];</td></tr>
+<tr name="20" id="20">
+<td><a id="l20" class='ln'>20</a></td><td><span class="kw">const</span> <a id="20c7" class="tk">int32_T</a> <a id="20c15" class="tk">rtCP_pooled_I29smDgh1ZlF</a>[6] = <span class="br">{</span> 268435456, 536870912, 268435456,</td></tr>
+<tr name="21" id="21">
+<td><a id="l21" class='ln'>21</a></td><td>  <a id="21c3" class="tk">-</a>268435456, <a id="21c15" class="tk">-</a>536870912, <a id="21c27" class="tk">-</a>268435456 <span class="br">}</span> ;</td></tr>
+<tr name="22" id="22">
+<td><a id="l22" class='ln'>22</a></td><td></td></tr>
+<tr name="23" id="23">
+<td><a id="l23" class='ln'>23</a></td><td><span class="kw">extern</span> <span class="kw">const</span> <a id="23c14" class="tk">real_T</a> <a id="23c21" class="tk">rtCP_pooled_OHe5xkPYJZLy</a>;</td></tr>
+<tr name="24" id="24">
+<td><a id="l24" class='ln'>24</a></td><td><span class="kw">const</span> <a id="24c7" class="tk">real_T</a> <a id="24c14" class="tk">rtCP_pooled_OHe5xkPYJZLy</a> = <a id="24c41" class="tk">-</a>267.0;</td></tr>
+<tr name="25" id="25">
+<td><a id="l25" class='ln'>25</a></td><td><span class="kw">extern</span> <span class="kw">const</span> <a id="25c14" class="tk">int32_T</a> <a id="25c22" class="tk">rtCP_pooled_RXsOmBvvADoW</a>[6];</td></tr>
+<tr name="26" id="26">
+<td><a id="l26" class='ln'>26</a></td><td><span class="kw">const</span> <a id="26c7" class="tk">int32_T</a> <a id="26c15" class="tk">rtCP_pooled_RXsOmBvvADoW</a>[6] = <span class="br">{</span> <a id="26c47" class="tk">-</a>1, 1, <a id="26c54" class="tk">-</a>1, 1, <a id="26c61" class="tk">-</a>1, 1 <span class="br">}</span> ;</td></tr>
+<tr name="27" id="27">
+<td><a id="l27" class='ln'>27</a></td><td></td></tr>
+<tr name="28" id="28">
+<td><a id="l28" class='ln'>28</a></td><td><span class="kw">extern</span> <span class="kw">const</span> <a id="28c14" class="tk">int32_T</a> <a id="28c22" class="tk">rtCP_pooled_berHTRPvDDTn</a>[6];</td></tr>
+<tr name="29" id="29">
+<td><a id="l29" class='ln'>29</a></td><td><span class="kw">const</span> <a id="29c7" class="tk">int32_T</a> <a id="29c15" class="tk">rtCP_pooled_berHTRPvDDTn</a>[6] = <span class="br">{</span> <a id="29c47" class="tk">-</a>1, 0, 1, <a id="29c57" class="tk">-</a>1, 0, 1 <span class="br">}</span> ;</td></tr>
+<tr name="30" id="30">
+<td><a id="l30" class='ln'>30</a></td><td></td></tr>
+<tr name="31" id="31">
+<td><a id="l31" class='ln'>31</a></td><td><span class="kw">extern</span> <span class="kw">const</span> <a id="31c14" class="tk">real_T</a> <a id="31c21" class="tk">rtCP_pooled_gtKkVs9eS62J</a>[91];</td></tr>
+<tr name="32" id="32">
+<td><a id="l32" class='ln'>32</a></td><td><span class="kw">const</span> <a id="32c7" class="tk">real_T</a> <a id="32c14" class="tk">rtCP_pooled_gtKkVs9eS62J</a>[91] = <span class="br">{</span> <a id="32c47" class="tk">-</a>1.0, <a id="32c53" class="tk">-</a>0.99984769515639127,</td></tr>
+<tr name="33" id="33">
+<td><a id="l33" class='ln'>33</a></td><td>  <a id="33c3" class="tk">-</a>0.99939082701909565, <a id="33c25" class="tk">-</a>0.99862953475457383, <a id="33c47" class="tk">-</a>0.9975640502598242,</td></tr>
+<tr name="34" id="34">
+<td><a id="l34" class='ln'>34</a></td><td>  <a id="34c3" class="tk">-</a>0.99619469809174555, <a id="34c25" class="tk">-</a>0.9945218953682734, <a id="34c46" class="tk">-</a>0.992546151641322,</td></tr>
+<tr name="35" id="35">
+<td><a id="l35" class='ln'>35</a></td><td>  <a id="35c3" class="tk">-</a>0.99026806874157036, <a id="35c25" class="tk">-</a>0.98768834059513766, <a id="35c47" class="tk">-</a>0.98480775301220791,</td></tr>
+<tr name="36" id="36">
+<td><a id="l36" class='ln'>36</a></td><td>  <a id="36c3" class="tk">-</a>0.98162718344766386, <a id="36c25" class="tk">-</a>0.97814760073380558, <a id="36c47" class="tk">-</a>0.97437006478523525,</td></tr>
+<tr name="37" id="37">
+<td><a id="l37" class='ln'>37</a></td><td>  <a id="37c3" class="tk">-</a>0.97029572627599658, <a id="37c25" class="tk">-</a>0.96592582628906831, <a id="37c47" class="tk">-</a>0.96126169593831889,</td></tr>
+<tr name="38" id="38">
+<td><a id="l38" class='ln'>38</a></td><td>  <a id="38c3" class="tk">-</a>0.95630475596303555, <a id="38c25" class="tk">-</a>0.95105651629515353, <a id="38c47" class="tk">-</a>0.94551857559931674,</td></tr>
+<tr name="39" id="39">
+<td><a id="l39" class='ln'>39</a></td><td>  <a id="39c3" class="tk">-</a>0.93969262078590832, <a id="39c25" class="tk">-</a>0.93358042649720174, <a id="39c47" class="tk">-</a>0.92718385456678754,</td></tr>
+<tr name="40" id="40">
+<td><a id="l40" class='ln'>40</a></td><td>  <a id="40c3" class="tk">-</a>0.92050485345244026, <a id="40c25" class="tk">-</a>0.913545457642601, <a id="40c45" class="tk">-</a>0.90630778703664994,</td></tr>
+<tr name="41" id="41">
+<td><a id="l41" class='ln'>41</a></td><td>  <a id="41c3" class="tk">-</a>0.898794046299167, <a id="41c23" class="tk">-</a>0.89100652418836779, <a id="41c45" class="tk">-</a>0.88294759285892688,</td></tr>
+<tr name="42" id="42">
+<td><a id="l42" class='ln'>42</a></td><td>  <a id="42c3" class="tk">-</a>0.87461970713939574, <a id="42c25" class="tk">-</a>0.8660254037844386, <a id="42c46" class="tk">-</a>0.85716730070211233,</td></tr>
+<tr name="43" id="43">
+<td><a id="l43" class='ln'>43</a></td><td>  <a id="43c3" class="tk">-</a>0.848048096156426, <a id="43c23" class="tk">-</a>0.838670567945424, <a id="43c43" class="tk">-</a>0.82903757255504162,</td></tr>
+<tr name="44" id="44">
+<td><a id="l44" class='ln'>44</a></td><td>  <a id="44c3" class="tk">-</a>0.8191520442889918, <a id="44c24" class="tk">-</a>0.80901699437494745, <a id="44c46" class="tk">-</a>0.79863551004729283,</td></tr>
+<tr name="45" id="45">
+<td><a id="l45" class='ln'>45</a></td><td>  <a id="45c3" class="tk">-</a>0.788010753606722, <a id="45c23" class="tk">-</a>0.7771459614569709, <a id="45c44" class="tk">-</a>0.766044443118978,</td></tr>
+<tr name="46" id="46">
+<td><a id="l46" class='ln'>46</a></td><td>  <a id="46c3" class="tk">-</a>0.7547095802227719, <a id="46c24" class="tk">-</a>0.74314482547739424, <a id="46c46" class="tk">-</a>0.73135370161917046,</td></tr>
+<tr name="47" id="47">
+<td><a id="l47" class='ln'>47</a></td><td>  <a id="47c3" class="tk">-</a>0.71933980033865119, <a id="47c25" class="tk">-</a>0.70710678118654746, <a id="47c47" class="tk">-</a>0.69465837045899725,</td></tr>
+<tr name="48" id="48">
+<td><a id="l48" class='ln'>48</a></td><td>  <a id="48c3" class="tk">-</a>0.68199836006249859, <a id="48c25" class="tk">-</a>0.66913060635885824, <a id="48c47" class="tk">-</a>0.65605902899050728,</td></tr>
+<tr name="49" id="49">
+<td><a id="l49" class='ln'>49</a></td><td>  <a id="49c3" class="tk">-</a>0.64278760968653936, <a id="49c25" class="tk">-</a>0.62932039104983739, <a id="49c47" class="tk">-</a>0.61566147532565829,</td></tr>
+<tr name="50" id="50">
+<td><a id="l50" class='ln'>50</a></td><td>  <a id="50c3" class="tk">-</a>0.60181502315204827, <a id="50c25" class="tk">-</a>0.587785252292473, <a id="50c45" class="tk">-</a>0.573576436351046,</td></tr>
+<tr name="51" id="51">
+<td><a id="l51" class='ln'>51</a></td><td>  <a id="51c3" class="tk">-</a>0.55919290347074679, <a id="51c25" class="tk">-</a>0.54463903501502708, <a id="51c47" class="tk">-</a>0.529919264233205,</td></tr>
+<tr name="52" id="52">
+<td><a id="l52" class='ln'>52</a></td><td>  <a id="52c3" class="tk">-</a>0.51503807491005416, <a id="52c25" class="tk">-</a>0.49999999999999994, <a id="52c47" class="tk">-</a>0.48480962024633706,</td></tr>
+<tr name="53" id="53">
+<td><a id="l53" class='ln'>53</a></td><td>  <a id="53c3" class="tk">-</a>0.46947156278589081, <a id="53c25" class="tk">-</a>0.45399049973954675, <a id="53c47" class="tk">-</a>0.4383711467890774,</td></tr>
+<tr name="54" id="54">
+<td><a id="l54" class='ln'>54</a></td><td>  <a id="54c3" class="tk">-</a>0.42261826174069939, <a id="54c25" class="tk">-</a>0.40673664307580026, <a id="54c47" class="tk">-</a>0.39073112848927377,</td></tr>
+<tr name="55" id="55">
+<td><a id="l55" class='ln'>55</a></td><td>  <a id="55c3" class="tk">-</a>0.37460659341591196, <a id="55c25" class="tk">-</a>0.35836794954530027, <a id="55c47" class="tk">-</a>0.34202014332566871,</td></tr>
+<tr name="56" id="56">
+<td><a id="l56" class='ln'>56</a></td><td>  <a id="56c3" class="tk">-</a>0.3255681544571567, <a id="56c24" class="tk">-</a>0.30901699437494745, <a id="56c46" class="tk">-</a>0.29237170472273677,</td></tr>
+<tr name="57" id="57">
+<td><a id="l57" class='ln'>57</a></td><td>  <a id="57c3" class="tk">-</a>0.27563735581699916, <a id="57c25" class="tk">-</a>0.25881904510252074, <a id="57c47" class="tk">-</a>0.24192189559966773,</td></tr>
+<tr name="58" id="58">
+<td><a id="l58" class='ln'>58</a></td><td>  <a id="58c3" class="tk">-</a>0.224951054343865, <a id="58c23" class="tk">-</a>0.20791169081775934, <a id="58c45" class="tk">-</a>0.1908089953765448,</td></tr>
+<tr name="59" id="59">
+<td><a id="l59" class='ln'>59</a></td><td>  <a id="59c3" class="tk">-</a>0.17364817766693033, <a id="59c25" class="tk">-</a>0.15643446504023087, <a id="59c47" class="tk">-</a>0.13917310096006544,</td></tr>
+<tr name="60" id="60">
+<td><a id="l60" class='ln'>60</a></td><td>  <a id="60c3" class="tk">-</a>0.12186934340514748, <a id="60c25" class="tk">-</a>0.10452846326765347, <a id="60c47" class="tk">-</a>0.087155742747658166,</td></tr>
+<tr name="61" id="61">
+<td><a id="l61" class='ln'>61</a></td><td>  <a id="61c3" class="tk">-</a>0.0697564737441253, <a id="61c24" class="tk">-</a>0.052335956242943835, <a id="61c47" class="tk">-</a>0.034899496702500969,</td></tr>
+<tr name="62" id="62">
+<td><a id="l62" class='ln'>62</a></td><td>  <a id="62c3" class="tk">-</a>0.017452406437283512, 0.0 <span class="br">}</span> ;</td></tr>
+<tr name="63" id="63">
+<td><a id="l63" class='ln'>63</a></td><td></td></tr>
+<tr name="64" id="64">
+<td><a id="l64" class='ln'>64</a></td><td><span class="kw">extern</span> <span class="kw">const</span> <a id="64c14" class="tk">uint8_T</a> <a id="64c22" class="tk">rtCP_pooled_twUID13wkc9R</a>[12];</td></tr>
+<tr name="65" id="65">
+<td><a id="l65" class='ln'>65</a></td><td><span class="kw">const</span> <a id="65c7" class="tk">uint8_T</a> <a id="65c15" class="tk">rtCP_pooled_twUID13wkc9R</a>[12] = <span class="br">{</span> 47U, 100U, 101U, 118U, 47U, 118U,</td></tr>
+<tr name="66" id="66">
+<td><a id="l66" class='ln'>66</a></td><td>  105U, 100U, 101U, 111U, 48U, 0U <span class="br">}</span> ;</td></tr>
+<tr name="67" id="67">
+<td><a id="l67" class='ln'>67</a></td><td></td></tr>
+<tr name="68" id="68">
+<td><a id="l68" class='ln'>68</a></td><td><span class="kw">extern</span> <span class="kw">const</span> <a id="68c14" class="tk">int32_T</a> <a id="68c22" class="tk">rtCP_pooled_vw7bACqMwvtP</a>[6];</td></tr>
+<tr name="69" id="69">
+<td><a id="l69" class='ln'>69</a></td><td><span class="kw">const</span> <a id="69c7" class="tk">int32_T</a> <a id="69c15" class="tk">rtCP_pooled_vw7bACqMwvtP</a>[6] = <span class="br">{</span> <a id="69c47" class="tk">-</a>1, <a id="69c51" class="tk">-</a>1, 0, 0, 1, 1 <span class="br">}</span> ;</td></tr>
+<tr name="70" id="70">
+<td><a id="l70" class='ln'>70</a></td><td></td></tr>
+</table>
+</pre>
+</body>
+</html>
