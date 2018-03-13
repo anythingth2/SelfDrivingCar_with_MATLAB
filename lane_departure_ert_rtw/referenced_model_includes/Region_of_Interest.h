@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'Region_of_Interest'.
  *
- * Model version                  : 1.111
+ * Model version                  : 1.116
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Thu Mar 08 01:06:26 2018
+ * C/C++ source code generated on : Mon Mar 12 22:40:27 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -21,6 +21,9 @@
 # define Region_of_Interest_COMMON_INCLUDES_
 #include "rtwtypes.h"
 #endif                                 /* Region_of_Interest_COMMON_INCLUDES_ */
+
+/* Shared type includes */
+#include "multiword_types.h"
 
 /* Forward declaration for rtModel */
 typedef struct Region_of_Interest_tag_RTM Region_of_Interest_RT_MODEL;

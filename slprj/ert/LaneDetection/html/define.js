@@ -2,10 +2,10 @@ function CodeDefine() {
 this.def = new Array();
 this.def["LaneDetection_Start"] = {file: "LaneDetection_c.html",line:122,type:"fcn"};
 this.def["LaneDetection"] = {file: "LaneDetection_c.html",line:292,type:"fcn"};
-this.def["LaneDetection_initialize"] = {file: "LaneDetection_c.html",line:1203,type:"fcn"};
-this.def["LaneDetection_RT_MODEL"] = {file: "LaneDetection_h.html",line:30,type:"type"};
-this.def["LaneDetection_DW_f"] = {file: "LaneDetection_h.html",line:86,type:"type"};
-this.def["LaneDetection_MdlrefDW"] = {file: "LaneDetection_h.html",line:96,type:"type"};
+this.def["LaneDetection_initialize"] = {file: "LaneDetection_c.html",line:1219,type:"fcn"};
+this.def["LaneDetection_RT_MODEL"] = {file: "LaneDetection_h.html",line:33,type:"type"};
+this.def["LaneDetection_DW_f"] = {file: "LaneDetection_h.html",line:88,type:"type"};
+this.def["LaneDetection_MdlrefDW"] = {file: "LaneDetection_h.html",line:98,type:"type"};
 this.def["rtCP_pooled_9H9mPzIgD49d"] = {file: "../../_sharedutils/html/const_params_c.html",line:13,type:"var"};
 this.def["rtCP_pooled_C08a0ezfB1lz"] = {file: "../../_sharedutils/html/const_params_c.html",line:16,type:"var"};
 this.def["rtCP_pooled_I29smDgh1ZlF"] = {file: "../../_sharedutils/html/const_params_c.html",line:20,type:"var"};
@@ -13,12 +13,15 @@ this.def["rtCP_pooled_OHe5xkPYJZLy"] = {file: "../../_sharedutils/html/const_par
 this.def["rtCP_pooled_RXsOmBvvADoW"] = {file: "../../_sharedutils/html/const_params_c.html",line:26,type:"var"};
 this.def["rtCP_pooled_berHTRPvDDTn"] = {file: "../../_sharedutils/html/const_params_c.html",line:29,type:"var"};
 this.def["rtCP_pooled_gtKkVs9eS62J"] = {file: "../../_sharedutils/html/const_params_c.html",line:32,type:"var"};
-this.def["rtCP_pooled_vw7bACqMwvtP"] = {file: "../../_sharedutils/html/const_params_c.html",line:65,type:"var"};
+this.def["rtCP_pooled_twUID13wkc9R"] = {file: "../../_sharedutils/html/const_params_c.html",line:65,type:"var"};
+this.def["rtCP_pooled_vw7bACqMwvtP"] = {file: "../../_sharedutils/html/const_params_c.html",line:69,type:"var"};
 this.def["div_nde_s32_floor"] = {file: "../../_sharedutils/html/div_nde_s32_floor_c.html",line:14,type:"fcn"};
 this.def["mul_s32_loSR"] = {file: "../../_sharedutils/html/mul_s32_loSR_c.html",line:15,type:"fcn"};
 this.def["mul_ssu32_loSR"] = {file: "../../_sharedutils/html/mul_ssu32_loSR_c.html",line:15,type:"fcn"};
 this.def["mul_wide_s32"] = {file: "../../_sharedutils/html/mul_wide_s32_c.html",line:14,type:"fcn"};
 this.def["mul_wide_su32"] = {file: "../../_sharedutils/html/mul_wide_su32_c.html",line:14,type:"fcn"};
+this.def["chunk_T"] = {file: "../../_sharedutils/html/multiword_types_h.html",line:18,type:"type"};
+this.def["uchunk_T"] = {file: "../../_sharedutils/html/multiword_types_h.html",line:19,type:"type"};
 this.def["int8_T"] = {file: "../../_sharedutils/html/rtwtypes_h.html",line:42,type:"type"};
 this.def["uint8_T"] = {file: "../../_sharedutils/html/rtwtypes_h.html",line:43,type:"type"};
 this.def["int16_T"] = {file: "../../_sharedutils/html/rtwtypes_h.html",line:44,type:"type"};
@@ -74,6 +77,8 @@ function Html2SrcLink() {
 	this.html2Root["mul_wide_su32_c.html"] = "../../_sharedutils/html/mul_wide_su32_c.html";
 	this.html2SrcPath["mul_wide_su32_h.html"] = "../mul_wide_su32.h";
 	this.html2Root["mul_wide_su32_h.html"] = "../../_sharedutils/html/mul_wide_su32_h.html";
+	this.html2SrcPath["multiword_types_h.html"] = "../multiword_types.h";
+	this.html2Root["multiword_types_h.html"] = "../../_sharedutils/html/multiword_types_h.html";
 	this.html2SrcPath["rtwtypes_h.html"] = "../rtwtypes.h";
 	this.html2Root["rtwtypes_h.html"] = "../../_sharedutils/html/rtwtypes_h.html";
 	this.html2SrcPath["hough_d_rt_c.html"] = "../../../../../../../../../Program Files/MATLAB/R2017a/toolbox/vision/visionrt/viphough/hough_d_rt.c";
@@ -99,4 +104,4 @@ function Html2SrcLink() {
 }
 Html2SrcLink.instance = new Html2SrcLink();
 var fileList = [
-"LaneDetection_c.html","LaneDetection_h.html","const_params_c.html","div_nde_s32_floor_c.html","div_nde_s32_floor_h.html","mul_s32_loSR_c.html","mul_s32_loSR_h.html","mul_ssu32_loSR_c.html","mul_ssu32_loSR_h.html","mul_wide_s32_c.html","mul_wide_s32_h.html","mul_wide_su32_c.html","mul_wide_su32_h.html","rtwtypes_h.html","hough_d_rt_c.html","hough_r_rt_c.html","viphough_rt_h.html","MW_target_hardware_resources_h.html"];
+"LaneDetection_c.html","LaneDetection_h.html","const_params_c.html","div_nde_s32_floor_c.html","div_nde_s32_floor_h.html","mul_s32_loSR_c.html","mul_s32_loSR_h.html","mul_ssu32_loSR_c.html","mul_ssu32_loSR_h.html","mul_wide_s32_c.html","mul_wide_s32_h.html","mul_wide_su32_c.html","mul_wide_su32_h.html","multiword_types_h.html","rtwtypes_h.html","hough_d_rt_c.html","hough_r_rt_c.html","viphough_rt_h.html","MW_target_hardware_resources_h.html"];

@@ -28,8 +28,8 @@
     ;%
     ;% Auto data (rtP)
     ;%
-      section.nData     = 2;
-      section.data(2)  = dumData; %prealloc
+      section.nData     = 6;
+      section.data(6)  = dumData; %prealloc
       
 	  ;% rtP.ROI_X_Value
 	  section.data(1).logicalSrcIdx = 0;
@@ -38,6 +38,22 @@
 	  ;% rtP.ROI_Y_Value
 	  section.data(2).logicalSrcIdx = 1;
 	  section.data(2).dtTransOffset = 261;
+	
+	  ;% rtP.SIZE_ROI_X_Value
+	  section.data(3).logicalSrcIdx = 2;
+	  section.data(3).dtTransOffset = 322;
+	
+	  ;% rtP.SIZE_ROI_Y_Value
+	  section.data(4).logicalSrcIdx = 3;
+	  section.data(4).dtTransOffset = 323;
+	
+	  ;% rtP.Constant3_Value
+	  section.data(5).logicalSrcIdx = 4;
+	  section.data(5).dtTransOffset = 324;
+	
+	  ;% rtP.Constant2_Value
+	  section.data(6).logicalSrcIdx = 5;
+	  section.data(6).dtTransOffset = 325;
 	
       nTotData = nTotData + section.nData;
       paramMap.sections(1) = section;
@@ -84,50 +100,66 @@
     ;%
     ;% Auto data (rtB)
     ;%
-      section.nData     = 1;
-      section.data(1)  = dumData; %prealloc
+      section.nData     = 2;
+      section.data(2)  = dumData; %prealloc
       
-	  ;% rtB.V4L2VideoCapture_o1
-	  section.data(1).logicalSrcIdx = 1;
+	  ;% rtB.LaneDetection_o2
+	  section.data(1).logicalSrcIdx = 0;
 	  section.data(1).dtTransOffset = 0;
+	
+	  ;% rtB.Abs
+	  section.data(2).logicalSrcIdx = 1;
+	  section.data(2).dtTransOffset = 5;
 	
       nTotData = nTotData + section.nData;
       sigMap.sections(1) = section;
       clear section
       
-      section.nData     = 1;
-      section.data(1)  = dumData; %prealloc
+      section.nData     = 3;
+      section.data(3)  = dumData; %prealloc
       
 	  ;% rtB.LaneDetection_o1
-	  section.data(1).logicalSrcIdx = 0;
+	  section.data(1).logicalSrcIdx = 2;
 	  section.data(1).dtTransOffset = 0;
+	
+	  ;% rtB.LeftClosetPts
+	  section.data(2).logicalSrcIdx = 3;
+	  section.data(2).dtTransOffset = 20;
+	
+	  ;% rtB.RightClosetPts
+	  section.data(3).logicalSrcIdx = 4;
+	  section.data(3).dtTransOffset = 24;
 	
       nTotData = nTotData + section.nData;
       sigMap.sections(2) = section;
       clear section
       
-      section.nData     = 5;
-      section.data(5)  = dumData; %prealloc
+      section.nData     = 6;
+      section.data(6)  = dumData; %prealloc
       
-	  ;% rtB.V4L2VideoCapture_o2
-	  section.data(1).logicalSrcIdx = 2;
+	  ;% rtB.V4L2VideoCapture_o1
+	  section.data(1).logicalSrcIdx = 5;
 	  section.data(1).dtTransOffset = 0;
 	
+	  ;% rtB.V4L2VideoCapture_o2
+	  section.data(2).logicalSrcIdx = 6;
+	  section.data(2).dtTransOffset = 76800;
+	
 	  ;% rtB.V4L2VideoCapture_o3
-	  section.data(2).logicalSrcIdx = 3;
-	  section.data(2).dtTransOffset = 38400;
+	  section.data(3).logicalSrcIdx = 7;
+	  section.data(3).dtTransOffset = 115200;
 	
 	  ;% rtB.ROI
-	  section.data(3).logicalSrcIdx = 4;
-	  section.data(3).dtTransOffset = 76800;
+	  section.data(4).logicalSrcIdx = 8;
+	  section.data(4).dtTransOffset = 153600;
 	
 	  ;% rtB.LaneDetection_o3
-	  section.data(4).logicalSrcIdx = 5;
-	  section.data(4).dtTransOffset = 92721;
+	  section.data(5).logicalSrcIdx = 9;
+	  section.data(5).dtTransOffset = 169521;
 	
 	  ;% rtB.Image
-	  section.data(5).logicalSrcIdx = 6;
-	  section.data(5).dtTransOffset = 108642;
+	  section.data(6).logicalSrcIdx = 10;
+	  section.data(6).dtTransOffset = 185442;
 	
       nTotData = nTotData + section.nData;
       sigMap.sections(3) = section;
@@ -137,7 +169,7 @@
       section.data(1)  = dumData; %prealloc
       
 	  ;% rtB.LaneDetection_o4
-	  section.data(1).logicalSrcIdx = 7;
+	  section.data(1).logicalSrcIdx = 11;
 	  section.data(1).dtTransOffset = 0;
 	
       nTotData = nTotData + section.nData;
@@ -162,7 +194,7 @@
   ;%*******************
       
     nTotData      = 0; %add to this count as we go
-    nTotSects     = 4;
+    nTotSects     = 5;
     sectIdxOffset = 4;
     
     ;%
@@ -185,8 +217,8 @@
     ;%
     ;% Auto data (rtDW)
     ;%
-      section.nData     = 3;
-      section.data(3)  = dumData; %prealloc
+      section.nData     = 4;
+      section.data(4)  = dumData; %prealloc
       
 	  ;% rtDW.FrameRateDisplay_PrevTime
 	  section.data(1).logicalSrcIdx = 0;
@@ -200,16 +232,24 @@
 	  section.data(3).logicalSrcIdx = 2;
 	  section.data(3).dtTransOffset = 2;
 	
+	  ;% rtDW.numberLane
+	  section.data(4).logicalSrcIdx = 3;
+	  section.data(4).dtTransOffset = 3;
+	
       nTotData = nTotData + section.nData;
       dworkMap.sections(1) = section;
       clear section
       
-      section.nData     = 1;
-      section.data(1)  = dumData; %prealloc
+      section.nData     = 2;
+      section.data(2)  = dumData; %prealloc
       
-	  ;% rtDW.ROI_DWORK1
-	  section.data(1).logicalSrcIdx = 3;
+	  ;% rtDW.is_active_c4_lane_departure
+	  section.data(1).logicalSrcIdx = 5;
 	  section.data(1).dtTransOffset = 0;
+	
+	  ;% rtDW.is_c4_lane_departure
+	  section.data(2).logicalSrcIdx = 6;
+	  section.data(2).dtTransOffset = 1;
 	
       nTotData = nTotData + section.nData;
       dworkMap.sections(2) = section;
@@ -218,27 +258,38 @@
       section.nData     = 1;
       section.data(1)  = dumData; %prealloc
       
-	  ;% rtDW.LaneDetection_DWORK1
-	  section.data(1).logicalSrcIdx = 4;
+	  ;% rtDW.ROI_DWORK1
+	  section.data(1).logicalSrcIdx = 7;
 	  section.data(1).dtTransOffset = 0;
 	
       nTotData = nTotData + section.nData;
       dworkMap.sections(3) = section;
       clear section
       
+      section.nData     = 1;
+      section.data(1)  = dumData; %prealloc
+      
+	  ;% rtDW.LaneDetection_DWORK1
+	  section.data(1).logicalSrcIdx = 8;
+	  section.data(1).dtTransOffset = 0;
+	
+      nTotData = nTotData + section.nData;
+      dworkMap.sections(4) = section;
+      clear section
+      
       section.nData     = 2;
       section.data(2)  = dumData; %prealloc
       
 	  ;% rtDW.LaneDetection_DIMS1
-	  section.data(1).logicalSrcIdx = 5;
+	  section.data(1).logicalSrcIdx = 9;
 	  section.data(1).dtTransOffset = 0;
 	
 	  ;% rtDW.LaneDetection_DIMS2
-	  section.data(2).logicalSrcIdx = 6;
+	  section.data(2).logicalSrcIdx = 10;
 	  section.data(2).dtTransOffset = 2;
 	
       nTotData = nTotData + section.nData;
-      dworkMap.sections(4) = section;
+      dworkMap.sections(5) = section;
       clear section
       
     
@@ -267,8 +318,8 @@
   ;%
 
 
-  targMap.checksum0 = 1550388801;
-  targMap.checksum1 = 500172871;
-  targMap.checksum2 = 458236208;
-  targMap.checksum3 = 489847332;
+  targMap.checksum0 = 300995268;
+  targMap.checksum1 = 3126738980;
+  targMap.checksum2 = 1789535886;
+  targMap.checksum3 = 3564134869;
 

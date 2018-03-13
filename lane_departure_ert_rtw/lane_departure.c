@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'lane_departure'.
  *
- * Model version                  : 1.117
+ * Model version                  : 1.210
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Thu Mar 08 01:11:10 2018
+ * C/C++ source code generated on : Mon Mar 12 22:40:41 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -17,6 +17,14 @@
 
 #include "lane_departure.h"
 #include "lane_departure_dt.h"
+#include "rt_roundd_snf.h"
+
+/* Named constants for Chart: '<S2>/Chart' */
+#define IN_ErrorLane                   ((uint8_T)1U)
+#define IN_FindTypeTrackingLane        ((uint8_T)2U)
+#define IN_NoLane                      ((uint8_T)3U)
+#define IN_OneLane                     ((uint8_T)4U)
+#define IN_PerfectLane                 ((uint8_T)5U)
 
 /* Private macros used by the generated code to access rtModel */
 #ifndef rtmSetTFinal
@@ -135,21 +143,23 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
                         rtB.V4L2VideoCapture_o2, rtB.V4L2VideoCapture_o3);
 
   /* MATLAB Function: '<S1>/MATLAB Function' */
-  /* MATLAB Function 'Input /MATLAB Function': '<S2>:1' */
-  /* '<S2>:1:2' Image = imrotate(I,90,'bilinear'); */
+  /* MATLAB Function 'Input /MATLAB Function': '<S3>:1' */
+  /* '<S3>:1:2' Image = imrotate(I,90,'bilinear'); */
   memcpy(&rtB.uv0[0], &rtB.V4L2VideoCapture_o1[0], 76800U * sizeof(uint8_T));
   phlnjecbbimokfkf_imrotate(rtB.uv0, rtB.Image);
 
-  /* '<S2>:1:3' Image = flip(Image,2); */
+  /* '<S3>:1:3' Image = flip(Image,2); */
   for (rtB.i = 0; rtB.i < 240; rtB.i++) {
-    for (rtB.k = 0; rtB.k < 160; rtB.k++) {
-      rtB.tmp = rtB.Image[rtB.k * 240 + rtB.i];
-      rtB.Image[rtB.i + rtB.k * 240] = rtB.Image[(319 - rtB.k) * 240 + rtB.i];
-      rtB.Image[rtB.i + (319 - rtB.k) * 240] = rtB.tmp;
+    for (rtB.closetLeft = 0; rtB.closetLeft < 160; rtB.closetLeft++) {
+      rtB.tmp = rtB.Image[rtB.closetLeft * 240 + rtB.i];
+      rtB.Image[rtB.i + rtB.closetLeft * 240] = rtB.Image[(319 - rtB.closetLeft)
+        * 240 + rtB.i];
+      rtB.Image[rtB.i + (319 - rtB.closetLeft) * 240] = rtB.tmp;
     }
   }
 
   /* End of MATLAB Function: '<S1>/MATLAB Function' */
+
   /* ModelReference: '<Root>/ROI' incorporates:
    *  Constant: '<Root>/ROI_X'
    *  Constant: '<Root>/ROI_Y'
@@ -162,6 +172,227 @@ void lane_departure_step1(void)        /* Sample time: [0.2s, 0.0s] */
                 &rtDW.LaneDetection_DIMS1[0], &rtB.LaneDetection_o2[0],
                 &rtDW.LaneDetection_DIMS2[0], &rtB.LaneDetection_o3[0],
                 &rtB.LaneDetection_o4[0], &(rtDW.LaneDetection_DWORK1.rtdw));
+
+  /* MATLAB Function: '<S2>/Find Closest Lane' incorporates:
+   *  Constant: '<Root>/SIZE_ROI_X'
+   *  Constant: '<Root>/SIZE_ROI_Y'
+   */
+  /* MATLAB Function 'LaneDeparture/Find Closest Lane': '<S6>:1' */
+  /* '<S6>:1:2' LeftClosetPts = int32([0 0 0 0]); */
+  /* '<S6>:1:3' RightClosetPts = int32([0 0 0 0]); */
+  rtB.LeftClosetPts[0] = 0;
+  rtB.RightClosetPts[0] = 0;
+  rtB.LeftClosetPts[1] = 0;
+  rtB.RightClosetPts[1] = 0;
+  rtB.LeftClosetPts[2] = 0;
+  rtB.RightClosetPts[2] = 0;
+  rtB.LeftClosetPts[3] = 0;
+  rtB.RightClosetPts[3] = 0;
+
+  /* '<S6>:1:4' closetLeft = int32(9999); */
+  rtB.closetLeft = 9999;
+
+  /* '<S6>:1:5' closetRight = int32(9999); */
+  rtB.closetRight = 9999;
+
+  /* '<S6>:1:6' [mx,~] = size(LinePts); */
+  /* '<S6>:1:6' ~ */
+  /* '<S6>:1:7' for i=1:mx */
+  rtB.i = 0;
+  while (rtB.i <= rtDW.LaneDetection_DIMS1[0] - 1) {
+    /* '<S6>:1:8' x = ( 0 - SIZE_ROI_Y - LinePts(i,2) )/Slope(i) + LinePts(i,1); */
+    rtB.d0 = rt_roundd_snf((0.0 - rtP.SIZE_ROI_Y_Value) - (real_T)
+      rtB.LaneDetection_o1[rtB.i + rtDW.LaneDetection_DIMS1[0]]);
+    if (rtB.d0 < 2.147483648E+9) {
+      if (rtB.d0 >= -2.147483648E+9) {
+        rtB.q0 = (int32_T)rtB.d0;
+      } else {
+        rtB.q0 = MIN_int32_T;
+      }
+    } else {
+      rtB.q0 = MAX_int32_T;
+    }
+
+    rtB.d0 = rt_roundd_snf((real_T)rtB.q0 / rtB.LaneDetection_o2[rtB.i]);
+    if (rtB.d0 < 2.147483648E+9) {
+      if (rtB.d0 >= -2.147483648E+9) {
+        rtB.q0 = (int32_T)rtB.d0;
+      } else {
+        rtB.q0 = MIN_int32_T;
+      }
+    } else {
+      rtB.q0 = MAX_int32_T;
+    }
+
+    if ((rtB.q0 < 0) && (rtB.LaneDetection_o1[rtB.i] < MIN_int32_T - rtB.q0)) {
+      rtB.qY = MIN_int32_T;
+    } else if ((rtB.q0 > 0) && (rtB.LaneDetection_o1[rtB.i] > MAX_int32_T
+                - rtB.q0)) {
+      rtB.qY = MAX_int32_T;
+    } else {
+      rtB.qY = rtB.q0 + rtB.LaneDetection_o1[rtB.i];
+    }
+
+    /* '<S6>:1:9' leftDiff = SIZE_ROI_X/2 - x; */
+    rtB.d0 = rt_roundd_snf(rtP.SIZE_ROI_X_Value / 2.0 - (real_T)rtB.qY);
+    if (rtB.d0 < 2.147483648E+9) {
+      if (rtB.d0 >= -2.147483648E+9) {
+        rtB.q0 = (int32_T)rtB.d0;
+      } else {
+        rtB.q0 = MIN_int32_T;
+      }
+    } else {
+      rtB.q0 = MAX_int32_T;
+    }
+
+    /* '<S6>:1:10' rightDiff = x - SIZE_ROI_X; */
+    rtB.d0 = rt_roundd_snf((real_T)rtB.qY - rtP.SIZE_ROI_X_Value);
+    if (rtB.d0 < 2.147483648E+9) {
+      if (rtB.d0 >= -2.147483648E+9) {
+        rtB.qY = (int32_T)rtB.d0;
+      } else {
+        rtB.qY = MIN_int32_T;
+      }
+    } else {
+      rtB.qY = MAX_int32_T;
+    }
+
+    /* '<S6>:1:11' if closetLeft > leftDiff(1) */
+    if (rtB.closetLeft > rtB.q0) {
+      /* '<S6>:1:12' closetLeft = leftDiff(1); */
+      rtB.closetLeft = rtB.q0;
+
+      /* '<S6>:1:13' LeftClosetPts = LinePts(i,1:4); */
+      rtB.LeftClosetPts[0] = rtB.LaneDetection_o1[rtB.i];
+      rtB.LeftClosetPts[1] = rtB.LaneDetection_o1[rtB.i +
+        rtDW.LaneDetection_DIMS1[0]];
+      rtB.LeftClosetPts[2] = rtB.LaneDetection_o1[(rtDW.LaneDetection_DIMS1[0] <<
+        1) + rtB.i];
+      rtB.LeftClosetPts[3] = rtB.LaneDetection_o1[rtDW.LaneDetection_DIMS1[0] *
+        3 + rtB.i];
+    }
+
+    /* '<S6>:1:16' if closetRight > rightDiff(1) */
+    if (rtB.closetRight > rtB.qY) {
+      /* '<S6>:1:17' closetRight = rightDiff(1); */
+      rtB.closetRight = rtB.qY;
+
+      /* '<S6>:1:18' RightClosetPts = LinePts(i,1:4); */
+      rtB.RightClosetPts[0] = rtB.LaneDetection_o1[rtB.i];
+      rtB.RightClosetPts[1] = rtB.LaneDetection_o1[rtB.i +
+        rtDW.LaneDetection_DIMS1[0]];
+      rtB.RightClosetPts[2] = rtB.LaneDetection_o1[(rtDW.LaneDetection_DIMS1[0] <<
+        1) + rtB.i];
+      rtB.RightClosetPts[3] = rtB.LaneDetection_o1[rtDW.LaneDetection_DIMS1[0] *
+        3 + rtB.i];
+    }
+
+    rtB.i++;
+  }
+
+  /* End of MATLAB Function: '<S2>/Find Closest Lane' */
+
+  /* Abs: '<S7>/Abs' incorporates:
+   *  Constant: '<Root>/SIZE_ROI_X'
+   *  Constant: '<S7>/Constant2'
+   *  Constant: '<S7>/Constant3'
+   *  Product: '<S7>/Divide1'
+   *  Selector: '<S7>/Selector2'
+   *  Sum: '<S7>/Subtract1'
+   */
+  rtB.Abs = fabs((real_T)rtB.LeftClosetPts[(int32_T)rtP.Constant3_Value - 1] -
+                 rtP.SIZE_ROI_X_Value / rtP.Constant2_Value);
+
+  /* Chart: '<S2>/Chart' */
+  /* Gateway: LaneDeparture/Chart */
+  /* During: LaneDeparture/Chart */
+  if (rtDW.is_active_c4_lane_departure == 0U) {
+    /* Entry: LaneDeparture/Chart */
+    rtDW.is_active_c4_lane_departure = 1U;
+
+    /* Entry Internal: LaneDeparture/Chart */
+    /* Transition: '<S5>:28' */
+    rtDW.is_c4_lane_departure = IN_FindTypeTrackingLane;
+
+    /* Entry 'FindTypeTrackingLane': '<S5>:27' */
+    /* '<S5>:27:1' numberLane = 1; */
+    rtDW.numberLane = 1.0;
+  } else {
+    switch (rtDW.is_c4_lane_departure) {
+     case IN_ErrorLane:
+      /* During 'ErrorLane': '<S5>:35' */
+      /* Transition: '<S5>:47' */
+      rtDW.is_c4_lane_departure = IN_FindTypeTrackingLane;
+
+      /* Entry 'FindTypeTrackingLane': '<S5>:27' */
+      /* '<S5>:27:1' numberLane = 1; */
+      rtDW.numberLane = 1.0;
+      break;
+
+     case IN_FindTypeTrackingLane:
+      /* During 'FindTypeTrackingLane': '<S5>:27' */
+      /* '<S5>:39:1' sf_internal_predicateOutput = ... */
+      /* '<S5>:39:1' numberLane == 1; */
+      if (rtDW.numberLane == 1.0) {
+        /* Transition: '<S5>:39' */
+        rtDW.is_c4_lane_departure = IN_OneLane;
+      } else {
+        /* '<S5>:36:1' sf_internal_predicateOutput = ... */
+        /* '<S5>:36:1' numberLane == 2; */
+        if (rtDW.numberLane == 2.0) {
+          /* Transition: '<S5>:36' */
+          rtDW.is_c4_lane_departure = IN_PerfectLane;
+        } else {
+          /* '<S5>:40:1' sf_internal_predicateOutput = ... */
+          /* '<S5>:40:1' numberLane == 0; */
+          if (rtDW.numberLane == 0.0) {
+            /* Transition: '<S5>:40' */
+            rtDW.is_c4_lane_departure = IN_NoLane;
+          } else {
+            /* '<S5>:42:1' sf_internal_predicateOutput = ... */
+            /* '<S5>:42:1' numberLane == -1; */
+            if (rtDW.numberLane == -1.0) {
+              /* Transition: '<S5>:42' */
+              rtDW.is_c4_lane_departure = IN_ErrorLane;
+            }
+          }
+        }
+      }
+      break;
+
+     case IN_NoLane:
+      /* During 'NoLane': '<S5>:34' */
+      /* Transition: '<S5>:46' */
+      rtDW.is_c4_lane_departure = IN_FindTypeTrackingLane;
+
+      /* Entry 'FindTypeTrackingLane': '<S5>:27' */
+      /* '<S5>:27:1' numberLane = 1; */
+      rtDW.numberLane = 1.0;
+      break;
+
+     case IN_OneLane:
+      /* During 'OneLane': '<S5>:33' */
+      /* Transition: '<S5>:45' */
+      rtDW.is_c4_lane_departure = IN_FindTypeTrackingLane;
+
+      /* Entry 'FindTypeTrackingLane': '<S5>:27' */
+      /* '<S5>:27:1' numberLane = 1; */
+      rtDW.numberLane = 1.0;
+      break;
+
+     default:
+      /* During 'PerfectLane': '<S5>:32' */
+      /* Transition: '<S5>:44' */
+      rtDW.is_c4_lane_departure = IN_FindTypeTrackingLane;
+
+      /* Entry 'FindTypeTrackingLane': '<S5>:27' */
+      /* '<S5>:27:1' numberLane = 1; */
+      rtDW.numberLane = 1.0;
+      break;
+    }
+  }
+
+  /* End of Chart: '<S2>/Chart' */
   rtExtModeUpload(1, ((rtM->Timing.clockTick1) * 0.2));
 
   /* Update absolute time */
@@ -198,19 +429,21 @@ void lane_departure_initialize(void)
   rtM->Timing.stepSize0 = 0.04;
 
   /* External mode info */
-  rtM->Sizes.checksums[0] = (1550388801U);
-  rtM->Sizes.checksums[1] = (500172871U);
-  rtM->Sizes.checksums[2] = (458236208U);
-  rtM->Sizes.checksums[3] = (489847332U);
+  rtM->Sizes.checksums[0] = (300995268U);
+  rtM->Sizes.checksums[1] = (3126738980U);
+  rtM->Sizes.checksums[2] = (1789535886U);
+  rtM->Sizes.checksums[3] = (3564134869U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
     static RTWExtModeInfo rt_ExtModeInfo;
-    static const sysRanDType *systemRan[2];
+    static const sysRanDType *systemRan[4];
     rtM->extModeInfo = (&rt_ExtModeInfo);
     rteiSetSubSystemActiveVectorAddresses(&rt_ExtModeInfo, systemRan);
     systemRan[0] = &rtAlwaysEnabled;
     systemRan[1] = &rtAlwaysEnabled;
+    systemRan[2] = &rtAlwaysEnabled;
+    systemRan[3] = &rtAlwaysEnabled;
     rteiSetModelMappingInfoPtr(rtM->extModeInfo, &rtM->SpecialInfo.mappingInfo);
     rteiSetChecksumsPtr(rtM->extModeInfo, rtM->Sizes.checksums);
     rteiSetTPtr(rtM->extModeInfo, rtmGetTPtr(rtM));

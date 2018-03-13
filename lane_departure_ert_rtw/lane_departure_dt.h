@@ -3,9 +3,9 @@
  *
  * Code generation for model "lane_departure".
  *
- * Model version              : 1.117
+ * Model version              : 1.210
  * Simulink Coder version : 8.12 (R2017a) 16-Feb-2017
- * C source code generated on : Thu Mar 08 01:11:10 2018
+ * C source code generated on : Mon Mar 12 22:40:41 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -59,16 +59,18 @@ static const char_T * rtDataTypeNames[] = {
 
 /* data type transitions for block I/O structure */
 static DataTypeTransition rtBTransitions[] = {
-  { (char_T *)(&rtB.V4L2VideoCapture_o1[0]), 3, 0, 76800 },
+  { (char_T *)(&rtB.LaneDetection_o2[0]), 0, 0, 6 },
 
-  { (char_T *)(&rtB.LaneDetection_o1[0]), 6, 0, 20 },
+  { (char_T *)(&rtB.LaneDetection_o1[0]), 6, 0, 28 },
 
-  { (char_T *)(&rtB.V4L2VideoCapture_o2[0]), 3, 0, 185442 },
+  { (char_T *)(&rtB.V4L2VideoCapture_o1[0]), 3, 0, 262242 },
 
   { (char_T *)(&rtB.LaneDetection_o4[0]), 8, 0, 15921 }
   ,
 
-  { (char_T *)(&rtDW.FrameRateDisplay_PrevTime), 0, 0, 3 },
+  { (char_T *)(&rtDW.FrameRateDisplay_PrevTime), 0, 0, 4 },
+
+  { (char_T *)(&rtDW.is_active_c4_lane_departure), 3, 0, 2 },
 
   { (char_T *)(&rtDW.ROI_DWORK1), 15, 0, 1 },
 
@@ -79,13 +81,13 @@ static DataTypeTransition rtBTransitions[] = {
 
 /* data type transition table for block I/O structure */
 static DataTypeTransitionTable rtBTransTable = {
-  8U,
+  9U,
   rtBTransitions
 };
 
 /* data type transitions for Parameters structure */
 static DataTypeTransition rtPTransitions[] = {
-  { (char_T *)(&rtP.ROI_X_Value[0]), 0, 0, 322 }
+  { (char_T *)(&rtP.ROI_X_Value[0]), 0, 0, 326 }
 };
 
 /* data type transition table for Parameters structure */

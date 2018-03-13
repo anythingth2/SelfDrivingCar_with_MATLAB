@@ -2,8 +2,10 @@ function CodeDefine() {
 this.def = new Array();
 this.def["Region_of_Interest"] = {file: "Region_of_Interest_c.html",line:38,type:"fcn"};
 this.def["Region_of_Interest_initialize"] = {file: "Region_of_Interest_c.html",line:56,type:"fcn"};
-this.def["Region_of_Interest_RT_MODEL"] = {file: "Region_of_Interest_h.html",line:26,type:"type"};
-this.def["Region_of_Interest_MdlrefDW"] = {file: "Region_of_Interest_h.html",line:35,type:"type"};
+this.def["Region_of_Interest_RT_MODEL"] = {file: "Region_of_Interest_h.html",line:29,type:"type"};
+this.def["Region_of_Interest_MdlrefDW"] = {file: "Region_of_Interest_h.html",line:38,type:"type"};
+this.def["chunk_T"] = {file: "../../_sharedutils/html/multiword_types_h.html",line:18,type:"type"};
+this.def["uchunk_T"] = {file: "../../_sharedutils/html/multiword_types_h.html",line:19,type:"type"};
 this.def["int8_T"] = {file: "../../_sharedutils/html/rtwtypes_h.html",line:42,type:"type"};
 this.def["uint8_T"] = {file: "../../_sharedutils/html/rtwtypes_h.html",line:43,type:"type"};
 this.def["int16_T"] = {file: "../../_sharedutils/html/rtwtypes_h.html",line:44,type:"type"};
@@ -35,6 +37,8 @@ function Html2SrcLink() {
 	this.html2Root["Region_of_Interest_c.html"] = "Region_of_Interest_c.html";
 	this.html2SrcPath["Region_of_Interest_h.html"] = "../Region_of_Interest.h";
 	this.html2Root["Region_of_Interest_h.html"] = "Region_of_Interest_h.html";
+	this.html2SrcPath["multiword_types_h.html"] = "../multiword_types.h";
+	this.html2Root["multiword_types_h.html"] = "../../_sharedutils/html/multiword_types_h.html";
 	this.html2SrcPath["rtwtypes_h.html"] = "../rtwtypes.h";
 	this.html2Root["rtwtypes_h.html"] = "../../_sharedutils/html/rtwtypes_h.html";
 	this.html2SrcPath["MW_target_hardware_resources_h.html"] = "../MW_target_hardware_resources.h";
@@ -54,4 +58,4 @@ function Html2SrcLink() {
 }
 Html2SrcLink.instance = new Html2SrcLink();
 var fileList = [
-"Region_of_Interest_c.html","Region_of_Interest_h.html","rtwtypes_h.html","MW_target_hardware_resources_h.html"];
+"Region_of_Interest_c.html","Region_of_Interest_h.html","multiword_types_h.html","rtwtypes_h.html","MW_target_hardware_resources_h.html"];

@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'LaneDetection'.
  *
- * Model version                  : 1.110
+ * Model version                  : 1.115
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Thu Mar 08 01:05:57 2018
+ * C/C++ source code generated on : Sat Mar 10 10:54:43 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -26,6 +26,9 @@
 #include "viphough_rt.h"
 #endif                                 /* LaneDetection_COMMON_INCLUDES_ */
 
+/* Shared type includes */
+#include "multiword_types.h"
+
 /* Forward declaration for rtModel */
 typedef struct LaneDetection_tag_RTM LaneDetection_RT_MODEL;
 
@@ -36,8 +39,8 @@ typedef struct {
   real_T HoughTransform_o3[535];       /* '<S1>/Hough Transform' */
   real_T FindLocalMaxima_TEMP_IN_DWORKS[96300];/* '<S1>/Find Local Maxima' */
   real_T FindLocalMaxima[10];          /* '<S1>/Find Local Maxima' */
-  real_T Selector1[5];                 /* '<S1>/Selector1' */
-  real_T Selector5[5];                 /* '<S1>/Selector5' */
+  real_T Product[5];                   /* '<S2>/Product' */
+  real_T Subtract1[5];                 /* '<S2>/Subtract1' */
   real_T Selector[5];                  /* '<S1>/Selector' */
   real_T rtb_FindLocalMaxima_data[5];
   real_T tmpRound;
@@ -73,7 +76,6 @@ typedef struct {
   int32_T EdgeDetection_GV_SQUARED_DW[15921];/* '<Root>/Edge Detection' */
   int32_T EdgeDetection_GH_SQUARED_DW[15921];/* '<Root>/Edge Detection' */
   int32_T EdgeDetection_GRAD_SUM_DW[15921];/* '<Root>/Edge Detection' */
-  int32_T Selector4[5];                /* '<S2>/Selector4' */
   int32_T Selector3[5];                /* '<S2>/Selector3' */
   int32_T Selector_p[5];               /* '<S2>/Selector' */
   int32_T rtb_Selector_data[5];
@@ -119,7 +121,7 @@ extern void LaneDetection(const uint8_T rtu_I[15921], int32_T rty_Points[20],
  * Here is the system hierarchy for this model
  *
  * '<Root>' : 'LaneDetection'
- * '<S1>'   : 'LaneDetection/Find Lane'
+ * '<S1>'   : 'LaneDetection/Find Line'
  * '<S2>'   : 'LaneDetection/Find Slope'
  */
 #endif                                 /* RTW_HEADER_LaneDetection_h_ */

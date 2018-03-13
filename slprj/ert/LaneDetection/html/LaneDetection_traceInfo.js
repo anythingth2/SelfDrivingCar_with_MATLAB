@@ -3,25 +3,25 @@ function RTW_Sid2UrlHash() {
 	/* <Root>/Draw Shapes */
 	this.urlHashMap["LaneDetection:2"] = "LaneDetection.c:763,1110";
 	/* <Root>/Edge Detection */
-	this.urlHashMap["LaneDetection:3"] = "LaneDetection.c:103,106,109,112,115,118,126,288,317,482&LaneDetection.h:46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,73,74,75,81";
+	this.urlHashMap["LaneDetection:3"] = "LaneDetection.c:103,106,109,112,115,118,126,288,317,482&LaneDetection.h:49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,76,77,78,83";
 	/* <S1>/Constant2 */
 	this.urlHashMap["LaneDetection:7"] = "msg=rtwMsg_CodeGenerationReducedBlock&block=LaneDetection:7";
 	/* <S1>/Constant3 */
 	this.urlHashMap["LaneDetection:8"] = "msg=rtwMsg_CodeGenerationReducedBlock&block=LaneDetection:8";
 	/* <S1>/Find Local Maxima */
-	this.urlHashMap["LaneDetection:9"] = "LaneDetection.c:489,590&LaneDetection.h:37,38,64,83";
+	this.urlHashMap["LaneDetection:9"] = "LaneDetection.c:489,590&LaneDetection.h:40,41,67,85";
 	/* <S1>/Hough Lines */
 	this.urlHashMap["LaneDetection:10"] = "LaneDetection.c:666,761";
 	/* <S1>/Hough Transform */
-	this.urlHashMap["LaneDetection:11"] = "LaneDetection.c:97,100,484&LaneDetection.h:34,35,36";
+	this.urlHashMap["LaneDetection:11"] = "LaneDetection.c:97,100,484&LaneDetection.h:37,38,39";
 	/* <S1>/Selector */
-	this.urlHashMap["LaneDetection:12"] = "LaneDetection.c:592,605&LaneDetection.h:41,65";
+	this.urlHashMap["LaneDetection:12"] = "LaneDetection.c:592,605&LaneDetection.h:44,68";
 	/* <S1>/Selector1 */
-	this.urlHashMap["LaneDetection:13"] = "LaneDetection.c:607,626&LaneDetection.h:39,66";
+	this.urlHashMap["LaneDetection:13"] = "LaneDetection.c:607,626&LaneDetection.h:69";
 	/* <S1>/Selector2 */
-	this.urlHashMap["LaneDetection:14"] = "LaneDetection.c:628,642&LaneDetection.h:67";
+	this.urlHashMap["LaneDetection:14"] = "LaneDetection.c:628,642&LaneDetection.h:70";
 	/* <S1>/Selector5 */
-	this.urlHashMap["LaneDetection:15"] = "LaneDetection.c:644,664&LaneDetection.h:40,68";
+	this.urlHashMap["LaneDetection:15"] = "LaneDetection.c:644,664&LaneDetection.h:71";
 	/* <S2>/Constant */
 	this.urlHashMap["LaneDetection:19"] = "msg=rtwMsg_CodeGenerationReducedBlock&block=LaneDetection:19";
 	/* <S2>/Constant1 */
@@ -30,20 +30,28 @@ function RTW_Sid2UrlHash() {
 	this.urlHashMap["LaneDetection:21"] = "msg=rtwMsg_CodeGenerationReducedBlock&block=LaneDetection:21";
 	/* <S2>/Constant3 */
 	this.urlHashMap["LaneDetection:22"] = "msg=rtwMsg_CodeGenerationReducedBlock&block=LaneDetection:22";
+	/* <S2>/Constant4 */
+	this.urlHashMap["LaneDetection:38"] = "msg=rtwMsg_CodeGenerationReducedBlock&block=LaneDetection:38";
+	/* <S2>/Constant5 */
+	this.urlHashMap["LaneDetection:40"] = "msg=rtwMsg_CodeGenerationReducedBlock&block=LaneDetection:40";
 	/* <S2>/Divide */
-	this.urlHashMap["LaneDetection:23"] = "LaneDetection.c:1190,1199";
+	this.urlHashMap["LaneDetection:23"] = "LaneDetection.c:1206,1215";
+	/* <S2>/Product */
+	this.urlHashMap["LaneDetection:37"] = "LaneDetection.c:1190,1196&LaneDetection.h:42";
+	/* <S2>/Product1 */
+	this.urlHashMap["LaneDetection:39"] = "LaneDetection.c:1166,1172";
 	/* <S2>/Selector */
-	this.urlHashMap["LaneDetection:24"] = "LaneDetection.c:1112,1125&LaneDetection.h:69,78";
+	this.urlHashMap["LaneDetection:24"] = "LaneDetection.c:1112,1125&LaneDetection.h:72,80";
 	/* <S2>/Selector2 */
-	this.urlHashMap["LaneDetection:25"] = "LaneDetection.c:1151,1164&LaneDetection.h:71";
+	this.urlHashMap["LaneDetection:25"] = "LaneDetection.c:1151,1164&LaneDetection.h:74";
 	/* <S2>/Selector3 */
-	this.urlHashMap["LaneDetection:26"] = "LaneDetection.c:1127,1141&LaneDetection.h:70,77";
+	this.urlHashMap["LaneDetection:26"] = "LaneDetection.c:1127,1141&LaneDetection.h:73,79";
 	/* <S2>/Selector4 */
-	this.urlHashMap["LaneDetection:27"] = "LaneDetection.c:1166,1180&LaneDetection.h:72,76";
+	this.urlHashMap["LaneDetection:27"] = "LaneDetection.c:1174,1188&LaneDetection.h:75";
 	/* <S2>/Subtract */
 	this.urlHashMap["LaneDetection:28"] = "LaneDetection.c:1143,1149";
 	/* <S2>/Subtract1 */
-	this.urlHashMap["LaneDetection:29"] = "LaneDetection.c:1182,1188";
+	this.urlHashMap["LaneDetection:29"] = "LaneDetection.c:1198,1204&LaneDetection.h:43";
 	this.getUrlHash = function(sid) { return this.urlHashMap[sid];}
 }
 RTW_Sid2UrlHash.instance = new RTW_Sid2UrlHash();
@@ -62,8 +70,8 @@ function RTW_rtwnameSIDMap() {
 	this.sidHashMap["LaneDetection:2"] = {rtwname: "<Root>/Draw Shapes"};
 	this.rtwnameHashMap["<Root>/Edge Detection"] = {sid: "LaneDetection:3"};
 	this.sidHashMap["LaneDetection:3"] = {rtwname: "<Root>/Edge Detection"};
-	this.rtwnameHashMap["<Root>/Find Lane"] = {sid: "LaneDetection:4"};
-	this.sidHashMap["LaneDetection:4"] = {rtwname: "<Root>/Find Lane"};
+	this.rtwnameHashMap["<Root>/Find Line"] = {sid: "LaneDetection:4"};
+	this.sidHashMap["LaneDetection:4"] = {rtwname: "<Root>/Find Line"};
 	this.rtwnameHashMap["<Root>/Find Slope"] = {sid: "LaneDetection:17"};
 	this.sidHashMap["LaneDetection:17"] = {rtwname: "<Root>/Find Slope"};
 	this.rtwnameHashMap["<Root>/Points"] = {sid: "LaneDetection:31"};
@@ -108,8 +116,16 @@ function RTW_rtwnameSIDMap() {
 	this.sidHashMap["LaneDetection:21"] = {rtwname: "<S2>/Constant2"};
 	this.rtwnameHashMap["<S2>/Constant3"] = {sid: "LaneDetection:22"};
 	this.sidHashMap["LaneDetection:22"] = {rtwname: "<S2>/Constant3"};
+	this.rtwnameHashMap["<S2>/Constant4"] = {sid: "LaneDetection:38"};
+	this.sidHashMap["LaneDetection:38"] = {rtwname: "<S2>/Constant4"};
+	this.rtwnameHashMap["<S2>/Constant5"] = {sid: "LaneDetection:40"};
+	this.sidHashMap["LaneDetection:40"] = {rtwname: "<S2>/Constant5"};
 	this.rtwnameHashMap["<S2>/Divide"] = {sid: "LaneDetection:23"};
 	this.sidHashMap["LaneDetection:23"] = {rtwname: "<S2>/Divide"};
+	this.rtwnameHashMap["<S2>/Product"] = {sid: "LaneDetection:37"};
+	this.sidHashMap["LaneDetection:37"] = {rtwname: "<S2>/Product"};
+	this.rtwnameHashMap["<S2>/Product1"] = {sid: "LaneDetection:39"};
+	this.sidHashMap["LaneDetection:39"] = {rtwname: "<S2>/Product1"};
 	this.rtwnameHashMap["<S2>/Selector"] = {sid: "LaneDetection:24"};
 	this.sidHashMap["LaneDetection:24"] = {rtwname: "<S2>/Selector"};
 	this.rtwnameHashMap["<S2>/Selector2"] = {sid: "LaneDetection:25"};

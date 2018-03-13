@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'LaneDetection'.
  *
- * Model version                  : 1.110
+ * Model version                  : 1.115
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Thu Mar 08 01:05:57 2018
+ * C/C++ source code generated on : Sat Mar 10 10:54:43 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -619,7 +619,7 @@ void LaneDetection(const uint8_T rtu_I[15921], int32_T rty_Points[20], int32_T
 
   imgRow = localDW->Selector_DIMS1[0] * localDW->Selector_DIMS1[1];
   for (imgCol = 0; imgCol < imgRow; imgCol++) {
-    localDW->Selector1[localDW->Selector1_DIMS1[0] * imgCol] =
+    localDW->Product[localDW->Selector1_DIMS1[0] * imgCol] =
       localDW->HoughTransform_o2[localDW->rtb_Selector_data[imgCol]];
   }
 
@@ -657,7 +657,7 @@ void LaneDetection(const uint8_T rtu_I[15921], int32_T rty_Points[20], int32_T
 
   imgRow = localDW->Selector2_DIMS1[0] * localDW->Selector2_DIMS1[1];
   for (imgCol = 0; imgCol < imgRow; imgCol++) {
-    localDW->Selector5[localDW->Selector5_DIMS1[0] * imgCol] =
+    localDW->Subtract1[localDW->Selector5_DIMS1[0] * imgCol] =
       localDW->HoughTransform_o3[localDW->rtb_Selector_data[imgCol]];
   }
 
@@ -668,8 +668,8 @@ void LaneDetection(const uint8_T rtu_I[15921], int32_T rty_Points[20], int32_T
   rty_Points_DIMS1[0] = localDW->Selector1_DIMS1[0] * localDW->Selector1_DIMS1[1];
   for (m = 0; m < localDW->Selector1_DIMS1[1]; m++) {
     accumThree = 0;
-    localDW->maxValue = (localDW->Selector5[m] + 2.2204460492503131E-16) / (cos
-      (localDW->Selector1[m]) + 2.2204460492503131E-16);
+    localDW->maxValue = (localDW->Subtract1[m] + 2.2204460492503131E-16) / (cos
+      (localDW->Product[m]) + 2.2204460492503131E-16);
 
     /* part-1: top horizontal axis */
     localDW->tmpRound = floor(localDW->maxValue + 0.5);
@@ -684,8 +684,8 @@ void LaneDetection(const uint8_T rtu_I[15921], int32_T rty_Points[20], int32_T
       accumThree = 1;
     }
 
-    localDW->y2 = (localDW->Selector5[m] + 2.2204460492503131E-16) / (sin
-      (localDW->Selector1[m]) + 2.2204460492503131E-16);
+    localDW->y2 = (localDW->Subtract1[m] + 2.2204460492503131E-16) / (sin
+      (localDW->Product[m]) + 2.2204460492503131E-16);
 
     /* part-2: left vertical axis */
     localDW->tmpRound = floor(localDW->y2 + 0.5);
@@ -1163,6 +1163,14 @@ void LaneDetection(const uint8_T rtu_I[15921], int32_T rty_Points[20], int32_T
 
   /* End of Selector: '<S2>/Selector2' */
 
+  /* Product: '<S2>/Product1' */
+  imgRow = localDW->Selector2_DIMS1_g[0] * localDW->Selector2_DIMS1_g[1];
+  for (imgCol = 0; imgCol < imgRow; imgCol++) {
+    localDW->Subtract1[imgCol] = -(real_T)localDW->Selector3[imgCol];
+  }
+
+  /* End of Product: '<S2>/Product1' */
+
   /* Selector: '<S2>/Selector4' */
   localDW->Selector4_DIMS1[0] = rty_Points_DIMS1[0];
   localDW->Selector4_DIMS1[1] = 1;
@@ -1174,15 +1182,23 @@ void LaneDetection(const uint8_T rtu_I[15921], int32_T rty_Points[20], int32_T
 
   imgRow = rty_Points_DIMS1[0];
   for (imgCol = 0; imgCol < imgRow; imgCol++) {
-    localDW->Selector4[imgCol] = localDW->rtb_Selector_data[imgCol];
+    localDW->Selector3[imgCol] = localDW->rtb_Selector_data[imgCol];
   }
 
   /* End of Selector: '<S2>/Selector4' */
 
+  /* Product: '<S2>/Product' */
+  imgRow = localDW->Selector4_DIMS1[0] * localDW->Selector4_DIMS1[1];
+  for (imgCol = 0; imgCol < imgRow; imgCol++) {
+    localDW->Product[imgCol] = -(real_T)localDW->Selector3[imgCol];
+  }
+
+  /* End of Product: '<S2>/Product' */
+
   /* Sum: '<S2>/Subtract1' */
   imgRow = localDW->Selector2_DIMS1_g[0] * localDW->Selector2_DIMS1_g[1];
   for (imgCol = 0; imgCol < imgRow; imgCol++) {
-    localDW->Selector3[imgCol] -= localDW->Selector4[imgCol];
+    localDW->Subtract1[imgCol] -= localDW->Product[imgCol];
   }
 
   /* End of Sum: '<S2>/Subtract1' */
@@ -1192,8 +1208,8 @@ void LaneDetection(const uint8_T rtu_I[15921], int32_T rty_Points[20], int32_T
   rty_Slope_DIMS1[1] = localDW->Selector_DIMS1_o[1];
   imgRow = localDW->Selector2_DIMS1_g[0] * localDW->Selector2_DIMS1_g[1];
   for (imgCol = 0; imgCol < imgRow; imgCol++) {
-    rty_Slope[imgCol] = (real_T)localDW->Selector3[imgCol] / (real_T)
-      localDW->Selector_p[imgCol];
+    rty_Slope[imgCol] = localDW->Subtract1[imgCol] / (real_T)localDW->
+      Selector_p[imgCol];
   }
 
   /* End of Product: '<S2>/Divide' */
