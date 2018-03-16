@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'LaneDetection'.
  *
- * Model version                  : 1.264
+ * Model version                  : 1.277
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Sat Mar 17 01:21:22 2018
+ * C/C++ source code generated on : Sat Mar 17 02:19:56 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -705,7 +705,7 @@ void LaneDetection(const uint8_T rtu_I[76800], const real_T
 
   imgRow = localDW->Selector_DIMS1[0] * localDW->Selector_DIMS1[1];
   for (imgCol = 0; imgCol < imgRow; imgCol++) {
-    localDW->Product_e[localDW->Selector1_DIMS1[0] * imgCol] =
+    localDW->Sum2[localDW->Selector1_DIMS1[0] * imgCol] =
       localDW->HoughTransform_o2[localDW->rtb_Selector_g_data[imgCol]];
   }
 
@@ -722,7 +722,7 @@ void LaneDetection(const uint8_T rtu_I[76800], const real_T
 
   m = localDW->FindLocalMaxima_DIMS1[0];
   for (imgCol = 0; imgCol < m; imgCol++) {
-    localDW->Selector_g[imgCol] = localDW->rtb_FindLocalMaxima_data[imgCol];
+    localDW->Selector2[imgCol] = localDW->rtb_FindLocalMaxima_data[imgCol];
   }
 
   /* End of Selector: '<S1>/Selector2' */
@@ -738,27 +738,27 @@ void LaneDetection(const uint8_T rtu_I[76800], const real_T
          rtb_NearestVector_idx_0++) {
       localDW->rtb_Selector_g_data[rtb_NearestVector_idx_0 +
         localDW->Selector2_DIMS1[0] * imgCol] = (int32_T)localDW->
-        Selector_g[localDW->Selector2_DIMS1[0] * imgCol +
-        rtb_NearestVector_idx_0] - 1;
+        Selector2[localDW->Selector2_DIMS1[0] * imgCol + rtb_NearestVector_idx_0]
+        - 1;
     }
   }
 
   imgRow = localDW->Selector2_DIMS1[0] * localDW->Selector2_DIMS1[1];
   for (imgCol = 0; imgCol < imgRow; imgCol++) {
-    localDW->Subtract1[localDW->Selector5_DIMS1[0] * imgCol] =
+    localDW->Selector_g[localDW->Selector5_DIMS1[0] * imgCol] =
       localDW->HoughTransform_o3[localDW->rtb_Selector_g_data[imgCol]];
   }
 
   /* End of Selector: '<S1>/Selector5' */
 
   /* S-Function (sviphoughlines): '<S1>/Hough Lines' */
-  rty_TwoPoints_DIMS1[1] = 4;
-  rty_TwoPoints_DIMS1[0] = localDW->Selector1_DIMS1[0] *
+  localDW->HoughLines_DIMS1[1] = 4;
+  localDW->HoughLines_DIMS1[0] = localDW->Selector1_DIMS1[0] *
     localDW->Selector1_DIMS1[1];
   for (m = 0; m < localDW->Selector1_DIMS1[1]; m++) {
     accumTwo = 0;
-    localDW->NearestSimilarity = (localDW->Subtract1[m] + 2.2204460492503131E-16)
-      / (cos(localDW->Product_e[m]) + 2.2204460492503131E-16);
+    localDW->NearestSimilarity = (localDW->Selector_g[m] +
+      2.2204460492503131E-16) / (cos(localDW->Sum2[m]) + 2.2204460492503131E-16);
 
     /* part-1: top horizontal axis */
     localDW->tmpRound = floor(localDW->NearestSimilarity + 0.5);
@@ -773,8 +773,8 @@ void LaneDetection(const uint8_T rtu_I[76800], const real_T
       accumTwo = 1;
     }
 
-    localDW->y2 = (localDW->Subtract1[m] + 2.2204460492503131E-16) / (sin
-      (localDW->Product_e[m]) + 2.2204460492503131E-16);
+    localDW->y2 = (localDW->Selector_g[m] + 2.2204460492503131E-16) / (sin
+      (localDW->Sum2[m]) + 2.2204460492503131E-16);
 
     /* part-2: left vertical axis */
     localDW->tmpRound = floor(localDW->y2 + 0.5);
@@ -831,25 +831,162 @@ void LaneDetection(const uint8_T rtu_I[76800], const real_T
       localDW->rty_TwoPoints_data[3U] = -1;
     }
 
-    rty_TwoPoints[m] = localDW->rty_TwoPoints_data[1] + 1;
-    rty_TwoPoints[m + localDW->Selector1_DIMS1[1]] = localDW->
-      rty_TwoPoints_data[0] + 1;
+    localDW->HoughLines[m] = localDW->rty_TwoPoints_data[1] + 1;
+    localDW->HoughLines[m + localDW->Selector1_DIMS1[1]] =
+      localDW->rty_TwoPoints_data[0] + 1;
     if (localDW->rty_TwoPoints_data[3] > 2147483646) {
-      rty_TwoPoints[m + (localDW->Selector1_DIMS1[1] << 1)] = MAX_int32_T;
+      localDW->HoughLines[m + (localDW->Selector1_DIMS1[1] << 1)] = MAX_int32_T;
     } else {
-      rty_TwoPoints[m + (localDW->Selector1_DIMS1[1] << 1)] =
+      localDW->HoughLines[m + (localDW->Selector1_DIMS1[1] << 1)] =
         localDW->rty_TwoPoints_data[3] + 1;
     }
 
     if (localDW->rty_TwoPoints_data[2] > 2147483646) {
-      rty_TwoPoints[m + 3 * localDW->Selector1_DIMS1[1]] = MAX_int32_T;
+      localDW->HoughLines[m + 3 * localDW->Selector1_DIMS1[1]] = MAX_int32_T;
     } else {
-      rty_TwoPoints[m + 3 * localDW->Selector1_DIMS1[1]] =
+      localDW->HoughLines[m + 3 * localDW->Selector1_DIMS1[1]] =
         localDW->rty_TwoPoints_data[2] + 1;
     }
   }
 
   /* End of S-Function (sviphoughlines): '<S1>/Hough Lines' */
+
+  /* Selector: '<S1>/X1' */
+  localDW->X1_DIMS1[0] = localDW->HoughLines_DIMS1[0];
+  localDW->X1_DIMS1[1] = 1;
+  imgRow = localDW->HoughLines_DIMS1[0];
+  for (imgCol = 0; imgCol < imgRow; imgCol++) {
+    localDW->rtb_Selector_g_data[imgCol] = localDW->HoughLines[imgCol];
+  }
+
+  m = localDW->HoughLines_DIMS1[0];
+  for (imgCol = 0; imgCol < m; imgCol++) {
+    localDW->X1[imgCol] = localDW->rtb_Selector_g_data[imgCol];
+  }
+
+  /* End of Selector: '<S1>/X1' */
+
+  /* Sum: '<S1>/Sum' */
+  imgRow = localDW->X1_DIMS1[0] * localDW->X1_DIMS1[1];
+  for (imgCol = 0; imgCol < imgRow; imgCol++) {
+    localDW->Selector_g[imgCol] = (real_T)localDW->X1[imgCol] + 20.0;
+  }
+
+  /* End of Sum: '<S1>/Sum' */
+
+  /* Selector: '<S1>/Y1' */
+  localDW->Y1_DIMS1[0] = localDW->HoughLines_DIMS1[0];
+  localDW->Y1_DIMS1[1] = 1;
+  imgRow = localDW->HoughLines_DIMS1[0];
+  for (imgCol = 0; imgCol < imgRow; imgCol++) {
+    localDW->rtb_Selector_g_data[imgCol] = localDW->HoughLines[imgCol +
+      localDW->HoughLines_DIMS1[0]];
+  }
+
+  m = localDW->HoughLines_DIMS1[0];
+  for (imgCol = 0; imgCol < m; imgCol++) {
+    localDW->X1[imgCol] = localDW->rtb_Selector_g_data[imgCol];
+  }
+
+  /* End of Selector: '<S1>/Y1' */
+
+  /* Sum: '<S1>/Sum2' */
+  imgRow = localDW->Y1_DIMS1[0] * localDW->Y1_DIMS1[1];
+  for (imgCol = 0; imgCol < imgRow; imgCol++) {
+    localDW->Sum2[imgCol] = (real_T)localDW->X1[imgCol] + 140.0;
+  }
+
+  /* End of Sum: '<S1>/Sum2' */
+
+  /* Selector: '<S1>/X2' */
+  localDW->X2_DIMS1[0] = localDW->HoughLines_DIMS1[0];
+  localDW->X2_DIMS1[1] = 1;
+  imgRow = localDW->HoughLines_DIMS1[0];
+  for (imgCol = 0; imgCol < imgRow; imgCol++) {
+    localDW->rtb_Selector_g_data[imgCol] = localDW->HoughLines
+      [(localDW->HoughLines_DIMS1[0] << 1) + imgCol];
+  }
+
+  m = localDW->HoughLines_DIMS1[0];
+  for (imgCol = 0; imgCol < m; imgCol++) {
+    localDW->X1[imgCol] = localDW->rtb_Selector_g_data[imgCol];
+  }
+
+  /* End of Selector: '<S1>/X2' */
+
+  /* Sum: '<S1>/Sum1' */
+  imgRow = localDW->X2_DIMS1[0] * localDW->X2_DIMS1[1];
+  for (imgCol = 0; imgCol < imgRow; imgCol++) {
+    localDW->Selector2[imgCol] = (real_T)localDW->X1[imgCol] + 20.0;
+  }
+
+  /* End of Sum: '<S1>/Sum1' */
+
+  /* Selector: '<S1>/Y2' */
+  localDW->Y2_DIMS1[0] = localDW->HoughLines_DIMS1[0];
+  localDW->Y2_DIMS1[1] = 1;
+  imgRow = localDW->HoughLines_DIMS1[0];
+  for (imgCol = 0; imgCol < imgRow; imgCol++) {
+    localDW->rtb_Selector_g_data[imgCol] = localDW->HoughLines
+      [localDW->HoughLines_DIMS1[0] * 3 + imgCol];
+  }
+
+  m = localDW->HoughLines_DIMS1[0];
+  for (imgCol = 0; imgCol < m; imgCol++) {
+    localDW->X1[imgCol] = localDW->rtb_Selector_g_data[imgCol];
+  }
+
+  /* End of Selector: '<S1>/Y2' */
+
+  /* Sum: '<S1>/Sum3' */
+  imgRow = localDW->Y2_DIMS1[0] * localDW->Y2_DIMS1[1];
+  for (imgCol = 0; imgCol < imgRow; imgCol++) {
+    localDW->Subtract1[imgCol] = (real_T)localDW->X1[imgCol] + 140.0;
+  }
+
+  /* End of Sum: '<S1>/Sum3' */
+
+  /* Concatenate: '<S1>/Matrix Concatenate' */
+  localDW->MatrixConcatenate_DIMS1[0] = localDW->X1_DIMS1[0];
+  localDW->MatrixConcatenate_DIMS1[1] = ((localDW->X1_DIMS1[1] +
+    localDW->Y1_DIMS1[1]) + localDW->X2_DIMS1[1]) + localDW->Y2_DIMS1[1];
+  imgRow = localDW->X1_DIMS1[0] * localDW->X1_DIMS1[1];
+  for (imgCol = 0; imgCol < imgRow; imgCol++) {
+    localDW->MatrixConcatenate[imgCol] = localDW->Selector_g[imgCol];
+  }
+
+  imgRow = localDW->Y1_DIMS1[0] * localDW->Y1_DIMS1[1];
+  for (imgCol = 0; imgCol < imgRow; imgCol++) {
+    localDW->MatrixConcatenate[imgCol + localDW->X1_DIMS1[0] * localDW->
+      X1_DIMS1[1]] = localDW->Sum2[imgCol];
+  }
+
+  imgRow = localDW->X2_DIMS1[0] * localDW->X2_DIMS1[1];
+  for (imgCol = 0; imgCol < imgRow; imgCol++) {
+    localDW->MatrixConcatenate[(imgCol + localDW->X1_DIMS1[0] *
+      localDW->X1_DIMS1[1]) + localDW->Y1_DIMS1[0] * localDW->Y1_DIMS1[1]] =
+      localDW->Selector2[imgCol];
+  }
+
+  imgRow = localDW->Y2_DIMS1[0] * localDW->Y2_DIMS1[1];
+  for (imgCol = 0; imgCol < imgRow; imgCol++) {
+    localDW->MatrixConcatenate[((imgCol + localDW->X1_DIMS1[0] *
+      localDW->X1_DIMS1[1]) + localDW->Y1_DIMS1[0] * localDW->Y1_DIMS1[1]) +
+      localDW->X2_DIMS1[0] * localDW->X2_DIMS1[1]] = localDW->Subtract1[imgCol];
+  }
+
+  /* End of Concatenate: '<S1>/Matrix Concatenate' */
+
+  /* DataTypeConversion: '<S1>/Data Type Conversion' */
+  rty_TwoPoints_DIMS1[0] = localDW->MatrixConcatenate_DIMS1[0];
+  rty_TwoPoints_DIMS1[1] = localDW->MatrixConcatenate_DIMS1[1];
+  imgRow = localDW->MatrixConcatenate_DIMS1[0] *
+    localDW->MatrixConcatenate_DIMS1[1];
+  for (imgCol = 0; imgCol < imgRow; imgCol++) {
+    rty_TwoPoints[imgCol] = (int32_T)floor(localDW->MatrixConcatenate[imgCol]);
+  }
+
+  /* End of DataTypeConversion: '<S1>/Data Type Conversion' */
 
   /* S-Function (svipdrawshapes): '<Root>/Draw Shapes' */
   /* Compute output for unity line width
@@ -1204,44 +1341,52 @@ void LaneDetection(const uint8_T rtu_I[76800], const real_T
   /* MATLAB Function: '<S1>/TwoPoints2Vector' */
   /* MATLAB Function 'Find Line/TwoPoints2Vector': '<S5>:1' */
   /* '<S5>:1:2' Vector = int32([ TwoPts(:,1)-TwoPts(:,3) TwoPts(:,2)-TwoPts(:,4)]); */
-  imgRow = rty_TwoPoints_DIMS1[0];
+  imgRow = localDW->HoughLines_DIMS1[0];
   for (imgCol = 0; imgCol < imgRow; imgCol++) {
-    m = rty_TwoPoints[imgCol];
-    rtb_NearestVector_idx_0 = rty_TwoPoints[(rty_TwoPoints_DIMS1[0] << 1) +
-      imgCol];
-    if ((m >= 0) && (rtb_NearestVector_idx_0 < m - MAX_int32_T)) {
+    if ((localDW->HoughLines[imgCol] >= 0) && (localDW->HoughLines
+         [(localDW->HoughLines_DIMS1[0] << 1) + imgCol] < localDW->
+         HoughLines[imgCol] - MAX_int32_T)) {
       localDW->reshapes[0].f1.data[imgCol] = MAX_int32_T;
-    } else if ((m < 0) && (rtb_NearestVector_idx_0 > m - MIN_int32_T)) {
+    } else if ((localDW->HoughLines[imgCol] < 0) && (localDW->HoughLines
+                [(localDW->HoughLines_DIMS1[0] << 1) + imgCol] >
+                localDW->HoughLines[imgCol] - MIN_int32_T)) {
       localDW->reshapes[0].f1.data[imgCol] = MIN_int32_T;
     } else {
-      localDW->reshapes[0].f1.data[imgCol] = m - rtb_NearestVector_idx_0;
+      localDW->reshapes[0].f1.data[imgCol] = localDW->HoughLines[imgCol] -
+        localDW->HoughLines[(localDW->HoughLines_DIMS1[0] << 1) + imgCol];
     }
   }
 
-  imgRow = rty_TwoPoints_DIMS1[0];
+  imgRow = localDW->HoughLines_DIMS1[0];
   for (imgCol = 0; imgCol < imgRow; imgCol++) {
-    m = rty_TwoPoints[imgCol + rty_TwoPoints_DIMS1[0]];
-    rtb_NearestVector_idx_0 = rty_TwoPoints[rty_TwoPoints_DIMS1[0] * 3 + imgCol];
-    if ((m >= 0) && (rtb_NearestVector_idx_0 < m - MAX_int32_T)) {
+    if ((localDW->HoughLines[imgCol + localDW->HoughLines_DIMS1[0]] >= 0) &&
+        (localDW->HoughLines[localDW->HoughLines_DIMS1[0] * 3 + imgCol] <
+         localDW->HoughLines[imgCol + localDW->HoughLines_DIMS1[0]] -
+         MAX_int32_T)) {
       localDW->reshapes[1].f1.data[imgCol] = MAX_int32_T;
-    } else if ((m < 0) && (rtb_NearestVector_idx_0 > m - MIN_int32_T)) {
+    } else if ((localDW->HoughLines[imgCol + localDW->HoughLines_DIMS1[0]] < 0) &&
+               (localDW->HoughLines[localDW->HoughLines_DIMS1[0] * 3 + imgCol] >
+                localDW->HoughLines[imgCol + localDW->HoughLines_DIMS1[0]] -
+                MIN_int32_T)) {
       localDW->reshapes[1].f1.data[imgCol] = MIN_int32_T;
     } else {
-      localDW->reshapes[1].f1.data[imgCol] = m - rtb_NearestVector_idx_0;
+      localDW->reshapes[1].f1.data[imgCol] = localDW->HoughLines[imgCol +
+        localDW->HoughLines_DIMS1[0]] - localDW->HoughLines
+        [localDW->HoughLines_DIMS1[0] * 3 + imgCol];
     }
   }
 
-  localDW->SFunction_DIMS2_g[0] = rty_TwoPoints_DIMS1[0];
+  localDW->SFunction_DIMS2_g[0] = localDW->HoughLines_DIMS1[0];
   localDW->SFunction_DIMS2_g[1] = 2;
-  imgRow = rty_TwoPoints_DIMS1[0];
+  imgRow = localDW->HoughLines_DIMS1[0];
   for (imgCol = 0; imgCol < imgRow; imgCol++) {
     localDW->Vector_m[imgCol] = localDW->reshapes[0].f1.data[imgCol];
   }
 
-  imgRow = rty_TwoPoints_DIMS1[0];
+  imgRow = localDW->HoughLines_DIMS1[0];
   for (imgCol = 0; imgCol < imgRow; imgCol++) {
-    localDW->Vector_m[imgCol + rty_TwoPoints_DIMS1[0]] = localDW->reshapes[1].
-      f1.data[imgCol];
+    localDW->Vector_m[imgCol + localDW->HoughLines_DIMS1[0]] = localDW->
+      reshapes[1].f1.data[imgCol];
   }
 
   /* End of MATLAB Function: '<S1>/TwoPoints2Vector' */
@@ -1341,7 +1486,7 @@ void LaneDetection(const uint8_T rtu_I[76800], const real_T
 
   m = rty_TwoPoints_DIMS1[0];
   for (imgCol = 0; imgCol < m; imgCol++) {
-    localDW->Selector_p[imgCol] = localDW->rtb_Selector_g_data[imgCol];
+    localDW->X1[imgCol] = localDW->rtb_Selector_g_data[imgCol];
   }
 
   /* End of Selector: '<S3>/Selector' */
@@ -1365,7 +1510,7 @@ void LaneDetection(const uint8_T rtu_I[76800], const real_T
   /* Sum: '<S3>/Subtract' */
   imgRow = localDW->Selector_DIMS1_o[0] * localDW->Selector_DIMS1_o[1];
   for (imgCol = 0; imgCol < imgRow; imgCol++) {
-    localDW->Selector_p[imgCol] -= localDW->Selector3[imgCol];
+    localDW->X1[imgCol] -= localDW->Selector3[imgCol];
   }
 
   /* End of Sum: '<S3>/Subtract' */
@@ -1413,7 +1558,7 @@ void LaneDetection(const uint8_T rtu_I[76800], const real_T
   /* Product: '<S3>/Product' */
   imgRow = localDW->Selector4_DIMS1[0] * localDW->Selector4_DIMS1[1];
   for (imgCol = 0; imgCol < imgRow; imgCol++) {
-    localDW->Product_e[imgCol] = -(real_T)localDW->Selector3[imgCol];
+    localDW->Selector2[imgCol] = -(real_T)localDW->Selector3[imgCol];
   }
 
   /* End of Product: '<S3>/Product' */
@@ -1421,7 +1566,7 @@ void LaneDetection(const uint8_T rtu_I[76800], const real_T
   /* Sum: '<S3>/Subtract1' */
   imgRow = localDW->Selector2_DIMS1_g[0] * localDW->Selector2_DIMS1_g[1];
   for (imgCol = 0; imgCol < imgRow; imgCol++) {
-    localDW->Subtract1[imgCol] -= localDW->Product_e[imgCol];
+    localDW->Subtract1[imgCol] -= localDW->Selector2[imgCol];
   }
 
   /* End of Sum: '<S3>/Subtract1' */
@@ -1431,8 +1576,7 @@ void LaneDetection(const uint8_T rtu_I[76800], const real_T
   rty_Slope_DIMS1[1] = localDW->Selector_DIMS1_o[1];
   imgRow = localDW->Selector2_DIMS1_g[0] * localDW->Selector2_DIMS1_g[1];
   for (imgCol = 0; imgCol < imgRow; imgCol++) {
-    rty_Slope[imgCol] = localDW->Subtract1[imgCol] / (real_T)localDW->
-      Selector_p[imgCol];
+    rty_Slope[imgCol] = localDW->Subtract1[imgCol] / (real_T)localDW->X1[imgCol];
   }
 
   /* End of Product: '<S3>/Divide' */

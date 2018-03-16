@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'LaneDetection'.
  *
- * Model version                  : 1.264
+ * Model version                  : 1.277
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Sat Mar 17 01:21:22 2018
+ * C/C++ source code generated on : Sat Mar 17 02:19:56 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -79,10 +79,12 @@ typedef struct {
   real_T HoughTransform_o2[24];        /* '<S1>/Hough Transform' */
   real_T HoughTransform_o3[575];       /* '<S1>/Hough Transform' */
   real_T FindLocalMaxima_TEMP_IN_DWORKS[13800];/* '<S1>/Find Local Maxima' */
+  real_T MatrixConcatenate[20];        /* '<S1>/Matrix Concatenate' */
   real_T Similaritys_data[10];
   real_T FindLocalMaxima[10];          /* '<S1>/Find Local Maxima' */
-  real_T Product_e[5];                 /* '<S3>/Product' */
+  real_T Sum2[5];                      /* '<S1>/Sum2' */
   real_T Subtract1[5];                 /* '<S3>/Subtract1' */
+  real_T Selector2[5];                 /* '<S1>/Selector2' */
   real_T Selector_g[5];                /* '<S1>/Selector' */
   real_T rtb_FindLocalMaxima_data[5];
   real_T tmpRound;
@@ -90,6 +92,7 @@ typedef struct {
   real_T NearestSimilarity;
   real_T d0;
   real_T d1;
+  int32_T HoughLines[20];              /* '<S1>/Hough Lines' */
   int32_T EdgeDetection_VO_DW[6];      /* '<Root>/Edge Detection' */
   int32_T EdgeDetection_HO_DW[6];      /* '<Root>/Edge Detection' */
   int32_T EdgeDetection_VOU_DW[6];     /* '<Root>/Edge Detection' */
@@ -113,6 +116,12 @@ typedef struct {
   int32_T Selector1_DIMS1[2];          /* '<S1>/Selector1' */
   int32_T Selector2_DIMS1[2];          /* '<S1>/Selector2' */
   int32_T Selector5_DIMS1[2];          /* '<S1>/Selector5' */
+  int32_T HoughLines_DIMS1[2];         /* '<S1>/Hough Lines' */
+  int32_T X1_DIMS1[2];                 /* '<S1>/X1' */
+  int32_T Y1_DIMS1[2];                 /* '<S1>/Y1' */
+  int32_T X2_DIMS1[2];                 /* '<S1>/X2' */
+  int32_T Y2_DIMS1[2];                 /* '<S1>/Y2' */
+  int32_T MatrixConcatenate_DIMS1[2];  /* '<S1>/Matrix Concatenate' */
   int32_T Selector_DIMS1_o[2];         /* '<S3>/Selector' */
   int32_T Selector3_DIMS1[2];          /* '<S3>/Selector3' */
   int32_T Selector2_DIMS1_g[2];        /* '<S3>/Selector2' */
@@ -123,7 +132,7 @@ typedef struct {
   int32_T EdgeDetection_GRAD_SUM_DW[17141];/* '<Root>/Edge Detection' */
   int32_T Vector_m[20];                /* '<S1>/TwoPoints2Vector' */
   int32_T Selector3[5];                /* '<S3>/Selector3' */
-  int32_T Selector_p[5];               /* '<S3>/Selector' */
+  int32_T X1[5];                       /* '<S1>/X1' */
   int32_T rtb_Selector_g_data[5];
   int32_T rty_TwoPoints_data[4];
   int32_T SFunction_DIMS2;             /* '<S2>/Find Line Similarity with Support Line' */
@@ -132,6 +141,11 @@ typedef struct {
   uint32_T FindLocalMaxima_NUMPEAKS_DWORK;/* '<S1>/Find Local Maxima' */
   uint32_T toIdx;
   uint32_T fromIdx;
+  void *Sum_PWORK[2];                  /* '<S1>/Sum' */
+  void *Sum2_PWORK[2];                 /* '<S1>/Sum2' */
+  void *Sum1_PWORK[2];                 /* '<S1>/Sum1' */
+  void *Sum3_PWORK[2];                 /* '<S1>/Sum3' */
+  void *MatrixConcatenate_PWORK;       /* '<S1>/Matrix Concatenate' */
   uint8_T ROI_Tracking[17141];         /* '<Root>/ROI_Tracking' */
 } LaneDetection_DW_f;
 
@@ -159,8 +173,8 @@ extern void LaneDetection(const uint8_T rtu_I[76800], const real_T
 /*-
  * These blocks were eliminated from the model due to optimizations:
  *
- * Block '<Root>/ROI_X_2' : Unused code path elimination
- * Block '<Root>/ROI_Y_2' : Unused code path elimination
+ * Block '<Root>/SIZE_ROI_X' : Unused code path elimination
+ * Block '<Root>/SIZE_ROI_Y' : Unused code path elimination
  */
 
 /*-

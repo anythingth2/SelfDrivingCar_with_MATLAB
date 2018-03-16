@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'lane_departure'.
  *
- * Model version                  : 1.268
+ * Model version                  : 1.270
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Sat Mar 17 01:21:50 2018
+ * C/C++ source code generated on : Sat Mar 17 02:20:35 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -140,18 +140,18 @@ typedef struct {
 
 /* Block signals (auto storage) */
 typedef struct {
-  uint8_T TmpRTBAtLaneDetectionInport1[76800];/* '<Root>/Input ' */
-  uint8_T uv0[76800];
   real_T LaneDetection_o2[5];          /* '<Root>/LaneDetection' */
   real_T LaneDetection_o5;             /* '<Root>/LaneDetection' */
   int32_T LaneDetection_o1[20];        /* '<Root>/LaneDetection' */
-  int32_T LaneDetection_o6[4];         /* '<Root>/LaneDetection' */
   uint8_T V4L2VideoCapture_o1[76800];  /* '<S1>/V4L2 Video Capture' */
   uint8_T V4L2VideoCapture_o2[38400];  /* '<S1>/V4L2 Video Capture' */
   uint8_T V4L2VideoCapture_o3[38400];  /* '<S1>/V4L2 Video Capture' */
+  uint8_T TmpRTBAtLaneDetectionInport1[76800];/* '<Root>/Input ' */
   uint8_T LaneDetection_o3[17141];     /* '<Root>/LaneDetection' */
   uint8_T Image[76800];                /* '<S1>/MATLAB Function' */
+  uint8_T uv0[76800];
   boolean_T LaneDetection_o4[17141];   /* '<Root>/LaneDetection' */
+  int32_T LaneDetection_o6[4];         /* '<Root>/LaneDetection' */
 } B;
 
 /* Block states (auto storage) for system '<Root>' */
@@ -254,13 +254,6 @@ extern void lane_departure_step(int_T tid);
 
 /* Real-time Model object */
 extern RT_MODEL *const rtM;
-
-/*-
- * These blocks were eliminated from the model due to optimizations:
- *
- * Block '<Root>/SIZE_ROI_X' : Unused code path elimination
- * Block '<Root>/SIZE_ROI_Y' : Unused code path elimination
- */
 
 /*-
  * The generated code includes comments that allow you to trace directly

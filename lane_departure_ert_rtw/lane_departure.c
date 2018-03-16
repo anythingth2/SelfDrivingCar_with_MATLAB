@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'lane_departure'.
  *
- * Model version                  : 1.268
+ * Model version                  : 1.270
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Sat Mar 17 01:21:50 2018
+ * C/C++ source code generated on : Sat Mar 17 02:20:35 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -217,10 +217,10 @@ void lane_departure_initialize(void)
   rtM->Timing.stepSize0 = 0.02;
 
   /* External mode info */
-  rtM->Sizes.checksums[0] = (604331538U);
-  rtM->Sizes.checksums[1] = (2193608542U);
-  rtM->Sizes.checksums[2] = (1887128527U);
-  rtM->Sizes.checksums[3] = (3937949631U);
+  rtM->Sizes.checksums[0] = (1651074697U);
+  rtM->Sizes.checksums[1] = (975594651U);
+  rtM->Sizes.checksums[2] = (3688910865U);
+  rtM->Sizes.checksums[3] = (1969783294U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;

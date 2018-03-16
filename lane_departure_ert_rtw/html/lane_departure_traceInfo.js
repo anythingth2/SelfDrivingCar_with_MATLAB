@@ -2,8 +2,6 @@ function RTW_Sid2UrlHash() {
 	this.urlHashMap = new Array();
 	/* <Root>/Display */
 	this.urlHashMap["lane_departure:440"] = "msg=rtwMsg_CodeGenerationReducedBlock&block=lane_departure:440";
-	/* <Root>/Display1 */
-	this.urlHashMap["lane_departure:539"] = "msg=&block=lane_departure:539";
 	/* <Root>/Display2 */
 	this.urlHashMap["lane_departure:540"] = "msg=&block=lane_departure:540";
 	/* <Root>/Display4 */
@@ -17,15 +15,11 @@ Display */
 	this.urlHashMap["lane_departure:92"] = "lane_departure.h:159,160,161";
 	/* <Root>/Input
  */
-	this.urlHashMap["lane_departure:96"] = "lane_departure.h:143";
+	this.urlHashMap["lane_departure:96"] = "lane_departure.h:149";
 	/* <Root>/Lane Image */
 	this.urlHashMap["lane_departure:431"] = "msg=rtwMsg_notTraceable&block=lane_departure:431";
 	/* <Root>/LaneDetection */
-	this.urlHashMap["lane_departure:429"] = "lane_departure.c:168,255,263&lane_departure.h:145,146,147,148,152,154,166,167,168,169";
-	/* <Root>/SIZE_ROI_X */
-	this.urlHashMap["lane_departure:453"] = "msg=rtwMsg_reducedBlock&block=lane_departure:453";
-	/* <Root>/SIZE_ROI_Y */
-	this.urlHashMap["lane_departure:454"] = "msg=rtwMsg_reducedBlock&block=lane_departure:454";
+	this.urlHashMap["lane_departure:429"] = "lane_departure.c:168,255,263&lane_departure.h:143,144,145,150,153,154,166,167,168,169";
 	/* <Root>/Scope */
 	this.urlHashMap["lane_departure:527"] = "lane_departure.h:164";
 	/* <Root>/Angle */
@@ -37,13 +31,13 @@ Display */
 	/* <S1>/Input */
 	this.urlHashMap["lane_departure:258"] = "msg=rtwMsg_notTraceable&block=lane_departure:258";
 	/* <S1>/MATLAB Function */
-	this.urlHashMap["lane_departure:107"] = "lane_departure.c:110,125&lane_departure.h:98,153&phlnjecbbimokfkf_imrotate.c:14";
+	this.urlHashMap["lane_departure:107"] = "lane_departure.c:110,125&lane_departure.h:98,151&phlnjecbbimokfkf_imrotate.c:14";
 	/* <S1>/MATLAB Function1 */
 	this.urlHashMap["lane_departure:260"] = "msg=rtwMsg_notTraceable&block=lane_departure:260";
 	/* <S1>/Stop Simulation */
 	this.urlHashMap["lane_departure:507"] = "msg=rtwMsg_notTraceable&block=lane_departure:507";
 	/* <S1>/V4L2 Video Capture */
-	this.urlHashMap["lane_departure:93"] = "lane_departure.c:46,106,259&lane_departure.h:149,150,151";
+	this.urlHashMap["lane_departure:93"] = "lane_departure.c:46,106,259&lane_departure.h:146,147,148";
 	/* <S2>:1 */
 	this.urlHashMap["lane_departure:107:1"] = "lane_departure.c:111";
 	/* <S2>:1:2 */
@@ -68,8 +62,6 @@ function RTW_rtwnameSIDMap() {
 	this.sidHashMap["lane_departure:260"] = {rtwname: "<S3>"};
 	this.rtwnameHashMap["<Root>/Display"] = {sid: "lane_departure:440"};
 	this.sidHashMap["lane_departure:440"] = {rtwname: "<Root>/Display"};
-	this.rtwnameHashMap["<Root>/Display1"] = {sid: "lane_departure:539"};
-	this.sidHashMap["lane_departure:539"] = {rtwname: "<Root>/Display1"};
 	this.rtwnameHashMap["<Root>/Display2"] = {sid: "lane_departure:540"};
 	this.sidHashMap["lane_departure:540"] = {rtwname: "<Root>/Display2"};
 	this.rtwnameHashMap["<Root>/Display4"] = {sid: "lane_departure:526"};
@@ -86,10 +78,6 @@ function RTW_rtwnameSIDMap() {
 	this.sidHashMap["lane_departure:431"] = {rtwname: "<Root>/Lane Image"};
 	this.rtwnameHashMap["<Root>/LaneDetection"] = {sid: "lane_departure:429"};
 	this.sidHashMap["lane_departure:429"] = {rtwname: "<Root>/LaneDetection"};
-	this.rtwnameHashMap["<Root>/SIZE_ROI_X"] = {sid: "lane_departure:453"};
-	this.sidHashMap["lane_departure:453"] = {rtwname: "<Root>/SIZE_ROI_X"};
-	this.rtwnameHashMap["<Root>/SIZE_ROI_Y"] = {sid: "lane_departure:454"};
-	this.sidHashMap["lane_departure:454"] = {rtwname: "<Root>/SIZE_ROI_Y"};
 	this.rtwnameHashMap["<Root>/Scope"] = {sid: "lane_departure:527"};
 	this.sidHashMap["lane_departure:527"] = {rtwname: "<Root>/Scope"};
 	this.rtwnameHashMap["<Root>/Angle"] = {sid: "lane_departure:525"};

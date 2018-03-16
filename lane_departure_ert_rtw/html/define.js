@@ -99,9 +99,9 @@ this.def["pointer_T"] = {file: "../../slprj/ert/_sharedutils/html/rtwtypes_h.htm
 this.def["rtDataTypeSizes"] = {file: "lane_departure_dt_h.html",line:21,type:"var"};
 this.def["rtDataTypeNames"] = {file: "lane_departure_dt_h.html",line:40,type:"var"};
 this.def["rtBTransitions"] = {file: "lane_departure_dt_h.html",line:59,type:"var"};
-this.def["rtBTransTable"] = {file: "lane_departure_dt_h.html",line:81,type:"var"};
-this.def["rtPTransitions"] = {file: "lane_departure_dt_h.html",line:87,type:"var"};
-this.def["rtPTransTable"] = {file: "lane_departure_dt_h.html",line:92,type:"var"};
+this.def["rtBTransTable"] = {file: "lane_departure_dt_h.html",line:79,type:"var"};
+this.def["rtPTransitions"] = {file: "lane_departure_dt_h.html",line:85,type:"var"};
+this.def["rtPTransTable"] = {file: "lane_departure_dt_h.html",line:90,type:"var"};
 }
 CodeDefine.instance = new CodeDefine();
 var testHarnessInfo = {OwnerFileName: "", HarnessOwner: "", HarnessName: "", IsTestHarness: "0"};

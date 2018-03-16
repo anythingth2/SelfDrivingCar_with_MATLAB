@@ -5,7 +5,7 @@ function CodeMetrics() {
 	 this.metricsArray.var["lane_departure.c:rtBTransTable"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure_dt.h",
 	size: 8};
 	 this.metricsArray.var["lane_departure.c:rtBTransitions"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure_dt.h",
-	size: 144};
+	size: 128};
 	 this.metricsArray.var["lane_departure.c:rtDataTypeNames"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure_dt.h",
 	size: 60};
 	 this.metricsArray.var["lane_departure.c:rtDataTypeSizes"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure_dt.h",
@@ -17,7 +17,7 @@ function CodeMetrics() {
 	 this.metricsArray.var["rtB"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
 	size: 418426};
 	 this.metricsArray.var["rtDW"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\lane_departure_ert_rtw\\lane_departure.c",
-	size: 449581};
+	size: 449945};
 	 this.metricsArray.var["rtInf"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\slprj\\ert\\_sharedutils\\rt_nonfinite.c",
 	size: 8};
 	 this.metricsArray.var["rtInfF"] = {file: "C:\\Users\\ChiChaChai\\Documents\\AMAS-2017\\SelfDrivingCar_with_MATLAB\\slprj\\ert\\_sharedutils\\rt_nonfinite.c",
@@ -127,6 +127,6 @@ function CodeMetrics() {
 			 data.type = "var";
 		 }
 	 return data; }; 
-	 this.codeMetricsSummary = '<a href="lane_departure_metrics.html">Global Memory: 945233(bytes) Maximum Stack: 20(bytes)</a>';
+	 this.codeMetricsSummary = '<a href="lane_departure_metrics.html">Global Memory: 945581(bytes) Maximum Stack: 20(bytes)</a>';
 	}
 CodeMetrics.instance = new CodeMetrics();
