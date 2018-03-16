@@ -2,7 +2,7 @@
 ## Makefile generated for Simulink model 'lane_departure'. 
 ## 
 ## Makefile     : lane_departure.mk
-## Generated on : Thu Mar 08 01:08:44 2018
+## Generated on : Sat Mar 17 01:21:55 2018
 ## MATLAB Coder version: 3.3 (R2017a)
 ## 
 ## Build Info:
@@ -237,7 +237,7 @@ PREBUILT_OBJS =
 ## LIBRARIES
 ###########################################################################
 
-MODELREF_LIBS = ./LaneDetection_rtwlib.lib ./Region_of_Interest_rtwlib.lib
+MODELREF_LIBS = ./LaneDetection_rtwlib.lib
 
 LIBS = $(SHARED_LIB)
 

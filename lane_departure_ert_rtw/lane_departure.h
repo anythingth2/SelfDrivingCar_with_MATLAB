@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'lane_departure'.
  *
- * Model version                  : 1.210
+ * Model version                  : 1.268
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Mon Mar 12 22:40:41 2018
+ * C/C++ source code generated on : Sat Mar 17 01:21:50 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -19,7 +19,6 @@
 #define RTW_HEADER_lane_departure_h_
 #include "rtwtypes.h"
 #include "multiword_types.h"
-#include <math.h>
 #include <string.h>
 #include <float.h>
 #include <stddef.h>
@@ -37,8 +36,10 @@
 #include "multiword_types.h"
 
 /* Child system includes */
-#include "Region_of_Interest.h"
 #include "LaneDetection.h"
+#include "rtGetInf.h"
+#include "rtGetNaN.h"
+#include "rt_nonfinite.h"
 
 /* Macros for accessing real-time model data structure */
 #ifndef rtmGetFinalTime
@@ -139,28 +140,18 @@ typedef struct {
 
 /* Block signals (auto storage) */
 typedef struct {
+  uint8_T TmpRTBAtLaneDetectionInport1[76800];/* '<Root>/Input ' */
   uint8_T uv0[76800];
   real_T LaneDetection_o2[5];          /* '<Root>/LaneDetection' */
-  real_T Abs;                          /* '<S7>/Abs' */
+  real_T LaneDetection_o5;             /* '<Root>/LaneDetection' */
   int32_T LaneDetection_o1[20];        /* '<Root>/LaneDetection' */
-  int32_T LeftClosetPts[4];            /* '<S2>/Find Closest Lane' */
-  int32_T RightClosetPts[4];           /* '<S2>/Find Closest Lane' */
+  int32_T LaneDetection_o6[4];         /* '<Root>/LaneDetection' */
   uint8_T V4L2VideoCapture_o1[76800];  /* '<S1>/V4L2 Video Capture' */
   uint8_T V4L2VideoCapture_o2[38400];  /* '<S1>/V4L2 Video Capture' */
   uint8_T V4L2VideoCapture_o3[38400];  /* '<S1>/V4L2 Video Capture' */
-  uint8_T ROI[15921];                  /* '<Root>/ROI' */
-  uint8_T LaneDetection_o3[15921];     /* '<Root>/LaneDetection' */
+  uint8_T LaneDetection_o3[17141];     /* '<Root>/LaneDetection' */
   uint8_T Image[76800];                /* '<S1>/MATLAB Function' */
-  boolean_T LaneDetection_o4[15921];   /* '<Root>/LaneDetection' */
-  real_T d0;
-  int32_T i;
-  int32_T closetLeft;
-  int32_T closetRight;
-  int32_T qY;
-  int32_T q0;
-  int32_T i_m;
-  int32_T j;
-  uint8_T tmp;
+  boolean_T LaneDetection_o4[17141];   /* '<Root>/LaneDetection' */
 } B;
 
 /* Block states (auto storage) for system '<Root>' */
@@ -168,34 +159,26 @@ typedef struct {
   real_T FrameRateDisplay_PrevTime;    /* '<Root>/Frame Rate Display' */
   real_T FrameRateDisplay_TotalTime;   /* '<Root>/Frame Rate Display' */
   real_T FrameRateDisplay_Count;       /* '<Root>/Frame Rate Display' */
-  real_T numberLane;                   /* '<S2>/Chart' */
-  uint8_T is_active_c4_lane_departure; /* '<S2>/Chart' */
-  uint8_T is_c4_lane_departure;        /* '<S2>/Chart' */
-  Region_of_Interest_MdlrefDW ROI_DWORK1;/* '<Root>/ROI' */
+  struct {
+    void *LoggedData;
+  } Scope_PWORK;                       /* '<Root>/Scope' */
+
   LaneDetection_MdlrefDW LaneDetection_DWORK1;/* '<Root>/LaneDetection' */
   int32_T LaneDetection_DIMS1[2];      /* '<Root>/LaneDetection' */
   int32_T LaneDetection_DIMS2[2];      /* '<Root>/LaneDetection' */
+  int32_T LaneDetection_DIMS6[2];      /* '<Root>/LaneDetection' */
 } DW;
+
+/* External outputs (root outports fed by signals with auto storage) */
+typedef struct {
+  real_T Angle;                        /* '<Root>/Angle' */
+  uint8_T Brightness[76800];           /* '<Root>/Brightness' */
+} ExtY;
 
 /* Parameters (auto storage) */
 struct P_ {
-  real_T ROI_X_Value[261];             /* Expression: [20:280]
-                                        * Referenced by: '<Root>/ROI_X'
-                                        */
-  real_T ROI_Y_Value[61];              /* Expression: [140:200]
-                                        * Referenced by: '<Root>/ROI_Y'
-                                        */
-  real_T SIZE_ROI_X_Value;             /* Expression: 261
-                                        * Referenced by: '<Root>/SIZE_ROI_X'
-                                        */
-  real_T SIZE_ROI_Y_Value;             /* Expression: 61
-                                        * Referenced by: '<Root>/SIZE_ROI_Y'
-                                        */
-  real_T Constant3_Value;              /* Expression: 1
-                                        * Referenced by: '<S7>/Constant3'
-                                        */
-  real_T Constant2_Value;              /* Expression: 2
-                                        * Referenced by: '<S7>/Constant2'
+  real_T DummySupporLefttLine_Value[2];/* Expression: [58 -60]
+                                        * Referenced by: '<Root>/DummySupporLefttLine'
                                         */
 };
 
@@ -240,6 +223,10 @@ struct tag_RTM {
       uint32_T TID[2];
     } TaskCounters;
 
+    struct {
+      boolean_T TID0_1;
+    } RateInteraction;
+
     time_T tFinal;
     boolean_T stopRequestedFlag;
   } Timing;
@@ -253,6 +240,9 @@ extern B rtB;
 
 /* Block states (auto storage) */
 extern DW rtDW;
+
+/* External outputs (root outports fed by signals with auto storage) */
+extern ExtY rtY;
 
 /* External function called from main */
 extern void lane_departure_SetEventsForThisBaseStep(boolean_T *eventFlags);
@@ -268,12 +258,8 @@ extern RT_MODEL *const rtM;
 /*-
  * These blocks were eliminated from the model due to optimizations:
  *
- * Block '<S2>/Constant' : Unused code path elimination
- * Block '<S2>/Constant1' : Unused code path elimination
- * Block '<S2>/Divide' : Unused code path elimination
- * Block '<S2>/Selector' : Unused code path elimination
- * Block '<S2>/Selector1' : Unused code path elimination
- * Block '<S2>/Subtract' : Unused code path elimination
+ * Block '<Root>/SIZE_ROI_X' : Unused code path elimination
+ * Block '<Root>/SIZE_ROI_Y' : Unused code path elimination
  */
 
 /*-
@@ -292,14 +278,8 @@ extern RT_MODEL *const rtM;
  *
  * '<Root>' : 'lane_departure'
  * '<S1>'   : 'lane_departure/Input '
- * '<S2>'   : 'lane_departure/LaneDeparture'
- * '<S3>'   : 'lane_departure/Input /MATLAB Function'
- * '<S4>'   : 'lane_departure/Input /MATLAB Function1'
- * '<S5>'   : 'lane_departure/LaneDeparture/Chart'
- * '<S6>'   : 'lane_departure/LaneDeparture/Find Closest Lane'
- * '<S7>'   : 'lane_departure/LaneDeparture/Find Distance from lane to car'
- * '<S8>'   : 'lane_departure/LaneDeparture/ImageZoning'
- * '<S9>'   : 'lane_departure/LaneDeparture/LaneFilter'
+ * '<S2>'   : 'lane_departure/Input /MATLAB Function'
+ * '<S3>'   : 'lane_departure/Input /MATLAB Function1'
  */
 #endif                                 /* RTW_HEADER_lane_departure_h_ */
 

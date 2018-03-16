@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'lane_departure'.
  *
- * Model version                  : 1.210
+ * Model version                  : 1.268
  * Simulink Coder version         : 8.12 (R2017a) 16-Feb-2017
- * C/C++ source code generated on : Mon Mar 12 22:40:41 2018
+ * C/C++ source code generated on : Sat Mar 17 01:21:50 2018
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -20,6 +20,7 @@
 #include "lane_departure.h"
 #include "rtwtypes.h"
 #include "limits.h"
+#include "rt_nonfinite.h"
 #include "linuxinitialize.h"
 #define UNUSED(x)                      x = x
 
@@ -179,7 +180,7 @@ int main(int argc, char **argv)
   rtERTExtModeStartMsg();
 
   /* Call RTOS Initialization function */
-  myRTOSInit(0.04, 1);
+  myRTOSInit(0.02, 1);
 
   /* Wait for stop semaphore */
   sem_wait(&stopSem);
