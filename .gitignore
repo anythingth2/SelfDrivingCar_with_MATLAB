@@ -1,3 +1,6 @@
 *.mp4
 *.elf
 slprj/
+lane_departure2_ert_rtw/
+
+lane_departure_ert_rtw/
